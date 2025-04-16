@@ -1,27 +1,36 @@
 import './App.css'
+import {ContainersPage} from "./ContainersPage.tsx";
 
 export function App() {
   return (
     <div className="flex flex-col min-h-screen">
-      <header className="p-4 border-b">
-        <p>annorepo-dashboard</p>
-      </header>
+      <div>
+        <div className="flex flex-col md:flex-row flex-grow">
+          <aside
+            className="w-full md:w-64 p-4 order-1 md:order-1 bg-gray-100"
+          >
+            <p className="text-xl font-bold text-gray-900">AnnoRepo Dashboard</p>
+          </aside>
+          <main className="flex-grow p-4 order-2 md:order-2">
+            Admin &gt; Containers &gt;
+          </main>
+        </div>
+      </div>
       <div className="flex flex-col md:flex-row flex-grow">
         <aside
-          className="w-full md:w-64 p-4 order-1 md:order-1 border-r"
+          className="w-full md:w-64 p-4 order-1 md:order-1 bg-gray-100"
         >
           <ul>
-            <li>Home</li>
             <li>Containers</li>
+            <li>Users</li>
+            <li>Annotations</li>
+            <li>Custom queries</li>
           </ul>
         </aside>
         <main className="flex-grow p-4 order-2 md:order-2">
-          <p>Content</p>
+          <ContainersPage/>
         </main>
       </div>
-      <footer className="p-4 border-t">
-        <p>Footer</p>
-      </footer>
     </div>
   )
 }

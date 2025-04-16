@@ -1,54 +1,87 @@
-# React + TypeScript + Vite
+# AnnoRepo Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Dashboard for [AnnoRepo](https://github.com/knaw-huc/annorepo/)
 
-Currently, two official plugins are available:
+## Development
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+First time: `
+npm install
+`
 
-## Expanding the ESLint configuration
+Start: `
+npm start
+`
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Requirements
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+Users: 
+ - annorepo admin
+ - annorepo editor?
+ - annorepo guest?
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Use cases:
+- Manage containers
+  - Add container
+  - Edit container: what does editing a container mean?
+  - Note: this would mean a dashboard has access to docker and can fire up
+    containers
+- Manage users
+  - Add/edit/remove users
+  - Authorization: manage users and their permissions
+- View annotation statistics
+  - Annotation count
+- View annotations
+  - Filter annotations
+    - by target
+    - user/creator (ORCID URI)
+    - motivation/purpose
+  - Browse annotations
+    - Set limit, offset (view all at once)
+  - Visualise annotations:
+    - Photos, documents, ...?
+- Import annotations
+  - using existing 'annotationPages' (?)
+- Create annotations?
+  - Note: what should be the scope of this dashboard?
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+- Authenticate
+  - Login using ORCID? 
+  - Edu-id? Reuse functionality from TT editor workflow?
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+## Workflow
+
+- Login: ORCID?
+- Admin page
+  - List and select containers
+    - title + truncated description
+    - annotation count
+    - link to container page
+  - Add new container
+  - Link to user management
+- Container page
+  - Manage container
+  - Link to users
+  - Link to query page
+  - Link to annotation form
+- Container users page
+  - Add users
+  - Modify users
+  - Delete users
+- Custom query page
+  - Create query
+    - Plain text input field
+    - Query builder?
+  - Store and list queries?
+  - View query
+- Annotation form page?
+  - Insert new query
+
+## Tech stack
+
+- Language: Typescript
+- Bundler: Vite
+- Components: React
+- State: Zustand
+- Routing: Tanstack Router?
+- Fetching: Tanstack Query?
+- Styling: Tailwind
