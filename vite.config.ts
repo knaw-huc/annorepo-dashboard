@@ -13,4 +13,20 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+
+  /**
+   * Development server config:
+   */
+  server: {
+    proxy: {
+      /**
+       * To prevent CORS issues with local AR server:
+       */
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api/, ''),
+      }
+    }
+  }
 })

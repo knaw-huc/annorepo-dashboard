@@ -1,0 +1,20 @@
+{
+  "name": "ts-scripts",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "create-client": "tsx src/createClient.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "openapi-typescript": "^7.6.1",
+    "tsx": "^4.19.3",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "@types/node": "^22.14.1"
+  }
+}

@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "vite",
+    "start": "VITE_AR_HOST=/api vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
@@ -13,6 +13,7 @@
     "@tailwindcss/vite": "^4.1.4",
     "@tanstack/react-router": "^1.116.0",
     "@tanstack/react-router-devtools": "^1.116.0",
+    "openapi-fetch": "^0.13.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "tailwindcss": "^4.1.4"
