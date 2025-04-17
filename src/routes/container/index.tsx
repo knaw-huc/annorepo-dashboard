@@ -1,9 +1,8 @@
-import { createFileRoute } from '@tanstack/react-router'
-import {Page} from "../../common/Page.tsx";
-import {ContainerPage} from "../../container/ContainerPage.tsx";
+import {createFileRoute} from '@tanstack/react-router'
+import {Page} from "../../components/common/Page.tsx";
+import {ContainerPage} from "../../components/container/ContainerPage.tsx";
 
-const path = '/container/';
-export const Route = createFileRoute(path)({
+export const Route = createFileRoute('/container/')({
   component: ContainerIndex,
 })
 
