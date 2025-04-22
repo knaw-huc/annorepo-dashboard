@@ -1,23 +1,14 @@
 import {H1} from "./common/H1.tsx";
-import {useClient} from "./useClient.tsx";
-import {useEffect, useState} from "react";
+
+import {useGet} from "../client/useGet.ts";
 
 export function Home() {
-  const client = useClient()
-  const [about, setAbout] = useState()
-
-  useEffect(() => {
-    init()
-    async function init() {
-      const {data} = await client.GET('/about')
-      setAbout(data)
-    }
-  }, []);
+  const about = useGet('/about', {query: {refetchInterval: 1000}});
 
   return <div>
     <H1>Home</H1>
     <pre>
-      {JSON.stringify(about, null, 2)}
+      {about.data ? JSON.stringify(about.data, null, 2) : null}
     </pre>
     <ul>
       <li>Container1</li>
