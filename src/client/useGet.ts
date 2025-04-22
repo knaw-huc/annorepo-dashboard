@@ -1,8 +1,8 @@
-import {useQuery} from "@tanstack/react-query";
-import {client, Params, Paths, UseQueryOptions} from "./Query.ts";
+import {useQuery, UseQueryOptions} from "@tanstack/react-query";
+import {client, Params, Paths} from "./Query.ts";
 
 type GetParams<P extends Paths<"get">> = Params<"get", P> & {
-  query: UseQueryOptions
+  query: Omit<UseQueryOptions, 'queryKey'>
 };
 
 export function useGet<P extends Paths<"get">>(

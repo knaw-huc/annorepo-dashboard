@@ -1,6 +1,6 @@
 import {
-  UseMutationOptions as RQUseMutationOptions,
-  UseQueryOptions as RQUseQueryOptions
+  QueryClient,
+  UseMutationOptions as RQUseMutationOptions
 } from '@tanstack/react-query'
 import {HttpMethod, PathsWithMethod} from 'openapi-typescript-helpers'
 import {FetchOptions} from 'openapi-fetch'
@@ -17,10 +17,17 @@ export type Params<M extends HttpMethod, P extends Paths<M>> = M extends keyof p
   : never
 
 // Add more options as needed:
-export type UseQueryOptions = Pick<RQUseQueryOptions, "enabled" | "initialData" | "refetchInterval">;
 export type UseMutationOptions = Pick<RQUseMutationOptions, 'retry'>
 
 /**
  * Use within query hooks
  */
 export const client = useClient()
+
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: Infinity,
+    },
+  },
+})
