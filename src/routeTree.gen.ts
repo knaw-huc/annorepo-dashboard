@@ -10,9 +10,9 @@
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as ContainerIndexImport } from './routes/container/index'
+import { Route as rootRoute } from './route/__root'
+import { Route as IndexImport } from './route/index'
+import { Route as ContainerIndexImport } from './route/container/index'
 
 // Create/Update Routes
 

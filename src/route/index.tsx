@@ -1,6 +1,5 @@
 import {createFileRoute} from '@tanstack/react-router'
-import {Home} from "../components/Home.tsx";
-import {Page} from "../components/common/Page.tsx";
+import {ContainerGallery, Page} from "../component";
 
 export const Route = createFileRoute('/')({
   component: RootIndex,
@@ -10,7 +9,7 @@ export const Route = createFileRoute('/')({
 function RootIndex() {
   return (
     <Page>
-      <Home />
+      <ContainerGallery />
     </Page>
   )
 }

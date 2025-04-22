@@ -1,5 +1,5 @@
 import {AnnoRepoClient, createAnnorepoClient} from "../createAnnoRepoClient.ts";
-import {orThrow} from "../components/orThrow.ts";
+import {orThrow} from "../util/orThrow.ts";
 
 let client: AnnoRepoClient;
 

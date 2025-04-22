@@ -24,6 +24,9 @@ export type UseMutationOptions = Pick<RQUseMutationOptions, 'retry'>
  */
 export const client = useClient()
 
+/**
+ * Use in exported components
+ */
 export const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
