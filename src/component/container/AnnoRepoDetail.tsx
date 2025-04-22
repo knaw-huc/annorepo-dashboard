@@ -1,14 +1,18 @@
 import {H1} from "../common/H1.tsx";
 
 import {useGet} from "../../client/useGet.ts";
+import {Loading} from "../";
 
-export function ContainerGallery() {
+export function AnnoRepoDetail() {
   const about = useGet('/about', {query: {refetchInterval: 1000}});
 
   return <div>
-    <H1>Containers</H1>
+    <H1>Annotation repository</H1>
     <pre>
-      {about.data ? JSON.stringify(about.data, null, 2) : null}
+      {about.data
+        ? JSON.stringify(about.data, null, 2)
+        : <Loading/>
+      }
     </pre>
   </div>
 }

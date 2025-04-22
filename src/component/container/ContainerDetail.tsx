@@ -1,6 +1,6 @@
 import {H1} from "../common/H1.tsx";
 
-export function ContainerPage() {
+export function ContainerDetail() {
   return <div>
     <H1>Container X</H1>
     <ul>

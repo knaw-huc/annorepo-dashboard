@@ -1,5 +1,5 @@
 import {createFileRoute} from '@tanstack/react-router'
-import {ContainerGallery, Page} from "../component";
+import {ContainerIndex, Page} from "../component";
 
 export const Route = createFileRoute('/')({
   component: RootIndex,
@@ -9,7 +9,7 @@ export const Route = createFileRoute('/')({
 function RootIndex() {
   return (
     <Page>
-      <ContainerGallery />
+      <ContainerIndex />
     </Page>
   )
 }
