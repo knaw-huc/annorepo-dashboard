@@ -76,8 +76,9 @@ Use cases:
 - Annotation form page?
   - Insert new query
 
-## Tech stack
+## Tech setup
 
+### Stack
 - Language: Typescript
 - Bundler: Vite
 - Components: React
@@ -85,3 +86,9 @@ Use cases:
 - Routing: Tanstack Router?
 - Fetching: Tanstack Query?
 - Styling: Tailwind
+
+### Packages (workspace)
+
+- `@annorepo/client`:    annorepo client using openapi + tanstack query
+- `@annorepo/component`: reusable react components with query provider, no routing
+- `@annorepo/dashboard`: full webapp with routing using components
