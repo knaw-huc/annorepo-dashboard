@@ -47,6 +47,7 @@ export function useOpenApiClient(): AnnoRepoOpenApiClient {
   }
   return client;
 }
+
 export function useOpenApiContext(): [
   AnnoRepoOpenApiClient | undefined,
   AnnoRepoClientOpenApiSetter

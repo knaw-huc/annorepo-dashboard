@@ -1,17 +1,6 @@
 import {orThrow} from "../util/orThrow.ts";
-import {QueryClient} from "@tanstack/react-query";
 import createClient, {Middleware} from "openapi-fetch";
 import type {paths} from "../openapi.ts";
-
-export function createQueryClient() {
-  return new QueryClient({
-    defaultOptions: {
-      queries: {
-        staleTime: Infinity,
-      },
-    },
-  })
-}
 
 export function createOpenApiClient(bearerToken: string) {
 
