@@ -3,7 +3,7 @@ import {Params, Paths} from "./Query.ts";
 import {useOpenApiClient} from "./OpenApiClientProvider.tsx";
 
 type GetParams<P extends Paths<"get">> = Params<"get", P> & {
-  query: Omit<UseQueryOptions, 'queryKey'>
+  query?: Omit<UseQueryOptions, 'queryKey'>
 };
 
 export type QR<R> = UseQueryResult<R>
@@ -29,3 +29,4 @@ export function useGet<P extends Paths<"get">, RESULT>(
     ...params?.query,
   }) as UseQueryResult<RESULT>;
 }
+
