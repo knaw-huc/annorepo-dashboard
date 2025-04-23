@@ -1,15 +1,13 @@
 import {createFileRoute} from '@tanstack/react-router'
-import {Page} from "../../component";
+import {ContainerIndex, Page} from "../../component";
 
 export const Route = createFileRoute('/container/')({
-  component: ContainerIndex,
+  component: () => {
+    return (
+      <Page>
+        <ContainerIndex/>
+      </Page>
+    )
+  },
 })
 
-function ContainerIndex() {
-
-  return (
-    <Page>
-      <ContainerIndex />
-    </Page>
-  )
-}
