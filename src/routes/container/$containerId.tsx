@@ -10,8 +10,9 @@ function ContainerIndex() {
 
   return (
     <Page>
-      <pre>{containerId}</pre>
-      <ContainerDetail/>
+      <ContainerDetail
+        id={containerId}
+      />
     </Page>
   )
 }
