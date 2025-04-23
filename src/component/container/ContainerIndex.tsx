@@ -19,7 +19,6 @@ export function ContainerIndex() {
   return <div>
     <H1>Container index</H1>
     <div
-      style={{width:'70%'}}
       className="grid grid-cols-3 gap-5"
     >
       {containers.map((container, i) => <ContainerCard
