@@ -12,13 +12,18 @@ export function useGet<P extends Paths<"get">>(
 ) {
   const client = useOpenApiClient();
 
-  const queryFn = async () => client.GET(
-    path,
-    params || {} as GetParams<P>
-  ).then(({data}) => data);
+  const queryFn = async () => {
+    return client.GET(
+      path,
+      params || {} as GetParams<P>
+    ).then(({data}) => {
+      return data;
+    });
+  };
 
   return useQuery({
-    queryKey: [path, params],
+    // What else to add to keys?
+    queryKey: [path],
     queryFn,
     ...params?.query,
   });
