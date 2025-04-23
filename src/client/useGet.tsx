@@ -10,7 +10,7 @@ export function useGet<P extends Paths<"get">>(
   path: P,
   params?: GetParams<P>
 ) {
-  const client = useOpenApiClient().state.client;
+  const client = useOpenApiClient();
 
   const queryFn = async () => client.GET(
     path,

@@ -7,7 +7,7 @@ import './main.css'
 import {routeTree} from './routeTree.gen'
 import {QueryClientProvider} from "@tanstack/react-query";
 import {OpenApiClientProvider} from "./client/OpenApiClientProvider.tsx";
-import {createQueryClient, createOpenApiClient} from "./client/createOpenApiClient.tsx";
+import {createQueryClient} from "./client/createOpenApiClient.tsx";
 
 const router = createRouter({routeTree})
 
@@ -23,7 +23,7 @@ if (!rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement)
   root.render(
     <StrictMode>
-      <OpenApiClientProvider client={createOpenApiClient()}>
+      <OpenApiClientProvider>
         <QueryClientProvider client={createQueryClient()}>
           <RouterProvider router={router}/>
         </QueryClientProvider>
