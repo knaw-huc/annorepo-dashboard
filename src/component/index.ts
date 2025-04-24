@@ -1,4 +1,4 @@
-export {AnnoRepoDetail} from "./container/AnnoRepoDetail.tsx";
+export {AnnoRepoDetail} from "./AnnoRepoDetail.tsx";
 export {ContainerDetail} from "./container/ContainerDetail.tsx";
 export {ContainerIndex} from "./container/ContainerIndex.tsx";
 
