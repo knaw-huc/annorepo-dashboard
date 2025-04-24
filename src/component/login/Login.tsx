@@ -8,9 +8,12 @@ export function Login(props: PropsWithChildren<{}>) {
   const createClient = (bearerToken: string) => {
     setClient(createOpenApiClient(bearerToken))
   }
+
+  // TODO: auto login in dev mode only
   useEffect(() => {
     setClient(createOpenApiClient('root'))
   }, []);
+
   return <>
     {client
       ? props.children

@@ -1,17 +1,14 @@
 import {useOpenApiClient} from "./OpenApiClientProvider.tsx";
-import {
-  ArContainer,
-  MyContainers
-} from "../component/container/ContainerIndex.tsx";
 import {useQueries} from "@tanstack/react-query";
 import {QR, useGet} from "./useGet.tsx";
+import {ArContainer, ArMyContainers} from "./ArModel.ts";
 
 export function useMyContainerDetails() {
   const client = useOpenApiClient();
 
   const {data: myContainers} = useGet<
     '/my/containers',
-    MyContainers
+    ArMyContainers
   >('/my/containers')
 
   return useQueries({
