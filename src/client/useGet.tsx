@@ -26,8 +26,8 @@ export function useGet<P extends Paths<"get">, RESULT>(
   };
 
   return useQuery({
-    // What else to add to keys?
-    queryKey: [path],
+    // TODO: What to add as keys?
+    queryKey: [path, params],
     queryFn,
     ...params?.query,
   }) as UseQueryResult<RESULT>;
