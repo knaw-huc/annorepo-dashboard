@@ -13,7 +13,7 @@ export function Card(props: PropsWithChildren<{
         {props.title}
       </h5>
     </div>
-    <div className="overflow-hidden">
+    <div className=" px-6 py-3 overflow-scroll">
       {props.children}
     </div>
     {props.footer && <div

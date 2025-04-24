@@ -4,13 +4,30 @@ import {Loading} from "../common/Loading.tsx";
 import {Card} from "../common/Card.tsx";
 import {useMyContainerDetails} from "../../client/useMyContainerDetails.tsx";
 import {PropsWithChildren} from "react";
+import React from "react";
+import {ExternalLink} from "react-feather";
+import {Pipe} from "../common/Pipe.tsx";
+import {A} from "../common/A.tsx";
 
 export type MyContainers = {
   ROOT: string[]
 }
+
+export type ArContainerPage = {
+  "id": string,
+  "type": "AnnotationPage",
+  "partOf": string,
+  "startIndex": number,
+  "items": []
+};
+
 export type ArContainer = {
   id: string,
   label: string
+  type: string[]
+  total: number
+  first: ArContainerPage
+  last: string
 }
 
 export function ContainerIndex() {
@@ -21,20 +38,44 @@ export function ContainerIndex() {
     <div
       className="grid grid-cols-3 gap-5"
     >
-      {containers.map((container, i) => <ContainerCard
-        name={container.data?.label || ''}
-        key={i}
-      >{container.data
-        ? <div>{JSON.stringify(container.data, null, 2)}</div>
-        : <Loading/>
-      }</ContainerCard>)
-      }
+      {containers.map((container, i) => <React.Fragment
+        key={i}>
+        {container.data ? <ContainerCard
+          container={container?.data}
+        /> : <Loading/>}
+      </React.Fragment>)}
     </div>
   </div>
 }
 
-export function ContainerCard(props: PropsWithChildren<{ name: string }>) {
-  return <Card title={props.name}>
-    {props.children}
+export function ContainerCard(props: PropsWithChildren<{
+  container: ArContainer
+}>) {
+  const {container} = props;
+
+  if (!container) {
+    return <Loading/>;
+  }
+
+  return <Card
+    title={container.label || ''}
+    footer={<A href={container.first.id}>
+      Browse annotations
+      <ExternalLink className="inline align-text-top ml-1" size="16"/>
+    </A>}
+  >
+    <div>
+      <p className="mb-2">
+        <A href={container.id}>
+          Source
+          <ExternalLink className="inline align-middle ml-1" size="16"/>
+        </A>
+        <Pipe/>
+        {container.total} annotations
+      </p>
+      <p>
+        Types: {container.type.join(', ')}
+      </p>
+    </div>
   </Card>
 }
