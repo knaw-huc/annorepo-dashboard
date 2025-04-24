@@ -6,6 +6,9 @@ type GetParams<P extends Paths<"get">> = Params<"get", P> & {
   query?: Omit<UseQueryOptions, 'queryKey'>
 };
 
+/**
+ * Query Result
+ */
 export type QR<R> = UseQueryResult<R>
 
 export function useGet<P extends Paths<"get">, RESULT>(

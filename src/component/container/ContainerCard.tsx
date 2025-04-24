@@ -40,7 +40,7 @@ export function ContainerCard(props: PropsWithChildren<{
         </A>
       </p>
       <p>
-        Types: {container.type.join(', ')}
+        Type: {container.type.join(', ')}
       </p>
     </div>
   </Card>
