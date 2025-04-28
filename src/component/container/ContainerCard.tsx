@@ -17,27 +17,33 @@ export function ContainerCard(props: PropsWithChildren<{
   }
 
   return <Card
-    header={<Link
-      to="/container/$containerId"
-      params={{containerId: container.id}}
-    ><h5
-      className="mt-2 text-xl font-medium leading-tight text-center"
-    >
-      {container.label || ''}
-    </h5></Link>}
-    footer={<A href={container.first.id}>
-      Browse annotations
-      <External/>
-    </A>}
-  >
-    <div>
-      <p className="mb-2">
-        {container.total} annotations
-        <Pipe/>
+    header={
+      <Link
+        to="/container/$containerId"
+        params={{containerId: container.id}}
+      ><h5
+        className="mt-2 text-xl font-medium leading-tight text-center"
+      >
+        {container.label || ''}
+      </h5></Link>
+    }
+    footer={
+      <div className="text-right">
         <A href={container.id}>
           Source
           <External/>
         </A>
+        <Pipe />
+        <A href={container.first.id}>
+          Browse annotations
+          <External/>
+        </A>
+      </div>
+    }
+  >
+    <div>
+      <p className="mb-2">
+        {container.total} annotations
       </p>
       <p>
         Type: {container.type.join(', ')}
