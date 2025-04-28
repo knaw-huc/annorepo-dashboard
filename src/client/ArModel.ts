@@ -30,3 +30,5 @@ export type ArContainer = {
 }
 
 export type ArQuery = object
+
+export type ArAnnotation = object

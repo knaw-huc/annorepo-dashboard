@@ -15,6 +15,9 @@ export function useContainerSearch(
   const [searchId, setSearchId] = useState('')
 
   useEffect(() => {
+    if(searchId) {
+      return;
+    }
     postQuery.mutateAsync({
         params: {
           path: {containerName: getUuid(containerId)}
@@ -24,7 +27,7 @@ export function useContainerSearch(
     ).then(({response}) => {
       setSearchId(getUuid(new URL(response.headers.get('Location')!)))
     })
-  }, []);
+  }, [searchId]);
 
   return useGet('/services/{containerName}/search/{searchId}',
     {
