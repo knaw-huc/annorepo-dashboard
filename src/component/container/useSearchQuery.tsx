@@ -1,7 +1,7 @@
 import {useOpenApiClient} from "../../client/OpenApiClientProvider.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {getSearchById} from "../../client/useSearchContainer.tsx";
 import {getUuid} from "./ContainerCard.tsx";
+import {AnnoRepoOpenApiClient} from "../../client/createOpenApiClient.tsx";
 
 export function useSearchQuery(
   query: object,
@@ -33,4 +33,25 @@ export function useSearchQuery(
     queryFn: async () => getSearchById(client, containerName, location!),
     enabled: !!location,
   });
+}
+
+export async function getSearchById(
+  client: AnnoRepoOpenApiClient,
+  containerName: string,
+  searchId: string
+) {
+  if (!searchId) {
+    throw new Error('No search ID provided')
+  }
+  return client.GET(
+    '/services/{containerName}/search/{searchId}',
+    {
+      params: {
+        path: {
+          containerName,
+          searchId: searchId
+        }
+      }
+    }
+  );
 }
