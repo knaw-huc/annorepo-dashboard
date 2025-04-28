@@ -9,11 +9,11 @@ export function usePost<P extends Paths<'post'>>(
   const client = useOpenApiClient();
 
   const mutationFn = async (params: Params<'post', P>) => {
-    const {data, error} = await client.POST(path, params)
+    const {data, error, response} = await client.POST(path, params)
     if (error) {
       throw error
     }
-    return data
+    return {data, response}
   };
 
   return useMutation({

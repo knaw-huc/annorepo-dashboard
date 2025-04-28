@@ -6,13 +6,25 @@ import {A} from "../common/A.tsx";
 import {External} from "../common/icon/External.tsx";
 import {Pipe} from "../common/Pipe.tsx";
 import {Link} from "@tanstack/react-router";
+import {useContainerSearch} from "../../client/useContainerSearch.tsx";
+
+export function getUuid(idUrl: URL): string {
+  const id = idUrl.toString().split('/').filter(part => !!part).pop();
+  if (!id) {
+    throw new Error(`No ID found in ${idUrl}`)
+  }
+  return id
+}
+
 
 export function ContainerCard(props: PropsWithChildren<{
   container: ArContainer
 }>) {
   const {container} = props;
+  const query = {"body.purpose": "identifying"};
+  const queryResult = useContainerSearch(new URL(container.id), query)
 
-  if (!container) {
+  if (!queryResult.data) {
     return <Loading/>;
   }
 
@@ -33,7 +45,7 @@ export function ContainerCard(props: PropsWithChildren<{
           Source
           <External/>
         </A>
-        <Pipe />
+        <Pipe/>
         <A href={container.first.id}>
           Browse annotations
           <External/>
@@ -45,6 +57,10 @@ export function ContainerCard(props: PropsWithChildren<{
       <p className="mb-2">
         {container.total} annotations
       </p>
+      <div className="mb-2">
+        Last edit:
+        <pre>{JSON.stringify(queryResult.data, null, 2)}</pre>
+      </div>
       <p>
         Type: {container.type.join(', ')}
       </p>

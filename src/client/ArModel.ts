@@ -28,3 +28,5 @@ export type ArContainer = {
   first: ArContainerPage
   last: string
 }
+
+export type ArQuery = object
