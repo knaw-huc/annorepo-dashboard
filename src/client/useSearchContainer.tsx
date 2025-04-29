@@ -1,8 +1,8 @@
 import {useOpenApiClient} from "./OpenApiClientProvider.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {getUuid} from "../component/container/ContainerCard.tsx";
 import {AnnoRepoOpenApiClient} from "./createOpenApiClient.tsx";
 import {ArQuery} from "./ArModel.ts";
+import {getName} from "../util/getName.tsx";
 
 export function useSearchContainer(
   containerName: string,
@@ -33,7 +33,7 @@ export async function searchContainer (
       body: query as unknown as string,
       params: {path: {containerName}}
     }
-  ).then(({response}) => getUuid(
+  ).then(({response}) => getName(
     new URL(
       response.headers.get('Location')!
     )

@@ -7,14 +7,7 @@ import {External} from "../common/icon/External.tsx";
 import {Pipe} from "../common/Pipe.tsx";
 import {Link} from "@tanstack/react-router";
 import {useSearchContainer} from "../../client/useSearchContainer.tsx";
-
-export function getUuid(idUrl: URL): string {
-  const id = idUrl.toString().split('/').filter(part => !!part).pop();
-  if (!id) {
-    throw new Error(`No ID found in ${idUrl}`)
-  }
-  return id
-}
+import {getName} from "../../util/getName.tsx";
 
 
 export function ContainerCard(props: PropsWithChildren<{
@@ -23,7 +16,7 @@ export function ContainerCard(props: PropsWithChildren<{
   const {container} = props;
   const query = {"body.purpose": "identifying"};
 
-  const containerName = getUuid(new URL(container.id))
+  const containerName = getName(new URL(container.id))
 
   const searchResult = useSearchContainer(containerName, query);
 
