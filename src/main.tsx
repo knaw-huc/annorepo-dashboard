@@ -8,7 +8,7 @@ import {routeTree} from './routeTree.gen'
 import {QueryClientProvider} from "@tanstack/react-query";
 import {OpenApiClientProvider} from "./client/OpenApiClientProvider.tsx";
 
-import {createQueryClient} from "./client/createQueryClient.tsx";
+import {createQueryClient} from "./client/QueryClient.tsx";
 
 const router = createRouter({routeTree})
 
