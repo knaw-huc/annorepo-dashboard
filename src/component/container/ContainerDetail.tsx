@@ -5,7 +5,8 @@ import {useSearchContainer} from "../../client/endpoint/useSearchContainer.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {H2} from "../common/H2.tsx";
-import { Badge } from "../common/Badge.tsx";
+import {Badge} from "../common/Badge.tsx";
+import {ListGroup, ListItem} from "../common/ListGroup.tsx";
 
 export type ContainerDetailProps = {
   name: string
@@ -24,6 +25,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
     return <Loading/>;
   }
 
+  const fieldEntries = Object.entries(containerFields);
   return <div>
     <H1>{name} <Hint>container</Hint></H1>
     <ul>
@@ -31,10 +33,16 @@ export function ContainerDetail(props: ContainerDetailProps) {
     </ul>
     <div className="mt-5">
       <H2>Annotation fields <Hint>by usage</Hint></H2>
-      <ul>
-        {Object.entries(containerFields).sort(countDesc).map(([field, count]) =>
-          <li key={field}>{field} <Badge>{count}</Badge></li>
-        )}</ul>
+      <ListGroup>
+        {fieldEntries.sort(countDesc).map(([field, count], i) => {
+            return <ListItem
+              key={field}
+              isLast={i >= fieldEntries.length - 1}
+            >
+              {field} <span className="inline-block float-right"><Badge>{count}</Badge></span>
+            </ListItem>
+        })}
+      </ListGroup>
     </div>
   </div>
 }
