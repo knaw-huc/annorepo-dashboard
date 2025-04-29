@@ -30,6 +30,7 @@ export async function searchContainer (
   return client.POST(
     "/services/{containerName}/search",
     {
+      // openapi type says text but api wants json:
       body: query as unknown as string,
       params: {path: {containerName}}
     }
