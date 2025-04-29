@@ -4,7 +4,7 @@ import {getUuid} from "../component/container/ContainerCard.tsx";
 import {AnnoRepoOpenApiClient} from "./createOpenApiClient.tsx";
 import {ArQuery} from "./ArModel.ts";
 
-export function useQueryContainer(
+export function useSearchContainer(
   containerName: string,
   query: ArQuery
 ) {
@@ -12,17 +12,17 @@ export function useQueryContainer(
 
   const {data: location} = useQuery({
     queryKey: [containerName, query],
-    queryFn: () => postContainerSearchQuery(client, containerName, query),
+    queryFn: () => searchContainer(client, containerName, query),
   });
 
   return useQuery({
     queryKey: [containerName, query, location],
-    queryFn: async () => getSearchResultById(client, containerName, location!),
+    queryFn: async () => getSearchContainerResult(client, containerName, location!),
     enabled: !!location,
   });
 }
 
-export async function postContainerSearchQuery (
+export async function searchContainer (
   client: AnnoRepoOpenApiClient,
   containerName: string,
   query: ArQuery
@@ -40,7 +40,7 @@ export async function postContainerSearchQuery (
   ));
 }
 
-export async function getSearchResultById(
+export async function getSearchContainerResult(
   client: AnnoRepoOpenApiClient,
   containerName: string,
   searchId: string

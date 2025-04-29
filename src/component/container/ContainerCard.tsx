@@ -6,7 +6,7 @@ import {A} from "../common/A.tsx";
 import {External} from "../common/icon/External.tsx";
 import {Pipe} from "../common/Pipe.tsx";
 import {Link} from "@tanstack/react-router";
-import {useQueryContainer} from "../../client/useQueryContainer.tsx";
+import {useSearchContainer} from "../../client/useSearchContainer.tsx";
 
 export function getUuid(idUrl: URL): string {
   const id = idUrl.toString().split('/').filter(part => !!part).pop();
@@ -25,7 +25,7 @@ export function ContainerCard(props: PropsWithChildren<{
 
   const containerName = getUuid(new URL(container.id))
 
-  const searchResult = useQueryContainer(containerName, query);
+  const searchResult = useSearchContainer(containerName, query);
 
   if (!searchResult.data) {
     return <Loading/>;
