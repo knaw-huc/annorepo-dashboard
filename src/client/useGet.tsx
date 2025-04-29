@@ -6,6 +6,7 @@ import {
 } from "@tanstack/react-query";
 import {Params, Paths} from "./Query.ts";
 import {useOpenApiClient} from "./OpenApiClientProvider.tsx";
+import isNil from "lodash/isNil";
 
 type GetParams<P extends Paths<"get">> = Params<"get", P> & {
   query?: Optional<UseQueryOptions, 'queryKey'>
@@ -29,12 +30,22 @@ export function useGet<P extends Paths<"get">, RESULT>(
     );
     return data as RESULT;
   };
-
+  const queryKey = createQueryKey(path, params);
   return useQuery({
-    // TODO: What to add as keys?
-    queryKey: [path, params],
-    queryFn,
     ...params?.query,
+    queryFn,
+    queryKey,
   }) as UseQueryResult<RESULT>;
 }
+
+export function createQueryKey<P extends Paths<"get">>(
+  path: P,
+  params?: GetParams<P>
+) {
+  const queryKey = [path, params?.params?.path]
+    .filter(k => !isNil(k));
+  console.debug('createQueryKey', JSON.stringify(queryKey))
+  return queryKey;
+}
+
 

@@ -1,35 +1,27 @@
 import {H1} from "../common/H1.tsx";
 import {Hint} from "../common/Hint.tsx";
-import {QR, useGet} from "../../client/useGet.tsx";
-import {ArContainer} from "../../client/ArModel.ts";
 import {Loading} from "../common/Loading.tsx";
 import {getName} from "../../util/getName.ts";
 import {useSearchContainer} from "../../client/useSearchContainer.tsx";
+import {useContainer} from "../../client/useContainer.tsx";
 
 export type ContainerDetailProps = {
   id: string
 }
 
 export function ContainerDetail(props: ContainerDetailProps) {
+
   const {id} = props;
   const name = getName(new URL(id))
   const query = {"body.purpose": "identifying"};
-  const containerName = getName(new URL(id))
-  const searchResult = useSearchContainer(containerName, query);
 
-  if (!searchResult.data) {
+  const {data: container} = useContainer(name)
+  const {data: searchResult} = useSearchContainer(name, query);
+
+  if (!container || !searchResult) {
     return <Loading/>;
   }
 
-
-  if(!name) {
-    throw new Error(`No name found in id ${id}`)
-  }
-  const {data: container}: QR<ArContainer> = useGet('/w3c/{containerName}', {params: {path: {containerName: name}}})
-
-  if(!container) {
-    return <Loading />
-  }
   return <div>
     <H1>{name} <Hint>container</Hint></H1>
     <ul>

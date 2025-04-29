@@ -1,0 +1,28 @@
+import {useOpenApiClient} from "./OpenApiClientProvider.tsx";
+import {AnnoRepoOpenApiClient} from "./createOpenApiClient.tsx";
+import {createQueryKey, QR} from "./useGet.tsx";
+import {useQuery} from "@tanstack/react-query";
+import {ArContainer} from "./ArModel.ts";
+
+export function useContainer(
+  name: string
+): QR<ArContainer> {
+  const client = useOpenApiClient();
+  return useQuery(
+    getContainer(client, name)
+  )
+}
+
+export function getContainer(
+  client: AnnoRepoOpenApiClient,
+  name: string,
+) {
+  const path = '/w3c/{containerName}';
+  const params = {params: {path: {containerName: name}}};
+  return {
+    queryKey: createQueryKey(path, params),
+    queryFn: async () => await client
+      .GET(path, params)
+      .then(({data}) => data),
+  };
+}
