@@ -1,6 +1,6 @@
 import {orThrow} from "./orThrow.ts";
 
-export function getName(idUrl: URL): string {
+export function toName(idUrl: URL): string {
   return idUrl
       .toString()
       .split('/')

@@ -1,18 +1,16 @@
 import {H1} from "../common/H1.tsx";
 import {Hint} from "../common/Hint.tsx";
 import {Loading} from "../common/Loading.tsx";
-import {getName} from "../../util/getName.ts";
 import {useSearchContainer} from "../../client/endpoint/useSearchContainer.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
 
 export type ContainerDetailProps = {
-  id: string
+  name: string
 }
 
 export function ContainerDetail(props: ContainerDetailProps) {
 
-  const {id} = props;
-  const name = getName(new URL(id))
+  const {name} = props;
   const query = {"body.purpose": "identifying"};
 
   const {data: container} = useContainer(name)

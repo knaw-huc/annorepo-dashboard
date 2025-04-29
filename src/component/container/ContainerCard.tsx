@@ -4,15 +4,14 @@ import {A} from "../common/A.tsx";
 import {External} from "../common/icon/External.tsx";
 import {Pipe} from "../common/Pipe.tsx";
 import {Link} from "@tanstack/react-router";
-import {getName} from "../../util/getName.ts";
 import {Loading} from "../common/Loading.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
 
 
 export function ContainerCard(props: PropsWithChildren<{
-  id: string
+  name: string
 }>) {
-  const name = getName(new URL(props.id))
+  const {name} = props;
   const {data: container} = useContainer(name)
 
   if (!container) {

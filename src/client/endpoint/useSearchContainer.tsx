@@ -2,7 +2,7 @@ import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
 import {ArAnnotation, ArQuery} from "../ArModel.ts";
-import {getName} from "../../util/getName.ts";
+import {toName} from "../../util/toName.ts";
 import {QR} from "../query/useGet.tsx";
 
 export function useSearchContainer(
@@ -35,7 +35,7 @@ export async function searchContainer (
       body: query as unknown as string,
       params: {path: {containerName}}
     }
-  ).then(({response}) => getName(
+  ).then(({response}) => toName(
     new URL(
       response.headers.get('Location')!
     )
