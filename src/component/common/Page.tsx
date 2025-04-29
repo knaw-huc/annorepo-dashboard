@@ -16,7 +16,9 @@ export function Page(props: PropsWithChildren<{}>) {
           </p>
         </aside>
         <main className="flex-grow p-4 order-2 md:order-2 flex-initial">
-          Admin &gt; Containers &gt;
+          <Link to="/">Home</Link> &gt;
+          {" "}
+          <Link to="/container">Containers</Link> &gt;
         </main>
       </div>
     </div>
