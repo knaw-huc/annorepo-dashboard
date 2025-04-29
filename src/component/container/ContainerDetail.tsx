@@ -7,6 +7,7 @@ import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {H2} from "../common/H2.tsx";
 import {Badge} from "../common/Badge.tsx";
 import {ListGroup, ListItem} from "../common/ListGroup.tsx";
+import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 
 export type ContainerDetailProps = {
   name: string
@@ -21,6 +22,8 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const {data: searchResult} = useSearchContainer(name, query);
   const {data: containerFields} = useContainerFields(name);
 
+  console.log('ContainerDetail', {container, searchResult, containerFields})
+
   if (!container || !searchResult || !containerFields) {
     return <Loading/>;
   }
@@ -28,7 +31,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const fieldEntries = Object.entries(containerFields);
   return <div>
     <H1>{name} <Hint>container</Hint></H1>
-    <ul>
+    <ul className="mt-5"  >
       <li>Annotations: <Badge>{container.total}</Badge></li>
     </ul>
     <div className="mt-5">
@@ -45,6 +48,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
         })}
       </ListGroup>
     </div>
+    <AnnotationPage page={container.first}/>
   </div>
 }
 

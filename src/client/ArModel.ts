@@ -10,12 +10,12 @@ export type ArAboutData = {
 
 export type ArMyContainers = Record<string, string[]>
 
-export type ArContainerPage = {
+export type ArAnnotationPage = {
   "id": string,
   "type": "AnnotationPage",
   "partOf": string,
   "startIndex": number,
-  "items": []
+  "items": ArAnnotation[]
 };
 
 export type ArContainer = {
@@ -23,12 +23,18 @@ export type ArContainer = {
   label: string
   type: string[]
   total: number
-  first: ArContainerPage
+  first: ArAnnotationPage
   last: string
 }
 
 export type ArQuery = object
 
-export type ArAnnotation = object
+export type ArAnnotation<T extends object = object> = {
+  type: "Annotation",
+  body: T,
+  target: string,
+  id: string
+  via: string
+}
 
 export type ArContainerFields = Record<string, number>
