@@ -20,6 +20,7 @@ export type ArAnnotationPage = {
 
 export type ArContainer = {
   id: string,
+  via?: string,
   label: string
   type: string[]
   total: number
