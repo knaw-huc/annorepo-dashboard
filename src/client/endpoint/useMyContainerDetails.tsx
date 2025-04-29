@@ -7,7 +7,7 @@ import {getContainer} from "./useContainer.tsx";
 /**
  * Get container for every name in my containers
  */
-export function useMyContainerDetails() {
+export function useMyContainerDetails(): QR<ArContainer>[] {
   const client = useOpenApiClient();
 
   const {data: myContainers}: QR<ArMyContainers> = useGet('/my/containers')
@@ -16,6 +16,6 @@ export function useMyContainerDetails() {
     queries: myContainers
       ? myContainers.ROOT.map(name => getContainer(client, name))
       : []
-  }) as QR<ArContainer>[]
+  })
 }
 

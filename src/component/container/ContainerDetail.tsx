@@ -27,6 +27,6 @@ export function ContainerDetail(props: ContainerDetailProps) {
     <ul>
       <li>{container.total} annotations</li>
     </ul>
-    <pre>{JSON.stringify(searchResult.data, null, 2)}</pre>
+    <pre>{JSON.stringify(searchResult, null, 2)}</pre>
   </div>
 }
