@@ -1,6 +1,6 @@
-import {Params, Paths, UseMutationOptions} from "./Query.ts";
 import {useMutation} from "@tanstack/react-query";
-import {useOpenApiClient} from "./OpenApiClientProvider.tsx";
+import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
+import {Params, Paths, UseMutationOptions} from "../OpenApiClient.tsx";
 
 export function useDelete<P extends Paths<"delete">>(path: P, opts?: UseMutationOptions) {
   const client = useOpenApiClient();

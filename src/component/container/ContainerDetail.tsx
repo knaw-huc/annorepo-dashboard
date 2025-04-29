@@ -2,8 +2,8 @@ import {H1} from "../common/H1.tsx";
 import {Hint} from "../common/Hint.tsx";
 import {Loading} from "../common/Loading.tsx";
 import {getName} from "../../util/getName.ts";
-import {useSearchContainer} from "../../client/useSearchContainer.tsx";
-import {useContainer} from "../../client/useContainer.tsx";
+import {useSearchContainer} from "../../client/endpoint/useSearchContainer.tsx";
+import {useContainer} from "../../client/endpoint/useContainer.tsx";
 
 export type ContainerDetailProps = {
   id: string

@@ -4,9 +4,9 @@ import {
   UseQueryOptions,
   UseQueryResult
 } from "@tanstack/react-query";
-import {Params, Paths} from "./Query.ts";
-import {useOpenApiClient} from "./OpenApiClientProvider.tsx";
+import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import isNil from "lodash/isNil";
+import {Params, Paths} from "../OpenApiClient.tsx";
 
 type GetParams<P extends Paths<"get">> = Params<"get", P> & {
   query?: Optional<UseQueryOptions, 'queryKey'>

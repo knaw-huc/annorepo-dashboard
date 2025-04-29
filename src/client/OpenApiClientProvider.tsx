@@ -1,6 +1,6 @@
 import {createContext, PropsWithChildren, useContext, useState} from 'react';
 
-import {AnnoRepoOpenApiClient} from "./createOpenApiClient.tsx";
+import {AnnoRepoOpenApiClient} from "./OpenApiClient.tsx";
 
 type AnnoRepoClientOpenApiSetter = (client: AnnoRepoOpenApiClient) => void;
 

@@ -1,20 +1,19 @@
 import {PropsWithChildren} from "react";
-import {ArContainer} from "../../client/ArModel.ts";
 import {Card} from "../common/Card.tsx";
 import {A} from "../common/A.tsx";
 import {External} from "../common/icon/External.tsx";
 import {Pipe} from "../common/Pipe.tsx";
 import {Link} from "@tanstack/react-router";
-import {QR, useGet} from "../../client/useGet.tsx";
 import {getName} from "../../util/getName.ts";
 import {Loading} from "../common/Loading.tsx";
+import {useContainer} from "../../client/endpoint/useContainer.tsx";
 
 
 export function ContainerCard(props: PropsWithChildren<{
   id: string
 }>) {
   const name = getName(new URL(props.id))
-  const {data: container}: QR<ArContainer> = useGet('/w3c/{containerName}', {params: {path: {containerName: name}}})
+  const {data: container} = useContainer(name)
 
   if (!container) {
     return <Loading/>;

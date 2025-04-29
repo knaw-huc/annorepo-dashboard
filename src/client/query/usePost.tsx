@@ -1,6 +1,6 @@
 import {useMutation} from "@tanstack/react-query";
-import {Params, Paths, UseMutationOptions} from "./Query.ts";
-import {useOpenApiClient} from "./OpenApiClientProvider.tsx";
+import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
+import {Params, Paths, UseMutationOptions} from "../OpenApiClient.tsx";
 
 export function usePost<P extends Paths<'post'>>(
   path: P,
