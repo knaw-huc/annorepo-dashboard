@@ -2,7 +2,6 @@ import {PropsWithChildren} from "react";
 import {Card} from "../common/Card.tsx";
 import {A} from "../common/A.tsx";
 import {External} from "../common/icon/External.tsx";
-import {Pipe} from "../common/Pipe.tsx";
 import {Link} from "@tanstack/react-router";
 import {Loading} from "../common/Loading.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
@@ -33,11 +32,6 @@ export function ContainerCard(props: PropsWithChildren<{
       <div className="text-right">
         <A href={container.id}>
           Source
-          <External/>
-        </A>
-        <Pipe/>
-        <A href={container.first.id}>
-          Browse annotations
           <External/>
         </A>
       </div>
