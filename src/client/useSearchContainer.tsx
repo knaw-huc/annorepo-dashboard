@@ -45,9 +45,6 @@ export async function getSearchContainerResult(
   containerName: string,
   searchId: string
 ) {
-  if (!searchId) {
-    throw new Error('No search ID provided')
-  }
   return client.GET(
     '/services/{containerName}/search/{searchId}',
     {
