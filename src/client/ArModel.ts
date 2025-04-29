@@ -8,9 +8,7 @@ export type ArAboutData = {
   mongoVersion: string
 }
 
-export type ArMyContainers = {
-  ROOT: string[]
-}
+export type ArMyContainers = Record<string, string[]>
 
 export type ArContainerPage = {
   "id": string,

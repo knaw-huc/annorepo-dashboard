@@ -3,6 +3,8 @@ import {Hint} from "../common/Hint.tsx";
 import {QR, useGet} from "../../client/useGet.tsx";
 import {ArContainer} from "../../client/ArModel.ts";
 import {Loading} from "../common/Loading.tsx";
+import {getName} from "../../util/getName.ts";
+import {useSearchContainer} from "../../client/useSearchContainer.tsx";
 
 export type ContainerDetailProps = {
   id: string
@@ -10,11 +12,21 @@ export type ContainerDetailProps = {
 
 export function ContainerDetail(props: ContainerDetailProps) {
   const {id} = props;
-  const name = id.split('/').filter(part => !!part).pop()
+  const name = getName(new URL(id))
+  const query = {"body.purpose": "identifying"};
+  const containerName = getName(new URL(id))
+  const searchResult = useSearchContainer(containerName, query);
+
+  if (!searchResult.data) {
+    return <Loading/>;
+  }
+
+
   if(!name) {
     throw new Error(`No name found in id ${id}`)
   }
   const {data: container}: QR<ArContainer> = useGet('/w3c/{containerName}', {params: {path: {containerName: name}}})
+
   if(!container) {
     return <Loading />
   }
@@ -23,6 +35,6 @@ export function ContainerDetail(props: ContainerDetailProps) {
     <ul>
       <li>{container.total} annotations</li>
     </ul>
-    TODO: list annotations
+    <pre>{JSON.stringify(searchResult.data, null, 2)}</pre>
   </div>
 }

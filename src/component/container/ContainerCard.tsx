@@ -1,26 +1,22 @@
 import {PropsWithChildren} from "react";
 import {ArContainer} from "../../client/ArModel.ts";
-import {Loading} from "../common/Loading.tsx";
 import {Card} from "../common/Card.tsx";
 import {A} from "../common/A.tsx";
 import {External} from "../common/icon/External.tsx";
 import {Pipe} from "../common/Pipe.tsx";
 import {Link} from "@tanstack/react-router";
-import {useSearchContainer} from "../../client/useSearchContainer.tsx";
-import {getName} from "../../util/getName.tsx";
+import {QR, useGet} from "../../client/useGet.tsx";
+import {getName} from "../../util/getName.ts";
+import {Loading} from "../common/Loading.tsx";
 
 
 export function ContainerCard(props: PropsWithChildren<{
-  container: ArContainer
+  id: string
 }>) {
-  const {container} = props;
-  const query = {"body.purpose": "identifying"};
+  const name = getName(new URL(props.id))
+  const {data: container}: QR<ArContainer> = useGet('/w3c/{containerName}', {params: {path: {containerName: name}}})
 
-  const containerName = getName(new URL(container.id))
-
-  const searchResult = useSearchContainer(containerName, query);
-
-  if (!searchResult.data) {
+  if (!container) {
     return <Loading/>;
   }
 
@@ -51,12 +47,8 @@ export function ContainerCard(props: PropsWithChildren<{
   >
     <div>
       <p className="mb-2">
-        {container.total} annotations
+        Annotations: {container.total}
       </p>
-      <div className="mb-2">
-        Last edit:
-        <pre>{JSON.stringify(searchResult.data, null, 2)}</pre>
-      </div>
       <p>
         Type: {container.type.join(', ')}
       </p>

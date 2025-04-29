@@ -2,7 +2,7 @@ import {useOpenApiClient} from "./OpenApiClientProvider.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {AnnoRepoOpenApiClient} from "./createOpenApiClient.tsx";
 import {ArQuery} from "./ArModel.ts";
-import {getName} from "../util/getName.tsx";
+import {getName} from "../util/getName.ts";
 
 export function useSearchContainer(
   containerName: string,
