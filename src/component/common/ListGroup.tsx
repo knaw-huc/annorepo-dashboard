@@ -1,8 +1,11 @@
-import {PropsWithChildren} from "react";
+import {PropsWithChildren, ReactNode} from "react";
 
-export function ListGroup(props: PropsWithChildren<{}>) {
+export function ListGroup(props: { children: Iterable<ReactNode> }) {
+  if (!Array.from(props.children).length) {
+    return null;
+  }
   return <ul
-    className="w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
+    className="mt-3 w-48 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-white"
   >
     {props.children}
   </ul>

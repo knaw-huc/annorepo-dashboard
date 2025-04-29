@@ -35,12 +35,13 @@ export function ContainerDetail(props: ContainerDetailProps) {
       <H2>Annotation fields <Hint>by usage</Hint></H2>
       <ListGroup>
         {fieldEntries.sort(countDesc).map(([field, count], i) => {
-            return <ListItem
-              key={field}
-              isLast={i >= fieldEntries.length - 1}
-            >
-              {field} <span className="inline-block float-right"><Badge>{count}</Badge></span>
-            </ListItem>
+          return <ListItem
+            key={field}
+            isLast={i >= fieldEntries.length - 1}
+          >
+            {field} <span
+            className="inline-block float-right"><Badge>{count}</Badge></span>
+          </ListItem>
         })}
       </ListGroup>
     </div>
