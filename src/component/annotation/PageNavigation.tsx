@@ -9,9 +9,7 @@ export function PageNavigation(props: {
   const {prev, next, onChange} = props;
 
   return <div>
-   <span className="mr-2">
-     <Button disabled={!prev} onClick={() => onChange(prev!)}>Prev</Button>
-   </span>
+    <Button disabled={!prev} onClick={() => onChange(prev!)} className="mr-2">Prev</Button>
     <Button disabled={!next} onClick={() => onChange(next!)}>Next</Button>
   </div>
 }

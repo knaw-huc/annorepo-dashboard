@@ -87,14 +87,13 @@ export function AnnotationForm(props: {
               onChange={update => setForm(prev => ({...prev, type: update}))}
             />
             <div className="mt-5">
-              <span className="mr-5">
-                <Button
-                  disabled={!!error}
-                  onClick={handleSubmit}
-                >
-                  Create
-                </Button>
-              </span>
+              <Button
+                disabled={!!error}
+                onClick={handleSubmit}
+                className="mr-5"
+              >
+                Create
+              </Button>
               <Button onClick={props.onClose}>Close</Button>
             </div>
           </div>

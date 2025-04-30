@@ -44,7 +44,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
 
   return <div>
     <H1>{container.label} <Hint>container</Hint></H1>
-    <Button onClick={props.onClickCreateAnnotation}>New annotation</Button>
+    <Button onClick={props.onClickCreateAnnotation} className="mt-5">Add annotation</Button>
     <ul className="mt-5">
       <li>Annotations: <Badge>{container.total}</Badge></li>
     </ul>

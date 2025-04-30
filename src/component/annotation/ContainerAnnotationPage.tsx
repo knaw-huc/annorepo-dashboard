@@ -5,6 +5,7 @@ import {useContainerPage} from "../../client/endpoint/useContainerPage.tsx";
 import {PageNavigation} from "./PageNavigation.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
 
+// TODO: add filter option
 export function ContainerAnnotationPage(props: PropsWithChildren<{
   containerName: string,
   pageNo: number
