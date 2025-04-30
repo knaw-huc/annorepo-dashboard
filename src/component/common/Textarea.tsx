@@ -1,4 +1,4 @@
-export function TextareaWithLabel(props: {
+export function Textarea(props: {
   value: string,
   label: string
   onChange: (value: string) => void

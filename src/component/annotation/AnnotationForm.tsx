@@ -7,7 +7,7 @@ import {ArAnnotation} from "../../client/ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {useState} from "react";
 import cloneDeep from "lodash/cloneDeep";
-import {TextareaWithLabel} from "../common/TextareaWithLabel.tsx";
+import {Textarea} from "../common/Textarea.tsx";
 import {Warning} from "../common/Warning.tsx";
 
 const defaultForm: FormAnnotation = {
@@ -101,7 +101,7 @@ export function AnnotationForm(props: {
 
           <div className="pb-5">
             {error && <Warning>{error}</Warning>}
-            <TextareaWithLabel
+            <Textarea
               label="Body"
               value={form.body}
               onChange={update => {
