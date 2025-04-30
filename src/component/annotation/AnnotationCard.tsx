@@ -10,9 +10,11 @@ export function AnnotationCard(props: {
   annotation: ArAnnotation
 }) {
   const {annotation} = props;
+  const name = toName(annotation.via || annotation.id);
+  console.log('AnnotationCard', {props, name})
   return <Card
     header={<H5>
-      {toName(annotation.via ?? annotation.id)}
+      {name}
       <Pipe/>
       {annotation.type}
     </H5>}
@@ -23,6 +25,6 @@ export function AnnotationCard(props: {
         <A href={annotation.target}>Target <External/></A>
       </>}
   >
-    <pre className="mt-2">{JSON.stringify(annotation.body, null, 2)}</pre>
+    <pre className="mt-2 max-w-100 break-words">{JSON.stringify(annotation.body, null, 2)}</pre>
   </Card>
 }

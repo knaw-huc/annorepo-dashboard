@@ -5,8 +5,13 @@ import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {ArAnnotation} from "../../client/ArModel.ts";
 import {toName} from "../../util/toName.ts";
+import {useState} from "react";
+import cloneDeep from "lodash/cloneDeep";
+import omit from "lodash/omit";
+import {TextareaWithLabel} from "../common/TextareaWithLabel.tsx";
+import {Warning} from "../common/Warning.tsx";
 
-const defaultAnnotation = {
+const defaultAnnotation: ArAnnotation = {
   "@context": "http://www.w3.org/ns/anno.jsonld",
   "type": "Annotation",
   "body": {
@@ -15,37 +20,112 @@ const defaultAnnotation = {
     "purpose": "classifying"
   },
   "target": "http://www.example.com/world.html",
-  "name": "http://localhost:8080/w3c/foo/lorem-ipsum-2"
+  "id": "to-generate-by-AR",
 }
+
+type FormAnnotation = Omit<ArAnnotation, 'body' | 'id'> & { body: string };
 
 export function AnnotationForm(props: {
   containerName: string,
   onClose: () => void
   onCreate: (annotationName: string) => void
 }) {
+  const {containerName} = props;
+  const [slug, setSlug] = useState('')
+  const [form, setForm] = useState<FormAnnotation>(
+    {
+      ...cloneDeep(omit(defaultAnnotation, 'id')),
+      body: JSON.stringify(defaultAnnotation.body, null, 2)
+    }
+  )
+  const [error, setError] = useState<string>('')
+
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
 
   const handleSubmit = () => {
+    if(error) {
+      return;
+    }
+    const toSubmit = {...form, body: JSON.parse(form.body)}
+
+    // openapi type says string but AR api expects json:
+    const mutationBody = toSubmit as unknown as string;
+
     createAnnotation.mutate({
-      params: {path: {containerName: props.containerName}},
-      body: defaultAnnotation as unknown as string,
+      params: {path: {containerName}},
+      body: mutationBody,
     }, {
       onSuccess: (data) => props.onCreate(toName(data.id))
     })
   }
 
   return <>
-    <H1>Annotation form</H1>
     <form
       onSubmit={handleSubmit}
     >
-      <InputWithLabel
-        value={props.containerName} label="Container"
-        disabled
-        onChange={noop}
-      />
-      <Button onClick={handleSubmit}>Create</Button>
-      <Button onClick={props.onClose}>Close</Button>
+      <div>
+        <H1>Annotation form</H1>
+        <div className="grid grid-cols-2 gap-5">
+
+          <div>
+            <InputWithLabel
+              value={containerName}
+              label="Container"
+              disabled
+              onChange={noop}
+            />
+
+            <InputWithLabel
+              value={slug || ''}
+              label="Name"
+              onChange={update => setSlug(update)}
+            />
+            <InputWithLabel
+              value={form.target || ''}
+              label="Target"
+              onChange={update => setForm(prev => ({...prev, target: update}))}
+            />
+            <InputWithLabel
+              value={form.type || ''}
+              label="Type"
+              onChange={update => setForm(prev => ({...prev, type: update}))}
+            />
+            <div className="mt-5">
+              <span className="mr-5">
+                <Button
+                  disabled={!!error}
+                  onClick={handleSubmit}
+                >
+                  Create
+                </Button>
+              </span>
+              <Button onClick={props.onClose}>Close</Button>
+            </div>
+          </div>
+
+          <div className="pb-5">
+            {error && <Warning>{error}</Warning>}
+            <TextareaWithLabel
+              label="Body"
+              value={form.body}
+              onChange={update => {
+                let parsed: string;
+                try{
+                  parsed = JSON.parse(update);
+                  setError('')
+                } catch (e) {
+                  setError('Please enter valid json body')
+                }
+                setForm(prev => ({
+                  ...prev,
+                  body: JSON.stringify(parsed, null, 2)
+                }));
+              }}
+            />
+          </div>
+
+        </div>
+      </div>
     </form>
   </>
 }

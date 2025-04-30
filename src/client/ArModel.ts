@@ -33,11 +33,14 @@ export type ArContainer = {
 export type ArQuery = object
 
 export type ArAnnotation<T extends object = object> = {
-  type: "Annotation",
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+
+  id: string
+  via?: string
+
+  type: string,
   body: T,
   target: string,
-  id: string
-  via: string
 }
 
 export type ArContainerFields = Record<string, number>

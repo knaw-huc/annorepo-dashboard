@@ -16,8 +16,8 @@ export function AnnotationDetail(props: {
     return <Loading/>
   }
 
-  return <>
+  return <div>
     <Button onClick={props.onClose}>&lt; Back</Button>
     <AnnotationCard annotation={annotation}/>
-  </>
+  </div>
 }

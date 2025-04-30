@@ -7,7 +7,7 @@ export function Page(props: PropsWithChildren<{}>) {
 
     {/* Header */}
     <div>
-      <div className="flex flex-col md:flex-row flex-grow">
+      <div className="flex flex-col md:flex-row">
         <aside
           className="w-full md:w-64 p-4 order-1 md:order-1 bg-gray-100 flex-none"
         >
@@ -24,13 +24,13 @@ export function Page(props: PropsWithChildren<{}>) {
     </div>
 
     {/* Body */}
-    <div className="flex flex-col md:flex-row flex-grow">
+    <div className="flex flex-col md:flex-row flex-grow w-full">
       <aside
         className="w-full md:w-64 p-4 order-1 md:order-1 bg-gray-100 flex-none"
       >
         <Menu/>
       </aside>
-      <main className="flex-grow p-4 order-2 md:order-2 flex-initial">
+      <main className="p-4 order-2 md:order-2 flex-grow">
         {props.children}
       </main>
     </div>
