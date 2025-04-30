@@ -7,20 +7,18 @@ import {ArAnnotation} from "../../client/ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {useState} from "react";
 import cloneDeep from "lodash/cloneDeep";
-import omit from "lodash/omit";
 import {TextareaWithLabel} from "../common/TextareaWithLabel.tsx";
 import {Warning} from "../common/Warning.tsx";
 
-const defaultAnnotation: ArAnnotation = {
+const defaultForm: FormAnnotation = {
   "@context": "http://www.w3.org/ns/anno.jsonld",
-  "type": "Annotation",
-  "body": {
-    "type": "TextualBody",
-    "value": "quisque efficitur vel nunc eget vehicula sagittis maecenas tellus nec lobortis nisl nibh nisl ut malesuada libero duis lorem fringilla phasellus porttitor fusce ac nunc pretium tellus maecenas dapibus dolor tristique efficitur ut aenean montes gravida rhoncus ornare metus praesent integer vehicula dolor ipsum sed ornare dis sodales orci nisi maecenas varius ultrices a risus integer condimentum nam augue odio aliquam nec cursus maecenas montes penatibus iaculis interdum egestas imperdiet dolor lobortis quisque hendrerit maecenas ut dignissim vehicula dis pulvinar nulla fringilla amet",
-    "purpose": "classifying"
-  },
-  "target": "http://www.example.com/world.html",
-  "id": "to-generate-by-AR",
+  type: "Annotation",
+  body: JSON.stringify({
+    value: "",
+    type: "TextualBody",
+    purpose: "classifying"
+  }, null, 2),
+  target: "http://www.example.com/world.html",
 }
 
 type FormAnnotation = Omit<ArAnnotation, 'body' | 'id'> & { body: string };
@@ -32,12 +30,7 @@ export function AnnotationForm(props: {
 }) {
   const {containerName} = props;
   const [slug, setSlug] = useState('')
-  const [form, setForm] = useState<FormAnnotation>(
-    {
-      ...cloneDeep(omit(defaultAnnotation, 'id')),
-      body: JSON.stringify(defaultAnnotation.body, null, 2)
-    }
-  )
+  const [form, setForm] = useState(cloneDeep(defaultForm))
   const [error, setError] = useState<string>('')
 
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
