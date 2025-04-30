@@ -43,7 +43,7 @@ export function AnnotationForm(props: {
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
 
   const handleSubmit = () => {
-    if(error) {
+    if (error) {
       return;
     }
     const toSubmit = {...form, body: JSON.parse(form.body)}
@@ -52,7 +52,10 @@ export function AnnotationForm(props: {
     const mutationBody = toSubmit as unknown as string;
 
     createAnnotation.mutate({
-      params: {path: {containerName}},
+      params: {
+        path: {containerName},
+        header: {Slug: slug}
+      },
       body: mutationBody,
     }, {
       onSuccess: (data) => props.onCreate(toName(data.id))
@@ -110,7 +113,7 @@ export function AnnotationForm(props: {
               value={form.body}
               onChange={update => {
                 let parsed: string;
-                try{
+                try {
                   parsed = JSON.parse(update);
                   setError('')
                 } catch (e) {
