@@ -18,6 +18,9 @@ export function AnnotationDetail(props: {
 
   return <div>
     <Button onClick={props.onClose}>&lt; Back</Button>
-    <AnnotationCard annotation={annotation}/>
+    {/* Use grid to prevent overflow */}
+    <div className="grid grid-cols-1">
+      <AnnotationCard annotation={annotation}/>
+    </div>
   </div>
 }

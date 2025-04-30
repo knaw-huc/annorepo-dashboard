@@ -25,6 +25,6 @@ export function AnnotationCard(props: {
         <A href={annotation.target}>Target <External/></A>
       </>}
   >
-    <pre className="mt-2 max-w-100 break-words">{JSON.stringify(annotation.body, null, 2)}</pre>
+    <pre className="mt-2 whitespace-pre-wrap">{JSON.stringify(annotation.body, null, 2)}</pre>
   </Card>
 }
