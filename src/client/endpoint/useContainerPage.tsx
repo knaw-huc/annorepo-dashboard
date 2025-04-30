@@ -1,7 +1,7 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
 import {createQueryKey, QR} from "../query/useGet.tsx";
-import {useQuery} from "@tanstack/react-query";
+import {keepPreviousData, useQuery} from "@tanstack/react-query";
 import {ArAnnotationPage} from "../ArModel.ts";
 
 export function useContainerPage(
@@ -34,5 +34,6 @@ export function getContainerPage(
         console.log('getContainerPage', {path, params, data})
         return data;
       }),
+    placeholderData: keepPreviousData,
   };
 }
