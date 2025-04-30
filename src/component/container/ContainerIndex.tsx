@@ -17,7 +17,7 @@ export function ContainerIndex() {
   }
 
   const names: string[] = containers
-    .map(c => c.data && toName(new URL(c.data.id)) as string)
+    .map(c => c.data && toName(c.data.id))
     .filter(name => !isNil(name))
 
   return <div>

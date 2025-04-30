@@ -13,7 +13,9 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as ContainerIndexImport } from './routes/container/index'
-import { Route as ContainerContainerIdImport } from './routes/container/$containerId'
+import { Route as ContainerContainerNameIndexImport } from './routes/container/$containerName/index'
+import { Route as ContainerContainerNameAnnotationFormImport } from './routes/container/$containerName/annotation/form'
+import { Route as ContainerContainerNameAnnotationAnnotationNameImport } from './routes/container/$containerName/annotation/$annotationName'
 
 // Create/Update Routes
 
@@ -29,11 +31,26 @@ const ContainerIndexRoute = ContainerIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const ContainerContainerIdRoute = ContainerContainerIdImport.update({
-  id: '/container/$containerId',
-  path: '/container/$containerId',
-  getParentRoute: () => rootRoute,
-} as any)
+const ContainerContainerNameIndexRoute =
+  ContainerContainerNameIndexImport.update({
+    id: '/container/$containerName/',
+    path: '/container/$containerName/',
+    getParentRoute: () => rootRoute,
+  } as any)
+
+const ContainerContainerNameAnnotationFormRoute =
+  ContainerContainerNameAnnotationFormImport.update({
+    id: '/container/$containerName/annotation/form',
+    path: '/container/$containerName/annotation/form',
+    getParentRoute: () => rootRoute,
+  } as any)
+
+const ContainerContainerNameAnnotationAnnotationNameRoute =
+  ContainerContainerNameAnnotationAnnotationNameImport.update({
+    id: '/container/$containerName/annotation/$annotationName',
+    path: '/container/$containerName/annotation/$annotationName',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -46,18 +63,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/container/$containerId': {
-      id: '/container/$containerId'
-      path: '/container/$containerId'
-      fullPath: '/container/$containerId'
-      preLoaderRoute: typeof ContainerContainerIdImport
-      parentRoute: typeof rootRoute
-    }
     '/container/': {
       id: '/container/'
       path: '/container'
       fullPath: '/container'
       preLoaderRoute: typeof ContainerIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/container/$containerName/': {
+      id: '/container/$containerName/'
+      path: '/container/$containerName'
+      fullPath: '/container/$containerName'
+      preLoaderRoute: typeof ContainerContainerNameIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/container/$containerName/annotation/$annotationName': {
+      id: '/container/$containerName/annotation/$annotationName'
+      path: '/container/$containerName/annotation/$annotationName'
+      fullPath: '/container/$containerName/annotation/$annotationName'
+      preLoaderRoute: typeof ContainerContainerNameAnnotationAnnotationNameImport
+      parentRoute: typeof rootRoute
+    }
+    '/container/$containerName/annotation/form': {
+      id: '/container/$containerName/annotation/form'
+      path: '/container/$containerName/annotation/form'
+      fullPath: '/container/$containerName/annotation/form'
+      preLoaderRoute: typeof ContainerContainerNameAnnotationFormImport
       parentRoute: typeof rootRoute
     }
   }
@@ -67,42 +98,70 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/container/$containerId': typeof ContainerContainerIdRoute
   '/container': typeof ContainerIndexRoute
+  '/container/$containerName': typeof ContainerContainerNameIndexRoute
+  '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
+  '/container/$containerName/annotation/form': typeof ContainerContainerNameAnnotationFormRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/container/$containerId': typeof ContainerContainerIdRoute
   '/container': typeof ContainerIndexRoute
+  '/container/$containerName': typeof ContainerContainerNameIndexRoute
+  '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
+  '/container/$containerName/annotation/form': typeof ContainerContainerNameAnnotationFormRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/container/$containerId': typeof ContainerContainerIdRoute
   '/container/': typeof ContainerIndexRoute
+  '/container/$containerName/': typeof ContainerContainerNameIndexRoute
+  '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
+  '/container/$containerName/annotation/form': typeof ContainerContainerNameAnnotationFormRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/container/$containerId' | '/container'
+  fullPaths:
+    | '/'
+    | '/container'
+    | '/container/$containerName'
+    | '/container/$containerName/annotation/$annotationName'
+    | '/container/$containerName/annotation/form'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/container/$containerId' | '/container'
-  id: '__root__' | '/' | '/container/$containerId' | '/container/'
+  to:
+    | '/'
+    | '/container'
+    | '/container/$containerName'
+    | '/container/$containerName/annotation/$annotationName'
+    | '/container/$containerName/annotation/form'
+  id:
+    | '__root__'
+    | '/'
+    | '/container/'
+    | '/container/$containerName/'
+    | '/container/$containerName/annotation/$annotationName'
+    | '/container/$containerName/annotation/form'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ContainerContainerIdRoute: typeof ContainerContainerIdRoute
   ContainerIndexRoute: typeof ContainerIndexRoute
+  ContainerContainerNameIndexRoute: typeof ContainerContainerNameIndexRoute
+  ContainerContainerNameAnnotationAnnotationNameRoute: typeof ContainerContainerNameAnnotationAnnotationNameRoute
+  ContainerContainerNameAnnotationFormRoute: typeof ContainerContainerNameAnnotationFormRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ContainerContainerIdRoute: ContainerContainerIdRoute,
   ContainerIndexRoute: ContainerIndexRoute,
+  ContainerContainerNameIndexRoute: ContainerContainerNameIndexRoute,
+  ContainerContainerNameAnnotationAnnotationNameRoute:
+    ContainerContainerNameAnnotationAnnotationNameRoute,
+  ContainerContainerNameAnnotationFormRoute:
+    ContainerContainerNameAnnotationFormRoute,
 }
 
 export const routeTree = rootRoute
@@ -116,18 +175,26 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/container/$containerId",
-        "/container/"
+        "/container/",
+        "/container/$containerName/",
+        "/container/$containerName/annotation/$annotationName",
+        "/container/$containerName/annotation/form"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/container/$containerId": {
-      "filePath": "container/$containerId.tsx"
-    },
     "/container/": {
       "filePath": "container/index.tsx"
+    },
+    "/container/$containerName/": {
+      "filePath": "container/$containerName/index.tsx"
+    },
+    "/container/$containerName/annotation/$annotationName": {
+      "filePath": "container/$containerName/annotation/$annotationName.tsx"
+    },
+    "/container/$containerName/annotation/form": {
+      "filePath": "container/$containerName/annotation/form.tsx"
     }
   }
 }

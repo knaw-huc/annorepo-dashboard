@@ -11,11 +11,13 @@ export type ArAboutData = {
 export type ArMyContainers = Record<string, string[]>
 
 export type ArAnnotationPage = {
-  "id": string,
-  "type": "AnnotationPage",
-  "partOf": string,
-  "startIndex": number,
-  "items": ArAnnotation[]
+  id: string,
+  type: "AnnotationPage",
+  partOf: string,
+  startIndex: number,
+  items: ArAnnotation[]
+  next?: string
+  prev?: string
 };
 
 export type ArContainer = {

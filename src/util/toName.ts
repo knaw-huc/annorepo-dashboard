@@ -1,10 +1,11 @@
 import {orThrow} from "./orThrow.ts";
 
-export function toName(idUrl: URL): string {
-  return idUrl
+export function toName(id: string): string {
+  const url = new URL(id);
+  return url
       .toString()
       .split('/')
       .filter(part => !!part)
       .pop()
-    ?? orThrow(`No name found in ${idUrl}`);
+    ?? orThrow(`No name found in ${id}`);
 }

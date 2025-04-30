@@ -5,6 +5,8 @@ import {External} from "../common/icon/External.tsx";
 import {Link} from "@tanstack/react-router";
 import {Loading} from "../common/Loading.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
+import {toName} from "../../util/toName.ts";
+import {H5} from "../common/H5.tsx";
 
 
 export function ContainerCard(props: PropsWithChildren<{
@@ -20,17 +22,15 @@ export function ContainerCard(props: PropsWithChildren<{
   return <Card
     header={
       <Link
-        to="/container/$containerId"
-        params={{containerId: container.id}}
-      ><h5
-        className="mt-2 text-xl font-medium leading-tight text-center"
-      >
+        to="/container/$containerName"
+        params={{containerName: toName(container.id)}}
+      ><H5>
         {container.label || ''}
-      </h5></Link>
+      </H5></Link>
     }
     footer={
       <div className="text-right">
-        <A href={container.id}>
+        <A href={toName(container.id)}>
           Source
           <External/>
         </A>

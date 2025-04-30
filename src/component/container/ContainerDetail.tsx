@@ -6,9 +6,11 @@ import {useContainer} from "../../client/endpoint/useContainer.tsx";
 import {Badge} from "../common/Badge.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {ContainerAnnotationFields} from "../annotation/ContainerAnnotationFields.tsx";
+import {Button} from "../common/Button.tsx";
 
 export type ContainerDetailProps = {
-  name: string
+  name: string,
+  onClickCreateAnnotation: () => void
 }
 
 export function ContainerDetail(props: ContainerDetailProps) {
@@ -27,6 +29,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
 
   return <div>
     <H1>{container.label} <Hint>container</Hint></H1>
+    <Button onClick={props.onClickCreateAnnotation}>New annotation</Button>
     <ul className="mt-5"  >
       <li>Annotations: <Badge>{container.total}</Badge></li>
     </ul>

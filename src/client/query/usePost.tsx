@@ -1,23 +1,28 @@
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, UseMutationResult} from "@tanstack/react-query";
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {Params, Paths, UseMutationOptions} from "../OpenApiClient.tsx";
 
-export function usePost<P extends Paths<'post'>>(
+/**
+ * Mutation Result
+ */
+export type MR<T> = UseMutationResult<T>;
+
+export function usePost<P extends Paths<'post'>, T>(
   path: P,
   options?: UseMutationOptions
-) {
+): MR<T> {
   const client = useOpenApiClient();
 
   const mutationFn = async (params: Params<'post', P>) => {
-    const {data, error, response} = await client.POST(path, params)
+    const {data, error} = await client.POST(path, params)
     if (error) {
       throw error
     }
-    return {data, response}
+    return data as T
   };
 
   return useMutation({
     mutationFn,
     ...options
-  })
+  }) as MR<T>
 }

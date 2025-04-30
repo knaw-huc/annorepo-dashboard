@@ -23,11 +23,11 @@ export function useSearchContainer(
   });
 }
 
-export async function searchContainer (
+export async function searchContainer(
   client: AnnoRepoOpenApiClient,
   containerName: string,
   query: ArQuery
-){
+) {
   return client.POST(
     "/services/{containerName}/search",
     {
@@ -36,9 +36,7 @@ export async function searchContainer (
       params: {path: {containerName}}
     }
   ).then(({response}) => toName(
-    new URL(
-      response.headers.get('Location')!
-    )
+    response.headers.get('Location')!
   ));
 }
 
