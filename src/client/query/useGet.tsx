@@ -42,7 +42,7 @@ export function createQueryKey<P extends Paths<"get">>(
   path: P,
   params?: GetParams<P>
 ) {
-  const queryKey = [path, params?.params?.path]
+  const queryKey = [path, params?.params]
     .filter(k => !isNil(k));
   console.debug('createQueryKey', path, JSON.stringify(queryKey))
   return queryKey;

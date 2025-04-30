@@ -11,7 +11,6 @@ export function AnnotationCard(props: {
 }) {
   const {annotation} = props;
   const name = toName(annotation.via || annotation.id);
-  console.log('AnnotationCard', {props, name})
   return <Card
     header={<H5>
       {name}

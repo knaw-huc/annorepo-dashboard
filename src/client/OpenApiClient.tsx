@@ -10,6 +10,7 @@ export function createOpenApiClient(bearerToken: string) {
 
   const authMiddleware: Middleware = {
     async onRequest(params) {
+      console.debug('authMiddleware', params)
       params.request.headers.set('Authorization', `Bearer ${bearerToken}`)
     }
   }
