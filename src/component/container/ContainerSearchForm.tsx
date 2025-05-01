@@ -36,6 +36,7 @@ export function ContainerSearchForm(props: {
       value={form.field}
       label="Field"
       onChange={field => setForm({...form, field})}
+      className="mt-5"
     />
     <OperatorField
       value={form.operator}
@@ -46,6 +47,7 @@ export function ContainerSearchForm(props: {
       value={form.value}
       label="Field"
       onChange={value => setForm({...form, value})}
+      className="mt-5"
     />
     <Button
       onClick={handleSubmit}
@@ -69,14 +71,14 @@ export function OperatorField(props: {
     const operator = toOperator(update)
     setValue(value)
     if (!operator) {
-      const options = queryOperatorOrFnValues.join(', ');
-      setError(`Operator '${value}' expected to be one of ${options}`)
+      const options = queryOperatorOrFnValues.map(v => `${v}`).join(', ');
+      setError(`Operator '${value}' expected to be one of: ${options}`)
     } else {
       props.onChange(operator)
     }
   }
   return <>
-    {error && <Warning>{error}</Warning>}
+    {error && <Warning className="mt-5 mb-2">{error}</Warning>}
     <InputWithLabel
       value={value}
       label="Operator"

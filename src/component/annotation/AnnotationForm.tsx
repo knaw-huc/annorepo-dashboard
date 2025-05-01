@@ -69,22 +69,26 @@ export function AnnotationForm(props: {
               label="Container"
               disabled
               onChange={noop}
+              className="mt-5"
             />
 
             <InputWithLabel
               value={slug || ''}
               label="Name"
               onChange={update => setSlug(update)}
+              className="mt-5"
             />
             <InputWithLabel
               value={form.target || ''}
               label="Target"
               onChange={update => setForm(prev => ({...prev, target: update}))}
+              className="mt-5"
             />
             <InputWithLabel
               value={form.type || ''}
               label="Type"
               onChange={update => setForm(prev => ({...prev, type: update}))}
+              className="mt-5"
             />
             <div className="mt-5">
               <Button

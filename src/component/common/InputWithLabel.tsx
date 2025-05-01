@@ -2,9 +2,14 @@ export function InputWithLabel(props: {
   value: string,
   label: string
   onChange: (value: string) => void
-  disabled?: boolean
+  disabled?: boolean,
+  className?: string,
 }) {
-  return <div className="relative mt-5">
+  let className = 'relative'
+  if (props.className) {
+    className += ` ${props.className}`
+  }
+  return <div className={className}>
     <input
       disabled={!!props.disabled}
       type="text"
