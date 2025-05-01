@@ -1,4 +1,4 @@
-import {InputWithLabel} from "../common/InputWithLabel.tsx";
+import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import {useState} from "react";
 import {Warning} from "../common/Warning.tsx";
 import {Button} from "../common/Button.tsx";
@@ -8,6 +8,8 @@ import {
   toOperator
 } from "../../client/ArModel.ts";
 import {Search} from "../common/icon/Search.tsx";
+import {Dropdown} from "../common/form/Dropdown.tsx";
+import {orThrow} from "../../util/orThrow.ts";
 
 export type FieldQueryForm = {
   field: string,
@@ -24,11 +26,9 @@ const defaultForm: FieldQueryForm = {
 export function ContainerSearchForm(props: {
   onSubmit: (value: FieldQueryForm) => void;
 }) {
-
   const [form, setForm] = useState(defaultForm)
   const handleSubmit = () => {
     props.onSubmit(form)
-
   }
   return <form>
     {/* TODO: create fields dropdown or autocomplete */}
@@ -38,10 +38,14 @@ export function ContainerSearchForm(props: {
       onChange={field => setForm({...form, field})}
       className="mt-5"
     />
-    <OperatorField
-      value={form.operator}
-      label="Operator"
-      onChange={operator => setForm({...form, operator})}
+    <Dropdown
+      selectedValue={form.operator.valueOf()}
+      options={operatorOptions}
+      onSelect={update => setForm({
+        ...form,
+        operator: toOperator(update.value)
+          ?? orThrow(`Invalid operator: ${update.value}`)
+      })}
     />
     <InputWithLabel
       value={form.value}
@@ -59,6 +63,14 @@ export function ContainerSearchForm(props: {
   </form>
 
 }
+
+
+const operatorOptions = Object
+  .values(QueryOperatorOrFn)
+  .map(v => ({
+    label: v,
+    value: v
+  }))
 
 export function OperatorField(props: {
   value: string,

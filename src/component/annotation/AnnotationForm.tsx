@@ -1,4 +1,4 @@
-import {InputWithLabel} from "../common/InputWithLabel.tsx";
+import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import noop from "lodash/noop";
 import {MR, usePost} from "../../client/query/usePost.tsx";
 import {H1} from "../common/H1.tsx";
@@ -7,7 +7,7 @@ import {ArAnnotation} from "../../client/ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {useState} from "react";
 import cloneDeep from "lodash/cloneDeep";
-import {Textarea} from "../common/Textarea.tsx";
+import {Textarea} from "../common/form/Textarea.tsx";
 import {Warning} from "../common/Warning.tsx";
 
 const defaultForm: FormAnnotation = {

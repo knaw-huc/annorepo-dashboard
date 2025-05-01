@@ -1,5 +1,5 @@
 import {FormEvent, useState} from "react";
-import {Input} from "../common/Input.tsx";
+import {Input} from "../common/form/Input.tsx";
 import {Button} from "../common/Button.tsx";
 
 export function LoginForm(props: {
