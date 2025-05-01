@@ -1,12 +1,7 @@
 import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import {useState} from "react";
-import {Warning} from "../common/Warning.tsx";
 import {Button} from "../common/Button.tsx";
-import {
-  QueryOperatorOrFn,
-  queryOperatorOrFnValues,
-  toOperator
-} from "../../client/ArModel.ts";
+import {QueryOperatorOrFn, toOperator} from "../../client/ArModel.ts";
 import {Dropdown} from "../common/form/Dropdown.tsx";
 import {orThrow} from "../../util/orThrow.ts";
 import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
@@ -97,29 +92,3 @@ const operatorOptions = Object
     label: v,
     value: v
   }))
-
-export function OperatorField(props: {
-  value: string,
-  label: string
-  onChange: (operator: QueryOperatorOrFn) => void
-}) {
-  const [value, setValue] = useState(props.value)
-  const [error, setError] = useState('')
-  const handleChange = (update: string) => {
-    const operator = toOperator(update)
-    setValue(value)
-    if (!operator) {
-      const options = queryOperatorOrFnValues.map(v => `${v}`).join(', ');
-      setError(`Operator '${value}' expected to be one of: ${options}`)
-    } else {
-      props.onChange(operator)
-    }
-  }
-  return <>
-    {error && <Warning className="mt-5 mb-2">{error}</Warning>}
-    <InputWithLabel
-      value={value}
-      label="Operator"
-      onChange={handleChange}
-    /></>
-}
