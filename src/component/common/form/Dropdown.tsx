@@ -13,7 +13,7 @@ export function Dropdown(props: {
   const [isOpen, setOpen] = useState(false);
 
   let className = "absolute right-0 z-20 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
-  if(!isOpen) {
+  if (!isOpen) {
     className += ' hidden'
   }
 
@@ -38,8 +38,12 @@ export function Dropdown(props: {
     >
       <div className="py-1" role="none">
         {options.map(o =>
-          <DropdownItem label={o.label} onClick={() => handleSelect(o)}/>
-          )}
+          <DropdownItem
+            key={o.value}
+            label={o.label}
+            onClick={() => handleSelect(o)}
+          />
+        )}
       </div>
     </ul>
   </div>

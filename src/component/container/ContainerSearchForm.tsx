@@ -31,35 +31,42 @@ export function ContainerSearchForm(props: {
     props.onSubmit(form)
   }
   return <form>
-    {/* TODO: create fields dropdown or autocomplete */}
-    <InputWithLabel
-      value={form.field}
-      label="Field"
-      onChange={field => setForm({...form, field})}
-      className="mt-5"
-    />
-    <Dropdown
-      selectedValue={form.operator.valueOf()}
-      options={operatorOptions}
-      onSelect={update => setForm({
-        ...form,
-        operator: toOperator(update.value)
-          ?? orThrow(`Invalid operator: ${update.value}`)
-      })}
-    />
-    <InputWithLabel
-      value={form.value}
-      label="Field"
-      onChange={value => setForm({...form, value})}
-      className="mt-5"
-    />
     <Button
       onClick={handleSubmit}
-      className="my-2"
+      className="mt-2"
     >
       Search
       <Search className="ml-1"/>
     </Button>
+    <div className="flex mb-5 mt-2">
+      <div className="flex-auto">
+        <InputWithLabel
+          value={form.field}
+          label="Field"
+          onChange={field => setForm({...form, field})}
+        />
+      </div>
+      {/* TODO: create fields dropdown or autocomplete */}
+      <div className="flex-none">
+        <div>Operator</div>
+        <Dropdown
+          selectedValue={form.operator.valueOf()}
+          options={operatorOptions}
+          onSelect={update => setForm({
+            ...form,
+            operator: toOperator(update.value)
+              ?? orThrow(`Invalid operator: ${update.value}`)
+          })}
+        />
+      </div>
+      <div className="flex-auto">
+        <InputWithLabel
+          value={form.value}
+          label="Value"
+          onChange={value => setForm({...form, value})}
+        />
+      </div>
+    </div>
   </form>
 
 }
