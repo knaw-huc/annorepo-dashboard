@@ -22,6 +22,7 @@ export function AnnotationPage(props: {
       prev={prev}
       next={next}
       onChange={onChangePageNo}
+      className="mt-3"
     />
   </div>
 }

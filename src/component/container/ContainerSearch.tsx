@@ -52,28 +52,27 @@ export function ContainerSearch(props: ContainerSearchProps) {
         onClick={props.onClose}
         className="mr-2"
       >
-        Back<Back className="ml-1"/>
+        <Back className="mr-1"/>Container
       </Button>
     </div>
+    <ContainerSearchForm
+      containerName={name}
+      onSubmit={handleSubmitSearch}
+    />
     {pageNo === NO_PAGE
       ? <Loading/>
-      : <>
-        <ContainerSearchForm
-          onSubmit={handleSubmitSearch}
-        />
-        <AnnotationPage
-          pageNo={pageNo}
-          page={searchPage}
-          onChangePageNo={handleChangePage}
-        />
-      </>
+      : <AnnotationPage
+        pageNo={pageNo}
+        page={searchPage}
+        onChangePageNo={handleChangePage}
+      />
     }
   </div>
 }
 
 
 function formToQuery(form: FieldQueryForm) {
-  if (form.field === QueryOperatorOrFn.none) {
+  if (form.operator === QueryOperatorOrFn.none) {
     return {
       [form.field]: form.value
     }

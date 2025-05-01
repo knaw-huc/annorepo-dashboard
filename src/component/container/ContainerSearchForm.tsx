@@ -7,10 +7,12 @@ import {
   queryOperatorOrFnValues,
   toOperator
 } from "../../client/ArModel.ts";
-import {Search} from "../common/icon/Search.tsx";
 import {Dropdown} from "../common/form/Dropdown.tsx";
 import {orThrow} from "../../util/orThrow.ts";
 import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
+import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
+import {Next} from "../common/icon/Next.tsx";
+import {SelectOption} from "../common/form/SelectOption.tsx";
 
 export type FieldQueryForm = {
   field: string,
@@ -25,40 +27,46 @@ const defaultForm: FieldQueryForm = {
 };
 
 export function ContainerSearchForm(props: {
+  containerName: string,
   onSubmit: (value: FieldQueryForm) => void;
 }) {
+  const {containerName, onSubmit} = props;
+  const {data: containerFields} = useContainerFields(containerName);
+
   const [form, setForm] = useState(defaultForm)
   const handleSubmit = () => {
-    props.onSubmit(form)
+    onSubmit(form)
   }
+
+  const suggestions = containerFields
+    ? Object.keys(containerFields)
+    : []
+
+  function handleSelectOperator(update: SelectOption) {
+    return setForm({
+      ...form,
+      operator: toOperator(update.value)
+        ?? orThrow(`Invalid operator: ${update.value}`)
+    });
+  }
+
   return <form>
-    <Button
-      onClick={handleSubmit}
-      className="mt-2"
-    >
-      Search
-      <Search className="ml-1"/>
-    </Button>
     <div className="flex mb-5 mt-2">
       <div className="flex-auto">
         <SearchWithSuggestions
           label="Field"
           value={form.field}
-          suggestions={['foo', 'blarp']}
+          suggestions={suggestions}
           onChange={field => setForm({...form, field})}
         />
       </div>
-      {/* TODO: create fields dropdown or autocomplete */}
       <div className="flex-none">
-        <p className="text-sm text-gray-500 top-4 z-10 origin-[0] start-2.5 scale-75 ">Operator</p>
+        <p
+          className="text-sm text-gray-500 top-4 z-10 origin-[0] start-2.5 scale-75 ">Operator</p>
         <Dropdown
           selectedValue={form.operator.valueOf()}
           options={operatorOptions}
-          onSelect={update => setForm({
-            ...form,
-            operator: toOperator(update.value)
-              ?? orThrow(`Invalid operator: ${update.value}`)
-          })}
+          onSelect={handleSelectOperator}
         />
       </div>
       <div className="flex-auto">
@@ -67,6 +75,15 @@ export function ContainerSearchForm(props: {
           label="Value"
           onChange={value => setForm({...form, value})}
         />
+      </div>
+      <div className="flex-none">
+        <Button
+          onClick={handleSubmit}
+          className="mt-2"
+        >
+          Search
+          <Next className="ml-1"/>
+        </Button>
       </div>
     </div>
   </form>
