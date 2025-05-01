@@ -77,7 +77,7 @@ function formToQuery(form: FieldQueryForm) {
       [form.field]: form.value
     }
   } else {
-    throw new Error('Query operator implemented: ' + form.field)
+    throw new Error('Query operator not implemented: ' + form.field)
   }
 }
 
