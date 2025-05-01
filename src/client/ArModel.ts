@@ -45,8 +45,14 @@ export type ArAnnotation<T extends object = object> = {
 
 export type ArContainerFields = Record<string, number>
 
-export enum QueryOperatorOrFn {
-  none = 'none',
+/**
+ * See: https://github.com/knaw-huc/annorepo/blob/main/docs/api-usage.md#create-a-query--experimental
+ */
+export enum QueryOperator {
+  // Query without operator:
+  simpleQuery = 'simpleQuery',
+
+  // Operators:
   equal = ':=',
   notEqual = ':!=',
   lessThan = ':<',
@@ -55,20 +61,35 @@ export enum QueryOperatorOrFn {
   greaterThanOrEqual = ':>=',
   isIn = ':isIn',
   isNotIn = ':isNotIn',
+
+  // Query functions:
   isWithinTextAnchorRange = ':isWithinTextAnchorRange',
   overlapsWithTextAnchorRange = ':overlapsWithTextAnchorRange',
 }
 
-export const queryOperatorOrFnValues: string[] = Object.values(QueryOperatorOrFn)
+export const queryOperatorOrFnValues: string[] = Object.values(QueryOperator)
 
-export function toOperator(value: string): QueryOperatorOrFn | null {
+export function toOperator(value: string): QueryOperator | null {
   if (!queryOperatorOrFnValues.includes(value)) {
     return null
   }
-  return value as QueryOperatorOrFn;
+  return value as QueryOperator;
 }
 
-export type ContainerQuery =
+export type SearchQuery =
   | SimpleQuery
+  | OperatorQuery
 
 export type SimpleQuery = Record<string, string>
+export type OperatorQuery = Record<string, Partial<Record<
+  QueryOperator,
+  string | number | Array<string> | QueryValueRange
+>>>
+
+export type QueryValueRange = { source: string, start: number, end: number };
+export type QueryValue = string | number | string[] | QueryValueRange
+export function isQueryValueRange(toTest: QueryValue): toTest is QueryValueRange {
+  return (toTest as QueryValueRange).source !== undefined
+}
+
+

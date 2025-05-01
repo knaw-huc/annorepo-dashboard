@@ -1,25 +1,13 @@
-import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import {useState} from "react";
 import {Button} from "../common/Button.tsx";
-import {QueryOperatorOrFn, toOperator} from "../../client/ArModel.ts";
+import {QueryOperator, QueryValue, toOperator} from "../../client/ArModel.ts";
 import {Dropdown} from "../common/form/Dropdown.tsx";
 import {orThrow} from "../../util/orThrow.ts";
 import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {SelectOption} from "../common/form/SelectOption.tsx";
-
-export type FieldQueryForm = {
-  field: string,
-  operator: QueryOperatorOrFn
-  value: string
-}
-
-const defaultForm: FieldQueryForm = {
-  field: '',
-  operator: QueryOperatorOrFn.none,
-  value: ''
-};
+import {QueryValueField, convertValueByOperator} from "./QueryValueField.tsx";
 
 export function ContainerSearchForm(props: {
   containerName: string,
@@ -38,12 +26,22 @@ export function ContainerSearchForm(props: {
     : []
 
   function handleSelectOperator(update: SelectOption) {
+    const operatorUpdate = toOperator(update.value)
+      ?? orThrow(`Invalid operator: ${update.value}`);
+
     return setForm({
       ...form,
-      operator: toOperator(update.value)
-        ?? orThrow(`Invalid operator: ${update.value}`)
+      operator: operatorUpdate,
+      value: convertValueByOperator(form.value, operatorUpdate)
     });
   }
+
+  const operatorOptions = Object
+    .values(QueryOperator)
+    .map(v => ({
+      label: v,
+      value: v
+    }))
 
   return <form>
     <div className="flex mb-5 mt-2">
@@ -56,8 +54,6 @@ export function ContainerSearchForm(props: {
         />
       </div>
       <div className="flex-none">
-        <p
-          className="text-sm text-gray-500 top-4 z-10 origin-[0] start-2.5 scale-75 ">Operator</p>
         <Dropdown
           selectedValue={form.operator.valueOf()}
           options={operatorOptions}
@@ -65,9 +61,8 @@ export function ContainerSearchForm(props: {
         />
       </div>
       <div className="flex-auto">
-        <InputWithLabel
-          value={form.value}
-          label="Value"
+        <QueryValueField
+          queryValue={form.value}
           onChange={value => setForm({...form, value})}
         />
       </div>
@@ -85,10 +80,16 @@ export function ContainerSearchForm(props: {
 
 }
 
+export type FieldQueryForm = {
+  field: string,
+  operator: QueryOperator
+  value: QueryValue
+}
 
-const operatorOptions = Object
-  .values(QueryOperatorOrFn)
-  .map(v => ({
-    label: v,
-    value: v
-  }))
+const defaultForm: FieldQueryForm = {
+  field: '',
+  operator: QueryOperator.simpleQuery,
+  value: ''
+};
+
+

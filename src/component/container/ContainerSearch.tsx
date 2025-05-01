@@ -8,8 +8,9 @@ import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {Back} from "../common/icon/Back.tsx";
 import {ContainerSearchForm, FieldQueryForm} from "./ContainerSearchForm.tsx";
-import {ContainerQuery, QueryOperatorOrFn} from "../../client/ArModel.ts";
+import {SearchQuery} from "../../client/ArModel.ts";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
+import {convertFormToQuery} from "./QueryValueField.tsx";
 
 export type ContainerSearchProps = {
   name: string,
@@ -21,7 +22,7 @@ let NO_PAGE = -1;
 export function ContainerSearch(props: ContainerSearchProps) {
 
   const {name} = props;
-  const [query, setQuery] = useState<ContainerQuery>({"body.purpose": "identifying"});
+  const [query, setQuery] = useState<SearchQuery>({"body.purpose": "identifying"});
   const {data: container} = useContainer(name)
   const {data: searchPage} = useSearchContainer(name, query);
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
@@ -42,7 +43,9 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   const handleSubmitSearch = (form: FieldQueryForm) => {
-    setQuery(formToQuery(form))
+    const queryUpdate = convertFormToQuery(form);
+    console.log('handleSubmitSearch', {form, queryUpdate})
+    setQuery(queryUpdate)
   }
 
   return <div>
@@ -70,16 +73,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
   </div>
 }
 
-
-function formToQuery(form: FieldQueryForm) {
-  if (form.operator === QueryOperatorOrFn.none) {
-    return {
-      [form.field]: form.value
-    }
-  } else {
-    throw new Error('Query operator not implemented: ' + form.field)
-  }
-}
 
 
 
