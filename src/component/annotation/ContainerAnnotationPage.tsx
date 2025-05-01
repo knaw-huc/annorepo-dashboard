@@ -26,7 +26,7 @@ export function ContainerAnnotationPage(props: PropsWithChildren<{
 
   return <div>
     <H2>Annotations</H2>
-    <PageNavigation prev={prev} next={next} onChange={handlePageChange}/>
+    <PageNavigation current={pageNo} prev={prev} next={next} onChange={handlePageChange}/>
     <div
       className="grid grid-cols-3 gap-5"
     >
@@ -35,7 +35,7 @@ export function ContainerAnnotationPage(props: PropsWithChildren<{
         annotation={item}
       />)}
     </div>
-    <PageNavigation prev={prev} next={next} onChange={handlePageChange}/>
+    <PageNavigation current={pageNo} prev={prev} next={next} onChange={handlePageChange}/>
   </div>
 }
 
