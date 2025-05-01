@@ -1,5 +1,5 @@
 import {ArAnnotation, ArAnnotationPage} from "../../client/ArModel.ts";
-import {PageNavigation} from "./PageNavigation.tsx";
+import {PageNavigation} from "../common/PageNavigation.tsx";
 import {AnnotationCard} from "./AnnotationCard.tsx";
 
 export function AnnotationPage(props: {

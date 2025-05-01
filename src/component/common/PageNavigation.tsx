@@ -1,4 +1,4 @@
-import {Button} from "../common/Button.tsx";
+import {Button} from "./Button.tsx";
 
 export function PageNavigation(props: {
   prev?: string,

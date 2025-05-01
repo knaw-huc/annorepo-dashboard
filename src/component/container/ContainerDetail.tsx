@@ -8,7 +8,7 @@ import {
 } from "./ContainerAnnotationPage.tsx";
 import {
   ContainerAnnotationFields
-} from "../annotation/ContainerAnnotationFields.tsx";
+} from "./ContainerAnnotationFields.tsx";
 import {Button} from "../common/Button.tsx";
 import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
