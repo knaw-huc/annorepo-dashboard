@@ -1,12 +1,12 @@
 import {Down} from "../icon/Down";
 import {useState} from "react";
-
-export type DropdownOption = { label: string, value: string };
+import {DropdownItem} from "./DropdownItem.tsx";
+import {SelectOption} from "./SelectOption.tsx";
 
 export function Dropdown(props: {
   selectedValue: string
-  options: DropdownOption[],
-  onSelect: (option: DropdownOption) => void
+  options: SelectOption[],
+  onSelect: (option: SelectOption) => void
 }) {
   const options = props.options.filter(o => o.value !== props.selectedValue)
 
@@ -17,7 +17,7 @@ export function Dropdown(props: {
     className += ' hidden'
   }
 
-  function handleSelect(option: DropdownOption) {
+  function handleSelect(option: SelectOption) {
     setOpen(false)
     props.onSelect(option);
   }
@@ -49,14 +49,3 @@ export function Dropdown(props: {
   </div>
 }
 
-export function DropdownItem(props: {
-  label: string
-  onClick: () => void
-}) {
-  return <li
-    onClick={props.onClick}
-    className="block px-4 py-2 text-sm text-gray-700 hover:bg-slate-100"
-  >
-    {props.label}
-  </li>
-}

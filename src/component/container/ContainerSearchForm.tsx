@@ -10,6 +10,7 @@ import {
 import {Search} from "../common/icon/Search.tsx";
 import {Dropdown} from "../common/form/Dropdown.tsx";
 import {orThrow} from "../../util/orThrow.ts";
+import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
 
 export type FieldQueryForm = {
   field: string,
@@ -40,15 +41,16 @@ export function ContainerSearchForm(props: {
     </Button>
     <div className="flex mb-5 mt-2">
       <div className="flex-auto">
-        <InputWithLabel
-          value={form.field}
+        <SearchWithSuggestions
           label="Field"
+          value={form.field}
+          suggestions={['foo', 'blarp']}
           onChange={field => setForm({...form, field})}
         />
       </div>
       {/* TODO: create fields dropdown or autocomplete */}
       <div className="flex-none">
-        <div>Operator</div>
+        <p className="text-sm text-gray-500 top-4 z-10 origin-[0] start-2.5 scale-75 ">Operator</p>
         <Dropdown
           selectedValue={form.operator.valueOf()}
           options={operatorOptions}
