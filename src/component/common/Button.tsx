@@ -6,7 +6,6 @@ export function Button(props: PropsWithChildren<{
   disabled?: boolean,
   className?: string
 }>) {
-  console.log('Button', props)
   let classNames = `justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600`
   if (props.fullWidth) {
     classNames += ' flex w-full'

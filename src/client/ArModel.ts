@@ -44,3 +44,31 @@ export type ArAnnotation<T extends object = object> = {
 }
 
 export type ArContainerFields = Record<string, number>
+
+export enum QueryOperatorOrFn {
+  none = 'none',
+  equal = ':=',
+  notEqual = ':!=',
+  lessThan = ':<',
+  lessThanOrEqual = ':<=',
+  greaterThan = ':>',
+  greaterThanOrEqual = ':>=',
+  isIn = ':isIn',
+  isNotIn = ':isNotIn',
+  isWithinTextAnchorRange = ':isWithinTextAnchorRange',
+  overlapsWithTextAnchorRange = ':overlapsWithTextAnchorRange',
+}
+
+export const queryOperatorOrFnValues: string[] = Object.values(QueryOperatorOrFn)
+
+export function toOperator(value: string): QueryOperatorOrFn | null {
+  if (!queryOperatorOrFnValues.includes(value)) {
+    return null
+  }
+  return value as QueryOperatorOrFn;
+}
+
+export type ContainerQuery =
+  | SimpleQuery
+
+export type SimpleQuery = Record<string, string>

@@ -24,7 +24,7 @@ export function AnnoRepoDetail() {
           <Card header={<p className="text-sm text-slate-500">Running at</p>}><A
             href={about.baseURI} className="font-bold">
             {about.baseURI}
-            <External/>
+            <External className="ml-1"/>
           </A></Card>
         </div>
       </>

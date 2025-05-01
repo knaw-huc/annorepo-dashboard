@@ -19,9 +19,9 @@ export function AnnotationCard(props: {
     </H5>}
     footer={
       <>
-        <A href={annotation.id}>Source <External/></A>
+        <A href={annotation.id}>Source <External className="ml-1"/></A>
         <Pipe/>
-        <A href={annotation.target}>Target <External/></A>
+        <A href={annotation.target}>Target <External className="ml-1"/></A>
       </>}
   >
     <pre className="mt-2 whitespace-pre-wrap">{JSON.stringify(annotation.body, null, 2)}</pre>

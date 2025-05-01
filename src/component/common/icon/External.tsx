@@ -1,5 +1,9 @@
 import {ExternalLink} from "react-feather";
 
-export function External() {
-  return <ExternalLink className="inline align-text-top ml-1" size="16"/>
+export function External(props: { className?: string }) {
+  let className = "inline align-text-top";
+
+  if (props.className) className += ` ${props.className}`;
+
+  return <ExternalLink className={className} size="16"/>
 }

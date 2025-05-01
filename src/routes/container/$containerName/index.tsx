@@ -11,9 +11,15 @@ function ContainerIndex() {
   const navigate = Route.useNavigate()
 
   async function handleClickAnnotationForm() {
-    console.log('handleCreateAnnotation');
     navigate({
       to: "/container/$containerName/annotation/form",
+      params: {containerName}
+    })
+  }
+
+  async function handleClickSearchAnnotations() {
+    navigate({
+      to: "/container/$containerName/search",
       params: {containerName}
     })
   }
@@ -24,6 +30,7 @@ function ContainerIndex() {
         <ContainerDetail
           name={containerName}
           onClickCreateAnnotation={handleClickAnnotationForm}
+          onClickSearchAnnotations={handleClickSearchAnnotations}
         />
       </Login>
     </Page>

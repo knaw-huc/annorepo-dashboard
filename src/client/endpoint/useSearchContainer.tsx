@@ -1,14 +1,14 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
-import {ArAnnotation, ArQuery} from "../ArModel.ts";
+import {ArAnnotationPage, ArQuery} from "../ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {QR} from "../query/useGet.tsx";
 
 export function useSearchContainer(
   containerName: string,
   query: ArQuery
-): QR<ArAnnotation[]> {
+): QR<ArAnnotationPage> {
   const client = useOpenApiClient()
 
   const {data: location} = useQuery({
@@ -55,5 +55,5 @@ export async function getSearchContainerResult(
         }
       }
     }
-  );
+  ).then(({data}) => data);
 }

@@ -32,7 +32,7 @@ export function ContainerCard(props: PropsWithChildren<{
       <div className="text-right">
         <A href={toName(container.id)}>
           Source
-          <External/>
+          <External className="ml-1"/>
         </A>
       </div>
     }
