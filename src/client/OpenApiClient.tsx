@@ -10,7 +10,6 @@ export function createOpenApiClient(bearerToken: string) {
 
   const authMiddleware: Middleware = {
     async onRequest(params) {
-      console.debug('authMiddleware', params)
       params.request.headers.set('Authorization', `Bearer ${bearerToken}`)
     }
   }
@@ -18,7 +17,6 @@ export function createOpenApiClient(bearerToken: string) {
   const arHost = 'VITE_AR_HOST';
   const baseUrl = import.meta.env[arHost]
     ?? orThrow(`${arHost} not set`);
-  console.log(`Create client with baseurl ${baseUrl}`)
   let client = createClient<paths>({baseUrl});
   client.use(authMiddleware)
   return client

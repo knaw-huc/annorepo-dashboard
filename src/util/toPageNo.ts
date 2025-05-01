@@ -10,6 +10,5 @@ export function toPageNo(id: string): number {
   }
   let pageNo = toNumber(url.searchParams.get('page'))
     ?? orThrow(`No page search param in ${id}`);
-  console.log('toPageNo', {id, pageNo});
   return pageNo;
 }

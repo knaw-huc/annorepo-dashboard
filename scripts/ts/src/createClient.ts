@@ -9,7 +9,6 @@ const schemaFilename = process.env.RESULT_TYPES_PATH
 main()
 
 async function main() {
-  console.log('Create client');
   const openApiUrl = new URL(openApiEndpoint);
   const openApiFilename = openApiUrl.pathname.split('/').pop()
   const openApiJson = await fetch(openApiUrl)

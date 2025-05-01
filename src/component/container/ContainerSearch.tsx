@@ -42,7 +42,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   const handleSubmitSearch = (form: FieldQueryForm) => {
-    console.log('handleSubmitSearch', {form})
     setQuery(formToQuery(form))
   }
 

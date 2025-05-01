@@ -30,10 +30,7 @@ export function getContainerPage(
     queryKey: createQueryKey(path, params),
     queryFn: async () => await client
       .GET(path, params)
-      .then(({data}) => {
-        console.log('getContainerPage', {path, params, data})
-        return data;
-      }),
+      .then(({data}) => data),
     placeholderData: keepPreviousData,
   };
 }

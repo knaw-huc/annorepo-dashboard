@@ -13,7 +13,6 @@ function ContainerIndex() {
   const {containerName, annotationName} = Route.useParams()
   const navigate = Route.useNavigate()
   const handleClose = async () => {
-    console.log('handleClose')
     navigate({
       to: '/container/$containerName',
       params: {containerName}
