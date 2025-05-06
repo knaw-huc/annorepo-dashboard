@@ -1,5 +1,5 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
-import {useQuery} from "@tanstack/react-query";
+import {keepPreviousData, useQuery} from "@tanstack/react-query";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
 import {ArAnnotationPage, ArQuery} from "../ArModel.ts";
 import {toName} from "../../util/toName.ts";
@@ -27,6 +27,7 @@ export function useSearchContainer(
       page
     ),
     enabled: !!location,
+    placeholderData: keepPreviousData,
   });
 }
 
