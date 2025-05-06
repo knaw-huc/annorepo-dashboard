@@ -4,11 +4,11 @@ import {Login} from "../component/login/Login.tsx";
 import {Hr} from "../component/common/Hr.tsx";
 
 export const Route = createFileRoute('/')({
-  component: RootIndex,
+  component: Component,
 })
 
 
-function RootIndex() {
+function Component() {
   return (
     <Page>
       <Login>

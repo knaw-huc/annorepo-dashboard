@@ -1,5 +1,5 @@
 import {createFileRoute} from '@tanstack/react-router'
-import {Loading, Page} from "../../../component";
+import {Page} from "../../../component";
 import {Login} from "../../../component/login/Login.tsx";
 import {
   ContainerSearch
@@ -9,17 +9,14 @@ import {
   toContainers,
   toHome
 } from "../../../component/common/BreadcrumbNav.tsx";
-import {useContainer} from "../../../client/endpoint/useContainer.tsx";
 
 export const Route = createFileRoute('/container/$containerName/search')({
-  component: ContainerIndex,
+  component: Component,
 })
 
-function ContainerIndex() {
+function Component() {
   const {containerName} = Route.useParams()
   const navigate = Route.useNavigate()
-
-  const {data: container} = useContainer(containerName)
 
   const handleClose = async () => {
     navigate({
@@ -28,16 +25,12 @@ function ContainerIndex() {
     });
   };
 
-  if(!container) {
-    return <Loading />
-  }
-
   return (
     <Page
       breadcrumbs={[
         toHome,
         toContainers,
-        toContainer(container.label, {containerName})
+        toContainer(containerName, {containerName})
       ]}
     >
       <Login>

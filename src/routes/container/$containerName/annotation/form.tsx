@@ -6,10 +6,10 @@ import {
 } from "../../../../component/annotation/AnnotationForm.tsx";
 
 export const Route = createFileRoute('/container/$containerName/annotation/form')({
-  component: ContainerIndex,
+  component: Component,
 })
 
-function ContainerIndex() {
+function Component() {
   const {containerName} = Route.useParams()
   const navigate = Route.useNavigate()
 

@@ -30,6 +30,6 @@ export const toContainer = (
   }
 ) => ({
   name,
-  to: '/container/$containerName/search',
+  to: '/container/$containerName',
   params
 } as const satisfies Breadcrumb);

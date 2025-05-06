@@ -3,10 +3,10 @@ import {ContainerDetail, Page} from "../../../component";
 import {Login} from "../../../component/login/Login.tsx";
 
 export const Route = createFileRoute('/container/$containerName/')({
-  component: ContainerIndex,
+  component: Component,
 })
 
-function ContainerIndex() {
+function Component() {
   const {containerName} = Route.useParams()
   const navigate = Route.useNavigate()
 
