@@ -48,7 +48,7 @@ export function ContainerSearchForm(props: {
 
   return <form onSubmit={onSubmit}>
     <div className="flex mb-5 mt-2">
-      <div className="flex-auto">
+      <div className="flex-auto mr-2">
         <SearchWithSuggestions
           label="Field"
           value={form.field}
@@ -56,20 +56,20 @@ export function ContainerSearchForm(props: {
           onChange={field => onChange({...form, field})}
         />
       </div>
-      <div className="flex-none">
+      <div className="flex-none mr-2">
         <Dropdown
           selectedValue={form.operator.valueOf()}
           options={operatorOptions}
           onSelect={handleSelectOperator}
         />
       </div>
-      <div className="flex-auto">
+      <div className="flex-auto mr-2">
         <QueryValueField
           queryValue={form.value}
           onChange={value => onChange({...form, value})}
         />
       </div>
-      <div className="flex-none ">
+      <div className="flex-none">
         <Button
           type="submit"
           className="pl-5 h-full border-b-2"

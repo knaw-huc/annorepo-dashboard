@@ -1,6 +1,10 @@
 import {createFileRoute} from '@tanstack/react-router'
 import {ContainerDetail, Page} from "../../../component";
 import {Login} from "../../../component/login/Login.tsx";
+import {
+  ToContainers,
+  ToHome
+} from "../../../component/common/BreadcrumbNav.tsx";
 
 export const Route = createFileRoute('/container/$containerName/')({
   component: Component,
@@ -25,14 +29,17 @@ function Component() {
   }
 
   return (
-    <Page>
-      <Login>
+    <Login>
+      <Page breadcrumbs={[
+        <ToHome/>,
+        <ToContainers/>,
+      ]}>
         <ContainerDetail
           name={containerName}
           onClickCreateAnnotation={handleClickAnnotationForm}
           onClickSearchAnnotations={handleClickSearchAnnotations}
         />
-      </Login>
-    </Page>
+      </Page>
+    </Login>
   )
 }

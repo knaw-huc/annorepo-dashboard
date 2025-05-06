@@ -5,10 +5,11 @@ import {
   ContainerSearch
 } from "../../../component/container/ContainerSearch.tsx";
 import {
-  toContainer,
-  toContainers,
-  toHome
+  ToContainer,
+  ToContainers,
+  ToHome
 } from "../../../component/common/BreadcrumbNav.tsx";
+
 
 export const Route = createFileRoute('/container/$containerName/search')({
   component: Component,
@@ -26,19 +27,17 @@ function Component() {
   };
 
   return (
-    <Page
-      breadcrumbs={[
-        toHome,
-        toContainers,
-        toContainer(containerName, {containerName})
-      ]}
-    >
-      <Login>
+    <Login>
+      <Page breadcrumbs={[
+        <ToHome/>,
+        <ToContainers/>,
+        <ToContainer name={containerName}/>
+      ]}>
         <ContainerSearch
           name={containerName}
           onClose={handleClose}
         />
-      </Login>
-    </Page>
+      </Page>
+    </Login>
   )
 }

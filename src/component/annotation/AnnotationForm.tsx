@@ -60,7 +60,7 @@ export function AnnotationForm(props: {
       onSubmit={handleSubmit}
     >
       <div>
-        <H1>Annotation form</H1>
+        <H1>New annotation</H1>
         <div className="grid grid-cols-2 gap-5">
 
           <div>

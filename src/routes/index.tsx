@@ -2,6 +2,7 @@ import {createFileRoute} from '@tanstack/react-router'
 import {AnnoRepoDetail, ContainerIndex, Page} from "../component";
 import {Login} from "../component/login/Login.tsx";
 import {Hr} from "../component/common/Hr.tsx";
+import {ToHome} from "../component/common/BreadcrumbNav.tsx";
 
 export const Route = createFileRoute('/')({
   component: Component,
@@ -10,13 +11,15 @@ export const Route = createFileRoute('/')({
 
 function Component() {
   return (
-    <Page>
-      <Login>
+    <Login>
+      <Page breadcrumbs={[
+        <ToHome/>,
+      ]}>
         <AnnoRepoDetail/>
         <Hr/>
         <ContainerIndex/>
-      </Login>
-    </Page>
+      </Page>
+    </Login>
   )
 }
 

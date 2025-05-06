@@ -4,6 +4,11 @@ import {Login} from "../../../../component/login/Login.tsx";
 import {
   AnnotationForm
 } from "../../../../component/annotation/AnnotationForm.tsx";
+import {
+  ToContainer,
+  ToContainers,
+  ToHome
+} from "../../../../component/common/BreadcrumbNav.tsx";
 
 export const Route = createFileRoute('/container/$containerName/annotation/form')({
   component: Component,
@@ -28,14 +33,18 @@ function Component() {
   };
 
   return (
-    <Page>
-      <Login>
+    <Login>
+      <Page breadcrumbs={[
+        <ToHome/>,
+        <ToContainers/>,
+        <ToContainer name={containerName}/>
+      ]}>
         <AnnotationForm
           containerName={containerName}
           onClose={handleClose}
           onCreate={handleCreate}
         />
-      </Login>
-    </Page>
+      </Page>
+    </Login>
   )
 }

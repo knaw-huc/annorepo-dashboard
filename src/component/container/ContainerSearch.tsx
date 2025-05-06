@@ -1,15 +1,12 @@
-import {H1} from "../common/H1.tsx";
-import {Hint} from "../common/Hint.tsx";
 import {Loading} from "../common/Loading.tsx";
 import {useSearchContainer} from "../../client/endpoint/useSearchContainer.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
-import {Button} from "../common/Button.tsx";
 import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
-import {Back} from "../common/icon/Back.tsx";
 import {ContainerSearchForm, defaultForm} from "./ContainerSearchForm.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {convertFormToQuery} from "./QueryValueField.tsx";
+import {H1} from "../common/H1.tsx";
 
 export type ContainerSearchProps = {
   name: string,
@@ -47,15 +44,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   return <div>
-    <H1>{container.label} <Hint>search</Hint></H1>
-    <div className="mb-2">
-      <Button
-        onClick={props.onClose}
-        className="mr-2"
-      >
-        <Back className="mr-1"/>Container
-      </Button>
-    </div>
+    <H1>Search annotations</H1>
     <ContainerSearchForm
       containerName={name}
       form={form}
