@@ -33,6 +33,8 @@ export function SearchWithSuggestions(props: {
         label={label}
         onChange={handleChange}
         onFocus={() => setOpen(true)}
+        // Use timeout to prevent suggestions to disappear before being clicked:
+        onBlur={() => setTimeout(() => setOpen(false), 100)}
       />
       <ul
         className={className}
