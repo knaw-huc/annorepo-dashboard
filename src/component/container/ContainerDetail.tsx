@@ -48,29 +48,32 @@ export function ContainerDetail(props: ContainerDetailProps) {
   return <div>
     <H1>{container.label} <Hint>container</Hint></H1>
     <ul className="mt-5">
-      <li>Annotations: <Badge>{container.total}</Badge></li>
+      <li>Annotation count: <Badge>{container.total}</Badge></li>
     </ul>
     <ContainerAnnotationFields name={props.name}/>
-    <H2>Browse annotations</H2>
-    <div className="mb-2">
-      <Button
-        onClick={props.onClickCreateAnnotation}
-        className="mr-2"
-      >
-        Add<Add className="ml-1"/>
-      </Button>
-      <Button
-        onClick={props.onClickSearchAnnotations}
-      >
-        Search<Search className="ml-1"/>
-      </Button>
-    </div>
+    <H2>Annotations</H2>
+
     {pageNo === NO_PAGE
       ? <Loading/>
       : <ContainerAnnotationPage
         containerName={name}
         pageNo={pageNo}
         onChangePageNo={handleChangePage}
+        moreButtons={
+          <span className="mb-2 ml-10">
+            <Button
+              onClick={props.onClickCreateAnnotation}
+              className="mr-2"
+            >
+              Add<Add className="ml-1"/>
+            </Button>
+            <Button
+              onClick={props.onClickSearchAnnotations}
+            >
+              Search<Search className="ml-1"/>
+            </Button>
+          </span>
+        }
       />
     }
   </div>

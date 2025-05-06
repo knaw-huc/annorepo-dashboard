@@ -1,31 +1,40 @@
 import {ArAnnotation, ArAnnotationPage} from "../../client/ArModel.ts";
 import {PageNavigation} from "../common/PageNavigation.tsx";
 import {AnnotationCard} from "./AnnotationCard.tsx";
+import {ReactNode} from "react";
 
 export function AnnotationPage(props: {
   pageNo: number
   page: ArAnnotationPage
   onChangePageNo: (page: string) => void
+  moreButtons?: ReactNode
 }) {
 
   const {page, pageNo, onChangePageNo} = props;
   const {prev, next} = page;
-
+  if (!props.page.items.length) {
+    return;
+  }
   return <div>
-    <PageNavigation
-      current={pageNo}
-      prev={prev}
-      next={next}
-      onChange={onChangePageNo}
-    />
+    <div>
+      <PageNavigation
+        current={pageNo}
+        prev={prev}
+        next={next}
+        onChange={onChangePageNo}
+      />
+      {props.moreButtons}
+    </div>
     <AnnotationGrid items={page.items}/>
-    <PageNavigation
-      current={pageNo}
-      prev={prev}
-      next={next}
-      onChange={onChangePageNo}
-      className="mt-3"
-    />
+    <div>
+      <PageNavigation
+        current={pageNo}
+        prev={prev}
+        next={next}
+        onChange={onChangePageNo}
+        className="mt-3"
+      />
+    </div>
   </div>
 }
 

@@ -14,9 +14,9 @@ export function PageNavigation(props: {
 
   const {prev, next, onChange} = props;
 
-  return <div className={className}>
+  return <span className={className}>
     <Button disabled={!prev} onClick={() => onChange(prev!)} className="mr-2"><Back /></Button>
     <span className="inline-block justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold ring-1 p-2 ring-slate-400 border-b-1 border-slate-600">{props.current}</span>
     <Button disabled={!next} onClick={() => onChange(next!)} className="ml-2"><Next /></Button>
-  </div>
+  </span>
 }

@@ -1,4 +1,4 @@
-import {PropsWithChildren} from "react";
+import {PropsWithChildren, ReactNode} from "react";
 import {useContainerPage} from "../../client/endpoint/useContainerPage.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
@@ -7,6 +7,7 @@ export function ContainerAnnotationPage(props: PropsWithChildren<{
   containerName: string,
   pageNo: number
   onChangePageNo: (pageNo: number) => void
+  moreButtons: ReactNode
 }>) {
   const {containerName, pageNo, onChangePageNo} = props;
   const {data: page} = useContainerPage(containerName, pageNo)
@@ -23,6 +24,7 @@ export function ContainerAnnotationPage(props: PropsWithChildren<{
     pageNo={pageNo}
     page={page}
     onChangePageNo={handlePageChange}
+    moreButtons={props.moreButtons}
   />
 }
 
