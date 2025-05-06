@@ -6,21 +6,31 @@ import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {SelectOption} from "../common/form/SelectOption.tsx";
-import {convertValueByOperator, QueryValueField} from "./QueryValueField.tsx";
+import {
+  convertQueryValueByOperator,
+  QueryValueField
+} from "./QueryValueField.tsx";
 import {FormEvent} from "react";
+import {isEmpty, some} from "lodash";
 
 export function ContainerSearchForm(props: {
   containerName: string,
+
   form: FieldQueryForm
   onChange: (form: FieldQueryForm) => void;
   onSubmit: () => void;
+
+  errors: FieldQueryFormErrors
+  onError: (error: FieldQueryFormErrors) => void;
 }) {
-  const {containerName, form, onChange} = props;
+  const {containerName, form, onChange, errors, onError} = props;
   const {data: containerFields} = useContainerFields(containerName);
 
   const onSubmit = (e?: FormEvent<HTMLFormElement>) => {
     e?.preventDefault();
-    props.onSubmit()
+    if (!hasError(props.errors)) {
+      props.onSubmit()
+    }
   }
 
   const suggestions = containerFields
@@ -34,7 +44,7 @@ export function ContainerSearchForm(props: {
     onChange({
       ...form,
       operator: operatorUpdate,
-      value: convertValueByOperator(form.value, operatorUpdate)
+      value: convertQueryValueByOperator(form.value, operatorUpdate)
     });
   }
 
@@ -65,12 +75,17 @@ export function ContainerSearchForm(props: {
       </div>
       <div className="flex-auto mr-2">
         <QueryValueField
+          operator={form.operator}
           queryValue={form.value}
           onChange={value => onChange({...form, value})}
+
+          error={errors.value}
+          onError={error => onError({...errors, value: error})}
         />
       </div>
       <div className="flex-none">
         <Button
+          disabled={hasError(props.errors)}
           type="submit"
           className="pl-5 h-full border-b-2"
           onClick={onSubmit}
@@ -84,12 +99,16 @@ export function ContainerSearchForm(props: {
 
 }
 
+function hasError(errors: Record<string, string>) {
+  return some(errors, e => !isEmpty(e));
+}
+
 export type FieldQueryForm = {
   field: string,
   operator: QueryOperator
   value: QueryValue
 }
-
+export type FieldQueryFormErrors = Record<keyof FieldQueryForm, string>
 export const defaultForm: FieldQueryForm = {
   field: 'body.purpose',
   operator: QueryOperator.equal,

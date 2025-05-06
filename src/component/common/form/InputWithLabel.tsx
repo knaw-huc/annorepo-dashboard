@@ -1,6 +1,9 @@
 export function InputWithLabel(props: {
   value: string,
-  label: string
+
+  label: string,
+  errorLabel?: string
+
   disabled?: boolean,
   className?: string,
 
@@ -8,10 +11,19 @@ export function InputWithLabel(props: {
   onFocus?: () => void
   onBlur?: () => void
 }) {
+
   let className = 'relative'
   if (props.className) {
     className += ` ${props.className}`
   }
+
+  let labelClassname = "absolute text-sm duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+  labelClassname += props.errorLabel ? ' text-red-500' : ' text-gray-500';
+
+  const label = props.errorLabel
+    ? `${props.label}: ${props.errorLabel}`
+    : props.label
+
   return <div className={className}>
     <input
       disabled={!!props.disabled}
@@ -25,9 +37,9 @@ export function InputWithLabel(props: {
     />
     <label
       htmlFor="floating_filled"
-      className="absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-4 scale-75 top-4 z-10 origin-[0] start-2.5 peer-focus:text-slate-600 peer-focus:dark:text-slate-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-4 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto"
+      className={labelClassname}
     >
-      {props.label}
+      {label}
     </label>
   </div>
 }

@@ -7,6 +7,7 @@ import {ContainerSearchForm, defaultForm} from "./ContainerSearchForm.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {convertFormToQuery} from "./QueryValueField.tsx";
 import {H1} from "../common/H1.tsx";
+import {mapValues} from "lodash";
 
 export type ContainerSearchProps = {
   name: string,
@@ -18,6 +19,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const {name} = props;
 
   const [form, setForm] = useState(defaultForm)
+  const [errors, setErrors] = useState(mapValues(defaultForm, _ => ''))
   const [query, setQuery] = useState(convertFormToQuery(form));
   const [pageNo, setPageNo] = useState(0);
 
@@ -50,6 +52,8 @@ export function ContainerSearch(props: ContainerSearchProps) {
       form={form}
       onChange={setForm}
       onSubmit={handleSubmitSearch}
+      errors={errors}
+      onError={setErrors}
     />
     {searchPage
       ? <AnnotationPage

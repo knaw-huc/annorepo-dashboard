@@ -6,21 +6,38 @@ import {
 import {isArray, isNumber, isString, toNumber} from "lodash";
 import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import {FieldQueryForm} from "./ContainerSearchForm.tsx";
+import {useEffect, useState} from "react";
 
 export function QueryValueField(props: {
+  operator: QueryOperator,
   queryValue: QueryValue
   onChange: (value: QueryValue) => void
+  error: string
+  onError: (error: string) => void
 }) {
-  const {queryValue, onChange} = props;
+  const [formValue, setFormValue] = useState(
+    convertQueryValueToString(props.queryValue)
+  );
+
+  useEffect(() => {
+    setFormValue(convertQueryValueToString(props.queryValue))
+  }, [props.queryValue]);
 
   function handleChange(update: string) {
-    const queryInputUpdate = convertStringToQueryValue(update, queryValue);
-    onChange(queryInputUpdate);
+    try {
+      const queryUpdate = convertStringToQueryValue(update, props.queryValue);
+      props.onChange(queryUpdate);
+      props.onError("")
+    } catch (e) {
+      props.onError(e instanceof Error ? e.message : "Invalid value")
+      setFormValue(update)
+    }
   }
 
   return <InputWithLabel
-    value={convertQueryValueToString(queryValue)}
+    value={formValue}
     label="Value"
+    errorLabel={props.error}
     onChange={handleChange}
   />
 }
@@ -56,7 +73,7 @@ function convertStringToQueryValue(
   }
 }
 
-export function convertValueByOperator(
+export function convertQueryValueByOperator(
   currentValue: QueryValue,
   nextOperator: QueryOperator,
 ): QueryValue {
@@ -64,7 +81,7 @@ export function convertValueByOperator(
     case QueryOperator.simpleQuery:
     case QueryOperator.equal:
     case QueryOperator.notEqual:
-      if(isString(currentValue)) {
+      if (isString(currentValue)) {
         return currentValue
       }
       return ''
@@ -72,19 +89,19 @@ export function convertValueByOperator(
     case QueryOperator.lessThanOrEqual:
     case QueryOperator.greaterThan:
     case QueryOperator.greaterThanOrEqual:
-      if(isNumber(currentValue)) {
+      if (isNumber(currentValue)) {
         return currentValue
       }
       return 0
     case QueryOperator.isIn:
     case QueryOperator.isNotIn:
-      if(isArray(currentValue)) {
+      if (isArray(currentValue)) {
         return currentValue
       }
       return ["foo"]
     case QueryOperator.isWithinTextAnchorRange:
     case QueryOperator.overlapsWithTextAnchorRange:
-      if(isQueryValueRange(currentValue)) {
+      if (isQueryValueRange(currentValue)) {
         return currentValue
       }
       return {source: "http://example.com", start: 0, end: 1}
