@@ -11,7 +11,9 @@ export const Route = createFileRoute('/container/$containerName/annotation/$anno
 
 function ContainerIndex() {
   const {containerName, annotationName} = Route.useParams()
+
   const navigate = Route.useNavigate()
+
   const handleClose = async () => {
     navigate({
       to: '/container/$containerName',

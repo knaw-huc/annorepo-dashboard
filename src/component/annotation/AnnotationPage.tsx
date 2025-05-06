@@ -7,8 +7,10 @@ export function AnnotationPage(props: {
   page: ArAnnotationPage
   onChangePageNo: (page: string) => void
 }) {
+
   const {page, pageNo, onChangePageNo} = props;
   const {prev, next} = page;
+
   return <div>
     <PageNavigation
       current={pageNo}

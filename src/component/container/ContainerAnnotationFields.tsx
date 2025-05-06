@@ -3,15 +3,19 @@ import {Hint} from "../common/Hint.tsx";
 import {ListGroup, ListItem} from "../common/ListGroup.tsx";
 import {Badge} from "../common/Badge.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
-import {isEmpty} from "lodash";
 import {Loading} from "../common/Loading.tsx";
+import {isEmpty} from "lodash";
 
 export function ContainerAnnotationFields(props: { name: string }) {
   const {name} = props;
   const {data: containerFields} = useContainerFields(name);
 
-  if (isEmpty(containerFields)) {
+  if (!containerFields) {
     return <Loading />;
+  }
+
+  if (isEmpty(containerFields)) {
+    return null;
   }
 
   const fieldEntries = Object.entries(containerFields);

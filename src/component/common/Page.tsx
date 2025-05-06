@@ -1,8 +1,11 @@
 import {PropsWithChildren} from "react";
 import {Menu} from "./Menu.tsx";
 import {Link} from "@tanstack/react-router";
+import {Breadcrumb, BreadcrumbNav, toHome} from "./BreadcrumbNav.tsx";
 
-export function Page(props: PropsWithChildren<{}>) {
+export function Page(props: PropsWithChildren<{
+  breadcrumbs?: Breadcrumb[]
+}>) {
   return <div className="flex flex-col min-h-screen">
 
     {/* Header */}
@@ -16,9 +19,7 @@ export function Page(props: PropsWithChildren<{}>) {
           </p>
         </aside>
         <main className="flex-grow p-4 order-2 md:order-2 flex-initial">
-          <Link to="/">Home</Link> &gt;
-          {" "}
-          <Link to="/container">Containers</Link> &gt;
+          <BreadcrumbNav breadcrumbs={props.breadcrumbs || [toHome]} />
         </main>
       </div>
     </div>

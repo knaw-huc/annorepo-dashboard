@@ -13,8 +13,8 @@ function RootIndex() {
     <Page>
       <Login>
         <AnnoRepoDetail/>
-        <Hr />
-        <ContainerIndex />
+        <Hr/>
+        <ContainerIndex/>
       </Login>
     </Page>
   )

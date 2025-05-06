@@ -3,7 +3,6 @@ import {useContainerPage} from "../../client/endpoint/useContainerPage.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 
-// TODO: add filter option
 export function ContainerAnnotationPage(props: PropsWithChildren<{
   containerName: string,
   pageNo: number

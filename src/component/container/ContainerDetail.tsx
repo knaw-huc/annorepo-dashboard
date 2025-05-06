@@ -27,8 +27,8 @@ let NO_PAGE = -1;
 export function ContainerDetail(props: ContainerDetailProps) {
 
   const {name} = props;
-  const {data: container} = useContainer(name)
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
+  const {data: container} = useContainer(name)
 
   useEffect(() => {
     const containerPageId = container?.first.id;
@@ -67,8 +67,11 @@ export function ContainerDetail(props: ContainerDetailProps) {
     </div>
     {pageNo === NO_PAGE
       ? <Loading/>
-      : <ContainerAnnotationPage containerName={name} pageNo={pageNo}
-                                 onChangePageNo={handleChangePage}/>
+      : <ContainerAnnotationPage
+        containerName={name}
+        pageNo={pageNo}
+        onChangePageNo={handleChangePage}
+      />
     }
   </div>
 }
