@@ -23,7 +23,7 @@ export function Dropdown(props: {
   }
 
   let buttonClassname = "w-full h-full justify-center rounded-md bg-white px-3 py-2 text-l text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 border-b-2";
-  buttonClassname += isOpen ? ' border-blue-500' : ' border-slate-400'
+  buttonClassname += isOpen ? ' border-slate-600' : ' border-slate-400'
 
   return <div
     className="relative inline-block text-left h-full"
@@ -35,7 +35,7 @@ export function Dropdown(props: {
       onBlur={() => setTimeout(() => setOpen(false), 100)}
     >
       {props.options.find(o => o.value === props.selectedValue)?.label || 'Select below'}
-      <Down className="ml-2"/>
+      <Down className="text-slate-400 ml-2" />
     </button>
     <ul
       className={className}
