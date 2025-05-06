@@ -8,7 +8,6 @@ import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {Back} from "../common/icon/Back.tsx";
 import {ContainerSearchForm, defaultForm} from "./ContainerSearchForm.tsx";
-import {SearchQuery} from "../../client/ArModel.ts";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {convertFormToQuery} from "./QueryValueField.tsx";
 
@@ -17,16 +16,16 @@ export type ContainerSearchProps = {
   onClose: () => void
 }
 
-let NO_PAGE = -1;
-
 export function ContainerSearch(props: ContainerSearchProps) {
 
   const {name} = props;
+
   const [form, setForm] = useState(defaultForm)
-  const [query, setQuery] = useState<SearchQuery>(convertFormToQuery(form));
+  const [query, setQuery] = useState(convertFormToQuery(form));
+  const [pageNo, setPageNo] = useState(0);
+
   const {data: container} = useContainer(name)
-  const {data: searchPage} = useSearchContainer(name, query);
-  const [pageNo, setPageNo] = useState<number>(NO_PAGE);
+  const {data: searchPage} = useSearchContainer(name, query, pageNo);
 
   useEffect(() => {
     const containerPageId = container?.first.id;
@@ -40,7 +39,9 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   const handleChangePage = (update: string) => {
-    setPageNo(toPageNo(update))
+    const pageNo = toPageNo(update);
+    console.log('handleChangePage', {update, pageNo})
+    setPageNo(pageNo)
   }
 
   const handleSubmitSearch = () => {
@@ -64,13 +65,13 @@ export function ContainerSearch(props: ContainerSearchProps) {
       onChange={setForm}
       onSubmit={handleSubmitSearch}
     />
-    {pageNo === NO_PAGE || !searchPage
-      ? <Loading/>
-      : <AnnotationPage
+    {searchPage
+      ? <AnnotationPage
         pageNo={pageNo}
         page={searchPage}
         onChangePageNo={handleChangePage}
       />
+      : <Loading/>
     }
   </div>
 }

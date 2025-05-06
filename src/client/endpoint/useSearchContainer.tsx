@@ -7,18 +7,25 @@ import {QR} from "../query/useGet.tsx";
 
 export function useSearchContainer(
   containerName: string,
-  query: ArQuery
+  query: ArQuery,
+  page: number = 0,
 ): QR<ArAnnotationPage> {
   const client = useOpenApiClient()
 
+  const queryKey = [containerName, query];
   const {data: location} = useQuery({
-    queryKey: [containerName, query],
+    queryKey,
     queryFn: () => searchContainer(client, containerName, query),
   });
 
   return useQuery({
-    queryKey: [containerName, query, location],
-    queryFn: async () => getSearchContainerResult(client, containerName, location!),
+    queryKey: [...queryKey, location, page],
+    queryFn: async () => getSearchContainerResult(
+      client,
+      containerName,
+      location!,
+      page
+    ),
     enabled: !!location,
   });
 }
@@ -26,7 +33,7 @@ export function useSearchContainer(
 export async function searchContainer(
   client: AnnoRepoOpenApiClient,
   containerName: string,
-  query: ArQuery
+  query: ArQuery,
 ) {
   return client.POST(
     "/services/{containerName}/search",
@@ -43,7 +50,8 @@ export async function searchContainer(
 export async function getSearchContainerResult(
   client: AnnoRepoOpenApiClient,
   containerName: string,
-  searchId: string
+  searchId: string,
+  page: number
 ) {
   return client.GET(
     '/services/{containerName}/search/{searchId}',
@@ -52,7 +60,8 @@ export async function getSearchContainerResult(
         path: {
           containerName,
           searchId
-        }
+        },
+        query: {page}
       }
     }
   ).then(({data}) => data);

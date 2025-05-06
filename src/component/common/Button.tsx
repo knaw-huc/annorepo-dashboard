@@ -5,6 +5,7 @@ export function Button(props: PropsWithChildren<{
   onClick: () => void
   disabled?: boolean,
   className?: string
+  type?: 'button' | 'submit'
 }>) {
   let classNames = `justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs border-b-2`
   if (props.fullWidth) {
@@ -20,7 +21,7 @@ export function Button(props: PropsWithChildren<{
   }
   return <button
     disabled={props.disabled}
-    type="button"
+    type={props.type || 'button'}
     onClick={props.onClick}
     className={classNames}
   >

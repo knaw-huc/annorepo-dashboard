@@ -7,6 +7,7 @@ import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {SelectOption} from "../common/form/SelectOption.tsx";
 import {convertValueByOperator, QueryValueField} from "./QueryValueField.tsx";
+import {FormEvent} from "react";
 
 export function ContainerSearchForm(props: {
   containerName: string,
@@ -14,8 +15,13 @@ export function ContainerSearchForm(props: {
   onChange: (form: FieldQueryForm) => void;
   onSubmit: () => void;
 }) {
-  const {containerName, form, onChange, onSubmit} = props;
+  const {containerName, form, onChange} = props;
   const {data: containerFields} = useContainerFields(containerName);
+
+  const onSubmit = (e?: FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+    props.onSubmit()
+  }
 
   const suggestions = containerFields
     ? Object.keys(containerFields)
@@ -40,7 +46,7 @@ export function ContainerSearchForm(props: {
       value: v
     }))
 
-  return <form>
+  return <form onSubmit={onSubmit}>
     <div className="flex mb-5 mt-2">
       <div className="flex-auto">
         <SearchWithSuggestions
@@ -65,6 +71,7 @@ export function ContainerSearchForm(props: {
       </div>
       <div className="flex-none ">
         <Button
+          type="submit"
           className="pl-5 h-full border-b-2"
           onClick={onSubmit}
         >
@@ -84,9 +91,9 @@ export type FieldQueryForm = {
 }
 
 export const defaultForm: FieldQueryForm = {
-  field: '',
-  operator: QueryOperator.simpleQuery,
-  value: ''
+  field: 'body.purpose',
+  operator: QueryOperator.equal,
+  value: 'classifying'
 };
 
 
