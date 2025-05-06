@@ -16,7 +16,7 @@ export function ContainerAnnotationFields(props: { name: string }) {
   const fieldEntries = Object.entries(containerFields);
 
   return <div className="mt-5">
-    <H2>Annotation fields <Hint>by usage</Hint></H2>
+    <H2>Annotation fields <Hint>count</Hint></H2>
     <ListGroup>
       {fieldEntries.sort(countDesc).map(([field, count], i) => {
         return <ListItem
