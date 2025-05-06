@@ -39,14 +39,11 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   const handleChangePage = (update: string) => {
-    const pageNo = toPageNo(update);
-    console.log('handleChangePage', {update, pageNo})
-    setPageNo(pageNo)
+    setPageNo(toPageNo(update))
   }
 
   const handleSubmitSearch = () => {
-    const queryUpdate = convertFormToQuery(form);
-    setQuery(queryUpdate)
+    setQuery(convertFormToQuery(form))
   }
 
   return <div>

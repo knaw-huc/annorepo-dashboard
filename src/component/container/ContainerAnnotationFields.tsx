@@ -4,13 +4,14 @@ import {ListGroup, ListItem} from "../common/ListGroup.tsx";
 import {Badge} from "../common/Badge.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {isEmpty} from "lodash";
+import {Loading} from "../common/Loading.tsx";
 
 export function ContainerAnnotationFields(props: { name: string }) {
   const {name} = props;
   const {data: containerFields} = useContainerFields(name);
 
   if (isEmpty(containerFields)) {
-    return null;
+    return <Loading />;
   }
 
   const fieldEntries = Object.entries(containerFields);
