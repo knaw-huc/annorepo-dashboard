@@ -4,7 +4,7 @@ import {PropsWithChildren, ReactNode} from "react";
 
 export function BreadcrumbNav(props: { breadcrumbs: ReactNode[] }) {
   return <span className="hover:text-gray-950 font-mono text-[0.8125rem]/6 font-medium tracking-widest text-pretty uppercase text-gray-600">
-    {props.breadcrumbs.map(breadcrumb => <>{breadcrumb} &gt; </>)}
+    {props.breadcrumbs.map(((breadcrumb, i) => <span key={i}>{breadcrumb} &gt; </span>))}
   </span>
 }
 export type BreadcrumbProps = PropsWithChildren<LinkProps>;
