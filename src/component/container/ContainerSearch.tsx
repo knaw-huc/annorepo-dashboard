@@ -7,7 +7,7 @@ import {Button} from "../common/Button.tsx";
 import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {Back} from "../common/icon/Back.tsx";
-import {ContainerSearchForm, FieldQueryForm} from "./ContainerSearchForm.tsx";
+import {ContainerSearchForm, defaultForm} from "./ContainerSearchForm.tsx";
 import {SearchQuery} from "../../client/ArModel.ts";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {convertFormToQuery} from "./QueryValueField.tsx";
@@ -22,7 +22,8 @@ let NO_PAGE = -1;
 export function ContainerSearch(props: ContainerSearchProps) {
 
   const {name} = props;
-  const [query, setQuery] = useState<SearchQuery>({"body.purpose": "identifying"});
+  const [form, setForm] = useState(defaultForm)
+  const [query, setQuery] = useState<SearchQuery>(convertFormToQuery(form));
   const {data: container} = useContainer(name)
   const {data: searchPage} = useSearchContainer(name, query);
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
@@ -34,7 +35,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     }
   }, [container]);
 
-  if (!container || !searchPage) {
+  if (!container) {
     return <Loading/>;
   }
 
@@ -42,9 +43,8 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setPageNo(toPageNo(update))
   }
 
-  const handleSubmitSearch = (form: FieldQueryForm) => {
+  const handleSubmitSearch = () => {
     const queryUpdate = convertFormToQuery(form);
-    console.log('handleSubmitSearch', {form, queryUpdate})
     setQuery(queryUpdate)
   }
 
@@ -60,9 +60,11 @@ export function ContainerSearch(props: ContainerSearchProps) {
     </div>
     <ContainerSearchForm
       containerName={name}
+      form={form}
+      onChange={setForm}
       onSubmit={handleSubmitSearch}
     />
-    {pageNo === NO_PAGE
+    {pageNo === NO_PAGE || !searchPage
       ? <Loading/>
       : <AnnotationPage
         pageNo={pageNo}

@@ -1,4 +1,3 @@
-import {useState} from "react";
 import {Button} from "../common/Button.tsx";
 import {QueryOperator, QueryValue, toOperator} from "../../client/ArModel.ts";
 import {Dropdown} from "../common/form/Dropdown.tsx";
@@ -7,19 +6,16 @@ import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {SelectOption} from "../common/form/SelectOption.tsx";
-import {QueryValueField, convertValueByOperator} from "./QueryValueField.tsx";
+import {convertValueByOperator, QueryValueField} from "./QueryValueField.tsx";
 
 export function ContainerSearchForm(props: {
   containerName: string,
-  onSubmit: (value: FieldQueryForm) => void;
+  form: FieldQueryForm
+  onChange: (form: FieldQueryForm) => void;
+  onSubmit: () => void;
 }) {
-  const {containerName, onSubmit} = props;
+  const {containerName, form, onChange, onSubmit} = props;
   const {data: containerFields} = useContainerFields(containerName);
-
-  const [form, setForm] = useState(defaultForm)
-  const handleSubmit = () => {
-    onSubmit(form)
-  }
 
   const suggestions = containerFields
     ? Object.keys(containerFields)
@@ -29,7 +25,7 @@ export function ContainerSearchForm(props: {
     const operatorUpdate = toOperator(update.value)
       ?? orThrow(`Invalid operator: ${update.value}`);
 
-    return setForm({
+    onChange({
       ...form,
       operator: operatorUpdate,
       value: convertValueByOperator(form.value, operatorUpdate)
@@ -38,6 +34,7 @@ export function ContainerSearchForm(props: {
 
   const operatorOptions = Object
     .values(QueryOperator)
+    .filter(o => o !== QueryOperator.simpleQuery)
     .map(v => ({
       label: v,
       value: v
@@ -50,7 +47,7 @@ export function ContainerSearchForm(props: {
           label="Field"
           value={form.field}
           suggestions={suggestions}
-          onChange={field => setForm({...form, field})}
+          onChange={field => onChange({...form, field})}
         />
       </div>
       <div className="flex-none">
@@ -63,13 +60,13 @@ export function ContainerSearchForm(props: {
       <div className="flex-auto">
         <QueryValueField
           queryValue={form.value}
-          onChange={value => setForm({...form, value})}
+          onChange={value => onChange({...form, value})}
         />
       </div>
-      <div className="flex-none">
+      <div className="flex-none ">
         <Button
-          onClick={handleSubmit}
-          className="mt-2"
+          className="pl-5 h-full border-b-2"
+          onClick={onSubmit}
         >
           Search
           <Next className="ml-1"/>
@@ -86,7 +83,7 @@ export type FieldQueryForm = {
   value: QueryValue
 }
 
-const defaultForm: FieldQueryForm = {
+export const defaultForm: FieldQueryForm = {
   field: '',
   operator: QueryOperator.simpleQuery,
   value: ''

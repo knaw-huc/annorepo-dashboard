@@ -6,14 +6,14 @@ export function Button(props: PropsWithChildren<{
   disabled?: boolean,
   className?: string
 }>) {
-  let classNames = `justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-slate-600`
+  let classNames = `justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold text-white shadow-xs border-b-2`
   if (props.fullWidth) {
     classNames += ' flex w-full'
   }
   if (props.disabled) {
-    classNames += ' bg-slate-300 hover:bg-slate-300'
+    classNames += ' bg-slate-300 hover:bg-slate-300 border-slate-400'
   } else {
-    classNames += ' bg-slate-600 hover:bg-slate-500 cursor-pointer'
+    classNames += ' cursor-pointer bg-slate-600 border-slate-800 hover:bg-slate-500 hover:border-slate-700'
   }
   if(props.className) {
     classNames += ' ' + props.className

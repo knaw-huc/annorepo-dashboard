@@ -1,2 +1,6 @@
 # TODO
-- Use names instead of IDs in URL
+- Move select icon up
+- Style search button
+- Fix form reset on search
+- Add error on incomplete form
+- 
