@@ -9,8 +9,6 @@ services:
     networks:
       - annorepo_network
     restart: unless-stopped
-    environment:
-      VITE_AR_HOST: /api
 
   annorepo_server:
     container_name: annorepo_server
@@ -27,7 +25,7 @@ services:
     ports:
       - "8080:8080"
       - "9999:8081"
-    image: registry.diginfra.net/tt/annorepo:0.6.3
+    image: ghcr.io/knaw-huc/annorepo-server:v0.7.1
     networks:
       - annorepo_network
     restart: unless-stopped
