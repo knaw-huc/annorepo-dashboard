@@ -75,10 +75,9 @@ export function ContainerSearchForm(props: {
       </div>
       <div className="flex-auto mr-2">
         <QueryValueField
-          operator={form.operator}
           queryValue={form.value}
           onChange={value => onChange({...form, value})}
-
+          operator={form.operator}
           error={errors.value}
           onError={error => onError({...errors, value: error})}
         />
