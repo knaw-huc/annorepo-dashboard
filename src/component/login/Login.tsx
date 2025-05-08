@@ -4,14 +4,17 @@ import {createOpenApiClient} from "../../client/OpenApiClient.tsx";
 import {LoginForm} from "./LoginForm.tsx";
 
 export function Login(props: PropsWithChildren<{}>) {
+
   const [client, setClient] = useOpenApiContext()
+
   const createClient = (bearerToken: string) => {
     setClient(createOpenApiClient(bearerToken))
   }
 
-  // TODO: auto login in dev mode only
   useEffect(() => {
-    setClient(createOpenApiClient('root'))
+    if (import.meta.env.DEV) {
+      setClient(createOpenApiClient('root'))
+    }
   }, []);
 
   return <>
