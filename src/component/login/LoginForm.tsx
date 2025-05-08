@@ -18,7 +18,7 @@ export function LoginForm(props: {
     onSubmit={handleSubmit}
     className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-4"
   >
-    <Input value={token} onChange={setToken}/>
+    <Input value={token} onChange={setToken} type="password"/>
     <Button fullWidth onClick={handleSubmit}>Login</Button>
   </form>
 }
