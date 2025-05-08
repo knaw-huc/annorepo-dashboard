@@ -14,7 +14,10 @@ export function useMyContainerDetails(): QR<ArContainer>[] {
 
   return useQueries({
     queries: myContainers
-      ? myContainers.ROOT.map(name => getContainer(client, name))
+      ? Object
+        .values(myContainers)
+        .flatMap(names => names)
+        .map(name => getContainer(client, name))
       : []
   })
 }
