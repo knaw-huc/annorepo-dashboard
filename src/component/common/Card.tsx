@@ -5,9 +5,9 @@ export function Card(props: PropsWithChildren<{
   footer?: ReactNode
 }>) {
   return <div
-    className="mt-3 block rounded-lg bg-slate-50 text-surface shadow-secondary-1 dark:bg-surface-dark dark:text-white">
+    className="mt-3 block rounded-lg bg-slate-50 text-surface shadow-secondary-1">
     {props.header && <div
-      className="border-b-2 border-neutral-100 px-6 py-3 dark:border-white/10"
+      className="border-b-2 border-neutral-100 px-6 py-3"
     >
       {props.header}
     </div>}
@@ -15,7 +15,7 @@ export function Card(props: PropsWithChildren<{
       {props.children}
     </div>
     {props.footer && <div
-      className="border-t-2 border-neutral-100 px-6 py-3 text-surface/75 dark:border-white/10 dark:text-neutral-300"
+      className="border-t-2 border-neutral-100 px-6 py-3 text-surface/75"
     >
       {props.footer}
     </div>}

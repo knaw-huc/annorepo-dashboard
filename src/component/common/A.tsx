@@ -6,7 +6,7 @@ export function A(props: PropsWithChildren<{
 }>) {
   return <a
     href={props.href}
-    className={["font-medium text-sky-800 dark:text-sky-700 hover:underline", props.className].join(' ')}
+    className={["font-medium text-sky-800 hover:underline", props.className].join(' ')}
     target="_blank"
   >
     {props.children}
