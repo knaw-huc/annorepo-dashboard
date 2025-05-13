@@ -8,6 +8,8 @@ import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {convertFormToQuery} from "./QueryValueField.tsx";
 import {H1} from "../common/H1.tsx";
 import {mapValues} from "lodash";
+import {ErrorMessage} from "../common/ErrorMessage.tsx";
+import {StatusMessage} from "../common/StatusMessage.tsx";
 
 export type ContainerSearchProps = {
   name: string,
@@ -23,18 +25,22 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const [query, setQuery] = useState(convertFormToQuery(form));
   const [pageNo, setPageNo] = useState(0);
 
-  const {data: container} = useContainer(name)
-  const {data: searchPage} = useSearchContainer(name, query, pageNo);
+  const container = useContainer(name)
+  const {search, page} = useSearchContainer(name, query, pageNo);
 
   useEffect(() => {
-    const containerPageId = container?.first.id;
+    const containerPageId = container.data?.first.id;
     if (containerPageId) {
       setPageNo(toPageNo(containerPageId))
     }
   }, [container]);
 
-  if (!container) {
-    return <Loading/>;
+  const error = search.error || page.error
+  if (error) {
+    return <ErrorMessage error={error}/>;
+  }
+  if (!container.isSuccess || !page.isSuccess) {
+    return <StatusMessage requests={[container, page]} />;
   }
 
   const handleChangePage = (update: string) => {
@@ -55,10 +61,10 @@ export function ContainerSearch(props: ContainerSearchProps) {
       errors={errors}
       onError={setErrors}
     />
-    {searchPage
+    {page
       ? <AnnotationPage
         pageNo={pageNo}
-        page={searchPage}
+        page={page.data}
         onChangePageNo={handleChangePage}
       />
       : <Loading/>

@@ -4,10 +4,14 @@ import {Card} from "./common/Card.tsx";
 import {A} from "./common/A.tsx";
 import {External} from "./common/icon/External.tsx";
 import {useAbout} from "../client/endpoint/useAbout.tsx";
+import {StatusMessage} from "./common/StatusMessage.tsx";
 
 export function AnnoRepoDetail() {
-  const {data: about} = useAbout();
-
+  const aboutRequest = useAbout();
+  if(!aboutRequest.isSuccess) {
+    return <StatusMessage request={aboutRequest} />
+  }
+  const about = aboutRequest.data
   return <div>
     {about
       ? <>

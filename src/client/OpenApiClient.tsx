@@ -16,8 +16,19 @@ export function createOpenApiClient(
     }
   }
 
+  const validateStatusMiddleware: Middleware = {
+    async onResponse({response}) {
+      if (!response.ok) {
+        throw new Error(`Received status ${response.status}`)
+      }
+    }
+  }
+
   let client = createClient<paths>({baseUrl});
-  client.use(authMiddleware)
+  client.use(
+    authMiddleware,
+    validateStatusMiddleware
+  )
   return client
 }
 

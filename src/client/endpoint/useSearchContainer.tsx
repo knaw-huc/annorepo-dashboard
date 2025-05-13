@@ -1,41 +1,44 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {keepPreviousData, useQuery} from "@tanstack/react-query";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
-import {ArAnnotationPage, ArQuery} from "../ArModel.ts";
+import {ArQuery} from "../ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {QR} from "../query/useGet.tsx";
 
 export function useSearchContainer(
   containerName: string,
   query: ArQuery,
-  page: number = 0,
-): QR<ArAnnotationPage> {
+  pageNo: number = 0,
+): Record<string, QR> {
   const client = useOpenApiClient()
 
   const queryKey = [containerName, query];
-  const {data: location} = useQuery({
+  const search = useQuery({
     queryKey,
     queryFn: () => searchContainer(client, containerName, query),
-  });
+  }) as QR<string>;
 
-  return useQuery({
-    queryKey: [...queryKey, location, page],
+  const location: string | undefined = search.data;
+  const page = useQuery({
+    queryKey: [...queryKey, location, pageNo],
     queryFn: async () => getSearchContainerResult(
       client,
       containerName,
       location!,
-      page
+      pageNo
     ),
     enabled: !!location,
     placeholderData: keepPreviousData,
   });
+
+  return {search, page};
 }
 
 export async function searchContainer(
   client: AnnoRepoOpenApiClient,
   containerName: string,
   query: ArQuery,
-) {
+): Promise<string> {
   return client.POST(
     "/services/{containerName}/search",
     {
@@ -43,9 +46,11 @@ export async function searchContainer(
       body: query as unknown as string,
       params: {path: {containerName}}
     }
-  ).then(({response}) => toName(
-    response.headers.get('Location')!
-  ));
+  ).then(({response}) => {
+    return toName(
+      response.headers.get('Location')!
+    );
+  });
 }
 
 export async function getSearchContainerResult(

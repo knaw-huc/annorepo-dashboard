@@ -1,22 +1,19 @@
 import {H1} from "../common/H1.tsx";
-import {QR} from "../../client/query/useGet.tsx";
-import {Loading} from "../common/Loading.tsx";
 import {
   useMyContainerDetails
 } from "../../client/endpoint/useMyContainerDetails.tsx";
-import {ArContainer} from "../../client/ArModel.ts";
 import {ContainerCard} from "./ContainerCard.tsx";
 import {toName} from "../../util/toName.ts";
 import isNil from "lodash/isNil";
+import {StatusMessage} from "../common/StatusMessage.tsx";
 
 export function ContainerIndex() {
-  const containers: QR<ArContainer>[] = useMyContainerDetails();
+  const {myContainers, details} = useMyContainerDetails();
 
-  if (containers.length && containers[0].isLoading) {
-    return <Loading/>;
+  if(!myContainers.isSuccess || !details.every(d => d.isSuccess)) {
+    return <StatusMessage requests={details} />
   }
-
-  const names: string[] = containers
+  const names: string[] = details
     .map(c => c.data && toName(c.data.id))
     .filter(name => !isNil(name))
 

@@ -15,7 +15,7 @@ type GetParams<P extends Paths<"get">> = Params<"get", P> & {
 /**
  * Query Result
  */
-export type QR<R> = UseQueryResult<R>
+export type QR<R = any> = UseQueryResult<R>
 
 export function useGet<P extends Paths<"get">, RESULT>(
   path: P,

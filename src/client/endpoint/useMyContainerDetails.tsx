@@ -1,24 +1,25 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {useQueries} from "@tanstack/react-query";
 import {QR, useGet} from "../query/useGet.tsx";
-import {ArContainer, ArMyContainers} from "../ArModel.ts";
 import {getContainer} from "./useContainer.tsx";
+import {ArContainer} from "../ArModel.ts";
 
 /**
  * Get container for every name in my containers
  */
-export function useMyContainerDetails(): QR<ArContainer>[] {
+export function useMyContainerDetails() {
   const client = useOpenApiClient();
 
-  const {data: myContainers}: QR<ArMyContainers> = useGet('/my/containers')
+  const myContainers = useGet('/my/containers')
 
-  return useQueries({
-    queries: myContainers
+  const details = useQueries({
+    queries: myContainers.data
       ? Object
-        .values(myContainers)
+        .values(myContainers.data)
         .flatMap(names => names)
         .map(name => getContainer(client, name))
       : []
-  })
+  }) as QR<ArContainer>[];
+  return {myContainers, details}
 }
 
