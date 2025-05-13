@@ -5,10 +5,12 @@ services:
       - annorepo_server
     ports:
       - 1234:80
-    image: annorepo-dashboard:latest
+    image: registry.diginfra.net/tt/annorepo-dashboard:0.0.4
     networks:
       - annorepo_network
     restart: unless-stopped
+    environment:
+      - VITE_CONFIG_URL=/webapp.config.json
 
   annorepo_server:
     container_name: annorepo_server
@@ -25,7 +27,7 @@ services:
     ports:
       - "8080:8080"
       - "9999:8081"
-    image: ghcr.io/knaw-huc/annorepo-server:v0.7.1
+    image: ghcr.io/knaw-huc/annorepo-server:v0.7.3
     networks:
       - annorepo_network
     restart: unless-stopped

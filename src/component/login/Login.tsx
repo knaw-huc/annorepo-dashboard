@@ -1,19 +1,22 @@
-import {PropsWithChildren, useEffect} from "react";
-import {useOpenApiContext} from "../../client/OpenApiClientProvider.tsx";
+import {PropsWithChildren, useContext, useEffect} from "react";
 import {createOpenApiClient} from "../../client/OpenApiClient.tsx";
+import {OpenApiClientContext} from "../../client/OpenApiClientProvider.tsx";
 import {LoginForm} from "./LoginForm.tsx";
+import {useConfig} from "../ConfigProvider.tsx";
 
 export function Login(props: PropsWithChildren<{}>) {
 
-  const [client, setClient] = useOpenApiContext()
+  const setClient = useContext(OpenApiClientContext).actions.setClient
+  const client = useContext(OpenApiClientContext).state.client
+  const config = useConfig()
 
   const createClient = (bearerToken: string) => {
-    setClient(createOpenApiClient(bearerToken))
+    setClient(createOpenApiClient(bearerToken, config.AR_HOST))
   }
 
   useEffect(() => {
     if (import.meta.env.DEV) {
-      setClient(createOpenApiClient('root'))
+      createClient('root')
     }
   }, []);
 

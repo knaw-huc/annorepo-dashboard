@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start": "VITE_AR_HOST=/api vite",
+    "start": "VITE_CONFIG_URL=/webapp.config.json vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"

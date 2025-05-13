@@ -1,4 +1,3 @@
-import {orThrow} from "../util/orThrow.ts";
 import createClient, {FetchOptions, Middleware} from "openapi-fetch";
 import {paths} from "../openapi.ts";
 import {HttpMethod, PathsWithMethod} from "openapi-typescript-helpers";
@@ -6,7 +5,10 @@ import {
   UseMutationOptions as RQUseMutationOptions
 } from "@tanstack/react-query";
 
-export function createOpenApiClient(bearerToken: string) {
+export function createOpenApiClient(
+  bearerToken: string,
+  baseUrl: string
+) {
 
   const authMiddleware: Middleware = {
     async onRequest(params) {
@@ -14,9 +16,6 @@ export function createOpenApiClient(bearerToken: string) {
     }
   }
 
-  const arHost = 'VITE_AR_HOST';
-  const baseUrl = import.meta.env[arHost]
-    ?? orThrow(`${arHost} not set`);
   let client = createClient<paths>({baseUrl});
   client.use(authMiddleware)
   return client

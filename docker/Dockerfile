@@ -1,7 +1,7 @@
 FROM node:lts-alpine AS build
 
-ARG VITE_AR_HOST
-ENV VITE_AR_HOST=$VITE_AR_HOST
+ARG VITE_CONFIG_URL
+ENV VITE_CONFIG_URL=$VITE_CONFIG_URL
 
 WORKDIR /src
 
@@ -14,6 +14,7 @@ RUN npm run build
 
 FROM nginx:stable-alpine-slim
 COPY --from=build /src/dist /usr/share/nginx/html
+COPY docker/webapp.config.json /usr/share/nginx/html
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

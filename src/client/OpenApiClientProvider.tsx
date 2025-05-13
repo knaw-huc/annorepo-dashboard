@@ -18,7 +18,9 @@ export const OpenApiClientContext = createContext<OpenApiClientState>({
     client: {} as AnnoRepoOpenApiClient,
   },
   actions: {
-    setClient: () => {throw new Error('client setter not provided')},
+    setClient: () => {
+      throw new Error('client setter not provided')
+    },
   }
 });
 
@@ -48,12 +50,3 @@ export function useOpenApiClient(): AnnoRepoOpenApiClient {
   return client;
 }
 
-export function useOpenApiContext(): [
-  AnnoRepoOpenApiClient | undefined,
-  AnnoRepoClientOpenApiSetter
-] {
-  return [
-    useContext(OpenApiClientContext).state.client,
-    useContext(OpenApiClientContext).actions.setClient,
-  ];
-}

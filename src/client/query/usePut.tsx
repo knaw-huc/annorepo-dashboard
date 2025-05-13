@@ -1,6 +1,6 @@
 import {useMutation} from "@tanstack/react-query";
-import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {Params, Paths, UseMutationOptions} from "../OpenApiClient.tsx";
+import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 
 export function usePut<P extends Paths<"put">>(path: P, opts?: UseMutationOptions) {
   const client = useOpenApiClient();
