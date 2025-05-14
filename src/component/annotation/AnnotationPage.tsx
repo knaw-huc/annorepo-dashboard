@@ -13,7 +13,7 @@ export function AnnotationPage(props: {
   const {page, pageNo, onChangePageNo} = props;
   const {prev, next} = page;
   if (!props.page.items.length) {
-    return;
+    return <p>No results</p>;
   }
   return <div>
     <div>
