@@ -2,13 +2,13 @@ import {Button} from "../common/Button.tsx";
 import {QueryOperator, QueryValue, toOperator} from "../../client/ArModel.ts";
 import {Dropdown} from "../common/form/Dropdown.tsx";
 import {orThrow} from "../../util/orThrow.ts";
-import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {SelectOption} from "../common/form/SelectOption.tsx";
-import {QueryValueField} from "./QueryValueField.tsx";
+import {QueryValueInput} from "./QueryValueInput.tsx";
 import {FormEvent} from "react";
 import {isEmpty, some} from "lodash";
+import {QueryFieldInput} from "./QueryFieldInput.tsx";
 
 export function ContainerSearchForm(props: {
   containerName: string,
@@ -58,11 +58,13 @@ export function ContainerSearchForm(props: {
   return <form onSubmit={onSubmit}>
     <div className="flex mb-5 mt-2">
       <div className="flex-auto mr-2">
-        <SearchWithSuggestions
-          label="Field"
+        <QueryFieldInput
           value={form.field}
+          operator={form.operator}
           suggestions={suggestions}
-          onChange={field => onChange({...form, field})}
+          onChange={field => {
+            onChange({...form, field});
+          }}
         />
       </div>
       <div className="flex-none mr-2">
@@ -73,7 +75,7 @@ export function ContainerSearchForm(props: {
         />
       </div>
       <div className="flex-auto mr-2">
-        <QueryValueField
+        <QueryValueInput
           queryValue={form.value}
           onChange={value => onChange({...form, value})}
           operator={form.operator}
@@ -109,10 +111,9 @@ export type FieldQueryForm = {
 
 export type FieldQueryFormErrors = Record<keyof FieldQueryForm, string>
 
-export const defaultForm: FieldQueryForm = {
+export const defaultForm: FieldQueryForm = Object.freeze({
   field: 'type',
   operator: QueryOperator.equal,
   value: 'Annotation'
-};
-
+});
 

@@ -10,7 +10,7 @@ import {useEffect, useState} from "react";
 import {orThrow} from "../../util/orThrow.ts";
 import {isEqual} from "lodash";
 
-export function QueryValueField(props: {
+export function QueryValueInput(props: {
   operator: QueryOperator,
   queryValue: QueryValue
   onChange: (value: QueryValue) => void

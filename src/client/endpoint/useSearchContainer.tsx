@@ -7,7 +7,7 @@ import {QR} from "../query/useGet.tsx";
 
 export function useSearchContainer(
   containerName: string,
-  query: ArQuery,
+  query?: ArQuery,
   pageNo: number = 0,
 ): Record<string, QR> {
   const client = useOpenApiClient()
@@ -15,7 +15,8 @@ export function useSearchContainer(
   const queryKey = [containerName, query];
   const search = useQuery({
     queryKey,
-    queryFn: () => searchContainer(client, containerName, query),
+    queryFn: () => searchContainer(client, containerName, query!),
+    enabled: !!query
   }) as QR<string>;
 
   const location: string | undefined = search.data;

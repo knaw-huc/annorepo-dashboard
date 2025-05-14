@@ -13,7 +13,11 @@ import {H1} from "../common/H1.tsx";
 import {mapValues} from "lodash";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
-import {QueryOperator, SearchQuery} from "../../client/ArModel.ts";
+import {
+  isRangeQueryValue, isRangeQueryOperator,
+  QueryOperator,
+  SearchQuery
+} from "../../client/ArModel.ts";
 
 export type ContainerSearchProps = {
   name: string,
@@ -26,7 +30,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   const [form, setForm] = useState(defaultForm)
   const [errors, setErrors] = useState(mapValues(defaultForm, _ => ''))
-  const [query, setQuery] = useState(convertToSearchQuery(form));
+  const [query, setQuery] = useState(convertToSearchQuery(defaultForm));
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(name)
@@ -81,6 +85,12 @@ export function convertToSearchQuery(
 ): SearchQuery {
   if (form.operator === QueryOperator.simpleQuery) {
     return {[form.field]: `${form.value}`}
+  } else if(isRangeQueryOperator(form.operator)) {
+    if(!isRangeQueryValue(form.value)) {
+      throw new Error('Expected range but got: ' + JSON.stringify(form.value))
+    }
+    return {[form.operator]: form.value}
+  } else {
+    return {[form.field]: {[form.operator]: form.value}}
   }
-  return {[form.field]: {[form.operator]: form.value}}
 }

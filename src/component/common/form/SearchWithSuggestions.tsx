@@ -8,6 +8,7 @@ export function SearchWithSuggestions(props: {
   value: string
   suggestions: string[]
   onChange: (value: string) => void
+  disabled: boolean
 }) {
 
   const {label, value, suggestions, onChange} = props;
@@ -36,6 +37,7 @@ export function SearchWithSuggestions(props: {
         onFocus={() => setOpen(true)}
         // Use timeout to prevent suggestions to disappear before being clicked:
         onBlur={() => setTimeout(() => setOpen(false), 200)}
+        disabled={props.disabled}
       />
       {!isEmpty(suggestions) && <ul
         className={className}

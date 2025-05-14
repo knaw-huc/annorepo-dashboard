@@ -68,6 +68,13 @@ export enum QueryOperator {
   isWithinTextAnchorRange = ':isWithinTextAnchorRange',
   overlapsWithTextAnchorRange = ':overlapsWithTextAnchorRange',
 }
+export type RangeQueryOperator =
+  | QueryOperator.overlapsWithTextAnchorRange
+  | QueryOperator.isWithinTextAnchorRange;
+
+export function isRangeQueryOperator(toTest: QueryOperator): toTest is RangeQueryOperator {
+  return queryOperatorValueType[toTest] === 'range';
+}
 
 export const queryOperatorOrFnValues: string[] = Object.values(QueryOperator)
 
@@ -80,26 +87,34 @@ export function toOperator(value: string): QueryOperator | null {
 
 export type SearchQuery =
   | SimpleQuery
-  | OperatorQuery
+  | FieldQuery
+  | RangeQuery
 
 export type SimpleQuery = Record<string, string>
-export type OperatorQuery = Record<string, Partial<Record<
+
+export type FieldQuery = Record<Field, Partial<Record<
   QueryOperator,
   QueryValue
 >>>
+type Field = string;
 
-export type QueryValueRange = { source: string, start: number, end: number };
+export type RangeQuery = Partial<Record<
+  RangeQueryOperator,
+  RangeQueryValue
+>>
 
-export function isQueryValueRange(
+export type RangeQueryValue = { source: string, start: number, end: number };
+
+export function isRangeQueryValue(
   toTest: QueryValue
-): toTest is QueryValueRange {
+): toTest is RangeQueryValue {
   return !!(toTest
-    && (toTest as QueryValueRange).source
-    && (toTest as QueryValueRange).start !== undefined
-    && (toTest as QueryValueRange).end !== undefined)
+    && (toTest as RangeQueryValue).source
+    && (toTest as RangeQueryValue).start !== undefined
+    && (toTest as RangeQueryValue).end !== undefined)
 }
 
-export type QueryValue = string | number | string[] | QueryValueRange
+export type QueryValue = string | number | string[] | RangeQueryValue
 export type QueryValueType = 'string' | 'number' | 'options' | 'range'
 
 export const queryOperatorValueType: Record<QueryOperator, QueryValueType> = {
@@ -150,7 +165,7 @@ export const queryValueMapping: QueryValuesConfig<QueryValue>[] = [
     type: 'range',
     toValue: JSON.parse,
     toString: JSON.stringify,
-    isType: isQueryValueRange,
+    isType: isRangeQueryValue,
     defaultValue: {source: 'http://example.com', start: 0, end: 1}
   }
 ]
