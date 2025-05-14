@@ -4,9 +4,14 @@ Dashboard for [AnnoRepo](https://github.com/knaw-huc/annorepo/)
 
 ## Development
 
-First time: `
+
+First time: 
+```shell
+cp public/webapp.config.json.example public/webapp.config.json 
+# and change AR_HOST
+
 npm install
-`
+```
 
 Start: `
 npm start

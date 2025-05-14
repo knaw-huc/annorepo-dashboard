@@ -13,6 +13,11 @@ export function ContainerIndex() {
   if(!myContainers.isSuccess || !details.every(d => d.isSuccess)) {
     return <StatusMessage requests={details} />
   }
+
+  if(!details.length) {
+    return null;
+  }
+
   const names: string[] = details
     .map(c => c.data && toName(c.data.id))
     .filter(name => !isNil(name))
