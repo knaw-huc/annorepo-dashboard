@@ -26,13 +26,12 @@ export function AnnotationPage(props: {
       {props.moreButtons}
     </div>
     <AnnotationGrid items={page.items}/>
-    <div>
+    <div className="mt-3">
       <PageNavigation
         current={pageNo}
         prev={prev}
         next={next}
         onChange={onChangePageNo}
-        className="mt-3"
       />
     </div>
   </div>
