@@ -29,7 +29,7 @@ export function ContainerAnnotationFields(props: { name: string }) {
           isLast={i >= fieldEntries.length - 1}
         >
           {field} <span
-          className="inline-block float-right"><Badge>{count}</Badge></span>
+          className="inline-block float-right"><Badge className="ml-2">{count}</Badge></span>
         </ListItem>
       })}
     </ListGroup>
