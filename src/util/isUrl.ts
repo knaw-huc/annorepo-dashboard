@@ -2,8 +2,7 @@ export function isUrl(toTest?: any): boolean {
   if (!toTest) {
     return false;
   }
-  const type = typeof toTest;
-  if (!['string', 'object'].includes(type)) {
+  if (!['string', 'object'].includes(typeof toTest)) {
     return false;
   }
   try {

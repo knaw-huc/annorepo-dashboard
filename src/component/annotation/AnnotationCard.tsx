@@ -6,6 +6,7 @@ import {A} from "../common/A.tsx";
 import {External} from "../common/icon/External.tsx";
 import {H5} from "../common/H5.tsx";
 import {isUrl} from "../../util/isUrl.ts";
+import {Info} from "../common/icon/Info.tsx";
 
 export function AnnotationCard(props: {
   annotation: ArAnnotation
@@ -21,14 +22,16 @@ export function AnnotationCard(props: {
     footer={
       <>
         <A href={annotation.id}>Source <External className="ml-1"/></A>
-        {isUrl(annotation.target) && <>
-          <Pipe/>
+        <Pipe/>
+        {isUrl(annotation.target) ?
           <A href={annotation.target}>
             <span title={annotation.target}>
               Target <External className="ml-1"/>
             </span>
           </A>
-        </>}
+          : <span className="cursor-pointer font-medium" title={JSON.stringify(annotation.target, null, 2)}>
+            Target <Info className="ml-1"/>
+          </span>}
       </>}
   >
     <pre
