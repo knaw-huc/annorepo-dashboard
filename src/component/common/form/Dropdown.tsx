@@ -32,7 +32,7 @@ export function Dropdown(props: {
       onClick={() => setOpen(!isOpen)}
       type="button"
       className={buttonClassname}
-      onBlur={() => setTimeout(() => setOpen(false), 100)}
+      onBlur={() => setTimeout(() => setOpen(false), 200)}
     >
       {props.options.find(o => o.value === props.selectedValue)?.label || 'Select below'}
       <Down className="text-slate-400 ml-2" />

@@ -102,7 +102,7 @@ export function isQueryValueRange(
 export type QueryValue = string | number | string[] | QueryValueRange
 export type QueryValueType = 'string' | 'number' | 'options' | 'range'
 
-export const queryOperatorValue: Record<QueryOperator, QueryValueType> = {
+export const queryOperatorValueType: Record<QueryOperator, QueryValueType> = {
   [QueryOperator.simpleQuery]: 'string',
   [QueryOperator.equal]: 'string',
   [QueryOperator.notEqual]: 'string',
@@ -120,37 +120,37 @@ export type QueryValuesConfig<T extends QueryValue> = {
   type: QueryValueType
   toValue: (str: string) => T
   toString: (val: T) => string
-  typeguard: (val: QueryValue) => val is T
+  isType: (val: QueryValue) => val is T
   defaultValue: T
 }
 
-export const queryValueConfigs: QueryValuesConfig<QueryValue>[] = [
+export const queryValueMapping: QueryValuesConfig<QueryValue>[] = [
   {
     type: 'string',
     toValue: toString,
     toString: toString,
-    typeguard: isString,
-    defaultValue: 'foo'
+    isType: isString,
+    defaultValue: 'value'
   },
   {
     type: 'number',
     toValue: toNumber,
     toString: toString,
-    typeguard: isNumber,
+    isType: isNumber,
     defaultValue: 1
   },
   {
     type: 'options',
     toValue: JSON.parse,
     toString: JSON.stringify,
-    typeguard: Array.isArray,
-    defaultValue: ['foo']
+    isType: Array.isArray,
+    defaultValue: ['value1', 'value2']
   },
   {
     type: 'range',
     toValue: JSON.parse,
     toString: JSON.stringify,
-    typeguard: isQueryValueRange,
+    isType: isQueryValueRange,
     defaultValue: {source: 'http://example.com', start: 0, end: 1}
   }
 ]

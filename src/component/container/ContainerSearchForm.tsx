@@ -6,10 +6,7 @@ import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {SelectOption} from "../common/form/SelectOption.tsx";
-import {
-  convertQueryValueByOperator,
-  QueryValueField
-} from "./QueryValueField.tsx";
+import {QueryValueField} from "./QueryValueField.tsx";
 import {FormEvent} from "react";
 import {isEmpty, some} from "lodash";
 
@@ -46,8 +43,7 @@ export function ContainerSearchForm(props: {
 
     onChange({
       ...form,
-      operator: operatorUpdate,
-      value: convertQueryValueByOperator(form.value, operatorUpdate)
+      operator: operatorUpdate
     });
   }
 

@@ -1,13 +1,11 @@
 import {
   QueryOperator,
-  queryOperatorValue,
+  queryOperatorValueType,
   QueryValue,
-  queryValueConfigs,
-  QueryValuesConfig,
-  SearchQuery
+  queryValueMapping,
+  QueryValuesConfig
 } from "../../client/ArModel.ts";
 import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
-import {FieldQueryForm} from "./ContainerSearchForm.tsx";
 import {useEffect, useState} from "react";
 import {orThrow} from "../../util/orThrow.ts";
 import {isEqual} from "lodash";
@@ -21,23 +19,35 @@ export function QueryValueField(props: {
 }) {
 
   const [formValue, setFormValue] = useState<string>(
-    convertQueryValueToString(props.queryValue)
+    toQueryValueString(props.queryValue, props.operator)
   );
 
   useEffect(() => {
-    const isFormValueEqualToQuery = isEqual(
-      convertStringToQueryValue(formValue, props.queryValue),
-      props.queryValue
+    const nextAsString = toQueryValueString(
+      props.queryValue,
+      props.operator
     );
-    if (!isFormValueEqualToQuery) {
-      setFormValue(convertQueryValueToString(props.queryValue))
+    if (!isEqual(nextAsString, formValue)) {
+      handleChange(nextAsString)
     }
   }, [props.queryValue]);
+
+  useEffect(() => {
+    const newValue = updateQueryValueAfterOperatorChange(
+      props.queryValue,
+      props.operator
+    );
+    const updatedValue = toQueryValueString(
+      newValue,
+      props.operator
+    )
+    handleChange(updatedValue)
+  }, [props.operator]);
 
   function handleChange(update: string) {
     setFormValue(update);
     try {
-      const queryUpdate = convertStringToQueryValue(update, props.queryValue);
+      const queryUpdate = toQueryValue(update, props.operator);
       props.onChange(queryUpdate);
       props.onError("")
     } catch (e) {
@@ -53,47 +63,51 @@ export function QueryValueField(props: {
   />
 }
 
-function findQueryConfigByValue(
+function findQueryMappingByValue(
   queryValue: QueryValue
-): QueryValuesConfig<QueryValue> {
-  return queryValueConfigs.find(c => c.typeguard(queryValue))
+) {
+  return queryValueMapping.find(c => c.isType(queryValue))
     ?? orThrow(`Unknown type of query value: ${queryValue}`);
 }
 
-function convertQueryValueToString(
-  queryValue: QueryValue
+function findMapping(operator: QueryOperator) {
+  const byOperator = (operator: QueryOperator) => {
+    return (config: QueryValuesConfig<QueryValue>) => {
+      return config.type === queryOperatorValueType[operator];
+    };
+  }
+
+  return queryValueMapping.find(byOperator(operator))
+    ?? orThrow(`Could not find mapping by operator ${operator}`);
+}
+
+function toQueryValueString(
+  queryValue: QueryValue,
+  operator: QueryOperator
 ): string {
-  return findQueryConfigByValue(queryValue)
-    .toString(queryValue)
+  const mapping = findMapping(operator);
+  return mapping.toString(queryValue)
 }
 
-function convertStringToQueryValue(
+function toQueryValue(
   inputValue: string,
-  queryValue: QueryValue
+  operator: QueryOperator
 ): QueryValue {
-  return findQueryConfigByValue(queryValue)
-    .toValue(inputValue)
+  const mapping = findMapping(operator);
+  return mapping.toValue(inputValue)
 }
 
-export function convertQueryValueByOperator(
+function updateQueryValueAfterOperatorChange(
   currentValue: QueryValue,
   nextOperator: QueryOperator,
 ): QueryValue {
-  const currentValueConfig = findQueryConfigByValue(currentValue)
-  const currentType = queryOperatorValue[nextOperator]
-  if (currentValueConfig.type === currentType) {
+  const currentMapping = findQueryMappingByValue(currentValue)
+  const nextType = queryOperatorValueType[nextOperator]
+  if (currentMapping.type === nextType) {
     return currentValue
   } else {
-    return queryValueConfigs.find(t => t.type === currentType)?.defaultValue
-      ?? orThrow(`No default found for ${currentType}`)
+    const nextMapping = queryValueMapping.find(t => t.type === nextType)
+      ?? orThrow(`No default found for ${nextType}`);
+    return nextMapping.defaultValue
   }
-}
-
-export function convertFormToQuery(
-  form: FieldQueryForm
-): SearchQuery {
-  if (form.operator === QueryOperator.simpleQuery) {
-    return {[form.field]: `${form.value}`}
-  }
-  return {[form.field]: {[form.operator]: form.value}}
 }

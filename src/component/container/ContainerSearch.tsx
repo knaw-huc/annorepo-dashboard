@@ -3,13 +3,17 @@ import {useSearchContainer} from "../../client/endpoint/useSearchContainer.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
 import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
-import {ContainerSearchForm, defaultForm} from "./ContainerSearchForm.tsx";
+import {
+  ContainerSearchForm,
+  defaultForm,
+  FieldQueryForm
+} from "./ContainerSearchForm.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
-import {convertFormToQuery} from "./QueryValueField.tsx";
 import {H1} from "../common/H1.tsx";
 import {mapValues} from "lodash";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
+import {QueryOperator, SearchQuery} from "../../client/ArModel.ts";
 
 export type ContainerSearchProps = {
   name: string,
@@ -22,7 +26,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   const [form, setForm] = useState(defaultForm)
   const [errors, setErrors] = useState(mapValues(defaultForm, _ => ''))
-  const [query, setQuery] = useState(convertFormToQuery(form));
+  const [query, setQuery] = useState(convertToSearchQuery(form));
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(name)
@@ -48,7 +52,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   const handleSubmitSearch = () => {
-    setQuery(convertFormToQuery(form))
+    setQuery(convertToSearchQuery(form))
   }
 
   return <div>
@@ -72,6 +76,11 @@ export function ContainerSearch(props: ContainerSearchProps) {
   </div>
 }
 
-
-
-
+export function convertToSearchQuery(
+  form: FieldQueryForm
+): SearchQuery {
+  if (form.operator === QueryOperator.simpleQuery) {
+    return {[form.field]: `${form.value}`}
+  }
+  return {[form.field]: {[form.operator]: form.value}}
+}
