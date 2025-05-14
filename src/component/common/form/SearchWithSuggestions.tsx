@@ -1,6 +1,7 @@
 import {InputWithLabel} from "./InputWithLabel.tsx";
 import {DropdownItem} from "./DropdownItem.tsx";
 import {useState} from "react";
+import {isEmpty} from "lodash";
 
 export function SearchWithSuggestions(props: {
   label: string
@@ -36,7 +37,7 @@ export function SearchWithSuggestions(props: {
         // Use timeout to prevent suggestions to disappear before being clicked:
         onBlur={() => setTimeout(() => setOpen(false), 200)}
       />
-      <ul
+      {!isEmpty(suggestions) && <ul
         className={className}
       >
         <div className="py-1" role="none">
@@ -48,7 +49,7 @@ export function SearchWithSuggestions(props: {
             />
           )}
         </div>
-      </ul>
+      </ul>}
     </div>
   </div>
 }
