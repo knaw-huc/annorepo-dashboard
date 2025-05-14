@@ -33,9 +33,12 @@ export function ContainerSearchForm(props: {
     }
   }
 
-  const suggestions = containerFields
+  const fieldNames = containerFields
     ? Object.keys(containerFields)
-    : []
+    : [];
+  const suggestions = form.field
+    ? fieldNames.filter(name => name.includes(form.field))
+    : fieldNames
 
   function handleSelectOperator(update: SelectOption) {
     const operatorUpdate = toOperator(update.value)
@@ -107,11 +110,13 @@ export type FieldQueryForm = {
   operator: QueryOperator
   value: QueryValue
 }
+
 export type FieldQueryFormErrors = Record<keyof FieldQueryForm, string>
+
 export const defaultForm: FieldQueryForm = {
-  field: 'body.purpose',
+  field: 'type',
   operator: QueryOperator.equal,
-  value: 'classifying'
+  value: 'Annotation'
 };
 
 
