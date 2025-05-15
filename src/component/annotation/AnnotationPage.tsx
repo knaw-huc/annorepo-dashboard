@@ -13,7 +13,10 @@ export function AnnotationPage(props: {
   const {page, pageNo, onChangePageNo} = props;
   const {prev, next} = page;
   if (!props.page.items.length) {
-    return <p>No results</p>;
+    return <>
+      {props.moreButtons}
+      <p className="mt-5">No results</p>
+    </>;
   }
   return <div>
     <div>
@@ -23,7 +26,7 @@ export function AnnotationPage(props: {
         next={next}
         onChange={onChangePageNo}
       />
-      {props.moreButtons}
+      <span className="mb-2 ml-10">{props.moreButtons}</span>
     </div>
     <AnnotationGrid items={page.items}/>
     <div className="mt-3">

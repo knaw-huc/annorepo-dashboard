@@ -38,8 +38,8 @@ export function ContainerDetail(props: ContainerDetailProps) {
     setPageNo(update)
   }
 
-  if(!container.isSuccess) {
-    return <StatusMessage request={container} />
+  if (!container.isSuccess) {
+    return <StatusMessage request={container}/>
   }
 
   return <div>
@@ -57,7 +57,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
         pageNo={pageNo}
         onChangePageNo={handleChangePage}
         moreButtons={
-          <span className="mb-2 ml-10">
+          <>
             <Button
               onClick={props.onClickCreateAnnotation}
               className="mr-2"
@@ -69,7 +69,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
             >
               Search<Search className="ml-1"/>
             </Button>
-          </span>
+          </>
         }
       />
     }
