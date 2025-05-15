@@ -10,7 +10,7 @@ import cloneDeep from "lodash/cloneDeep";
 import {Textarea} from "../common/form/Textarea.tsx";
 import {Warning} from "../common/Warning.tsx";
 
-const defaultForm: FormAnnotation = {
+const defaultForm: AnnotationPost = {
   "@context": "http://www.w3.org/ns/anno.jsonld",
   type: "Annotation",
   body: JSON.stringify({
@@ -21,7 +21,7 @@ const defaultForm: FormAnnotation = {
   target: "http://www.example.com/world.html",
 }
 
-type FormAnnotation = Omit<ArAnnotation, 'body' | 'id'> & { body: string };
+type AnnotationPost = Omit<ArAnnotation, 'body' | 'id'> & { body: string };
 
 export function AnnotationForm(props: {
   containerName: string,
@@ -60,7 +60,7 @@ export function AnnotationForm(props: {
       onSubmit={handleSubmit}
     >
       <div>
-        <H1>New annotation</H1>
+        <H1>Create annotation</H1>
         <div className="grid grid-cols-2 gap-5">
 
           <div>
@@ -108,17 +108,15 @@ export function AnnotationForm(props: {
               label="Body"
               value={form.body}
               onChange={update => {
-                let parsed: string;
+                let parsed: any;
                 try {
                   parsed = JSON.parse(update);
                   setError('')
                 } catch (e) {
                   setError('Please enter valid json body')
                 }
-                setForm(prev => ({
-                  ...prev,
-                  body: JSON.stringify(parsed, null, 2)
-                }));
+                const body = JSON.stringify(parsed, null, 2);
+                setForm(prev => ({...prev, body}));
               }}
             />
           </div>

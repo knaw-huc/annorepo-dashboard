@@ -13,6 +13,7 @@
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as ContainerIndexImport } from './routes/container/index'
+import { Route as ContainerFormImport } from './routes/container/form'
 import { Route as ContainerContainerNameIndexImport } from './routes/container/$containerName/index'
 import { Route as ContainerContainerNameSearchImport } from './routes/container/$containerName/search'
 import { Route as ContainerContainerNameAnnotationFormImport } from './routes/container/$containerName/annotation/form'
@@ -29,6 +30,12 @@ const IndexRoute = IndexImport.update({
 const ContainerIndexRoute = ContainerIndexImport.update({
   id: '/container/',
   path: '/container/',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ContainerFormRoute = ContainerFormImport.update({
+  id: '/container/form',
+  path: '/container/form',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -69,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/container/form': {
+      id: '/container/form'
+      path: '/container/form'
+      fullPath: '/container/form'
+      preLoaderRoute: typeof ContainerFormImport
       parentRoute: typeof rootRoute
     }
     '/container/': {
@@ -113,6 +127,7 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/container/form': typeof ContainerFormRoute
   '/container': typeof ContainerIndexRoute
   '/container/$containerName/search': typeof ContainerContainerNameSearchRoute
   '/container/$containerName': typeof ContainerContainerNameIndexRoute
@@ -122,6 +137,7 @@ export interface FileRoutesByFullPath {
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/container/form': typeof ContainerFormRoute
   '/container': typeof ContainerIndexRoute
   '/container/$containerName/search': typeof ContainerContainerNameSearchRoute
   '/container/$containerName': typeof ContainerContainerNameIndexRoute
@@ -132,6 +148,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
+  '/container/form': typeof ContainerFormRoute
   '/container/': typeof ContainerIndexRoute
   '/container/$containerName/search': typeof ContainerContainerNameSearchRoute
   '/container/$containerName/': typeof ContainerContainerNameIndexRoute
@@ -143,6 +160,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/container/form'
     | '/container'
     | '/container/$containerName/search'
     | '/container/$containerName'
@@ -151,6 +169,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/container/form'
     | '/container'
     | '/container/$containerName/search'
     | '/container/$containerName'
@@ -159,6 +178,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/container/form'
     | '/container/'
     | '/container/$containerName/search'
     | '/container/$containerName/'
@@ -169,6 +189,7 @@ export interface FileRouteTypes {
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ContainerFormRoute: typeof ContainerFormRoute
   ContainerIndexRoute: typeof ContainerIndexRoute
   ContainerContainerNameSearchRoute: typeof ContainerContainerNameSearchRoute
   ContainerContainerNameIndexRoute: typeof ContainerContainerNameIndexRoute
@@ -178,6 +199,7 @@ export interface RootRouteChildren {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ContainerFormRoute: ContainerFormRoute,
   ContainerIndexRoute: ContainerIndexRoute,
   ContainerContainerNameSearchRoute: ContainerContainerNameSearchRoute,
   ContainerContainerNameIndexRoute: ContainerContainerNameIndexRoute,
@@ -198,6 +220,7 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
+        "/container/form",
         "/container/",
         "/container/$containerName/search",
         "/container/$containerName/",
@@ -207,6 +230,9 @@ export const routeTree = rootRoute
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/container/form": {
+      "filePath": "container/form.tsx"
     },
     "/container/": {
       "filePath": "container/index.tsx"

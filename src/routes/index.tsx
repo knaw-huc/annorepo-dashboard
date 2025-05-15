@@ -10,6 +10,14 @@ export const Route = createFileRoute('/')({
 
 
 function Component() {
+  const navigate = Route.useNavigate()
+
+  async function handleClickContainerForm() {
+    navigate({
+      to: "/container/form",
+    })
+  }
+
   return (
     <Login>
       <Page breadcrumbs={[
@@ -17,7 +25,9 @@ function Component() {
       ]}>
         <AnnoRepoDetail/>
         <Hr/>
-        <ContainerIndex/>
+        <ContainerIndex
+          onClickCreateContainer={handleClickContainerForm}
+        />
       </Page>
     </Login>
   )

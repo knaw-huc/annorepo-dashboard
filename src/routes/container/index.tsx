@@ -5,6 +5,14 @@ import {ToContainers, ToHome} from "../../component/common/BreadcrumbNav.tsx";
 
 export const Route = createFileRoute('/container/')({
   component: () => {
+    const navigate = Route.useNavigate()
+
+    async function handleClickContainerForm() {
+      navigate({
+        to: "/container/form",
+      })
+    }
+
     return (
       <Login>
         <Page breadcrumbs={[
@@ -12,7 +20,9 @@ export const Route = createFileRoute('/container/')({
           <ToContainers/>,
         ]}
         >
-          <ContainerIndex/>
+          <ContainerIndex
+            onClickCreateContainer={handleClickContainerForm}
+          />
         </Page>
       </Login>
     )

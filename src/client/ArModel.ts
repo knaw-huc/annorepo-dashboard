@@ -23,13 +23,15 @@ export type ArAnnotationPage = {
 };
 
 export type ArContainer = {
+  '@context': string[],
   id: string,
   via?: string,
   label: string
   type: string[]
   total: number
   first: ArAnnotationPage
-  last: string
+  last: string,
+  readOnlyForAnonymousUsers: boolean
 }
 
 export type ArQuery = object

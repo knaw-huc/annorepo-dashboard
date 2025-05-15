@@ -6,8 +6,12 @@ import {ContainerCard} from "./ContainerCard.tsx";
 import {toName} from "../../util/toName.ts";
 import isNil from "lodash/isNil";
 import {StatusMessage} from "../common/StatusMessage.tsx";
+import {Button} from "../common/Button.tsx";
+import {Add} from "../common/icon/Add.tsx";
 
-export function ContainerIndex() {
+export function ContainerIndex(props: {
+  onClickCreateContainer: () => void
+}) {
   const {myContainers, details} = useMyContainerDetails();
 
   if(!myContainers.isSuccess || !details.every(d => d.isSuccess)) {
@@ -24,6 +28,13 @@ export function ContainerIndex() {
 
   return <div>
     <H1>Containers</H1>
+    <Button
+      onClick={props.onClickCreateContainer}
+      className="mt-2"
+    >
+      Add
+      <Add className="ml-1"/>
+    </Button>
     <div
       className="grid grid-cols-3 gap-5"
     >
