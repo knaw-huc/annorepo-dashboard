@@ -10,19 +10,6 @@ import cloneDeep from "lodash/cloneDeep";
 import {Textarea} from "../common/form/Textarea.tsx";
 import {Warning} from "../common/Warning.tsx";
 
-const defaultForm: AnnotationPost = {
-  "@context": "http://www.w3.org/ns/anno.jsonld",
-  type: "Annotation",
-  body: JSON.stringify({
-    value: "",
-    type: "TextualBody",
-    purpose: "classifying"
-  }, null, 2),
-  target: "http://www.example.com/world.html",
-}
-
-type AnnotationPost = Omit<ArAnnotation, 'body' | 'id'> & { body: string };
-
 export function AnnotationForm(props: {
   containerName: string,
   onClose: () => void
@@ -126,3 +113,16 @@ export function AnnotationForm(props: {
     </form>
   </>
 }
+
+const defaultForm: AnnotationPost = {
+  "@context": "http://www.w3.org/ns/anno.jsonld",
+  type: "Annotation",
+  body: JSON.stringify({
+    value: "",
+    type: "TextualBody",
+    purpose: "classifying"
+  }, null, 2),
+  target: "http://www.example.com/world.html",
+}
+
+type AnnotationPost = Omit<ArAnnotation, 'body' | 'id'> & { body: string };

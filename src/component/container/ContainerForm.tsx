@@ -8,24 +8,6 @@ import {useState} from "react";
 import cloneDeep from "lodash/cloneDeep";
 import {isString} from "lodash";
 
-const defaultForm: ContainerPost = {
-  '@context': [
-    'http://www.w3.org/ns/anno.jsonld',
-    'http://www.w3.org/ns/ldp.jsonld'
-  ],
-  type: '["Annotation", "SomethingElse"]',
-  label: '',
-  readOnlyForAnonymousUsers: true,
-}
-
-type ContainerPost = Omit<
-  ArContainer,
-  | 'id' | 'via' | 'last' | 'first' | 'total' | 'type'
-> & {
-  // String needs to be converted in json array:
-  type: string
-};
-
 export function ContainerForm(props: {
   onClose: () => void
   onCreate: (annotationName: string) => void
@@ -123,3 +105,21 @@ export function ContainerForm(props: {
     </form>
   </>
 }
+
+const defaultForm: ContainerPost = {
+  '@context': [
+    'http://www.w3.org/ns/anno.jsonld',
+    'http://www.w3.org/ns/ldp.jsonld'
+  ],
+  type: '["Annotation", "SomethingElse"]',
+  label: '',
+  readOnlyForAnonymousUsers: true,
+}
+
+type ContainerPost = Omit<
+  ArContainer,
+  | 'id' | 'via' | 'last' | 'first' | 'total' | 'type'
+> & {
+  // String needs to be converted in json array:
+  type: string
+};
