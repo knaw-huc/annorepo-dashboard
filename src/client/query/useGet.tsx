@@ -38,12 +38,17 @@ export function useGet<P extends Paths<"get">, RESULT>(
   }) as UseQueryResult<RESULT>;
 }
 
+export const allQueryKeys = new Set()
+Object.assign(window, {allQueryKeys})
+
 export function createQueryKey<P extends Paths<"get">>(
   path: P,
   params?: GetParams<P>
 ) {
-  return [path, params?.params]
+  const keys = [path, params?.params]
     .filter(k => !isNil(k));
+  keys.forEach(k => allQueryKeys.add(JSON.stringify(k)))
+  return keys;
 }
 
 

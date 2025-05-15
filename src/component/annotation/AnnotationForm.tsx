@@ -9,6 +9,7 @@ import {useState} from "react";
 import cloneDeep from "lodash/cloneDeep";
 import {Textarea} from "../common/form/Textarea.tsx";
 import {Warning} from "../common/Warning.tsx";
+import {useQueryClient} from "@tanstack/react-query";
 
 export function AnnotationForm(props: {
   containerName: string,
@@ -19,7 +20,7 @@ export function AnnotationForm(props: {
   const [slug, setSlug] = useState('')
   const [form, setForm] = useState(cloneDeep(defaultForm))
   const [error, setError] = useState<string>('')
-
+  const queryClient = useQueryClient()
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
 
   const handleSubmit = () => {
@@ -38,7 +39,13 @@ export function AnnotationForm(props: {
       },
       body: mutationBody,
     }, {
-      onSuccess: (data) => props.onCreate(toName(data.id))
+      onSuccess: async (data) => {
+        await queryClient.invalidateQueries({
+          predicate: (query) =>
+            JSON.stringify(query.queryKey).includes(containerName)
+        })
+        props.onCreate(toName(data.id));
+      }
     })
   }
 

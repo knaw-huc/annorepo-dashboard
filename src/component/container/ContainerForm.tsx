@@ -7,11 +7,14 @@ import {toName} from "../../util/toName.ts";
 import {useState} from "react";
 import cloneDeep from "lodash/cloneDeep";
 import {isString} from "lodash";
+import {useQueryClient} from "@tanstack/react-query";
 
 export function ContainerForm(props: {
   onClose: () => void
   onCreate: (annotationName: string) => void
 }) {
+  const queryClient = useQueryClient()
+
   const [slug, setSlug] = useState('')
   const [form, setForm] = useState(cloneDeep(defaultForm))
   const [error, setError] = useState<string>('')
@@ -34,7 +37,11 @@ export function ContainerForm(props: {
       },
       body: mutationBody,
     }, {
-      onSuccess: (data) => props.onCreate(toName(data.id))
+      onSuccess: async (data) => {
+        props.onCreate(toName(data.id));
+        await queryClient.invalidateQueries({queryKey: ['/my/containers']})
+        props.onCreate(toName(data.id));
+      }
     })
   }
 
