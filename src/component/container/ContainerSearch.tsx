@@ -73,25 +73,31 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setQuery(convertToSearchQuery(subqueryForms))
   }
 
-  const handleChangeSubquery = (subQuery: FieldQueryForm, field: string) => {
-    setSubqueryForms(fs => fs.map(f => f.field === field ? subQuery : f))
+  const handleChangeSubquery = (next: FieldQueryForm, index: number) => {
+    setSubqueryForms(prev => prev.map((old, i) =>
+      i === index ? next : old
+    ))
   }
 
-  const handleSubqueryError = (error: FieldQueryFormErrors, fieldName: string) => {
-    setSubqueryErrors(es => es.filter(e => e.field === fieldName ? error : e))
+  const handleSubqueryError = (next: FieldQueryFormErrors, index: number) => {
+    setSubqueryErrors(prev => prev.map((errorForm, i) =>
+      i === index ? {...errorForm, errors: next} : errorForm
+    ))
   }
 
   return <div>
     <H1>Search annotations</H1>
-    {subqueryForms.map(f => <SubQuerySearchForm
-      key={f.field}
-      containerName={name}
-      form={subqueryForms[0]}
-      onChange={(es) => handleChangeSubquery(es, f.field)}
-      onSubmit={handleSubmitSearch}
-      errors={subqueryErrors[0].errors}
-      onError={(es) => handleSubqueryError(es, f.field)}
-    />)}
+    {subqueryForms.map((f, i) => {
+      return <SubQuerySearchForm
+        key={i}
+        containerName={name}
+        form={f}
+        onChange={(es) => handleChangeSubquery(es, i)}
+        onSubmit={handleSubmitSearch}
+        errors={subqueryErrors[i].errors}
+        onError={(es) => handleSubqueryError(es, i)}
+      />;
+    })}
     {page
       ? <AnnotationPage
         pageNo={pageNo}
@@ -102,7 +108,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
     }
   </div>
 }
-
 
 export function convertToSearchQuery(
   forms: FieldQueryForm[]
