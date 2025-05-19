@@ -5,6 +5,8 @@ import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {SelectOption} from "../common/form/SelectOption.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
+import {Button} from "../common/Button.tsx";
+import {Remove} from "../common/icon/Remove.tsx";
 
 export function SubQuerySearchForm(props: {
   containerName: string,
@@ -14,6 +16,8 @@ export function SubQuerySearchForm(props: {
 
   errors: FieldQueryFormErrors
   onError: (error: FieldQueryFormErrors) => void;
+
+  onRemove: () => void
 }) {
   const {containerName, form, onChange, errors, onError} = props;
   const {data: containerFields} = useContainerFields(containerName);
@@ -44,7 +48,7 @@ export function SubQuerySearchForm(props: {
     }))
 
   return <form onSubmit={e => e.preventDefault()}>
-    <div className="flex mb-5 mt-2">
+    <div className="flex mb-3 mt-2">
       <div className="flex-auto mr-2">
         <QueryFieldInput
           value={form.field}
@@ -71,6 +75,16 @@ export function SubQuerySearchForm(props: {
           onError={error => onError({...errors, value: error})}
         />
       </div>
+      <div className="flex-none">
+        <Button
+          type="button"
+          className="pl-3 h-full border-b-2"
+          onClick={props.onRemove}
+          secondary
+        >
+          <Remove className="ml-1"/>
+        </Button>
+      </div>
     </div>
   </form>
 
@@ -82,7 +96,10 @@ export type FieldQueryForm = {
   value: QueryValue
 }
 export type FieldQueryFormErrors = Record<keyof FieldQueryForm, string>;
-export type FieldQueryFormErrorsByField = {field: string, errors: FieldQueryFormErrors}
+export type FieldQueryFormErrorsByField = {
+  field: string,
+  errors: FieldQueryFormErrors
+}
 
 export const defaultForm: FieldQueryForm = Object.freeze({
   field: 'type',

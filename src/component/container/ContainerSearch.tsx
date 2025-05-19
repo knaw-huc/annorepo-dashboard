@@ -1,7 +1,7 @@
 import {Loading} from "../common/Loading.tsx";
 import {useSearchContainer} from "../../client/endpoint/useSearchContainer.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
-import {FormEvent, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {
   defaultForm,
@@ -25,6 +25,9 @@ import {
 import {objectEntries} from "../../util/objectEntries.ts";
 import {Button} from "../common/Button.tsx";
 import {Next} from "../common/icon/Next.tsx";
+import cloneDeep from "lodash/cloneDeep";
+import {Add} from "../common/icon/Add.tsx";
+import {Warning} from "../common/Warning.tsx";
 
 export type ContainerSearchProps = {
   name: string,
@@ -35,18 +38,17 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   const {name} = props;
 
-  const [subqueryForms, setSubqueryForms] = useState([defaultForm])
-
-  const [subqueryErrors, setSubqueryErrors] = useState<
-    FieldQueryFormErrorsByField[]
-  >([
-    {
-      field: defaultForm.field,
-      errors: mapValues(defaultForm, _ => '')
-    }
+  const newForm = createNewForm();
+  const [subqueryForms, setSubqueryForms] = useState([
+    newForm
   ])
-
-  const [query, setQuery] = useState(convertToSubquery(defaultForm));
+  const [query, setQuery] = useState(
+    convertToSearchQuery([newForm])
+  );
+  const [subqueryErrors, setSubqueryErrors] = useState([
+    createNewErrorForm(newForm)
+  ])
+  const [queryError, setQueryError] = useState('')
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(name)
@@ -83,32 +85,64 @@ export function ContainerSearch(props: ContainerSearchProps) {
     ))
   }
 
-  const handleSubmitSearch = (e?: FormEvent<HTMLFormElement>) => {
-    e?.preventDefault();
+  const handleSubmitSearch = () => {
     if (hasError(subqueryErrors)) {
       return;
     }
     setQuery(convertToSearchQuery(subqueryForms))
   }
 
+  const handleAddSubquery = () => {
+    const newForm = createNewForm()
+    const formUpdate = [...subqueryForms, newForm];
+    const errorUpdate = [...subqueryErrors, createNewErrorForm(newForm)];
+    try {
+      convertToSearchQuery(formUpdate);
+
+      setSubqueryForms(formUpdate)
+      setSubqueryErrors(errorUpdate)
+      setQueryError('')
+    } catch (e) {
+      let errorMessage = e instanceof Error ? e.message : ``;
+      setQueryError(['Could not add subquery', errorMessage].join(': '))
+    }
+  }
+
+  const handleRemoveSubquery = (index: number) => {
+    setSubqueryErrors(prev => prev.splice(index, 1))
+    setSubqueryForms(prev => prev.splice(index, 1))
+  }
 
   return <div>
     <H1>Search annotations</H1>
+    {queryError && <Warning>{queryError}</Warning>}
     {subqueryForms.map((f, i) => {
       return <SubQuerySearchForm
-        key={i}
+        key={`${i}${f.field}`}
         containerName={name}
         form={f}
         onChange={(es) => handleChangeSubquery(es, i)}
         errors={subqueryErrors[i].errors}
         onError={(es) => handleSubqueryError(es, i)}
+        onRemove={() => handleRemoveSubquery(i)}
       />;
     })}
-    <div>
+    <div className="mb-7">
+
       <Button
-        disabled={hasError(subqueryErrors)}
         type="button"
-        className="pl-5 h-full border-b-2"
+        className="pl-3 h-full border-b-2"
+        onClick={handleAddSubquery}
+        secondary
+      >
+        <Add className="mr-2" />
+        Subquery
+      </Button>
+
+      <Button
+        disabled={error || !subqueryForms.length || hasError(subqueryErrors)}
+        type="button"
+        className="pl-5 h-full border-b-2 ml-2"
         onClick={handleSubmitSearch}
       >
         Search
@@ -126,6 +160,19 @@ export function ContainerSearch(props: ContainerSearchProps) {
   </div>
 }
 
+function createNewErrorForm(
+  form: FieldQueryForm
+): FieldQueryFormErrorsByField {
+  return {
+    field: form.field,
+    errors: mapValues(form, _ => '')
+  };
+}
+
+function createNewForm() {
+  return cloneDeep(defaultForm);
+}
+
 function hasError(forms: FieldQueryFormErrorsByField[]) {
   return some(forms, form =>
     values(form.errors).some(
@@ -134,10 +181,10 @@ function hasError(forms: FieldQueryFormErrorsByField[]) {
   );
 }
 
-export function convertToSearchQuery(
+function convertToSearchQuery(
   forms: FieldQueryForm[]
 ): SearchQuery {
-  let subqueries = forms.map(f => convertToSubquery(f));
+  const subqueries = forms.map(f => convertToSubquery(f));
   return mergeForms(subqueries)
 }
 
@@ -152,11 +199,11 @@ function mergeForms(
     }
     for (const [key, value] of objectEntries(subquery)) {
       if (!key) {
-        throw new Error(`Subquery needs a key, value was: ${JSON.stringify(value)}`)
+        throw new Error(`Subquery needs a key (value was: ${JSON.stringify(value)})`)
       }
       if (key in merged) {
         throw new Error(
-          `Overlap detected: Property '${key}' already exists in the merged object.`
+          `Overlap detected: Property '${key}' already exists.`
         );
       }
       merged[key] = value;
@@ -166,7 +213,7 @@ function mergeForms(
   return merged;
 }
 
-export function convertToSubquery(
+function convertToSubquery(
   form: FieldQueryForm
 ): SearchSubquery {
   if (form.operator === QueryOperator.simpleQuery) {
