@@ -4,20 +4,25 @@ import {useContainer} from "../../client/endpoint/useContainer.tsx";
 import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {
-  ContainerSearchForm,
   defaultForm,
-  FieldQueryForm
-} from "./ContainerSearchForm.tsx";
+  FieldQueryForm,
+  FieldQueryFormErrors,
+  FieldQueryFormErrorsByField,
+  SubQuerySearchForm
+} from "./SubQuerySearchForm.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {H1} from "../common/H1.tsx";
 import {mapValues} from "lodash";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {
-  isRangeQueryValue, isRangeQueryOperator,
+  isRangeQueryOperator,
+  isRangeQueryValue,
   QueryOperator,
-  SearchQuery
+  SearchQuery,
+  SearchSubquery
 } from "../../client/ArModel.ts";
+import {objectEntries} from "../../util/objectEntries.ts";
 
 export type ContainerSearchProps = {
   name: string,
@@ -28,9 +33,18 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   const {name} = props;
 
-  const [form, setForm] = useState(defaultForm)
-  const [errors, setErrors] = useState(mapValues(defaultForm, _ => ''))
-  const [query, setQuery] = useState(convertToSearchQuery(defaultForm));
+  const [subqueryForms, setSubqueryForms] = useState([defaultForm])
+
+  const [subqueryErrors, setSubqueryErrors] = useState<
+    FieldQueryFormErrorsByField[]
+  >([
+    {
+      field: defaultForm.field,
+      errors: mapValues(defaultForm, _ => '')
+    }
+  ])
+
+  const [query, setQuery] = useState(convertToSubquery(defaultForm));
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(name)
@@ -48,7 +62,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     return <ErrorMessage error={error}/>;
   }
   if (!container.isSuccess || !page.isSuccess) {
-    return <StatusMessage requests={[container, page]} />;
+    return <StatusMessage requests={[container, page]}/>;
   }
 
   const handleChangePage = (update: string) => {
@@ -56,19 +70,28 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   const handleSubmitSearch = () => {
-    setQuery(convertToSearchQuery(form))
+    setQuery(convertToSearchQuery(subqueryForms))
+  }
+
+  const handleChangeSubquery = (subQuery: FieldQueryForm, field: string) => {
+    setSubqueryForms(fs => fs.map(f => f.field === field ? subQuery : f))
+  }
+
+  const handleSubqueryError = (error: FieldQueryFormErrors, fieldName: string) => {
+    setSubqueryErrors(es => es.filter(e => e.field === fieldName ? error : e))
   }
 
   return <div>
     <H1>Search annotations</H1>
-    <ContainerSearchForm
+    {subqueryForms.map(f => <SubQuerySearchForm
+      key={f.field}
       containerName={name}
-      form={form}
-      onChange={setForm}
+      form={subqueryForms[0]}
+      onChange={(es) => handleChangeSubquery(es, f.field)}
       onSubmit={handleSubmitSearch}
-      errors={errors}
-      onError={setErrors}
-    />
+      errors={subqueryErrors[0].errors}
+      onError={(es) => handleSubqueryError(es, f.field)}
+    />)}
     {page
       ? <AnnotationPage
         pageNo={pageNo}
@@ -80,13 +103,46 @@ export function ContainerSearch(props: ContainerSearchProps) {
   </div>
 }
 
+
 export function convertToSearchQuery(
-  form: FieldQueryForm
+  forms: FieldQueryForm[]
 ): SearchQuery {
+  let subqueries = forms.map(f => convertToSubquery(f));
+  return mergeForms(subqueries)
+}
+
+function mergeForms(
+  subqueries: SearchSubquery[]
+): SearchQuery {
+  const merged: Record<string, any> = {};
+  for (const subquery of subqueries) {
+    const fields = Object.keys(subquery)
+    if (fields.length > 1) {
+      throw new Error('Expect one field per subquery')
+    }
+    for (const [key, value] of objectEntries(subquery)) {
+      if (!key) {
+        throw new Error(`Subquery needs a key, value was: ${JSON.stringify(value)}`)
+      }
+      if (key in merged) {
+        throw new Error(
+          `Overlap detected: Property '${key}' already exists in the merged object.`
+        );
+      }
+      merged[key] = value;
+    }
+  }
+
+  return merged;
+}
+
+export function convertToSubquery(
+  form: FieldQueryForm
+): SearchSubquery {
   if (form.operator === QueryOperator.simpleQuery) {
     return {[form.field]: `${form.value}`}
-  } else if(isRangeQueryOperator(form.operator)) {
-    if(!isRangeQueryValue(form.value)) {
+  } else if (isRangeQueryOperator(form.operator)) {
+    if (!isRangeQueryValue(form.value)) {
       throw new Error('Expected range but got: ' + JSON.stringify(form.value))
     }
     return {[form.operator]: form.value}

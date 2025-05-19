@@ -10,7 +10,7 @@ import {FormEvent} from "react";
 import {isEmpty, some} from "lodash";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 
-export function ContainerSearchForm(props: {
+export function SubQuerySearchForm(props: {
   containerName: string,
 
   form: FieldQueryForm
@@ -108,8 +108,8 @@ export type FieldQueryForm = {
   operator: QueryOperator
   value: QueryValue
 }
-
-export type FieldQueryFormErrors = Record<keyof FieldQueryForm, string>
+export type FieldQueryFormErrors = Record<keyof FieldQueryForm, string>;
+export type FieldQueryFormErrorsByField = {field: string, errors: FieldQueryFormErrors}
 
 export const defaultForm: FieldQueryForm = Object.freeze({
   field: 'type',

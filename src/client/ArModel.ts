@@ -87,7 +87,9 @@ export function toOperator(value: string): QueryOperator | null {
   return value as QueryOperator;
 }
 
-export type SearchQuery =
+export type SearchQuery = Record<string, any>;
+
+export type SearchSubquery =
   | SimpleQuery
   | FieldQuery
   | RangeQuery

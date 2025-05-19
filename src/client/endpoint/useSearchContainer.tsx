@@ -11,7 +11,7 @@ export function useSearchContainer(
   pageNo: number = 0,
 ): Record<string, QR> {
   const client = useOpenApiClient()
-
+  console.log('useSearchContainer', {containerName, query, pageNo})
   const queryKey = [containerName, query];
   const search = useQuery({
     queryKey,
