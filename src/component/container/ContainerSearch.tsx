@@ -195,15 +195,15 @@ function mergeForms(
   for (const subquery of subqueries) {
     const fields = Object.keys(subquery)
     if (fields.length > 1) {
-      throw new Error('Expect one field per subquery')
+      throw new Error('expect one field per subquery')
     }
     for (const [key, value] of objectEntries(subquery)) {
       if (!key) {
-        throw new Error(`Subquery needs a key (value was: ${JSON.stringify(value)})`)
+        throw new Error(`subquery needs a key (value was: ${JSON.stringify(value)})`)
       }
       if (key in merged) {
         throw new Error(
-          `Overlap detected: Property '${key}' already exists.`
+          `field '${key}' already exists.`
         );
       }
       merged[key] = value;
