@@ -74,8 +74,8 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   const handleChangeSubquery = (next: FieldQueryForm, index: number) => {
-    setSubqueryForms(prev => prev.map((old, i) =>
-      i === index ? next : old
+    setSubqueryForms(prev => prev.map((form, i) =>
+      i === index ? next : form
     ))
   }
 
@@ -118,7 +118,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     {queryError && <Warning>{queryError}</Warning>}
     {subqueryForms.map((f, i) => {
       return <SubQuerySearchForm
-        key={`${i}${f.field}`}
+        key={i}
         containerName={name}
         form={f}
         onChange={(es) => handleChangeSubquery(es, i)}
