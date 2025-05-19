@@ -1,13 +1,9 @@
-import {Button} from "../common/Button.tsx";
 import {QueryOperator, QueryValue, toOperator} from "../../client/ArModel.ts";
 import {Dropdown} from "../common/form/Dropdown.tsx";
 import {orThrow} from "../../util/orThrow.ts";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
-import {Next} from "../common/icon/Next.tsx";
 import {SelectOption} from "../common/form/SelectOption.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
-import {FormEvent} from "react";
-import {isEmpty, some} from "lodash";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 
 export function SubQuerySearchForm(props: {
@@ -15,20 +11,12 @@ export function SubQuerySearchForm(props: {
 
   form: FieldQueryForm
   onChange: (form: FieldQueryForm) => void;
-  onSubmit: () => void;
 
   errors: FieldQueryFormErrors
   onError: (error: FieldQueryFormErrors) => void;
 }) {
   const {containerName, form, onChange, errors, onError} = props;
   const {data: containerFields} = useContainerFields(containerName);
-
-  const onSubmit = (e?: FormEvent<HTMLFormElement>) => {
-    e?.preventDefault();
-    if (!hasError(props.errors)) {
-      props.onSubmit()
-    }
-  }
 
   const fieldNames = containerFields
     ? Object.keys(containerFields)
@@ -55,7 +43,7 @@ export function SubQuerySearchForm(props: {
       value: v
     }))
 
-  return <form onSubmit={onSubmit}>
+  return <form onSubmit={e => e.preventDefault()}>
     <div className="flex mb-5 mt-2">
       <div className="flex-auto mr-2">
         <QueryFieldInput
@@ -83,24 +71,9 @@ export function SubQuerySearchForm(props: {
           onError={error => onError({...errors, value: error})}
         />
       </div>
-      <div className="flex-none">
-        <Button
-          disabled={hasError(props.errors)}
-          type="submit"
-          className="pl-5 h-full border-b-2"
-          onClick={onSubmit}
-        >
-          Search
-          <Next className="ml-1"/>
-        </Button>
-      </div>
     </div>
   </form>
 
-}
-
-function hasError(errors: Record<string, string>) {
-  return some(errors, e => !isEmpty(e));
 }
 
 export type FieldQueryForm = {

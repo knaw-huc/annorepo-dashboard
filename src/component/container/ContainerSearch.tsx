@@ -1,7 +1,7 @@
 import {Loading} from "../common/Loading.tsx";
 import {useSearchContainer} from "../../client/endpoint/useSearchContainer.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
-import {useEffect, useState} from "react";
+import {FormEvent, useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {
   defaultForm,
@@ -12,7 +12,7 @@ import {
 } from "./SubQuerySearchForm.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {H1} from "../common/H1.tsx";
-import {mapValues} from "lodash";
+import {isEmpty, mapValues, some, values} from "lodash";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {
@@ -23,6 +23,8 @@ import {
   SearchSubquery
 } from "../../client/ArModel.ts";
 import {objectEntries} from "../../util/objectEntries.ts";
+import {Button} from "../common/Button.tsx";
+import {Next} from "../common/icon/Next.tsx";
 
 export type ContainerSearchProps = {
   name: string,
@@ -69,10 +71,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setPageNo(toPageNo(update))
   }
 
-  const handleSubmitSearch = () => {
-    setQuery(convertToSearchQuery(subqueryForms))
-  }
-
   const handleChangeSubquery = (next: FieldQueryForm, index: number) => {
     setSubqueryForms(prev => prev.map((old, i) =>
       i === index ? next : old
@@ -85,6 +83,15 @@ export function ContainerSearch(props: ContainerSearchProps) {
     ))
   }
 
+  const handleSubmitSearch = (e?: FormEvent<HTMLFormElement>) => {
+    e?.preventDefault();
+    if (hasError(subqueryErrors)) {
+      return;
+    }
+    setQuery(convertToSearchQuery(subqueryForms))
+  }
+
+
   return <div>
     <H1>Search annotations</H1>
     {subqueryForms.map((f, i) => {
@@ -93,11 +100,21 @@ export function ContainerSearch(props: ContainerSearchProps) {
         containerName={name}
         form={f}
         onChange={(es) => handleChangeSubquery(es, i)}
-        onSubmit={handleSubmitSearch}
         errors={subqueryErrors[i].errors}
         onError={(es) => handleSubqueryError(es, i)}
       />;
     })}
+    <div>
+      <Button
+        disabled={hasError(subqueryErrors)}
+        type="button"
+        className="pl-5 h-full border-b-2"
+        onClick={handleSubmitSearch}
+      >
+        Search
+        <Next className="ml-1"/>
+      </Button>
+    </div>
     {page
       ? <AnnotationPage
         pageNo={pageNo}
@@ -107,6 +124,14 @@ export function ContainerSearch(props: ContainerSearchProps) {
       : <Loading/>
     }
   </div>
+}
+
+function hasError(forms: FieldQueryFormErrorsByField[]) {
+  return some(forms, form =>
+    values(form.errors).some(
+      field => !isEmpty(field)
+    )
+  );
 }
 
 export function convertToSearchQuery(
