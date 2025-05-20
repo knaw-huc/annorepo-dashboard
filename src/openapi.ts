@@ -71,20 +71,19 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/services/{containerName}/indexes/{fieldName}/{indexType}": {
+    "/services/{containerName}/indexes": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description Get an index definition */
-        get: operations["getContainerIndexDefinition"];
-        /** @description Add an index */
-        put: operations["addContainerIndex"];
-        post?: never;
-        /** @description Delete a container index */
-        delete: operations["deleteContainerIndex"];
+        /** @description List a container's indexes */
+        get: operations["getContainerIndexes"];
+        put?: never;
+        /** @description Add a multi-field index */
+        post: operations["addContainerIndex"];
+        delete?: never;
         options?: never;
         head?: never;
         patch?: never;
@@ -125,6 +124,24 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/services/{containerName}/indexes/{indexId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Get an index definition */
+        get: operations["getContainerIndexDefinition"];
+        put?: never;
+        post?: never;
+        /** @description Delete a container index */
+        delete: operations["deleteContainerIndex"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/services/{containerName}/users/{userName}": {
         parameters: {
             query?: never;
@@ -159,7 +176,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/services/{containerName}/indexes/{fieldName}/{indexType}/status": {
+    "/services/{containerName}/indexes/{indexId}/status": {
         parameters: {
             query?: never;
             header?: never;
@@ -176,15 +193,15 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/services/{containerName}/indexes": {
+    "/services/{containerName}/custom-query/{queryCall}/collection": {
         parameters: {
             query?: never;
             header?: never;
             path?: never;
             cookie?: never;
         };
-        /** @description List a container's indexes */
-        get: operations["getContainerIndexes"];
+        /** @description Get the AnnotationCollection of the given custom query */
+        get: operations["getCustomQueryAnnotationCollection"];
         put?: never;
         post?: never;
         delete?: never;
@@ -236,6 +253,23 @@ export interface paths {
         };
         /** @description Get some container metadata */
         get: operations["getMetadataForContainer"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/services/{containerName}/search/{searchId}/mongo-explain-command": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description Show the mongo explain command for the given query */
+        get: operations["getMongoExplainForSearch"];
         put?: never;
         post?: never;
         delete?: never;
@@ -358,7 +392,8 @@ export interface paths {
         get: operations["getCustomQuery"];
         put?: never;
         post?: never;
-        delete?: never;
+        /** @description Delete a custom query */
+        delete: operations["deleteCustomQuery"];
         options?: never;
         head?: never;
         patch?: never;
@@ -499,11 +534,23 @@ export interface components {
             withAuthentication: boolean;
             sourceCode: string;
             mongoVersion: string;
+            grpcHostName: string;
+            /** Format: int32 */
+            grpcPort: number;
         };
         ContainerUserEntry: {
             userName: string;
             /** @enum {string} */
             role: "GUEST" | "EDITOR" | "ADMIN" | "ROOT";
+        };
+        CustomQuerySpecs: {
+            name: string;
+            query: {
+                [key: string]: Record<string, never>;
+            };
+            label?: string;
+            description?: string;
+            public?: boolean;
         };
         ContainerSpecs: {
             "@context": string[];
@@ -636,14 +683,12 @@ export interface operations {
             };
         };
     };
-    getContainerIndexDefinition: {
+    getContainerIndexes: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 containerName: string;
-                fieldName: string;
-                indexType: string;
             };
             cookie?: never;
         };
@@ -666,36 +711,16 @@ export interface operations {
             header?: never;
             path: {
                 containerName: string;
-                fieldName: string;
-                indexType: string;
             };
             cookie?: never;
         };
-        requestBody?: never;
-        responses: {
-            /** @description default response */
-            default: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": unknown;
+        requestBody?: {
+            content: {
+                "*/*": {
+                    [key: string]: string;
                 };
             };
         };
-    };
-    deleteContainerIndex: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                containerName: string;
-                fieldName: string;
-                indexType: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
         responses: {
             /** @description default response */
             default: {
@@ -782,6 +807,52 @@ export interface operations {
             };
         };
     };
+    getContainerIndexDefinition: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                containerName: string;
+                indexId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    deleteContainerIndex: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                containerName: string;
+                indexId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
     deleteContainerUser: {
         parameters: {
             query?: never;
@@ -833,8 +904,7 @@ export interface operations {
             header?: never;
             path: {
                 containerName: string;
-                fieldName: string;
-                indexType: string;
+                indexId: string;
             };
             cookie?: never;
         };
@@ -851,12 +921,13 @@ export interface operations {
             };
         };
     };
-    getContainerIndexes: {
+    getCustomQueryAnnotationCollection: {
         parameters: {
             query?: never;
             header?: never;
             path: {
                 containerName: string;
+                queryCall: string;
             };
             cookie?: never;
         };
@@ -943,6 +1014,29 @@ export interface operations {
             };
         };
     };
+    getMongoExplainForSearch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                containerName: string;
+                searchId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
     getSearchInfo: {
         parameters: {
             query?: never;
@@ -971,7 +1065,9 @@ export interface operations {
             query?: {
                 page?: number;
             };
-            header?: never;
+            header?: {
+                "User-Agent"?: string;
+            };
             path: {
                 containerName: string;
                 searchId: string;
@@ -1074,7 +1170,7 @@ export interface operations {
         };
         requestBody?: {
             content: {
-                "application/json": string;
+                "application/json": components["schemas"]["CustomQuerySpecs"];
             };
         };
         responses: {
@@ -1114,6 +1210,28 @@ export interface operations {
         };
     };
     getCustomQuery: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                customQueryName: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description default response */
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": unknown;
+                };
+            };
+        };
+    };
+    deleteCustomQuery: {
         parameters: {
             query?: never;
             header?: never;

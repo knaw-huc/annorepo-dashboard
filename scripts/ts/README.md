@@ -6,9 +6,11 @@ npm install
 `
 
 ## Create client: 
-`
-npm run create-client
-`
-Configure:
+Configurable:
 - `OPEN_API_ENDPOINT`
 - `RESULT_TYPES_PATH`
+
+Run: `
+npm run create-client
+`
+
