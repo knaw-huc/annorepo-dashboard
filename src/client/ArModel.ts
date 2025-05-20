@@ -33,7 +33,6 @@ export type ArContainer = {
   last: string,
   readOnlyForAnonymousUsers: boolean
 }
-
 export type ArQuery = object
 
 export type ArAnnotation<T extends object = object> = {
@@ -173,3 +172,14 @@ export const queryValueMapping: QueryValuesConfig<QueryValue>[] = [
     defaultValue: {source: 'http://example.com', start: 0, end: 1}
   }
 ]
+
+export type ArCustomQuery = {
+  "name": string,
+  "description": string,
+  "label": string,
+  "created": string,
+  "createdBy": string,
+  "public": boolean,
+  "queryTemplate": string,
+  "parameters": string[]
+}

@@ -3,22 +3,23 @@ import {Card} from "../common/Card.tsx";
 import {A} from "../common/A.tsx";
 import {External} from "../common/icon/External.tsx";
 import {Link} from "@tanstack/react-router";
-import {Loading} from "../common/Loading.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
 import {toName} from "../../util/toName.ts";
 import {H5} from "../common/H5.tsx";
+import {StatusMessage} from "../common/StatusMessage.tsx";
 
 
 export function ContainerCard(props: PropsWithChildren<{
   name: string
 }>) {
   const {name} = props;
-  const {data: container} = useContainer(name)
+  const containerRequest = useContainer(name)
 
-  if (!container) {
-    return <Loading/>;
+  if (!containerRequest.isSuccess) {
+    return <StatusMessage request={containerRequest}/>
   }
 
+  const container = containerRequest.data;
   return <Card
     header={
       <Link

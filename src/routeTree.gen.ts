@@ -12,7 +12,9 @@
 
 import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
+import { Route as CustomQueryIndexImport } from './routes/custom-query/index'
 import { Route as ContainerIndexImport } from './routes/container/index'
+import { Route as CustomQueryCustomQueryNameImport } from './routes/custom-query/$customQueryName'
 import { Route as ContainerFormImport } from './routes/container/form'
 import { Route as ContainerContainerNameIndexImport } from './routes/container/$containerName/index'
 import { Route as ContainerContainerNameSearchImport } from './routes/container/$containerName/search'
@@ -27,11 +29,25 @@ const IndexRoute = IndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const CustomQueryIndexRoute = CustomQueryIndexImport.update({
+  id: '/custom-query/',
+  path: '/custom-query/',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const ContainerIndexRoute = ContainerIndexImport.update({
   id: '/container/',
   path: '/container/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const CustomQueryCustomQueryNameRoute = CustomQueryCustomQueryNameImport.update(
+  {
+    id: '/custom-query/$customQueryName',
+    path: '/custom-query/$customQueryName',
+    getParentRoute: () => rootRoute,
+  } as any,
+)
 
 const ContainerFormRoute = ContainerFormImport.update({
   id: '/container/form',
@@ -85,11 +101,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContainerFormImport
       parentRoute: typeof rootRoute
     }
+    '/custom-query/$customQueryName': {
+      id: '/custom-query/$customQueryName'
+      path: '/custom-query/$customQueryName'
+      fullPath: '/custom-query/$customQueryName'
+      preLoaderRoute: typeof CustomQueryCustomQueryNameImport
+      parentRoute: typeof rootRoute
+    }
     '/container/': {
       id: '/container/'
       path: '/container'
       fullPath: '/container'
       preLoaderRoute: typeof ContainerIndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/custom-query/': {
+      id: '/custom-query/'
+      path: '/custom-query'
+      fullPath: '/custom-query'
+      preLoaderRoute: typeof CustomQueryIndexImport
       parentRoute: typeof rootRoute
     }
     '/container/$containerName/search': {
@@ -128,7 +158,9 @@ declare module '@tanstack/react-router' {
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/container/form': typeof ContainerFormRoute
+  '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
   '/container': typeof ContainerIndexRoute
+  '/custom-query': typeof CustomQueryIndexRoute
   '/container/$containerName/search': typeof ContainerContainerNameSearchRoute
   '/container/$containerName': typeof ContainerContainerNameIndexRoute
   '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
@@ -138,7 +170,9 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/container/form': typeof ContainerFormRoute
+  '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
   '/container': typeof ContainerIndexRoute
+  '/custom-query': typeof CustomQueryIndexRoute
   '/container/$containerName/search': typeof ContainerContainerNameSearchRoute
   '/container/$containerName': typeof ContainerContainerNameIndexRoute
   '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
@@ -149,7 +183,9 @@ export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
   '/container/form': typeof ContainerFormRoute
+  '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
   '/container/': typeof ContainerIndexRoute
+  '/custom-query/': typeof CustomQueryIndexRoute
   '/container/$containerName/search': typeof ContainerContainerNameSearchRoute
   '/container/$containerName/': typeof ContainerContainerNameIndexRoute
   '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
@@ -161,7 +197,9 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/container/form'
+    | '/custom-query/$customQueryName'
     | '/container'
+    | '/custom-query'
     | '/container/$containerName/search'
     | '/container/$containerName'
     | '/container/$containerName/annotation/$annotationName'
@@ -170,7 +208,9 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/container/form'
+    | '/custom-query/$customQueryName'
     | '/container'
+    | '/custom-query'
     | '/container/$containerName/search'
     | '/container/$containerName'
     | '/container/$containerName/annotation/$annotationName'
@@ -179,7 +219,9 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/container/form'
+    | '/custom-query/$customQueryName'
     | '/container/'
+    | '/custom-query/'
     | '/container/$containerName/search'
     | '/container/$containerName/'
     | '/container/$containerName/annotation/$annotationName'
@@ -190,7 +232,9 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ContainerFormRoute: typeof ContainerFormRoute
+  CustomQueryCustomQueryNameRoute: typeof CustomQueryCustomQueryNameRoute
   ContainerIndexRoute: typeof ContainerIndexRoute
+  CustomQueryIndexRoute: typeof CustomQueryIndexRoute
   ContainerContainerNameSearchRoute: typeof ContainerContainerNameSearchRoute
   ContainerContainerNameIndexRoute: typeof ContainerContainerNameIndexRoute
   ContainerContainerNameAnnotationAnnotationNameRoute: typeof ContainerContainerNameAnnotationAnnotationNameRoute
@@ -200,7 +244,9 @@ export interface RootRouteChildren {
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   ContainerFormRoute: ContainerFormRoute,
+  CustomQueryCustomQueryNameRoute: CustomQueryCustomQueryNameRoute,
   ContainerIndexRoute: ContainerIndexRoute,
+  CustomQueryIndexRoute: CustomQueryIndexRoute,
   ContainerContainerNameSearchRoute: ContainerContainerNameSearchRoute,
   ContainerContainerNameIndexRoute: ContainerContainerNameIndexRoute,
   ContainerContainerNameAnnotationAnnotationNameRoute:
@@ -221,7 +267,9 @@ export const routeTree = rootRoute
       "children": [
         "/",
         "/container/form",
+        "/custom-query/$customQueryName",
         "/container/",
+        "/custom-query/",
         "/container/$containerName/search",
         "/container/$containerName/",
         "/container/$containerName/annotation/$annotationName",
@@ -234,8 +282,14 @@ export const routeTree = rootRoute
     "/container/form": {
       "filePath": "container/form.tsx"
     },
+    "/custom-query/$customQueryName": {
+      "filePath": "custom-query/$customQueryName.tsx"
+    },
     "/container/": {
       "filePath": "container/index.tsx"
+    },
+    "/custom-query/": {
+      "filePath": "custom-query/index.tsx"
     },
     "/container/$containerName/search": {
       "filePath": "container/$containerName/search.tsx"
