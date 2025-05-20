@@ -1,7 +1,11 @@
-import {QueryOperator, QueryValue, toOperator} from "../../client/ArModel.ts";
+import {
+  FieldQuery,
+  QueryOperator,
+  QueryValue,
+  toOperator
+} from "../../client/ArModel.ts";
 import {Dropdown} from "../common/form/Dropdown.tsx";
 import {orThrow} from "../../util/orThrow.ts";
-import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {SelectOption} from "../common/form/SelectOption.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
@@ -9,7 +13,7 @@ import {Button} from "../common/Button.tsx";
 import {Remove} from "../common/icon/Remove.tsx";
 
 export function SubQuerySearchForm(props: {
-  containerName: string,
+  fieldNames: string[],
 
   form: FieldQueryForm
   onChange: (form: FieldQueryForm) => void;
@@ -19,12 +23,8 @@ export function SubQuerySearchForm(props: {
 
   onRemove: () => void
 }) {
-  const {containerName, form, onChange, errors, onError} = props;
-  const {data: containerFields} = useContainerFields(containerName);
+  const {fieldNames, form, onChange, errors, onError} = props;
 
-  const fieldNames = containerFields
-    ? Object.keys(containerFields)
-    : [];
   const suggestions = form.field
     ? fieldNames.filter(name => name.includes(form.field))
     : fieldNames
@@ -33,10 +33,7 @@ export function SubQuerySearchForm(props: {
     const operatorUpdate = toOperator(update.value)
       ?? orThrow(`Invalid operator: ${update.value}`);
 
-    onChange({
-      ...form,
-      operator: operatorUpdate
-    });
+    onChange({...form, operator: operatorUpdate});
   }
 
   const operatorOptions = Object
@@ -101,9 +98,6 @@ export type FieldQueryFormErrorsByField = {
   errors: FieldQueryFormErrors
 }
 
-export const defaultForm: FieldQueryForm = Object.freeze({
-  field: 'type',
-  operator: QueryOperator.equal,
-  value: 'Annotation'
-});
+export const defaultQuery: FieldQuery = {type: {[QueryOperator.equal]: "Annotation"}}
 
+export type QueryEntry = [string, any]

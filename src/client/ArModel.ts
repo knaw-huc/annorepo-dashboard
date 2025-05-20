@@ -69,12 +69,33 @@ export enum QueryOperator {
   isWithinTextAnchorRange = ':isWithinTextAnchorRange',
   overlapsWithTextAnchorRange = ':overlapsWithTextAnchorRange',
 }
-export type RangeQueryOperator =
-  | QueryOperator.overlapsWithTextAnchorRange
-  | QueryOperator.isWithinTextAnchorRange;
 
-export function isRangeQueryOperator(toTest: QueryOperator): toTest is RangeQueryOperator {
-  return queryOperatorValueType[toTest] === 'range';
+export const nonFnQueryOperators = [
+  QueryOperator.equal,
+  QueryOperator.notEqual,
+  QueryOperator.lessThan,
+  QueryOperator.lessThanOrEqual,
+  QueryOperator.greaterThan,
+  QueryOperator.greaterThanOrEqual,
+  QueryOperator.isIn,
+  QueryOperator.isNotIn
+] as const
+
+export type NonFnQueryOperator = typeof nonFnQueryOperators[number]
+
+export const rangeQueryOperator = [
+  QueryOperator.overlapsWithTextAnchorRange,
+  QueryOperator.isWithinTextAnchorRange
+] as const
+
+export type RangeQueryOperator = typeof rangeQueryOperator[number]
+
+export function isRangeQueryOperator(toTest: string): toTest is RangeQueryOperator {
+  return rangeQueryOperator.includes(toTest as RangeQueryOperator);
+}
+
+export function isNonFnOperator(toTest: string): toTest is NonFnQueryOperator {
+  return nonFnQueryOperators.includes(toTest as NonFnQueryOperator);
 }
 
 export const queryOperatorOrFnValues: string[] = Object.values(QueryOperator)

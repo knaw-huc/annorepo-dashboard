@@ -10,6 +10,7 @@ COPY ./package-lock.json /src/package-lock.json
 RUN npm ci
 
 COPY . .
+RUN npm t
 RUN npm run build
 
 FROM nginx:stable-alpine-slim

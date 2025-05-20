@@ -14,11 +14,11 @@ export function Button(props: PropsWithChildren<{
   }
 
   if(props.secondary) {
-    classNames += ' cursor-pointer bg-slate-100 hover:bg-slate-100 hover:border-slate-100 text-slate-700 border-1 border-solid border-slate-400 border-b-slate-700'
+    classNames += ' cursor-pointer bg-slate-100 hover:bg-slate-100 hover:border-slate-100 text-slate-700 border-1 border-solid hover:border-slate-400 border-b-slate-700'
   } else if (props.disabled) {
     classNames += ' cursor-not-allowed bg-slate-300 hover:bg-slate-300 border-slate-400 text-white'
   } else {
-    classNames += ' cursor-pointer bg-slate-600 border-slate-800 hover:bg-slate-500 hover:border-slate-700 text-white'
+    classNames += ' cursor-pointer bg-slate-600 border-slate-800 hover:bg-slate-500 hover:border-black text-white'
   }
 
   if(props.className) {
