@@ -126,6 +126,7 @@ export type RangeQuery = Partial<Record<
   RangeQueryOperator,
   RangeQueryValue
 >>
+export const NO_FIELD = 'n.a.'
 
 export type RangeQueryValue = { source: string, start: number, end: number };
 
@@ -204,3 +205,4 @@ export type ArCustomQuery = {
   "queryTemplate": string,
   "parameters": string[]
 }
+

@@ -2,7 +2,7 @@ import {FieldQueryForm, QueryEntry} from "./SubQuerySearchForm.tsx";
 import {
   isNonFnOperator,
   isRangeQueryOperator,
-  isRangeQueryValue,
+  isRangeQueryValue, NO_FIELD,
   QueryOperator,
   QueryValue
 } from "../../client/ArModel.ts";
@@ -25,7 +25,7 @@ export function convertToQueryFieldForm(
     if (!isRangeQueryValue(queryValue)) {
       throwUnexpected(queryValue, 'range', entry);
     }
-    field = 'n.a.'
+    field = NO_FIELD
     operator = queryKey as QueryOperator
     value = queryValue
   } else {

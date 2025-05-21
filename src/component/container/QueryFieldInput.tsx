@@ -1,4 +1,8 @@
-import {isRangeQueryOperator, QueryOperator} from "../../client/ArModel.ts";
+import {
+  isRangeQueryOperator,
+  NO_FIELD,
+  QueryOperator
+} from "../../client/ArModel.ts";
 import {useEffect} from "react";
 import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
 
@@ -19,7 +23,7 @@ export function QueryFieldInput(props: {
   return <SearchWithSuggestions
     label="Field"
     disabled={isRangeQueryOperator(operator)}
-    value={isRangeQueryOperator(operator) ? 'n.a.' : value}
+    value={isRangeQueryOperator(operator) ? NO_FIELD : value}
     suggestions={suggestions}
     onChange={onChange}
   />
