@@ -5,26 +5,23 @@ import {ArQuery} from "../ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {QR} from "../query/useGet.tsx";
 
-export function useSearchContainer(
-  containerName: string,
+export function useGlobalSearch(
   query?: ArQuery,
   pageNo: number = 0,
 ): Record<string, QR> {
   const client = useOpenApiClient()
-  console.log('useSearchContainer', {containerName, query, pageNo})
-  const queryKey = [containerName, query];
+  const queryKey = [query];
   const search = useQuery({
     queryKey,
-    queryFn: () => searchContainer(client, containerName, query!),
+    queryFn: () => searchGlobal(client, query!),
     enabled: !!query
   }) as QR<string>;
 
   const location: string | undefined = search.data;
   const page = useQuery({
     queryKey: [...queryKey, location, pageNo],
-    queryFn: async () => getSearchContainerResult(
+    queryFn: async () => getSearchResult(
       client,
-      containerName,
       location!,
       pageNo
     ),
@@ -35,17 +32,15 @@ export function useSearchContainer(
   return {search, page};
 }
 
-export async function searchContainer(
+export async function searchGlobal(
   client: AnnoRepoOpenApiClient,
-  containerName: string,
   query: ArQuery,
 ): Promise<string> {
   return client.POST(
-    "/services/{containerName}/search",
+    "/global/search",
     {
       // openapi type says text but api wants json:
       body: query as unknown as string,
-      params: {path: {containerName}}
     }
   ).then(({response}) => {
     return toName(
@@ -54,18 +49,16 @@ export async function searchContainer(
   });
 }
 
-export async function getSearchContainerResult(
+export async function getSearchResult(
   client: AnnoRepoOpenApiClient,
-  containerName: string,
   searchId: string,
   page: number
 ) {
   return client.GET(
-    '/services/{containerName}/search/{searchId}',
+    '/global/search/{searchId}',
     {
       params: {
         path: {
-          containerName,
           searchId
         },
         query: {page}

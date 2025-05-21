@@ -4,10 +4,10 @@ import {
   QueryValue,
   queryValueMapping,
   QueryValuesConfig
-} from "../../client/ArModel.ts";
-import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
+} from "../../../client/ArModel.ts";
+import {InputWithLabel} from "../form/InputWithLabel.tsx";
 import {useEffect, useState} from "react";
-import {orThrow} from "../../util/orThrow.ts";
+import {orThrow} from "../../../util/orThrow.ts";
 import {isEqual} from "lodash";
 
 export function QueryValueInput(props: {

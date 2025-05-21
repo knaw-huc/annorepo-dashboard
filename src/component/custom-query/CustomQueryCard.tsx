@@ -4,7 +4,7 @@ import {Link} from "@tanstack/react-router";
 import {H5} from "../common/H5.tsx";
 import {QR, useGet} from "../../client/query/useGet.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
-import {ArCustomQuery} from "../../client/ArModel.ts";
+import {ArCustomQueryResult} from "../../client/ArModel.ts";
 
 
 export function CustomQueryCard(props: PropsWithChildren<{
@@ -15,7 +15,7 @@ export function CustomQueryCard(props: PropsWithChildren<{
   const customQueryRequest = useGet(
     '/global/custom-query/{customQueryName}',
     {params: {path: {customQueryName}}}
-  ) as QR<ArCustomQuery>
+  ) as QR<ArCustomQueryResult>
 
   if (!customQueryRequest.isSuccess) {
     return <StatusMessage request={customQueryRequest}/>

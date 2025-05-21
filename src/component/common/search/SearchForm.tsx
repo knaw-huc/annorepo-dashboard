@@ -1,5 +1,4 @@
-import {H1} from "../common/H1.tsx";
-import {Warning} from "../common/Warning.tsx";
+import {Warning} from "../Warning.tsx";
 import {
   defaultQuery,
   FieldQueryForm,
@@ -7,9 +6,9 @@ import {
   FieldQueryFormErrorsByField,
   SubQuerySearchForm
 } from "./SubQuerySearchForm.tsx";
-import {Button} from "../common/Button.tsx";
-import {Add} from "../common/icon/Add.tsx";
-import {Next} from "../common/icon/Next.tsx";
+import {Button} from "../Button.tsx";
+import {Add} from "../icon/Add.tsx";
+import {Next} from "../icon/Next.tsx";
 import {useState} from "react";
 import {isEmpty, isString, mapValues, some, values} from "lodash";
 import {
@@ -18,8 +17,8 @@ import {
   QueryOperator,
   SearchQuery,
   SearchSubquery
-} from "../../client/ArModel.ts";
-import {objectEntries} from "../../util/objectEntries.ts";
+} from "../../../client/ArModel.ts";
+import {objectEntries} from "../../../util/objectEntries.ts";
 import {convertToQueryFieldForm} from "./convertToQueryFieldForm.ts";
 
 export function SearchForm(props: {
@@ -77,7 +76,6 @@ export function SearchForm(props: {
   }
 
   return <div>
-    <H1>Search annotations</H1>
     {queryError && <Warning>{queryError}</Warning>}
     {subqueryForms.map((f, i) => {
       return <SubQuerySearchForm

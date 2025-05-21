@@ -2,9 +2,9 @@ import {
   isRangeQueryOperator,
   NO_FIELD,
   QueryOperator
-} from "../../client/ArModel.ts";
+} from "../../../client/ArModel.ts";
 import {useEffect} from "react";
-import {SearchWithSuggestions} from "../common/form/SearchWithSuggestions.tsx";
+import {SearchWithSuggestions} from "../form/SearchWithSuggestions.tsx";
 
 export function QueryFieldInput(props: {
   value: string

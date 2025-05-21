@@ -1,5 +1,5 @@
 import {Loading} from "../common/Loading.tsx";
-import {useSearchContainer} from "../../client/endpoint/useSearchContainer.tsx";
+import {useContainerSearch} from "../../client/endpoint/useContainerSearch.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
 import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
@@ -7,9 +7,10 @@ import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
-import {SearchForm} from "./SearchForm.tsx";
+import {SearchForm} from "../common/search/SearchForm.tsx";
 import {SearchQuery} from "../../client/ArModel.ts";
-import {defaultQuery} from "./SubQuerySearchForm.tsx";
+import {defaultQuery} from "../common/search/SubQuerySearchForm.tsx";
+import {H1} from "../common/H1.tsx";
 
 export type ContainerSearchProps = {
   name: string,
@@ -25,7 +26,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   const container = useContainer(name)
   const [query, setQuery] = useState<SearchQuery>(defaultQuery);
-  const {search, page} = useSearchContainer(name, query, pageNo);
+  const {search, page} = useContainerSearch(name, query, pageNo);
   const {data: containerFields} = useContainerFields(name);
 
   useEffect(() => {
@@ -43,9 +44,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     return <StatusMessage requests={[container, page]}/>;
   }
 
-  const fieldNames = containerFields
-    ? Object.keys(containerFields)
-    : [];
+  const fieldNames = containerFields ? Object.keys(containerFields) : [];
 
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update))
@@ -57,6 +56,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   return <>
+    <H1>Search annotations</H1>
     <SearchForm
       query={query}
       fieldNames={fieldNames}

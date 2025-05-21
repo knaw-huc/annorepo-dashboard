@@ -17,6 +17,12 @@ export const Route = createFileRoute('/custom-query/')({
       })
     }
 
+    async function handleClickNewCustomQuery() {
+      navigate({
+        to: "/custom-query/form"
+      })
+    }
+
     return <Login>
       <Page breadcrumbs={[
         <ToHome/>,
@@ -24,7 +30,7 @@ export const Route = createFileRoute('/custom-query/')({
         <CustomQueryIndex
           onClickOpenCustomQuery={handleClickOpenCustomQuery}
           // TODO:
-          onClickCreateCustomQuery={() => alert('Not implemented')}
+          onClickCreateCustomQuery={handleClickNewCustomQuery}
         />
       </Page>
     </Login>;

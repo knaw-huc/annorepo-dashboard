@@ -3,14 +3,14 @@ import {
   QueryOperator,
   QueryValue,
   toOperator
-} from "../../client/ArModel.ts";
-import {Dropdown} from "../common/form/Dropdown.tsx";
-import {orThrow} from "../../util/orThrow.ts";
-import {SelectOption} from "../common/form/SelectOption.tsx";
+} from "../../../client/ArModel.ts";
+import {Dropdown} from "../form/Dropdown.tsx";
+import {orThrow} from "../../../util/orThrow.ts";
+import {SelectOption} from "../form/SelectOption.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
-import {Button} from "../common/Button.tsx";
-import {Remove} from "../common/icon/Remove.tsx";
+import {Button} from "../Button.tsx";
+import {Remove} from "../icon/Remove.tsx";
 
 export function SubQuerySearchForm(props: {
   fieldNames: string[],

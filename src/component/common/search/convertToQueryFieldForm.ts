@@ -5,7 +5,7 @@ import {
   isRangeQueryValue, NO_FIELD,
   QueryOperator,
   QueryValue
-} from "../../client/ArModel.ts";
+} from "../../../client/ArModel.ts";
 import {isNumber, isPlainObject, isString} from "lodash";
 import {isSimpleQueryValue} from "./SearchForm.tsx";
 

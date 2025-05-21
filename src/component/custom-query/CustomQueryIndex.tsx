@@ -3,14 +3,14 @@ import {StatusMessage} from "../common/StatusMessage.tsx";
 import {Button} from "../common/Button.tsx";
 import {Add} from "../common/icon/Add.tsx";
 import {QR, useGet} from "../../client/query/useGet.tsx";
-import {ArCustomQuery} from "../../client/ArModel.ts";
+import {ArCustomQueryResult} from "../../client/ArModel.ts";
 import { CustomQueryCard } from "./CustomQueryCard.tsx";
 
 export function CustomQueryIndex(props: {
   onClickCreateCustomQuery: () => void
   onClickOpenCustomQuery: (queryName: string) => void
 }) {
-  const customQueries: QR<ArCustomQuery[]> = useGet('/global/custom-query')
+  const customQueries: QR<ArCustomQueryResult[]> = useGet('/global/custom-query')
 
   if (!customQueries.isSuccess) {
     return <StatusMessage request={customQueries}/>

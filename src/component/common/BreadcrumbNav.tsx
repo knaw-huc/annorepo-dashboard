@@ -32,3 +32,5 @@ export const ToContainer = (props: { name: string }
     {container.label}
   </Breadcrumb>;
 };
+
+export const ToCustomQueryIndex = () => <Breadcrumb to="/custom-query">Custom query</Breadcrumb>
