@@ -32,16 +32,19 @@ export function convertToQueryFieldForm(
     if (!isPlainObject(queryValue)) {
       throwUnexpected(queryValue, 'object', entry);
     }
-    const [k, v] = Object.entries(queryValue as object)[0]
-    if (!isNonFnOperator(k)) {
-      throwUnexpected(k, 'non-function operator', entry);
+    const [
+      queryObjectKey,
+      queryObjectValue
+    ] = Object.entries(queryValue as object)[0]
+    if (!isNonFnOperator(queryObjectKey)) {
+      throwUnexpected(queryObjectKey, 'non-function operator', entry);
     }
-    if (!isNumber(v) && !isString(v)) {
-      throwUnexpected(k, 'number or string', entry);
+    if (!isNumber(queryObjectValue) && !isString(queryObjectValue)) {
+      throwUnexpected(queryObjectKey, 'number or string', entry);
     }
     field = queryKey
-    operator = k
-    value = v
+    operator = queryObjectKey
+    value = queryObjectValue
   }
 
   return {
