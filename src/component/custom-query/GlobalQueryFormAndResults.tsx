@@ -9,6 +9,7 @@ import {StatusMessage} from "../common/StatusMessage.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
+import {debounce} from "lodash";
 
 export function GlobalQueryDetail(props: {
   query: SearchQuery
@@ -45,6 +46,7 @@ export function GlobalQueryDetail(props: {
       query={query}
       fieldNames={fieldNames}
       searchError={page.error}
+      onChangeQuery={debounce(handleSubmitQuery, 500)}
       onSubmitQuery={handleSubmitQuery}
       moreButtons={props.moreButtons}
     />

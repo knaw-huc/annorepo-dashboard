@@ -11,6 +11,7 @@ import {SearchForm} from "../common/search/SearchForm.tsx";
 import {SearchQuery} from "../../client/ArModel.ts";
 import {defaultQuery} from "../common/search/SubQuerySearchForm.tsx";
 import {H1} from "../common/H1.tsx";
+import {debounce} from "lodash";
 
 export type ContainerSearchProps = {
   name: string,
@@ -50,18 +51,14 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setPageNo(toPageNo(update))
   }
 
-  const handleSubmitQuery = (query: SearchQuery) => {
-    console.log('handleSubmitQuery', {query})
-    setQuery(query);
-  }
-
   return <>
     <H1>Search annotations</H1>
     <SearchForm
       query={query}
       fieldNames={fieldNames}
       searchError={search.error}
-      onSubmitQuery={handleSubmitQuery}
+      onChangeQuery={debounce(setQuery, 1000)}
+      onSubmitQuery={setQuery}
     />
     {page
       ? <AnnotationPage

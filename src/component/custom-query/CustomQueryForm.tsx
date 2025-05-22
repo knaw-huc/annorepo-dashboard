@@ -11,6 +11,7 @@ import {SearchForm} from "../common/search/SearchForm.tsx";
 import noop from "lodash/noop";
 import {Button} from "../common/Button.tsx";
 import {Back} from "../common/icon/Back.tsx";
+import {Next} from "../common/icon/Next.tsx";
 
 export function CustomQueryForm(props: {
   form: CustomQueryForm
@@ -26,13 +27,15 @@ export function CustomQueryForm(props: {
       onChange={onChange}
     />
     <H2>Custom Query</H2>
-    <Button onClick={props.onClickSearch}><Back className="mr-2"/>Back to edit</Button>
     <SearchForm
       query={form.query}
       fieldNames={[]}
+      onChangeQuery={noop}
       onSubmitQuery={noop}
       disabled={true}
     />
+    <Button className="pr-5" onClick={props.onClickSearch} secondary><Back className="mr-2"/>Edit query</Button>
+    <Button className="ml-3 pl-5" onClick={props.onClickSearch}>Save query<Next className="ml-2"/></Button>
   </>
 }
 

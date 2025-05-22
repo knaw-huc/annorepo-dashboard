@@ -104,6 +104,6 @@ export type FieldQueryFormErrorsByField = {
   errors: FieldQueryFormErrors
 }
 
-export const defaultQuery: FieldQuery = {type: {[QueryOperator.equal]: "Annotation"}}
+export const defaultQuery: FieldQuery = {field: {[QueryOperator.equal]: "value"}}
 
 export type QueryEntry = [string, any]

@@ -9,8 +9,8 @@ import {
 import {Button} from "../Button.tsx";
 import {Add} from "../icon/Add.tsx";
 import {Next} from "../icon/Next.tsx";
-import {ReactNode, useState} from "react";
-import {isEmpty, mapValues, some, values} from "lodash";
+import {ReactNode, useEffect, useState} from "react";
+import {isEmpty, isEqual, mapValues, some, values} from "lodash";
 import {
   isRangeQueryOperator,
   isRangeQueryValue,
@@ -25,21 +25,36 @@ export function SearchForm(props: {
   query: SearchQuery
   fieldNames: string[],
   onSubmitQuery: (query: SearchQuery) => void
+  onChangeQuery: (query: SearchQuery) => void
   searchError?: Error | null,
   moreButtons?: ReactNode
   disabled?: boolean
 }) {
   const {searchError, disabled} = props;
-  const forms = convertToForms(props.query);
-  const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>(forms)
-  const [subqueryErrors, setSubqueryErrors] = useState(forms.map(f => createNewErrorForm(f)))
-
   const [queryError, setQueryError] = useState('')
 
+  const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>([])
+  const [subqueryErrors, setSubqueryErrors] = useState<FieldQueryFormErrorsByField[]>([])
+
+  useEffect(() => {
+    const isFormMismatch = isEqual(props.query, convertToSearchQuery(subqueryForms));
+    if(isFormMismatch) {
+      return;
+    }
+    const forms = convertToForms(props.query);
+    setSubqueryForms(forms)
+    setSubqueryErrors(forms.map(f => createNewErrorForm(f)))
+  }, [props.query]);
+
   const handleChangeSubquery = (next: FieldQueryForm, index: number) => {
-    setSubqueryForms(prev => prev.map((form, i) =>
+    const update = subqueryForms.map((form, i) =>
       i === index ? next : form
-    ))
+    )
+    setSubqueryForms(update)
+    setQueryError('')
+    if (!hasError(subqueryErrors)) {
+      props.onChangeQuery(convertToSearchQuery(update))
+    }
   }
 
   const handleSubqueryError = (next: FieldQueryFormErrors, index: number) => {
@@ -48,7 +63,7 @@ export function SearchForm(props: {
     ))
   }
 
-  const handleSubmitSearch = () => {
+  const handleSubmitQuery = () => {
     if (hasError(subqueryErrors)) {
       return;
     }
@@ -108,7 +123,7 @@ export function SearchForm(props: {
         disabled={!!searchError || !subqueryForms.length || hasError(subqueryErrors)}
         type="button"
         className="pl-5 h-full border-b-2 ml-2"
-        onClick={handleSubmitSearch}
+        onClick={handleSubmitQuery}
       >
         Search
         <Next className="ml-1"/>

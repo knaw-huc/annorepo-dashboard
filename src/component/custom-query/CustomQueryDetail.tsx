@@ -13,9 +13,9 @@ export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
 export function CustomQueryDetail() {
 
+  const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
   const [globalQuery, setGlobalQuery] = useState<SearchQuery>(defaultCustomQueryForm.query);
   const [customQuery, setCustomQuery] = useState<CustomQueryForm>(defaultCustomQueryForm);
-  const [mode, setMode] = useState<CustomQueryMode>('create-custom-query')
 
   function handleSwitchToCustomQuery() {
     setCustomQuery(customQuery => ({...customQuery, query: globalQuery}))
