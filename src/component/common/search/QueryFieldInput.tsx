@@ -11,6 +11,7 @@ export function QueryFieldInput(props: {
   operator: QueryOperator
   suggestions: string[],
   onChange: (value: string) => void
+  disabled?: boolean
 }) {
   const {value, operator, suggestions, onChange} = props;
 
@@ -22,7 +23,7 @@ export function QueryFieldInput(props: {
 
   return <SearchWithSuggestions
     label="Field"
-    disabled={isRangeQueryOperator(operator)}
+    disabled={props.disabled || isRangeQueryOperator(operator)}
     value={isRangeQueryOperator(operator) ? NO_FIELD : value}
     suggestions={suggestions}
     onChange={onChange}

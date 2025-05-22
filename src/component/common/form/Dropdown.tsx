@@ -7,6 +7,7 @@ export function Dropdown(props: {
   selectedValue: string
   options: SelectOption[],
   onSelect: (option: SelectOption) => void
+  disabled?: boolean
 }) {
   const options = props.options.filter(o => o.value !== props.selectedValue)
 
@@ -22,13 +23,15 @@ export function Dropdown(props: {
     props.onSelect(option);
   }
 
-  let buttonClassname = "w-full h-full justify-center rounded-md bg-white px-3 py-2 text-l text-gray-900 ring-1 ring-gray-300 ring-inset hover:bg-gray-50 border-b-2";
+  let buttonClassname = "w-full h-full justify-center rounded-md bg-white px-3 py-2 text-l ring-1 ring-gray-300 ring-inset border-b-2";
   buttonClassname += isOpen ? ' border-slate-600' : ' border-slate-400'
+  buttonClassname += props.disabled ? ' cursor-not-allowed  text-gray-400' : ' hover:bg-gray-50 text-gray-900'
 
   return <div
     className="relative inline-block text-left h-full"
   >
     <button
+      disabled={props.disabled}
       onClick={() => setOpen(!isOpen)}
       type="button"
       className={buttonClassname}

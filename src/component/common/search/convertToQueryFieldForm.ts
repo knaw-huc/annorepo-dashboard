@@ -7,7 +7,6 @@ import {
   QueryValue
 } from "../../../client/ArModel.ts";
 import {isNumber, isPlainObject, isString} from "lodash";
-import {isSimpleQueryValue} from "./SearchForm.tsx";
 
 export function convertToQueryFieldForm(
   entry: QueryEntry
@@ -17,11 +16,13 @@ export function convertToQueryFieldForm(
   let value: QueryValue;
   let operator: QueryOperator
 
-  if (isSimpleQueryValue(queryValue)) {
+  if (isString(queryValue)) {
+    // Simple query:
     field = queryKey
     operator = QueryOperator.simpleQuery
     value = queryValue
   } else if (isRangeQueryOperator(queryValue)) {
+    // Function query:
     if (!isRangeQueryValue(queryValue)) {
       throwUnexpected(queryValue, 'range', entry);
     }
@@ -29,6 +30,7 @@ export function convertToQueryFieldForm(
     operator = queryKey as QueryOperator
     value = queryValue
   } else {
+    // Operator query:
     if (!isPlainObject(queryValue)) {
       throwUnexpected(queryValue, 'object', entry);
     }

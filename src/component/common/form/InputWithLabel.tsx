@@ -21,7 +21,9 @@ export function InputWithLabel(props: {
   labelClassname += props.errorLabel ? ' text-red-500' : ' text-gray-500';
 
   let inputClassname = "block rounded-md px-2 pb-1 pt-5 w-full text-sm bg-gray-50 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-slate-600 peer"
-  inputClassname += props.disabled ? `  text-gray-600` : ` text-gray-900`
+  if (props.disabled) {
+    inputClassname += `  cursor-not-allowed`
+  }
 
   const label = props.errorLabel
     ? `${props.label}: ${props.errorLabel}`

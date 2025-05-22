@@ -22,6 +22,7 @@ export function SubQuerySearchForm(props: {
   onError: (error: FieldQueryFormErrors) => void;
 
   onRemove: () => void
+  disabled?: boolean
 }) {
   const {fieldNames, form, onChange, errors, onError} = props;
 
@@ -45,44 +46,49 @@ export function SubQuerySearchForm(props: {
     }))
 
   return <form onSubmit={e => e.preventDefault()}>
-    <div className="flex mb-3 mt-2">
-      <div className="flex-auto mr-2">
-        <QueryFieldInput
-          value={form.field}
-          operator={form.operator}
-          suggestions={suggestions}
-          onChange={field => {
-            onChange({...form, field});
-          }}
-        />
+    <fieldset disabled={props.disabled}>
+      <div className="flex mb-3 mt-2">
+        <div className="flex-auto mr-2">
+          <QueryFieldInput
+            value={form.field}
+            operator={form.operator}
+            suggestions={suggestions}
+            onChange={field => {
+              onChange({...form, field});
+            }}
+            disabled={props.disabled}
+          />
+        </div>
+        <div className="flex-none mr-2">
+          <Dropdown
+            selectedValue={form.operator.valueOf()}
+            options={operatorOptions}
+            onSelect={handleSelectOperator}
+            disabled={props.disabled}
+          />
+        </div>
+        <div className="flex-auto mr-2">
+          <QueryValueInput
+            queryValue={form.value}
+            onChange={value => onChange({...form, value})}
+            operator={form.operator}
+            error={errors.value}
+            onError={error => onError({...errors, value: error})}
+            disabled={props.disabled}
+          />
+        </div>
+        {!props.disabled && <div className="flex-none">
+          <Button
+            type="button"
+            className="pl-3 h-full"
+            onClick={props.onRemove}
+            secondary
+          >
+            <Remove className="ml-1"/>
+          </Button>
+        </div>}
       </div>
-      <div className="flex-none mr-2">
-        <Dropdown
-          selectedValue={form.operator.valueOf()}
-          options={operatorOptions}
-          onSelect={handleSelectOperator}
-        />
-      </div>
-      <div className="flex-auto mr-2">
-        <QueryValueInput
-          queryValue={form.value}
-          onChange={value => onChange({...form, value})}
-          operator={form.operator}
-          error={errors.value}
-          onError={error => onError({...errors, value: error})}
-        />
-      </div>
-      <div className="flex-none">
-        <Button
-          type="button"
-          className="pl-3 h-full border-b-2"
-          onClick={props.onRemove}
-          secondary
-        >
-          <Remove className="ml-1"/>
-        </Button>
-      </div>
-    </div>
+    </fieldset>
   </form>
 
 }

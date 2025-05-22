@@ -16,6 +16,7 @@ export function QueryValueInput(props: {
   onChange: (value: QueryValue) => void
   error: string
   onError: (error: string) => void
+  disabled?: boolean
 }) {
 
   const [formValue, setFormValue] = useState<string>(
@@ -60,6 +61,7 @@ export function QueryValueInput(props: {
     label="Value"
     errorLabel={props.error}
     onChange={handleChange}
+    disabled={props.disabled}
   />
 }
 

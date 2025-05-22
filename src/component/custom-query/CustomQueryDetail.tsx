@@ -1,69 +1,66 @@
-import {Loading} from "../common/Loading.tsx";
-import {useState} from "react";
-import {toPageNo} from "../../util/toPageNo.ts";
-import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
-import {StatusMessage} from "../common/StatusMessage.tsx";
-import {
-  ArCustomQueryForm,
-  ArMyContainers,
-  SearchQuery
-} from "../../client/ArModel.ts";
-import {SearchForm} from "../common/search/SearchForm.tsx";
-import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
-import {QR, useGet} from "../../client/query/useGet.tsx";
-import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
-import {useGlobalSearch} from "../../client/endpoint/useGlobalSearch.tsx";
+import {PropsWithChildren, useState} from "react";
 import {H1} from "../common/H1.tsx";
-import {Hint} from "../common/Hint.tsx";
+import {Button} from "../common/Button.tsx";
+import {GlobalQueryDetail} from "./GlobalQueryFormAndResults.tsx";
+import {Store} from "../common/icon/Store.tsx";
+import {CustomQueryForm, defaultCustomQueryForm} from "./CustomQueryForm.tsx";
+import {SearchQuery} from "../../client/ArModel.ts";
 
 export type ContainerSearchProps = {
-  customQueryForm: ArCustomQueryForm
-  onClose: () => void
+  customQueryName?: string
 }
+export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
-export function CustomQueryDetail(props: ContainerSearchProps) {
+export function CustomQueryDetail() {
 
-  const [pageNo, setPageNo] = useState(0);
+  const [globalQuery, setGlobalQuery] = useState<SearchQuery>(defaultCustomQueryForm.query);
+  const [customQuery, setCustomQuery] = useState<CustomQueryForm>(defaultCustomQueryForm);
+  const [mode, setMode] = useState<CustomQueryMode>('create-custom-query')
 
-  // TODO: query params <--> global values?
-  const [query, setQuery] = useState<SearchQuery>(props.customQueryForm.query);
-  const myContainers = useGet('/my/containers') as QR<ArMyContainers>
-
-  // TODO: which fields to use? Multiple containers?
-  const containerNames = getContainerNames(myContainers.data)
-  const fields = useContainerFields(containerNames[0] ?? '')
-  const fieldNames = fields ? Object.keys(fields) : [];
-
-  const {page} = useGlobalSearch(query, pageNo);
-
-  if (!page.isSuccess) {
-    return <StatusMessage request={page}/>;
+  function handleSwitchToCustomQuery() {
+    setCustomQuery(customQuery => ({...customQuery, query: globalQuery}))
+    setMode('create-custom-query')
   }
 
-  const handleChangePage = (update: string) => {
-    setPageNo(toPageNo(update))
+  function handleSwitchToGlobalQuery() {
+    setGlobalQuery(customQuery.query)
+    setMode('create-global-query')
   }
 
-  const handleSubmitQuery = (query: SearchQuery) => {
-    console.log('handleSubmitQuery', {query})
-    setQuery(query);
-  }
+  const title = mode === 'create-global-query'
+    ? 'Create global query'
+    : 'Create custom query';
 
   return <>
-    <H1>{props.customQueryForm.label} <Hint>custom query</Hint></H1>
-    <SearchForm
-      query={query}
-      fieldNames={fieldNames}
-      searchError={page.error}
-      onSubmitQuery={handleSubmitQuery}
+    <H1>{title}</H1>
+    {mode === 'create-global-query' && <GlobalQueryDetail
+      moreButtons={<>
+        <Button
+          secondary
+          className=""
+          onClick={handleSwitchToCustomQuery}
+        >
+          <Store className="mr-2"/>
+          Store
+        </Button>
+      </>}
+      query={globalQuery}
+      onChange={setGlobalQuery}
     />
-    {page
-      ? <AnnotationPage
-        pageNo={pageNo}
-        page={page.data}
-        onChangePageNo={handleChangePage}
-      />
-      : <Loading/>
     }
+    {mode === 'create-custom-query' && <CustomQueryForm
+      form={customQuery}
+      onChange={setCustomQuery}
+      onClickSearch={handleSwitchToGlobalQuery}
+    />
+    }
+
   </>
+}
+
+export function Current(props: PropsWithChildren<{}>) {
+  return <span
+    className="mr-2 font-medium justify-center rounded-md px-3 py-2 text-sm/6 font-semibold border-2 border-slate-200">
+    {props.children}
+  </span>
 }

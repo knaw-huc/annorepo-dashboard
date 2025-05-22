@@ -112,6 +112,7 @@ export function AnnotationForm(props: {
                 const body = JSON.stringify(parsed, null, 2);
                 setForm(prev => ({...prev, body}));
               }}
+              className="mt-5"
             />
           </div>
 

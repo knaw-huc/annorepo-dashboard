@@ -202,6 +202,7 @@ export type ArCustomQueryForm = {
   "public": boolean
   "query": ArQuery,
 }
+
 export type ArCustomQueryResult = Omit<ArCustomQueryForm, "query"> & {
   "created": string,
   "createdBy": string,

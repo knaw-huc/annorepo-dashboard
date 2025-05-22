@@ -9,8 +9,8 @@ import {
 import {Button} from "../Button.tsx";
 import {Add} from "../icon/Add.tsx";
 import {Next} from "../icon/Next.tsx";
-import {useState} from "react";
-import {isEmpty, isString, mapValues, some, values} from "lodash";
+import {ReactNode, useState} from "react";
+import {isEmpty, mapValues, some, values} from "lodash";
 import {
   isRangeQueryOperator,
   isRangeQueryValue,
@@ -25,9 +25,11 @@ export function SearchForm(props: {
   query: SearchQuery
   fieldNames: string[],
   onSubmitQuery: (query: SearchQuery) => void
-  searchError: Error | null,
+  searchError?: Error | null,
+  moreButtons?: ReactNode
+  disabled?: boolean
 }) {
-  const {searchError} = props;
+  const {searchError, disabled} = props;
   const forms = convertToForms(props.query);
   const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>(forms)
   const [subqueryErrors, setSubqueryErrors] = useState(forms.map(f => createNewErrorForm(f)))
@@ -86,19 +88,21 @@ export function SearchForm(props: {
         errors={subqueryErrors[i].errors}
         onError={(es) => handleSubqueryError(es, i)}
         onRemove={() => handleRemoveSubquery(i)}
+        disabled={props.disabled}
       />;
     })}
-    <div className="mb-7">
-
+    {!disabled && <div className="mb-7">
       <Button
         type="button"
-        className="pl-3 h-full border-b-2"
+        className="pl-3 h-full border-b-2 mr-2"
         onClick={handleAddSubquery}
         secondary
       >
         <Add className="mr-2"/>
         Subquery
       </Button>
+
+      {props.moreButtons}
 
       <Button
         disabled={!!searchError || !subqueryForms.length || hasError(subqueryErrors)}
@@ -109,7 +113,7 @@ export function SearchForm(props: {
         Search
         <Next className="ml-1"/>
       </Button>
-    </div>
+    </div>}
   </div>
 }
 
@@ -184,9 +188,4 @@ function convertToSubquery(
   } else {
     return {[form.field]: {[form.operator]: form.value}}
   }
-}
-
-
-export function isSimpleQueryValue(toTest: any): boolean {
-  return isString(toTest);
 }
