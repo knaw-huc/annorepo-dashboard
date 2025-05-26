@@ -19,7 +19,13 @@ export function GlobalQueryDetail(props: {
   const {query, onChange} = props;
   const [pageNo, setPageNo] = useState(0);
 
-  // TODO: query params <--> global values?
+  /**
+   * TODO:
+   *  - global values <--> custom query params
+   *  - create custom query
+   *  - show results of existing custom query
+   *  - edit query of custom query, to create new custom query
+   */
   const myContainers = useGet('/my/containers') as QR<ArMyContainers>
   const containerNames = getContainerNames(myContainers.data)
   const fields = useContainerFields(containerNames[0] ?? '')

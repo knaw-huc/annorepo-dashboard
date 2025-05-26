@@ -33,6 +33,8 @@ export type ArContainer = {
   last: string,
   readOnlyForAnonymousUsers: boolean
 }
+
+// TODO: replace with SearchQuery?
 export type ArQuery = object
 
 export type ArAnnotation<T extends object = object> = {
@@ -200,7 +202,7 @@ export type ArCustomQueryForm = {
   "description": string,
   "label": string,
   "public": boolean
-  "query": ArQuery,
+  "query": SearchQuery,
 }
 
 export type ArCustomQueryResult = Omit<ArCustomQueryForm, "query"> & {

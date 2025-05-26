@@ -12,12 +12,22 @@ import {Page} from "../../component";
 // TODO: add link to form
 export const Route = createFileRoute('/custom-query/form')({
   component: () => {
+    const navigate = Route.useNavigate()
+
+    const handleClose = async () => {
+      navigate({
+        to: '/custom-query',
+      });
+    };
+
     return <Login>
       <Page breadcrumbs={[
         <ToHome/>,
         <ToCustomQueryIndex/>,
       ]}>
-        <CustomQueryDetail/>
+        <CustomQueryDetail
+          onClose={handleClose}
+        />
       </Page>
     </Login>;
   },

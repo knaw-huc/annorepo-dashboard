@@ -1,14 +1,15 @@
-import {FieldQueryForm, QueryEntry} from "./SubQuerySearchForm.tsx";
+import {FieldQueryForm, QueryEntry} from "../SubQuerySearchForm.tsx";
 import {
   isNonFnOperator,
   isRangeQueryOperator,
-  isRangeQueryValue, NO_FIELD,
+  isRangeQueryValue,
+  NO_FIELD,
   QueryOperator,
   QueryValue
-} from "../../../client/ArModel.ts";
+} from "../../../../client/ArModel.ts";
 import {isNumber, isPlainObject, isString} from "lodash";
 
-export function convertToQueryFieldForm(
+export function toQueryFieldForm(
   entry: QueryEntry
 ): FieldQueryForm {
   const [queryKey, queryValue] = entry

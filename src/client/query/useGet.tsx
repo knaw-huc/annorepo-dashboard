@@ -50,5 +50,3 @@ export function createQueryKey<P extends Paths<"get">>(
   keys.forEach(k => allQueryKeys.add(JSON.stringify(k)))
   return keys;
 }
-
-

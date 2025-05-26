@@ -3,53 +3,116 @@ import {ArCustomQueryForm} from "../../client/ArModel.ts";
 import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {
   defaultQuery,
-  FieldQueryForm
+  FieldQueryForm,
+  FieldQueryFormErrors,
+  SubQuerySearchForm
 } from "../common/search/SubQuerySearchForm.tsx";
 import {Textarea} from "../common/form/Textarea.tsx";
 import {H2} from "../common/H2.tsx";
-import {SearchForm} from "../common/search/SearchForm.tsx";
 import noop from "lodash/noop";
 import {Button} from "../common/Button.tsx";
 import {Back} from "../common/icon/Back.tsx";
 import {Next} from "../common/icon/Next.tsx";
+import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
+import {MR, usePost} from "../../client/query/usePost.tsx";
+import {useQueryClient} from "@tanstack/react-query";
+import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
 
 export function CustomQueryForm(props: {
   form: CustomQueryForm
+  errors: CustomQueryFormErrors
   onChange: (update: CustomQueryForm) => void
-  onClickSearch: () => void
+  onError: (errors: CustomQueryFormErrors) => void
+  onEditQuery: () => void
+  onClose: () => void
 }) {
   const {form, onChange} = props;
+  const queryClient = useQueryClient()
+
+  const queryTemplates = toTemplates(toQueryFieldForms(form.query));
+
+  const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
+
+  const handleSubmit = () => {
+    const arCustomQueryForm = {
+      ...form,
+      query: toSearchQuery(queryTemplates)
+      // openapi type says string but AR api expects json:
+    } as unknown as string;
+
+    createCustomQuery.mutate({
+      params: {},
+      body: arCustomQueryForm,
+    }, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          predicate: query => JSON.stringify(query.queryKey).includes('custom-query')
+        })
+        props.onClose();
+      }
+    })
+  }
 
   return <>
     <H2>Metadata</H2>
     <CustomQueryMetadataForm
       form={form}
+      errors={props.errors}
+      onError={props.onError}
       onChange={onChange}
     />
     <H2>Custom Query</H2>
-    <SearchForm
-      query={form.query}
+    {queryTemplates.map((qt, i) => <SubQuerySearchForm
+      key={i}
       fieldNames={[]}
-      onChangeQuery={noop}
-      onSubmitQuery={noop}
+      form={qt}
+      errors={{} as FieldQueryFormErrors}
+      onChange={noop}
+      onError={noop}
+      onRemove={noop}
       disabled={true}
-    />
-    <Button className="pr-5" onClick={props.onClickSearch} secondary><Back className="mr-2"/>Edit query</Button>
-    <Button className="ml-3 pl-5" onClick={props.onClickSearch}>Save query<Next className="ml-2"/></Button>
+    />)}
+    <Button
+      onClick={props.onEditQuery}
+      secondary
+      className="pr-5"
+    >
+      <Back className="mr-2"/>Edit query
+    </Button>
+    <Button
+      onClick={handleSubmit}
+      className="ml-3 pl-5"
+    >
+      Save query<Next className="ml-2"/>
+    </Button>
   </>
 }
 
 export function CustomQueryMetadataForm(props: {
   form: CustomQueryForm
+  errors: CustomQueryFormErrors
   onChange: (update: CustomQueryForm) => void
+  onError: (errors: CustomQueryFormErrors) => void
 }) {
-  const {form, onChange} = props;
+  const {form, errors, onChange, onError} = props;
+
+  function handleChangeName(name: string) {
+    onError({
+      ...errors,
+      name: /^[a-zA-Z0-9-]+$/.test(name)
+        ? ''
+        : 'Only alpha numeric characters and dashes allowed'
+    })
+    onChange({...form, name});
+  }
+
   return <div className="flex w-full">
     <div className="flex-grow mr-5">
       <InputWithLabel
         value={form.name}
+        errorLabel={errors.name}
         label="name"
-        onChange={name => onChange({...form, name})}
+        onChange={handleChangeName}
         className="mb-5"
       />
       <InputWithLabel
@@ -76,13 +139,18 @@ export function CustomQueryMetadataForm(props: {
 }
 
 export type CustomQueryForm = ArCustomQueryForm
+export type CustomQueryFormErrors = Record<keyof CustomQueryForm, string>;
 
 export const defaultCustomQueryForm: CustomQueryForm = {
-  name: "Name of custom query",
+  name: "name-of-custom-query",
   description: "Description of custom query",
   label: "Label of custom query",
   public: true,
   query: defaultQuery,
+}
+
+export function toTemplates(query: FieldQueryForm[]): FieldQueryForm[] {
+  return query.map(toTemplate)
 }
 
 export function toTemplate(query: FieldQueryForm): FieldQueryForm {

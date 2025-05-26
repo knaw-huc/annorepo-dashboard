@@ -3,26 +3,34 @@ import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {GlobalQueryDetail} from "./GlobalQueryFormAndResults.tsx";
 import {Store} from "../common/icon/Store.tsx";
-import {CustomQueryForm, defaultCustomQueryForm} from "./CustomQueryForm.tsx";
+import {
+  CustomQueryForm,
+  CustomQueryFormErrors,
+  defaultCustomQueryForm
+} from "./CustomQueryForm.tsx";
 import {SearchQuery} from "../../client/ArModel.ts";
+import {mapValues} from "lodash";
 
 export type ContainerSearchProps = {
   customQueryName?: string
 }
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
-export function CustomQueryDetail() {
+export function CustomQueryDetail(props: {
+  onClose: () => void
+}) {
 
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
   const [globalQuery, setGlobalQuery] = useState<SearchQuery>(defaultCustomQueryForm.query);
   const [customQuery, setCustomQuery] = useState<CustomQueryForm>(defaultCustomQueryForm);
+  const [customQueryErrors, setCustomQueryErrors] = useState<CustomQueryFormErrors>(mapValues(defaultCustomQueryForm, _ => ''));
 
   function handleSwitchToCustomQuery() {
     setCustomQuery(customQuery => ({...customQuery, query: globalQuery}))
     setMode('create-custom-query')
   }
 
-  function handleSwitchToGlobalQuery() {
+  function switchBackToGlobalQuery() {
     setGlobalQuery(customQuery.query)
     setMode('create-global-query')
   }
@@ -50,8 +58,11 @@ export function CustomQueryDetail() {
     }
     {mode === 'create-custom-query' && <CustomQueryForm
       form={customQuery}
+      errors={customQueryErrors}
       onChange={setCustomQuery}
-      onClickSearch={handleSwitchToGlobalQuery}
+      onError={setCustomQueryErrors}
+      onEditQuery={switchBackToGlobalQuery}
+      onClose={props.onClose}
     />
     }
 
