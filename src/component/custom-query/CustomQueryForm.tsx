@@ -17,6 +17,7 @@ import {MR, usePost} from "../../client/query/usePost.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
 import {ErrorRecord} from "../common/form/util/ErrorRecord.ts";
+import {invalidateBy} from "../../client/query/useGet.tsx";
 
 export function CustomQueryForm(props: {
   form: CustomQueryForm
@@ -46,7 +47,7 @@ export function CustomQueryForm(props: {
     }, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({
-          predicate: query => JSON.stringify(query.queryKey).includes('custom-query')
+          predicate: query => invalidateBy(query, 'custom-query')
         })
         props.onClose();
       }

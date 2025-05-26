@@ -10,6 +10,7 @@ import cloneDeep from "lodash/cloneDeep";
 import {Textarea} from "../common/form/Textarea.tsx";
 import {Warning} from "../common/Warning.tsx";
 import {useQueryClient} from "@tanstack/react-query";
+import {invalidateBy} from "../../client/query/useGet.tsx";
 
 export function AnnotationForm(props: {
   containerName: string,
@@ -41,8 +42,7 @@ export function AnnotationForm(props: {
     }, {
       onSuccess: async (data) => {
         await queryClient.invalidateQueries({
-          predicate: (query) =>
-            JSON.stringify(query.queryKey).includes(containerName)
+          predicate: query => invalidateBy(query, 'containerName')
         })
         props.onCreate(toName(data.id));
       }

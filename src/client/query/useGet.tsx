@@ -1,5 +1,6 @@
 import {
   Optional,
+  Query,
   useQuery,
   UseQueryOptions,
   UseQueryResult
@@ -49,4 +50,8 @@ export function createQueryKey<P extends Paths<"get">>(
     .filter(k => !isNil(k));
   keys.forEach(k => allQueryKeys.add(JSON.stringify(k)))
   return keys;
+}
+
+export function invalidateBy(query: Query, key: string) {
+  return query.queryHash.includes(key);
 }
