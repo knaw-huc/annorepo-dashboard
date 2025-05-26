@@ -11,6 +11,7 @@ import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import {Button} from "../Button.tsx";
 import {Remove} from "../icon/Remove.tsx";
+import {ErrorRecord} from "../form/util/ErrorRecord.ts";
 
 export function SubQuerySearchForm(props: {
   fieldNames: string[],
@@ -18,8 +19,8 @@ export function SubQuerySearchForm(props: {
   form: FieldQueryForm
   onChange: (form: FieldQueryForm) => void;
 
-  errors: FieldQueryFormErrors
-  onError: (error: FieldQueryFormErrors) => void;
+  errors: ErrorRecord<FieldQueryForm>
+  onError: (error: ErrorRecord<FieldQueryForm>) => void;
 
   onRemove: () => void
   disabled?: boolean
@@ -98,10 +99,10 @@ export type FieldQueryForm = {
   operator: QueryOperator
   value: QueryValue
 }
-export type FieldQueryFormErrors = Record<keyof FieldQueryForm, string>;
+
 export type FieldQueryFormErrorsByField = {
   field: string,
-  errors: FieldQueryFormErrors
+  errors: ErrorRecord<FieldQueryForm>
 }
 
 export const defaultQuery: FieldQuery = {field: {[QueryOperator.equal]: "value"}}

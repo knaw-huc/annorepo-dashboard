@@ -3,13 +3,9 @@ import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {GlobalQueryDetail} from "./GlobalQueryFormAndResults.tsx";
 import {Store} from "../common/icon/Store.tsx";
-import {
-  CustomQueryForm,
-  CustomQueryFormErrors,
-  defaultCustomQueryForm
-} from "./CustomQueryForm.tsx";
+import {CustomQueryForm, defaultCustomQueryForm} from "./CustomQueryForm.tsx";
 import {SearchQuery} from "../../client/ArModel.ts";
-import {mapValues} from "lodash";
+import {toErrorRecord} from "../common/form/util/toErrorRecord.ts";
 
 export type ContainerSearchProps = {
   customQueryName?: string
@@ -23,7 +19,7 @@ export function CustomQueryDetail(props: {
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
   const [globalQuery, setGlobalQuery] = useState<SearchQuery>(defaultCustomQueryForm.query);
   const [customQuery, setCustomQuery] = useState<CustomQueryForm>(defaultCustomQueryForm);
-  const [customQueryErrors, setCustomQueryErrors] = useState<CustomQueryFormErrors>(mapValues(defaultCustomQueryForm, _ => ''));
+  const [customQueryErrors, setCustomQueryErrors] = useState(toErrorRecord(defaultCustomQueryForm));
 
   function handleSwitchToCustomQuery() {
     setCustomQuery(customQuery => ({...customQuery, query: globalQuery}))

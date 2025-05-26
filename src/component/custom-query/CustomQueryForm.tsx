@@ -4,7 +4,6 @@ import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {
   defaultQuery,
   FieldQueryForm,
-  FieldQueryFormErrors,
   SubQuerySearchForm
 } from "../common/search/SubQuerySearchForm.tsx";
 import {Textarea} from "../common/form/Textarea.tsx";
@@ -17,12 +16,13 @@ import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
 import {MR, usePost} from "../../client/query/usePost.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
+import {ErrorRecord} from "../common/form/util/ErrorRecord.ts";
 
 export function CustomQueryForm(props: {
   form: CustomQueryForm
-  errors: CustomQueryFormErrors
+  errors: ErrorRecord<CustomQueryForm>
   onChange: (update: CustomQueryForm) => void
-  onError: (errors: CustomQueryFormErrors) => void
+  onError: (errors: ErrorRecord<CustomQueryForm>) => void
   onEditQuery: () => void
   onClose: () => void
 }) {
@@ -66,7 +66,7 @@ export function CustomQueryForm(props: {
       key={i}
       fieldNames={[]}
       form={qt}
-      errors={{} as FieldQueryFormErrors}
+      errors={{} as ErrorRecord<FieldQueryForm>}
       onChange={noop}
       onError={noop}
       onRemove={noop}
@@ -90,9 +90,9 @@ export function CustomQueryForm(props: {
 
 export function CustomQueryMetadataForm(props: {
   form: CustomQueryForm
-  errors: CustomQueryFormErrors
+  errors: ErrorRecord<CustomQueryForm>
   onChange: (update: CustomQueryForm) => void
-  onError: (errors: CustomQueryFormErrors) => void
+  onError: (errors: ErrorRecord<CustomQueryForm>) => void
 }) {
   const {form, errors, onChange, onError} = props;
 
@@ -139,7 +139,6 @@ export function CustomQueryMetadataForm(props: {
 }
 
 export type CustomQueryForm = ArCustomQueryForm
-export type CustomQueryFormErrors = Record<keyof CustomQueryForm, string>;
 
 export const defaultCustomQueryForm: CustomQueryForm = {
   name: "name-of-custom-query",

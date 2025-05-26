@@ -1,0 +1,1 @@
+export type ErrorRecord<T> = Record<keyof T, string>

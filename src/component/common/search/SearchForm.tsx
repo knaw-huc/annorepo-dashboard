@@ -2,7 +2,6 @@ import {Warning} from "../Warning.tsx";
 import {
   defaultQuery,
   FieldQueryForm,
-  FieldQueryFormErrors,
   FieldQueryFormErrorsByField,
   SubQuerySearchForm
 } from "./SubQuerySearchForm.tsx";
@@ -15,6 +14,7 @@ import {SearchQuery} from "../../../client/ArModel.ts";
 import {toQueryFieldForm} from "./util/toQueryFieldForm.ts";
 import {toQueryFieldForms} from "./util/toQueryFieldForms.ts";
 import {toSearchQuery} from "./util/toSearchQuery.tsx";
+import {ErrorRecord} from "../form/util/ErrorRecord.ts";
 
 export function SearchForm(props: {
   query: SearchQuery
@@ -51,7 +51,7 @@ export function SearchForm(props: {
     }
   }
 
-  const handleSubqueryError = (next: FieldQueryFormErrors, index: number) => {
+  const handleSubqueryError = (next: ErrorRecord<FieldQueryForm>, index: number) => {
     setSubqueryErrors(prev => prev.map((errorForm, i) =>
       i === index ? {...errorForm, errors: next} : errorForm
     ))
