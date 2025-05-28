@@ -1,4 +1,4 @@
-import {PropsWithChildren, useState} from "react";
+import {useState} from "react";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {GlobalQueryDetail} from "./GlobalQueryFormAndResults.tsx";
@@ -65,9 +65,3 @@ export function CustomQueryDetail(props: {
   </>
 }
 
-export function Current(props: PropsWithChildren<{}>) {
-  return <span
-    className="mr-2 font-medium justify-center rounded-md px-3 py-2 text-sm/6 font-semibold border-2 border-slate-200">
-    {props.children}
-  </span>
-}
