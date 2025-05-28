@@ -1,9 +1,4 @@
-import {
-  FieldQuery,
-  QueryOperator,
-  QueryValue,
-  toOperator
-} from "../../../client/ArModel.ts";
+import {QueryOperator, toOperator} from "../../../client/ArModel.ts";
 import {Dropdown} from "../form/Dropdown.tsx";
 import {orThrow} from "../../../util/orThrow.ts";
 import {SelectOption} from "../form/SelectOption.tsx";
@@ -12,8 +7,9 @@ import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import {Button} from "../Button.tsx";
 import {Remove} from "../icon/Remove.tsx";
 import {ErrorRecord} from "../form/util/ErrorRecord.ts";
+import {FieldQueryForm} from "./QueryModel.ts";
 
-export function SubQuerySearchEditor(props: {
+export function SubQueryEditor(props: {
   fieldNames: string[],
 
   form: FieldQueryForm
@@ -24,6 +20,7 @@ export function SubQuerySearchEditor(props: {
 
   onRemove: () => void
   disabled?: boolean
+
 }) {
   const {fieldNames, form, onChange, errors, onError} = props;
 
@@ -41,10 +38,7 @@ export function SubQuerySearchEditor(props: {
   const operatorOptions = Object
     .values(QueryOperator)
     .filter(o => o !== QueryOperator.simpleQuery)
-    .map(v => ({
-      label: v,
-      value: v
-    }))
+    .map(v => ({label: v, value: v}))
 
   return <form onSubmit={e => e.preventDefault()}>
     <fieldset disabled={props.disabled}>
@@ -93,18 +87,3 @@ export function SubQuerySearchEditor(props: {
   </form>
 
 }
-
-export type FieldQueryForm = {
-  field: string,
-  operator: QueryOperator
-  value: QueryValue
-}
-
-export type FieldQueryFormErrorsByField = {
-  field: string,
-  errors: ErrorRecord<FieldQueryForm>
-}
-
-export const defaultQuery: FieldQuery = {field: {[QueryOperator.equal]: "value"}}
-
-export type QueryEntry = [string, any]

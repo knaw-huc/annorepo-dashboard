@@ -1,21 +1,28 @@
 import {Warning} from "../Warning.tsx";
-import {
-  defaultQuery,
-  FieldQueryForm,
-  FieldQueryFormErrorsByField,
-  SubQuerySearchEditor
-} from "./SubQuerySearchEditor.tsx";
 import {Button} from "../Button.tsx";
 import {Add} from "../icon/Add.tsx";
 import {Next} from "../icon/Next.tsx";
 import {ReactNode, useEffect, useState} from "react";
-import {isEmpty, isEqual, mapValues, some, values} from "lodash";
+import {isEqual} from "lodash";
 import {SearchQuery} from "../../../client/ArModel.ts";
 import {toQueryFieldForm} from "./util/toQueryFieldForm.ts";
 import {toQueryFieldForms} from "./util/toQueryFieldForms.ts";
 import {toSearchQuery} from "./util/toSearchQuery.tsx";
 import {ErrorRecord} from "../form/util/ErrorRecord.ts";
+import {
+  createFieldQueryFormErrors,
+  defaultQuery,
+  FieldQueryForm,
+  FieldQueryFormErrorsByField,
+  hasError
+} from "./QueryModel.ts";
+import {SubQueryEditor} from "./SubQueryEditor.tsx";
 
+/**
+ * TODO:
+ * extract QueryEditor
+ * use QueryEditor also in CustomQueryEditor to reuse error handling
+ */
 export function SearchEditor(props: {
   query: SearchQuery
   fieldNames: string[],
@@ -31,13 +38,13 @@ export function SearchEditor(props: {
   const [subqueryErrors, setSubqueryErrors] = useState<FieldQueryFormErrorsByField[]>([])
 
   useEffect(() => {
-    const isFormMismatch = isEqual(props.query, toSearchQuery(subqueryForms));
-    if(isFormMismatch) {
+    const isQueryEqual = isEqual(props.query, toSearchQuery(subqueryForms));
+    if(isQueryEqual) {
       return;
     }
     const forms = toQueryFieldForms(props.query);
     setSubqueryForms(forms)
-    setSubqueryErrors(forms.map(f => createNewErrorForm(f)))
+    setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
   }, [props.query]);
 
   const handleChangeSubquery = (next: FieldQueryForm, index: number) => {
@@ -68,7 +75,7 @@ export function SearchEditor(props: {
     const newQueryEntry = Object.entries(defaultQuery)[0];
     const newForm = toQueryFieldForm(newQueryEntry)
     const formUpdate = [...subqueryForms, newForm];
-    const errorUpdate = [...subqueryErrors, createNewErrorForm(newForm)];
+    const errorUpdate = [...subqueryErrors, createFieldQueryFormErrors(newForm)];
     try {
       toSearchQuery(formUpdate);
 
@@ -89,7 +96,7 @@ export function SearchEditor(props: {
   return <div>
     {queryError && <Warning>{queryError}</Warning>}
     {subqueryForms.map((f, i) => {
-      return <SubQuerySearchEditor
+      return <SubQueryEditor
         key={i}
         fieldNames={props.fieldNames}
         form={f}
@@ -126,19 +133,4 @@ export function SearchEditor(props: {
 }
 
 
-function createNewErrorForm(
-  form: FieldQueryForm
-): FieldQueryFormErrorsByField {
-  return {
-    field: form.field,
-    errors: mapValues(form, _ => '')
-  };
-}
-
-function hasError(forms: FieldQueryFormErrorsByField[]) {
-  return some(forms, form =>
-    values(form.errors).some(
-      field => !isEmpty(field)
-    )
-  );
-}
+// TODO: move to FieldQueryFormErrorsByField

@@ -1,4 +1,3 @@
-import {FieldQueryForm} from "../SubQuerySearchEditor.tsx";
 import {
   isRangeQueryOperator, isRangeQueryValue,
   QueryOperator,
@@ -6,6 +5,7 @@ import {
   SearchSubquery
 } from "../../../../client/ArModel.ts";
 import {objectEntries} from "../../../../util/objectEntries.ts";
+import {FieldQueryForm} from "../QueryModel.ts";
 
 export function toSearchQuery(
   forms: FieldQueryForm[]

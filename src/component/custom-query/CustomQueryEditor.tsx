@@ -1,149 +1,140 @@
-import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
-import {ArCustomQueryForm, CustomQueryForm} from "../../client/ArModel.ts";
-import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {
-  defaultQuery,
-  FieldQueryForm,
-  SubQuerySearchEditor
-} from "../common/search/SubQuerySearchEditor.tsx";
-import {Textarea} from "../common/form/Textarea.tsx";
+  ArCustomQueryForm,
+  CustomQueryForm,
+  QueryValue,
+  SearchQuery
+} from "../../client/ArModel.ts";
 import {H2} from "../common/H2.tsx";
-import noop from "lodash/noop";
 import {Button} from "../common/Button.tsx";
-import {Back} from "../common/icon/Back.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
-import {MR, usePost} from "../../client/query/usePost.tsx";
-import {useQueryClient} from "@tanstack/react-query";
 import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
-import {ErrorRecord} from "../common/form/util/ErrorRecord.ts";
-import {invalidateBy} from "../../client/query/useGet.tsx";
+import {
+  createFieldQueryFormErrors,
+  FieldQueryForm,
+  FieldQueryFormErrorsByField,
+  hasError
+} from "../common/search/QueryModel.ts";
+import {SubQueryParamEditor} from "../common/search/SubQueryParamEditor.tsx";
+import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
+import {useEffect, useState} from "react";
+import {isEmpty, isEqual, omit} from "lodash";
+import {toErrorRecord} from "../common/form/util/toErrorRecord.ts";
+import {Back} from "../common/icon/Back.tsx";
 
 export function CustomQueryEditor(props: {
-  form: CustomQueryForm
-  errors: ErrorRecord<CustomQueryForm>
-  onChange: (update: CustomQueryForm) => void
-  onError: (errors: ErrorRecord<CustomQueryForm>) => void
-  onEditQuery: () => void
+  customQuery: Omit<ArCustomQueryForm, 'query'>
+  queryTemplate: SearchQuery
+
+  onChangeCustomQuery: (query: Omit<ArCustomQueryForm, 'query'>) => void
+  onChangeQueryTemplate: (query: SearchQuery) => void
+
   onClose: () => void
-  isExistingQuery?: boolean
+
+  isExistingQuery: boolean
+  // When isExistingQuery==true:
+  onSearch: () => void
+  // When isExistingQuery==false:
+  onSave: () => void
+  onEditQueryTemplate: () => void
+
 }) {
-  const {form, onChange, isExistingQuery} = props;
-  const queryClient = useQueryClient()
 
-  const queryTemplates = toTemplates(toQueryFieldForms(form.query));
+  const {queryTemplate, customQuery, onSearch, isExistingQuery, onSave} = props;
 
-  const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
+  const [metadata, setMetadata] = useState<CustomQueryForm>(isExistingQuery ? customQuery : omit(defaultCustomQueryForm, 'query'));
+  const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(isExistingQuery ? customQuery : omit(defaultCustomQueryForm, 'query')));
 
-  const handleSubmit = () => {
-    const arCustomQueryForm = {
-      ...form,
-      query: toSearchQuery(queryTemplates)
-      // openapi type says string but AR api expects json:
-    } as unknown as string;
+  const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>([])
+  const [subqueryErrors, setSubqueryErrors] = useState<FieldQueryFormErrorsByField[]>([])
 
-    createCustomQuery.mutate({
-      params: {},
-      body: arCustomQueryForm,
-    }, {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({
-          predicate: query => invalidateBy(query, 'custom-query')
-        })
-        props.onClose();
-      }
-    })
+  /**
+   * Update forms and errors when template changes
+   */
+  useEffect(() => {
+    if (isExistingQuery) {
+      return;
+    }
+    const isQueryTemplateEqual = isEqual(props.queryTemplate, toSearchQuery(subqueryForms));
+    if (isQueryTemplateEqual) {
+      return;
+    }
+    const forms = toTemplates(toQueryFieldForms(props.queryTemplate));
+    setSubqueryForms(forms)
+    setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
+  }, [queryTemplate, isExistingQuery]);
+
+  const handleChangeSubquery = (valueUpdate: QueryValue, index: number) => {
+    const formUpdate = subqueryForms.map((form, i) =>
+      i === index ? {...form, value: valueUpdate} : form
+    )
+    setSubqueryForms(formUpdate)
+    if (!hasError(subqueryErrors)) {
+      props.onChangeQueryTemplate(toSearchQuery(formUpdate))
+    }
+  }
+
+  const handleChangeMetadata = (update: CustomQueryForm) => {
+    setMetadata(update)
+    const hasErrors = Object.values(metadataErrors).some(field => !isEmpty(field));
+    if(!hasErrors) {
+      props.onChangeCustomQuery(update)
+    }
+  }
+
+  const handleSubqueryError = (error: string, index: number) => {
+    setSubqueryErrors(prev => prev.map((errorForm, i) =>
+      i === index ? {
+        ...errorForm,
+        errors: {...errorForm.errors, value: error}
+      } : errorForm
+    ))
+  }
+
+  const handleSubmitSearch = () => {
+    if (hasError(subqueryErrors)) {
+      return;
+    }
+    onSearch()
   }
 
   return <>
     <H2>Metadata</H2>
     <CustomQueryMetadataEditor
-      form={form}
-      errors={props.errors}
-      onError={props.onError}
-      onChange={onChange}
+      form={metadata}
+      errors={metadataErrors}
+      onError={setMetadataErrors}
+      onChange={handleChangeMetadata}
       disabled={isExistingQuery}
     />
     <H2>Custom Query</H2>
-    {queryTemplates.map((qt, i) => <SubQuerySearchEditor
+    {subqueryForms.map((qt, i) => <SubQueryParamEditor
       key={i}
-      fieldNames={[]}
       form={qt}
-      errors={{} as ErrorRecord<FieldQueryForm>}
-      onChange={noop}
-      onError={noop}
-      onRemove={noop}
-      disabled={true}
+      errors={subqueryErrors[i].errors}
+      onChange={(es) => handleChangeSubquery(es, i)}
+      onError={(error) => handleSubqueryError(error, i)}
     />)}
-    <Button
-      onClick={props.onEditQuery}
+    {props.isExistingQuery && <Button
+      onClick={handleSubmitSearch}
+      className="ml-3 pl-5"
+    >
+      Search<Next className="ml-2"/>
+    </Button>}
+    {!props.isExistingQuery && <Button
+      onClick={props.onEditQueryTemplate}
       secondary
       className="pr-5"
     >
       <Back className="mr-2"/>Edit query
-    </Button>
-    <Button
-      onClick={handleSubmit}
+    </Button>}
+    {!props.isExistingQuery && <Button
+      onClick={onSave}
       className="ml-3 pl-5"
     >
-      Save query<Next className="ml-2"/>
-    </Button>
+      Save<Next className="ml-2"/>
+    </Button>}
   </>
-}
-
-export function CustomQueryMetadataEditor(props: {
-  form: CustomQueryForm
-  errors: ErrorRecord<CustomQueryForm>
-  onChange: (update: CustomQueryForm) => void
-  onError: (errors: ErrorRecord<CustomQueryForm>) => void
-  disabled?: boolean
-}) {
-  const {form, errors, onChange, onError, disabled} = props;
-
-  function handleChangeName(name: string) {
-    onError({
-      ...errors,
-      name: /^[a-zA-Z0-9-]+$/.test(name)
-        ? ''
-        : 'Only alpha numeric characters and dashes allowed'
-    })
-    onChange({...form, name});
-  }
-
-  return <div className="flex w-full">
-    <div className="flex-grow mr-5">
-      <InputWithLabel
-        value={form.name}
-        errorLabel={errors.name}
-        label="name"
-        onChange={handleChangeName}
-        className="mb-5"
-        disabled={disabled}
-      />
-      <InputWithLabel
-        value={form.label}
-        label="label"
-        onChange={label => onChange({...form, label})}
-        className="mb-5"
-        disabled={disabled}
-      />
-      <CheckboxWithLabel
-        value={form.public}
-        label="public"
-        onChange={update => onChange({...form, public: update})}
-        disabled={disabled}
-      />
-
-    </div>
-    <div className="flex-grow">
-      <Textarea
-        value={form.description}
-        label="description"
-        onChange={description => onChange({...form, description})}
-        disabled={disabled}
-      />
-    </div>
-  </div>
 }
 
 export const defaultCustomQueryForm: CustomQueryForm = {
@@ -151,7 +142,6 @@ export const defaultCustomQueryForm: CustomQueryForm = {
   description: "Description of custom query",
   label: "Label of custom query",
   public: true,
-  query: defaultQuery,
 }
 
 export function toTemplates(query: FieldQueryForm[]): FieldQueryForm[] {

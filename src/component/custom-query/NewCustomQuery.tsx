@@ -7,27 +7,56 @@ import {
   CustomQueryEditor,
   defaultCustomQueryForm
 } from "./CustomQueryEditor.tsx";
-import {SearchQuery} from "../../client/ArModel.ts";
-import {toErrorRecord} from "../common/form/util/toErrorRecord.ts";
+import {ArCustomQueryForm, SearchQuery} from "../../client/ArModel.ts";
+import {MR, usePost} from "../../client/query/usePost.tsx";
+import {defaultQuery} from "../common/search/QueryModel.ts";
+import omit from "lodash/omit";
+import noop from "lodash/noop";
+import {useQueryClient} from "@tanstack/react-query";
+import {invalidateBy} from "../../client/query/useGet.tsx";
+import cloneDeep from "lodash/cloneDeep";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
 export function NewCustomQuery(props: {
   onClose: () => void
 }) {
+  const queryClient = useQueryClient()
 
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
-  const [globalQuery, setGlobalQuery] = useState<SearchQuery>(defaultCustomQueryForm.query);
-  const [customQuery, setCustomQuery] = useState(defaultCustomQueryForm);
-  const [customQueryErrors, setCustomQueryErrors] = useState(toErrorRecord(defaultCustomQueryForm));
+  const [queryMetadata, setQueryMetadata] = useState<Omit<ArCustomQueryForm, 'query'>>(omit(defaultCustomQueryForm, 'query'));
+  const [queryTemplate, setQueryTemplate] = useState<SearchQuery>(cloneDeep(defaultQuery));
+  const [globalQuery, setGlobalQuery] = useState<SearchQuery>(cloneDeep(defaultQuery));
+
+  const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
+
+  const handleSubmitSave = () => {
+    const arCustomQueryForm: ArCustomQueryForm = {
+      ...queryMetadata,
+      // openapi type says string but AR api expects json:
+      query: queryTemplate as unknown as string
+    };
+
+    createCustomQuery.mutate({
+      params: {},
+      body: arCustomQueryForm,
+    }, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          predicate: query => invalidateBy(query, 'custom-query')
+        })
+        props.onClose();
+      }
+    })
+  }
+
 
   function handleSwitchToCustomQuery() {
-    setCustomQuery(customQuery => ({...customQuery, query: globalQuery}))
+    setQueryTemplate(cloneDeep(globalQuery))
     setMode('create-custom-query')
   }
 
   function switchBackToGlobalQuery() {
-    setGlobalQuery(customQuery.query)
     setMode('create-global-query')
   }
 
@@ -53,12 +82,18 @@ export function NewCustomQuery(props: {
     />
     }
     {mode === 'create-custom-query' && <CustomQueryEditor
-      form={customQuery}
-      errors={customQueryErrors}
-      onChange={setCustomQuery}
-      onError={setCustomQueryErrors}
-      onEditQuery={switchBackToGlobalQuery}
+      customQuery={queryMetadata}
+      onChangeCustomQuery={setQueryMetadata}
+
+      queryTemplate={queryTemplate}
+      onChangeQueryTemplate={setQueryTemplate}
+
+      isExistingQuery={false}
+      onSave={handleSubmitSave}
+      onEditQueryTemplate={switchBackToGlobalQuery}
       onClose={props.onClose}
+
+      onSearch={noop}
     />}
 
   </>

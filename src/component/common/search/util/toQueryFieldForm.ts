@@ -1,4 +1,3 @@
-import {FieldQueryForm, QueryEntry} from "../SubQuerySearchEditor.tsx";
 import {
   isNonFnOperator,
   isRangeQueryOperator,
@@ -8,6 +7,7 @@ import {
   QueryValue
 } from "../../../../client/ArModel.ts";
 import {isNumber, isPlainObject, isString} from "lodash";
+import {FieldQueryForm, QueryEntry} from "../QueryModel.ts";
 
 export function toQueryFieldForm(
   entry: QueryEntry

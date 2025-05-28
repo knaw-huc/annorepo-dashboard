@@ -9,9 +9,9 @@ import {StatusMessage} from "../common/StatusMessage.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {SearchEditor} from "../common/search/SearchEditor.tsx";
 import {SearchQuery} from "../../client/ArModel.ts";
-import {defaultQuery} from "../common/search/SubQuerySearchEditor.tsx";
 import {H1} from "../common/H1.tsx";
 import {debounce} from "lodash";
+import {defaultQuery} from "../common/search/QueryModel.ts";
 
 export type ContainerSearchProps = {
   name: string,

@@ -1,1 +1,1 @@
-export type ErrorRecord<T> = Record<keyof T, string>
+export type ErrorRecord<T extends object> = Record<keyof T, string>

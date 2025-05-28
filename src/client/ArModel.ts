@@ -209,9 +209,7 @@ export type ArCustomQueryForm = {
   query: string,
 }
 
-export type CustomQueryForm = Omit<ArCustomQueryForm, 'query'> & {
-  query: SearchQuery
-}
+export type CustomQueryForm = Omit<ArCustomQueryForm, 'query'>
 
 export type ArCustomQueryResult = Omit<ArCustomQueryForm, "query"> & {
   created: string,
