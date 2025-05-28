@@ -8,6 +8,8 @@ import {
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import isNil from "lodash/isNil";
 import {Params, Paths} from "../OpenApiClient.tsx";
+import {paths} from "../../openapi.ts";
+import {PathsWithMethod} from "openapi-typescript-helpers";
 
 type GetParams<P extends Paths<"get">> = Params<"get", P> & {
   query?: Optional<UseQueryOptions, 'queryKey'>
@@ -18,7 +20,7 @@ type GetParams<P extends Paths<"get">> = Params<"get", P> & {
  */
 export type QR<R = any> = UseQueryResult<R>
 
-export function useGet<P extends Paths<"get">, RESULT>(
+export function useGet<P extends GetPath, RESULT>(
   path: P,
   params?: GetParams<P>
 ) {
@@ -42,7 +44,7 @@ export function useGet<P extends Paths<"get">, RESULT>(
 export const allQueryKeys = new Set()
 Object.assign(window, {allQueryKeys})
 
-export function createQueryKey<P extends Paths<"get">>(
+export function createQueryKey<P extends GetPath>(
   path: P,
   params?: GetParams<P>
 ) {
@@ -55,3 +57,5 @@ export function createQueryKey<P extends Paths<"get">>(
 export function invalidateBy(query: Query, key: string) {
   return query.queryHash.includes(key);
 }
+
+export type GetPath = PathsWithMethod<paths, "get">

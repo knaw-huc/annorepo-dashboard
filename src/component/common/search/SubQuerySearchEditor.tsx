@@ -13,7 +13,7 @@ import {Button} from "../Button.tsx";
 import {Remove} from "../icon/Remove.tsx";
 import {ErrorRecord} from "../form/util/ErrorRecord.ts";
 
-export function SubQuerySearchForm(props: {
+export function SubQuerySearchEditor(props: {
   fieldNames: string[],
 
   form: FieldQueryForm

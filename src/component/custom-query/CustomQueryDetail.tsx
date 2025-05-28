@@ -1,67 +1,32 @@
-import {useState} from "react";
 import {H1} from "../common/H1.tsx";
-import {Button} from "../common/Button.tsx";
-import {GlobalQueryDetail} from "./GlobalQueryFormAndResults.tsx";
-import {Store} from "../common/icon/Store.tsx";
-import {CustomQueryForm, defaultCustomQueryForm} from "./CustomQueryForm.tsx";
-import {SearchQuery} from "../../client/ArModel.ts";
-import {toErrorRecord} from "../common/form/util/toErrorRecord.ts";
-
-export type ContainerSearchProps = {
-  customQueryName?: string
-}
-export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
+import {CustomQueryEditor} from "./CustomQueryEditor.tsx";
+import {useCustomQuery} from "../../client/endpoint/useCustomQuery.tsx";
+import {StatusMessage} from "../common/StatusMessage.tsx";
+import {toCustomQueryForm} from "../common/search/util/toCustomQueryForm.ts";
+import {ErrorRecord} from "../common/form/util/ErrorRecord.ts";
+import {ArCustomQueryForm} from "../../client/ArModel.ts";
 
 export function CustomQueryDetail(props: {
+  name: string
   onClose: () => void
 }) {
+  const {name, onClose} = props;
+  const customQuery = useCustomQuery(name)
 
-  const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
-  const [globalQuery, setGlobalQuery] = useState<SearchQuery>(defaultCustomQueryForm.query);
-  const [customQuery, setCustomQuery] = useState<CustomQueryForm>(defaultCustomQueryForm);
-  const [customQueryErrors, setCustomQueryErrors] = useState(toErrorRecord(defaultCustomQueryForm));
-
-  function handleSwitchToCustomQuery() {
-    setCustomQuery(customQuery => ({...customQuery, query: globalQuery}))
-    setMode('create-custom-query')
+  if(!customQuery.data) {
+    return <StatusMessage request={customQuery} />
   }
-
-  function switchBackToGlobalQuery() {
-    setGlobalQuery(customQuery.query)
-    setMode('create-global-query')
-  }
-
-  const title = mode === 'create-global-query'
-    ? 'Create global query'
-    : 'Create custom query';
-
   return <>
-    <H1>{title}</H1>
-    {mode === 'create-global-query' && <GlobalQueryDetail
-      moreButtons={<>
-        <Button
-          secondary
-          className=""
-          onClick={handleSwitchToCustomQuery}
-        >
-          <Store className="mr-2"/>
-          Store
-        </Button>
-      </>}
-      query={globalQuery}
-      onChange={setGlobalQuery}
+    <H1>{name}</H1>
+    <CustomQueryEditor
+      form={toCustomQueryForm(customQuery.data)}
+      errors={{} as ErrorRecord<ArCustomQueryForm>}
+      onChange={(update) => console.log('TODO: update', update)}
+      onError={(error) => console.log('TODO: error', error)}
+      onEditQuery={() => console.log('TODO: onEditQuery')}
+      onClose={onClose}
+      isExistingQuery={true}
     />
-    }
-    {mode === 'create-custom-query' && <CustomQueryForm
-      form={customQuery}
-      errors={customQueryErrors}
-      onChange={setCustomQuery}
-      onError={setCustomQueryErrors}
-      onEditQuery={switchBackToGlobalQuery}
-      onClose={props.onClose}
-    />
-    }
-
   </>
 }
 

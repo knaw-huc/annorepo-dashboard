@@ -1,4 +1,4 @@
-import {FieldQueryForm, QueryEntry} from "../SubQuerySearchForm.tsx";
+import {FieldQueryForm, QueryEntry} from "../SubQuerySearchEditor.tsx";
 import {
   isNonFnOperator,
   isRangeQueryOperator,

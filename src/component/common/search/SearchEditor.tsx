@@ -3,8 +3,8 @@ import {
   defaultQuery,
   FieldQueryForm,
   FieldQueryFormErrorsByField,
-  SubQuerySearchForm
-} from "./SubQuerySearchForm.tsx";
+  SubQuerySearchEditor
+} from "./SubQuerySearchEditor.tsx";
 import {Button} from "../Button.tsx";
 import {Add} from "../icon/Add.tsx";
 import {Next} from "../icon/Next.tsx";
@@ -16,7 +16,7 @@ import {toQueryFieldForms} from "./util/toQueryFieldForms.ts";
 import {toSearchQuery} from "./util/toSearchQuery.tsx";
 import {ErrorRecord} from "../form/util/ErrorRecord.ts";
 
-export function SearchForm(props: {
+export function SearchEditor(props: {
   query: SearchQuery
   fieldNames: string[],
   onSubmitQuery: (query: SearchQuery) => void
@@ -89,7 +89,7 @@ export function SearchForm(props: {
   return <div>
     {queryError && <Warning>{queryError}</Warning>}
     {subqueryForms.map((f, i) => {
-      return <SubQuerySearchForm
+      return <SubQuerySearchEditor
         key={i}
         fieldNames={props.fieldNames}
         form={f}

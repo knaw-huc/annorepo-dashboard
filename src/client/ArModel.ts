@@ -198,17 +198,25 @@ export const queryValueMapping: QueryValuesConfig<QueryValue>[] = [
 ]
 
 export type ArCustomQueryForm = {
-  "name": string,
-  "description": string,
-  "label": string,
-  "public": boolean
-  "query": SearchQuery,
+  name: string,
+  description: string,
+  label: string,
+  public: boolean
+
+  /**
+   * {@link SearchQuery}
+   */
+  query: string,
+}
+
+export type CustomQueryForm = Omit<ArCustomQueryForm, 'query'> & {
+  query: SearchQuery
 }
 
 export type ArCustomQueryResult = Omit<ArCustomQueryForm, "query"> & {
-  "created": string,
-  "createdBy": string,
-  "queryTemplate": FieldQuery,
-  "parameters": string[]
+  created: string,
+  createdBy: string,
+  queryTemplate: string,
+  parameters: string[]
 }
 

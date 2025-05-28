@@ -1,4 +1,4 @@
-import {SearchForm} from "../common/search/SearchForm.tsx";
+import {SearchEditor} from "../common/search/SearchEditor.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {Loading} from "../common/Loading.tsx";
 import {ReactNode, useState} from "react";
@@ -11,7 +11,7 @@ import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {debounce} from "lodash";
 
-export function GlobalQueryDetail(props: {
+export function GlobalQueryEditor(props: {
   query: SearchQuery
   onChange: (update: SearchQuery) => void
   moreButtons?: ReactNode
@@ -48,7 +48,7 @@ export function GlobalQueryDetail(props: {
   }
 
   return <>
-    <SearchForm
+    <SearchEditor
       query={query}
       fieldNames={fieldNames}
       searchError={page.error}

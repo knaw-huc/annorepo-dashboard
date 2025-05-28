@@ -1,6 +1,6 @@
 import {createFileRoute} from '@tanstack/react-router'
 
-import {ContainerForm} from "../../component/container/ContainerForm.tsx";
+import {ContainerEditor} from "../../component/container/ContainerEditor.tsx";
 import {Login} from "../../component/login/Login.tsx";
 import {Page} from "../../component";
 import {
@@ -8,7 +8,7 @@ import {
   ToHome
 } from "../../component/common/BreadcrumbNav.tsx";
 
-export const Route = createFileRoute('/container/form')({
+export const Route = createFileRoute('/container/editor')({
   component: Component,
 })
 
@@ -34,7 +34,7 @@ function Component() {
         <ToHome/>,
         <ToContainers/>,
       ]}>
-        <ContainerForm
+        <ContainerEditor
           onClose={handleClose}
           onCreate={handleCreate}
         />

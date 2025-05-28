@@ -14,7 +14,7 @@ function Component() {
 
   async function handleClickContainerForm() {
     navigate({
-      to: "/container/form",
+      to: "/container/editor",
     })
   }
 

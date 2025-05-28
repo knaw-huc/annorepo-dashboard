@@ -1,7 +1,7 @@
 import {createFileRoute} from '@tanstack/react-router'
 import {
-  CustomQueryDetail
-} from "../../component/custom-query/CustomQueryDetail.tsx";
+  NewCustomQuery
+} from "../../component/custom-query/NewCustomQuery.tsx";
 import {
   ToCustomQueryIndex,
   ToHome
@@ -9,8 +9,8 @@ import {
 import {Login} from "../../component/login/Login.tsx";
 import {Page} from "../../component";
 
-// TODO: add link to form
-export const Route = createFileRoute('/custom-query/form')({
+// TODO: rename all form routes to editor routes
+export const Route = createFileRoute('/custom-query/editor')({
   component: () => {
     const navigate = Route.useNavigate()
 
@@ -25,7 +25,7 @@ export const Route = createFileRoute('/custom-query/form')({
         <ToHome/>,
         <ToCustomQueryIndex/>,
       ]}>
-        <CustomQueryDetail
+        <NewCustomQuery
           onClose={handleClose}
         />
       </Page>

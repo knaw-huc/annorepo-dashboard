@@ -1,6 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {toQueryFieldForm} from "./toQueryFieldForm.ts";
-import {defaultQuery} from "../SubQuerySearchForm.tsx";
+import {defaultQuery} from "../SubQuerySearchEditor.tsx";
 
 describe('convertToQueryFieldForm', async () => {
   it('converts default query', async () => {

@@ -1,11 +1,11 @@
 import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
-import {ArCustomQueryForm} from "../../client/ArModel.ts";
+import {ArCustomQueryForm, CustomQueryForm} from "../../client/ArModel.ts";
 import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {
   defaultQuery,
   FieldQueryForm,
-  SubQuerySearchForm
-} from "../common/search/SubQuerySearchForm.tsx";
+  SubQuerySearchEditor
+} from "../common/search/SubQuerySearchEditor.tsx";
 import {Textarea} from "../common/form/Textarea.tsx";
 import {H2} from "../common/H2.tsx";
 import noop from "lodash/noop";
@@ -19,15 +19,16 @@ import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
 import {ErrorRecord} from "../common/form/util/ErrorRecord.ts";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 
-export function CustomQueryForm(props: {
+export function CustomQueryEditor(props: {
   form: CustomQueryForm
   errors: ErrorRecord<CustomQueryForm>
   onChange: (update: CustomQueryForm) => void
   onError: (errors: ErrorRecord<CustomQueryForm>) => void
   onEditQuery: () => void
   onClose: () => void
+  isExistingQuery?: boolean
 }) {
-  const {form, onChange} = props;
+  const {form, onChange, isExistingQuery} = props;
   const queryClient = useQueryClient()
 
   const queryTemplates = toTemplates(toQueryFieldForms(form.query));
@@ -56,14 +57,15 @@ export function CustomQueryForm(props: {
 
   return <>
     <H2>Metadata</H2>
-    <CustomQueryMetadataForm
+    <CustomQueryMetadataEditor
       form={form}
       errors={props.errors}
       onError={props.onError}
       onChange={onChange}
+      disabled={isExistingQuery}
     />
     <H2>Custom Query</H2>
-    {queryTemplates.map((qt, i) => <SubQuerySearchForm
+    {queryTemplates.map((qt, i) => <SubQuerySearchEditor
       key={i}
       fieldNames={[]}
       form={qt}
@@ -89,13 +91,14 @@ export function CustomQueryForm(props: {
   </>
 }
 
-export function CustomQueryMetadataForm(props: {
+export function CustomQueryMetadataEditor(props: {
   form: CustomQueryForm
   errors: ErrorRecord<CustomQueryForm>
   onChange: (update: CustomQueryForm) => void
   onError: (errors: ErrorRecord<CustomQueryForm>) => void
+  disabled?: boolean
 }) {
-  const {form, errors, onChange, onError} = props;
+  const {form, errors, onChange, onError, disabled} = props;
 
   function handleChangeName(name: string) {
     onError({
@@ -115,17 +118,20 @@ export function CustomQueryMetadataForm(props: {
         label="name"
         onChange={handleChangeName}
         className="mb-5"
+        disabled={disabled}
       />
       <InputWithLabel
         value={form.label}
         label="label"
         onChange={label => onChange({...form, label})}
         className="mb-5"
+        disabled={disabled}
       />
       <CheckboxWithLabel
         value={form.public}
         label="public"
         onChange={update => onChange({...form, public: update})}
+        disabled={disabled}
       />
 
     </div>
@@ -134,12 +140,11 @@ export function CustomQueryMetadataForm(props: {
         value={form.description}
         label="description"
         onChange={description => onChange({...form, description})}
+        disabled={disabled}
       />
     </div>
   </div>
 }
-
-export type CustomQueryForm = ArCustomQueryForm
 
 export const defaultCustomQueryForm: CustomQueryForm = {
   name: "name-of-custom-query",

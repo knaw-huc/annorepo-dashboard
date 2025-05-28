@@ -9,7 +9,7 @@ export const Route = createFileRoute('/container/')({
 
     async function handleClickContainerForm() {
       navigate({
-        to: "/container/form",
+        to: "/container/editor",
       })
     }
 

@@ -1,5 +1,5 @@
 import {SearchQuery} from "../../../../client/ArModel.ts";
-import {FieldQueryForm} from "../SubQuerySearchForm.tsx";
+import {FieldQueryForm} from "../SubQuerySearchEditor.tsx";
 import {toQueryFieldForm} from "./toQueryFieldForm.ts";
 
 export function toQueryFieldForms(

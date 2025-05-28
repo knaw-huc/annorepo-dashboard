@@ -14,12 +14,12 @@ import { Route as rootRoute } from './routes/__root'
 import { Route as IndexImport } from './routes/index'
 import { Route as CustomQueryIndexImport } from './routes/custom-query/index'
 import { Route as ContainerIndexImport } from './routes/container/index'
-import { Route as CustomQueryFormImport } from './routes/custom-query/form'
+import { Route as CustomQueryEditorImport } from './routes/custom-query/editor'
 import { Route as CustomQueryCustomQueryNameImport } from './routes/custom-query/$customQueryName'
-import { Route as ContainerFormImport } from './routes/container/form'
+import { Route as ContainerEditorImport } from './routes/container/editor'
 import { Route as ContainerContainerNameIndexImport } from './routes/container/$containerName/index'
 import { Route as ContainerContainerNameSearchImport } from './routes/container/$containerName/search'
-import { Route as ContainerContainerNameAnnotationFormImport } from './routes/container/$containerName/annotation/form'
+import { Route as ContainerContainerNameAnnotationEditorImport } from './routes/container/$containerName/annotation/editor'
 import { Route as ContainerContainerNameAnnotationAnnotationNameImport } from './routes/container/$containerName/annotation/$annotationName'
 
 // Create/Update Routes
@@ -42,9 +42,9 @@ const ContainerIndexRoute = ContainerIndexImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
-const CustomQueryFormRoute = CustomQueryFormImport.update({
-  id: '/custom-query/form',
-  path: '/custom-query/form',
+const CustomQueryEditorRoute = CustomQueryEditorImport.update({
+  id: '/custom-query/editor',
+  path: '/custom-query/editor',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -56,9 +56,9 @@ const CustomQueryCustomQueryNameRoute = CustomQueryCustomQueryNameImport.update(
   } as any,
 )
 
-const ContainerFormRoute = ContainerFormImport.update({
-  id: '/container/form',
-  path: '/container/form',
+const ContainerEditorRoute = ContainerEditorImport.update({
+  id: '/container/editor',
+  path: '/container/editor',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -76,10 +76,10 @@ const ContainerContainerNameSearchRoute =
     getParentRoute: () => rootRoute,
   } as any)
 
-const ContainerContainerNameAnnotationFormRoute =
-  ContainerContainerNameAnnotationFormImport.update({
-    id: '/container/$containerName/annotation/form',
-    path: '/container/$containerName/annotation/form',
+const ContainerContainerNameAnnotationEditorRoute =
+  ContainerContainerNameAnnotationEditorImport.update({
+    id: '/container/$containerName/annotation/editor',
+    path: '/container/$containerName/annotation/editor',
     getParentRoute: () => rootRoute,
   } as any)
 
@@ -101,11 +101,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexImport
       parentRoute: typeof rootRoute
     }
-    '/container/form': {
-      id: '/container/form'
-      path: '/container/form'
-      fullPath: '/container/form'
-      preLoaderRoute: typeof ContainerFormImport
+    '/container/editor': {
+      id: '/container/editor'
+      path: '/container/editor'
+      fullPath: '/container/editor'
+      preLoaderRoute: typeof ContainerEditorImport
       parentRoute: typeof rootRoute
     }
     '/custom-query/$customQueryName': {
@@ -115,11 +115,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomQueryCustomQueryNameImport
       parentRoute: typeof rootRoute
     }
-    '/custom-query/form': {
-      id: '/custom-query/form'
-      path: '/custom-query/form'
-      fullPath: '/custom-query/form'
-      preLoaderRoute: typeof CustomQueryFormImport
+    '/custom-query/editor': {
+      id: '/custom-query/editor'
+      path: '/custom-query/editor'
+      fullPath: '/custom-query/editor'
+      preLoaderRoute: typeof CustomQueryEditorImport
       parentRoute: typeof rootRoute
     }
     '/container/': {
@@ -157,11 +157,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContainerContainerNameAnnotationAnnotationNameImport
       parentRoute: typeof rootRoute
     }
-    '/container/$containerName/annotation/form': {
-      id: '/container/$containerName/annotation/form'
-      path: '/container/$containerName/annotation/form'
-      fullPath: '/container/$containerName/annotation/form'
-      preLoaderRoute: typeof ContainerContainerNameAnnotationFormImport
+    '/container/$containerName/annotation/editor': {
+      id: '/container/$containerName/annotation/editor'
+      path: '/container/$containerName/annotation/editor'
+      fullPath: '/container/$containerName/annotation/editor'
+      preLoaderRoute: typeof ContainerContainerNameAnnotationEditorImport
       parentRoute: typeof rootRoute
     }
   }
@@ -171,110 +171,110 @@ declare module '@tanstack/react-router' {
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/container/form': typeof ContainerFormRoute
+  '/container/editor': typeof ContainerEditorRoute
   '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
-  '/custom-query/form': typeof CustomQueryFormRoute
+  '/custom-query/editor': typeof CustomQueryEditorRoute
   '/container': typeof ContainerIndexRoute
   '/custom-query': typeof CustomQueryIndexRoute
   '/container/$containerName/search': typeof ContainerContainerNameSearchRoute
   '/container/$containerName': typeof ContainerContainerNameIndexRoute
   '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
-  '/container/$containerName/annotation/form': typeof ContainerContainerNameAnnotationFormRoute
+  '/container/$containerName/annotation/editor': typeof ContainerContainerNameAnnotationEditorRoute
 }
 
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/container/form': typeof ContainerFormRoute
+  '/container/editor': typeof ContainerEditorRoute
   '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
-  '/custom-query/form': typeof CustomQueryFormRoute
+  '/custom-query/editor': typeof CustomQueryEditorRoute
   '/container': typeof ContainerIndexRoute
   '/custom-query': typeof CustomQueryIndexRoute
   '/container/$containerName/search': typeof ContainerContainerNameSearchRoute
   '/container/$containerName': typeof ContainerContainerNameIndexRoute
   '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
-  '/container/$containerName/annotation/form': typeof ContainerContainerNameAnnotationFormRoute
+  '/container/$containerName/annotation/editor': typeof ContainerContainerNameAnnotationEditorRoute
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute
   '/': typeof IndexRoute
-  '/container/form': typeof ContainerFormRoute
+  '/container/editor': typeof ContainerEditorRoute
   '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
-  '/custom-query/form': typeof CustomQueryFormRoute
+  '/custom-query/editor': typeof CustomQueryEditorRoute
   '/container/': typeof ContainerIndexRoute
   '/custom-query/': typeof CustomQueryIndexRoute
   '/container/$containerName/search': typeof ContainerContainerNameSearchRoute
   '/container/$containerName/': typeof ContainerContainerNameIndexRoute
   '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
-  '/container/$containerName/annotation/form': typeof ContainerContainerNameAnnotationFormRoute
+  '/container/$containerName/annotation/editor': typeof ContainerContainerNameAnnotationEditorRoute
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/container/form'
+    | '/container/editor'
     | '/custom-query/$customQueryName'
-    | '/custom-query/form'
+    | '/custom-query/editor'
     | '/container'
     | '/custom-query'
     | '/container/$containerName/search'
     | '/container/$containerName'
     | '/container/$containerName/annotation/$annotationName'
-    | '/container/$containerName/annotation/form'
+    | '/container/$containerName/annotation/editor'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/container/form'
+    | '/container/editor'
     | '/custom-query/$customQueryName'
-    | '/custom-query/form'
+    | '/custom-query/editor'
     | '/container'
     | '/custom-query'
     | '/container/$containerName/search'
     | '/container/$containerName'
     | '/container/$containerName/annotation/$annotationName'
-    | '/container/$containerName/annotation/form'
+    | '/container/$containerName/annotation/editor'
   id:
     | '__root__'
     | '/'
-    | '/container/form'
+    | '/container/editor'
     | '/custom-query/$customQueryName'
-    | '/custom-query/form'
+    | '/custom-query/editor'
     | '/container/'
     | '/custom-query/'
     | '/container/$containerName/search'
     | '/container/$containerName/'
     | '/container/$containerName/annotation/$annotationName'
-    | '/container/$containerName/annotation/form'
+    | '/container/$containerName/annotation/editor'
   fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  ContainerFormRoute: typeof ContainerFormRoute
+  ContainerEditorRoute: typeof ContainerEditorRoute
   CustomQueryCustomQueryNameRoute: typeof CustomQueryCustomQueryNameRoute
-  CustomQueryFormRoute: typeof CustomQueryFormRoute
+  CustomQueryEditorRoute: typeof CustomQueryEditorRoute
   ContainerIndexRoute: typeof ContainerIndexRoute
   CustomQueryIndexRoute: typeof CustomQueryIndexRoute
   ContainerContainerNameSearchRoute: typeof ContainerContainerNameSearchRoute
   ContainerContainerNameIndexRoute: typeof ContainerContainerNameIndexRoute
   ContainerContainerNameAnnotationAnnotationNameRoute: typeof ContainerContainerNameAnnotationAnnotationNameRoute
-  ContainerContainerNameAnnotationFormRoute: typeof ContainerContainerNameAnnotationFormRoute
+  ContainerContainerNameAnnotationEditorRoute: typeof ContainerContainerNameAnnotationEditorRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  ContainerFormRoute: ContainerFormRoute,
+  ContainerEditorRoute: ContainerEditorRoute,
   CustomQueryCustomQueryNameRoute: CustomQueryCustomQueryNameRoute,
-  CustomQueryFormRoute: CustomQueryFormRoute,
+  CustomQueryEditorRoute: CustomQueryEditorRoute,
   ContainerIndexRoute: ContainerIndexRoute,
   CustomQueryIndexRoute: CustomQueryIndexRoute,
   ContainerContainerNameSearchRoute: ContainerContainerNameSearchRoute,
   ContainerContainerNameIndexRoute: ContainerContainerNameIndexRoute,
   ContainerContainerNameAnnotationAnnotationNameRoute:
     ContainerContainerNameAnnotationAnnotationNameRoute,
-  ContainerContainerNameAnnotationFormRoute:
-    ContainerContainerNameAnnotationFormRoute,
+  ContainerContainerNameAnnotationEditorRoute:
+    ContainerContainerNameAnnotationEditorRoute,
 }
 
 export const routeTree = rootRoute
@@ -288,28 +288,28 @@ export const routeTree = rootRoute
       "filePath": "__root.tsx",
       "children": [
         "/",
-        "/container/form",
+        "/container/editor",
         "/custom-query/$customQueryName",
-        "/custom-query/form",
+        "/custom-query/editor",
         "/container/",
         "/custom-query/",
         "/container/$containerName/search",
         "/container/$containerName/",
         "/container/$containerName/annotation/$annotationName",
-        "/container/$containerName/annotation/form"
+        "/container/$containerName/annotation/editor"
       ]
     },
     "/": {
       "filePath": "index.tsx"
     },
-    "/container/form": {
-      "filePath": "container/form.tsx"
+    "/container/editor": {
+      "filePath": "container/editor.tsx"
     },
     "/custom-query/$customQueryName": {
       "filePath": "custom-query/$customQueryName.tsx"
     },
-    "/custom-query/form": {
-      "filePath": "custom-query/form.tsx"
+    "/custom-query/editor": {
+      "filePath": "custom-query/editor.tsx"
     },
     "/container/": {
       "filePath": "container/index.tsx"
@@ -326,8 +326,8 @@ export const routeTree = rootRoute
     "/container/$containerName/annotation/$annotationName": {
       "filePath": "container/$containerName/annotation/$annotationName.tsx"
     },
-    "/container/$containerName/annotation/form": {
-      "filePath": "container/$containerName/annotation/form.tsx"
+    "/container/$containerName/annotation/editor": {
+      "filePath": "container/$containerName/annotation/editor.tsx"
     }
   }
 }

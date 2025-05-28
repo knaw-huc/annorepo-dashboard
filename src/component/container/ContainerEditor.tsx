@@ -9,7 +9,7 @@ import cloneDeep from "lodash/cloneDeep";
 import {isString} from "lodash";
 import {useQueryClient} from "@tanstack/react-query";
 
-export function ContainerForm(props: {
+export function ContainerEditor(props: {
   onClose: () => void
   onCreate: (annotationName: string) => void
 }) {

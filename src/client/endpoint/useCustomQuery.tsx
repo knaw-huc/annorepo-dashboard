@@ -2,23 +2,23 @@ import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
 import {createQueryKey, GetPath, QR} from "../query/useGet.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {ArContainer} from "../ArModel.ts";
+import {ArCustomQueryResult} from "../ArModel.ts";
 
-export function useContainer(
+export function useCustomQuery(
   name: string
-): QR<ArContainer> {
+): QR<ArCustomQueryResult> {
   const client = useOpenApiClient();
   return useQuery(
-    getContainer(client, name)
+    getCustomQuery(client, name)
   )
 }
 
-export function getContainer(
+export function getCustomQuery(
   client: AnnoRepoOpenApiClient,
   name: string,
 ) {
-  const path: GetPath = '/w3c/{containerName}';
-  const params = {params: {path: {containerName: name}}};
+  const params = {params: {path: {customQueryName: name}}};
+  const path: GetPath = '/global/custom-query/{customQueryName}';
   return {
     queryKey: createQueryKey(path, params),
     queryFn: async () => await client

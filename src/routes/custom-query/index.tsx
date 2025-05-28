@@ -19,7 +19,7 @@ export const Route = createFileRoute('/custom-query/')({
 
     async function handleClickNewCustomQuery() {
       navigate({
-        to: "/custom-query/form"
+        to: "/custom-query/editor"
       })
     }
 

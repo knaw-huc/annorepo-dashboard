@@ -14,9 +14,9 @@ function Component() {
   const {containerName} = Route.useParams()
   const navigate = Route.useNavigate()
 
-  async function handleClickAnnotationForm() {
+  async function handleClickAnnotationEditor() {
     navigate({
-      to: "/container/$containerName/annotation/form",
+      to: "/container/$containerName/annotation/editor",
       params: {containerName}
     })
   }
@@ -36,7 +36,7 @@ function Component() {
       ]}>
         <ContainerDetail
           name={containerName}
-          onClickCreateAnnotation={handleClickAnnotationForm}
+          onClickCreateAnnotation={handleClickAnnotationEditor}
           onClickSearchAnnotations={handleClickSearchAnnotations}
         />
       </Page>
