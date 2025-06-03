@@ -18,16 +18,20 @@ import {
 import {SubQueryParamEditor} from "../common/search/SubQueryParamEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
 import {useEffect, useState} from "react";
-import {isEmpty, isEqual, omit} from "lodash";
+import {isEmpty, isEqual} from "lodash";
 import {toErrorRecord} from "../common/form/util/toErrorRecord.ts";
 import {Back} from "../common/icon/Back.tsx";
 
+/**
+ * TODO: Create separate components for new and existing queries?
+ */
 export function CustomQueryEditor(props: {
-  customQuery: Omit<ArCustomQueryForm, 'query'>
-  queryTemplate: SearchQuery
+  metadata: Omit<ArCustomQueryForm, 'query'>
+  template: SearchQuery
+  query: SearchQuery
 
-  onChangeCustomQuery: (query: Omit<ArCustomQueryForm, 'query'>) => void
-  onChangeQueryTemplate: (query: SearchQuery) => void
+  onChangeMetadata: (query: Omit<ArCustomQueryForm, 'query'>) => void
+  onChangeQuery: (query: SearchQuery) => void
 
   onClose: () => void
 
@@ -37,13 +41,12 @@ export function CustomQueryEditor(props: {
   // When isExistingQuery==false:
   onSave: () => void
   onEditQueryTemplate: () => void
-
 }) {
 
-  const {queryTemplate, customQuery, onSearch, isExistingQuery, onSave} = props;
+  const {template, metadata, onSearch, isExistingQuery, onSave} = props;
 
-  const [metadata, setMetadata] = useState<CustomQueryForm>(isExistingQuery ? customQuery : omit(defaultCustomQueryForm, 'query'));
-  const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(isExistingQuery ? customQuery : omit(defaultCustomQueryForm, 'query')));
+  const [metadataForm, setMetadataForm] = useState<CustomQueryForm>(metadata);
+  const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
 
   const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>([])
   const [subqueryErrors, setSubqueryErrors] = useState<FieldQueryFormErrorsByField[]>([])
@@ -52,14 +55,14 @@ export function CustomQueryEditor(props: {
    * Update forms and errors when template changes
    */
   useEffect(() => {
-    const isQueryTemplateEqual = isEqual(props.queryTemplate, toSearchQuery(subqueryForms));
-    if (isQueryTemplateEqual) {
+    const isQueryEqual = isEqual(props.query, toSearchQuery(subqueryForms));
+    if (isQueryEqual) {
       return;
     }
-    const forms = toTemplates(toQueryFieldForms(props.queryTemplate));
+    const forms = toTemplates(toQueryFieldForms(props.query));
     setSubqueryForms(forms)
     setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
-  }, [queryTemplate, isExistingQuery]);
+  }, [template, isExistingQuery]);
 
   const handleChangeSubquery = (valueUpdate: QueryValue, index: number) => {
     const formUpdate = subqueryForms.map((form, i) =>
@@ -67,15 +70,15 @@ export function CustomQueryEditor(props: {
     )
     setSubqueryForms(formUpdate)
     if (!hasError(subqueryErrors)) {
-      props.onChangeQueryTemplate(toSearchQuery(formUpdate))
+      props.onChangeQuery(toSearchQuery(formUpdate))
     }
   }
 
   const handleChangeMetadata = (update: CustomQueryForm) => {
-    setMetadata(update)
+    setMetadataForm(update)
     const hasErrors = Object.values(metadataErrors).some(field => !isEmpty(field));
-    if(!hasErrors) {
-      props.onChangeCustomQuery(update)
+    if (!hasErrors) {
+      props.onChangeMetadata(update)
     }
   }
 
@@ -98,13 +101,14 @@ export function CustomQueryEditor(props: {
   return <>
     <H2>Metadata</H2>
     <CustomQueryMetadataEditor
-      form={metadata}
+      form={metadataForm}
       errors={metadataErrors}
       onError={setMetadataErrors}
       onChange={handleChangeMetadata}
       disabled={isExistingQuery}
     />
     <H2>Custom Query</H2>
+    {isExistingQuery && 'Modify the parameters and click search:'}
     {subqueryForms.map((qt, i) => <SubQueryParamEditor
       key={i}
       form={qt}
@@ -115,7 +119,8 @@ export function CustomQueryEditor(props: {
     />)}
     {props.isExistingQuery && <Button
       onClick={handleSubmitSearch}
-      className="ml-3 pl-5"
+      className="pl-5"
+      disabled={false}
     >
       Search<Next className="ml-2"/>
     </Button>}

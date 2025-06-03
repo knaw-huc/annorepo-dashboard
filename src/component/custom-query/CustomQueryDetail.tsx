@@ -1,42 +1,44 @@
 import {H1} from "../common/H1.tsx";
-import {
-  CustomQueryEditor,
-  defaultCustomQueryForm
-} from "./CustomQueryEditor.tsx";
+import {CustomQueryEditor} from "./CustomQueryEditor.tsx";
 import {useCustomQuery} from "../../client/endpoint/useCustomQuery.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import noop from "lodash/noop";
-import {useState} from "react";
-import {ArCustomQueryForm, SearchQuery} from "../../client/ArModel.ts";
+import {useEffect, useState} from "react";
 import omit from "lodash/omit";
-import cloneDeep from "lodash/cloneDeep";
-import {defaultQuery} from "../common/search/QueryModel.ts";
+import {SearchQuery} from "../../client/ArModel.ts";
 
 export function CustomQueryDetail(props: {
   name: string
   onClose: () => void
 }) {
   const {name, onClose} = props;
+
   const customQuery = useCustomQuery(name)
 
-  const [queryMetadata, setQueryMetadata] = useState<Omit<ArCustomQueryForm, 'query'>>(omit(defaultCustomQueryForm, 'query'));
-  const [queryTemplate, setQueryTemplate] = useState<SearchQuery>(cloneDeep(defaultQuery));
+  const [query, setQuery] = useState<SearchQuery>();
 
-  if(!customQuery.data) {
+  useEffect(() => {
+    if(customQuery.data) {
+      setQuery(JSON.parse(customQuery.data.queryTemplate));
+    }
+  }, [customQuery.data]);
+
+  if(!customQuery.data || !query) {
     return <StatusMessage request={customQuery} />
   }
   return <>
     <H1>{name}</H1>
     <CustomQueryEditor
-      customQuery={queryMetadata}
-      queryTemplate={queryTemplate}
+      metadata={omit(customQuery.data, 'query')}
+      template={JSON.parse(customQuery.data.queryTemplate)}
 
-      onChangeCustomQuery={setQueryMetadata}
-      onChangeQueryTemplate={setQueryTemplate}
+      onChangeMetadata={noop}
+      query={query}
+      onChangeQuery={setQuery}
 
       isExistingQuery={true}
       onEditQueryTemplate={noop}
-      onSearch={() => console.log('TODO: handle search!!!', {queryMetadata, queryTemplate})}
+      onSearch={() => console.log('TODO: handle search!!!', {query})}
       onClose={onClose}
 
       onSave={noop}

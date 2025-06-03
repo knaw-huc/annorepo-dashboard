@@ -25,8 +25,9 @@ export function NewCustomQuery(props: {
 
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
   const [queryMetadata, setQueryMetadata] = useState<Omit<ArCustomQueryForm, 'query'>>(omit(defaultCustomQueryForm, 'query'));
-  const [queryTemplate, setQueryTemplate] = useState<SearchQuery>(cloneDeep(defaultQuery));
-  const [globalQuery, setGlobalQuery] = useState<SearchQuery>(cloneDeep(defaultQuery));
+  const template = defaultQuery;
+  const [query, setQuery] = useState<SearchQuery>(cloneDeep(template));
+  const [globalQuery, setGlobalQuery] = useState<SearchQuery>(cloneDeep(template));
 
   const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
 
@@ -34,7 +35,7 @@ export function NewCustomQuery(props: {
     const arCustomQueryForm: ArCustomQueryForm = {
       ...queryMetadata,
       // openapi type says string but AR api expects json:
-      query: queryTemplate as unknown as string
+      query: query as unknown as string
     };
 
     createCustomQuery.mutate({
@@ -52,7 +53,7 @@ export function NewCustomQuery(props: {
 
 
   function handleSwitchToCustomQuery() {
-    setQueryTemplate(cloneDeep(globalQuery))
+    setQuery(cloneDeep(globalQuery))
     setMode('create-custom-query')
   }
 
@@ -82,11 +83,12 @@ export function NewCustomQuery(props: {
     />
     }
     {mode === 'create-custom-query' && <CustomQueryEditor
-      customQuery={queryMetadata}
-      onChangeCustomQuery={setQueryMetadata}
+      metadata={queryMetadata}
+      onChangeMetadata={setQueryMetadata}
 
-      queryTemplate={queryTemplate}
-      onChangeQueryTemplate={setQueryTemplate}
+      template={template}
+      query={query}
+      onChangeQuery={setQuery}
 
       isExistingQuery={false}
       onSave={handleSubmitSave}
