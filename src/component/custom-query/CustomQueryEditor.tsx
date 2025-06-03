@@ -60,6 +60,9 @@ export function CustomQueryEditor(props: {
       return;
     }
     const forms = toTemplates(toQueryFieldForms(props.query));
+    // const forms = isExistingQuery
+    //   ? toQueryFieldForms(props.query)
+    //   : toTemplates(toQueryFieldForms(props.query));
     setSubqueryForms(forms)
     setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
   }, [template, isExistingQuery]);

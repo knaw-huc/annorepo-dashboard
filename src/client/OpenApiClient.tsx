@@ -4,6 +4,9 @@ import {HttpMethod, PathsWithMethod} from "openapi-typescript-helpers";
 import {
   UseMutationOptions as RQUseMutationOptions
 } from "@tanstack/react-query";
+import {
+  decodeCustomQueryParameters
+} from "./util/decodeCustomQueryParameters.ts";
 
 export function createOpenApiClient(
   bearerToken: string,
@@ -13,6 +16,15 @@ export function createOpenApiClient(
   const authMiddleware: Middleware = {
     async onRequest(params) {
       params.request.headers.set('Authorization', `Bearer ${bearerToken}`)
+    }
+  }
+
+  /**
+   * Custom query parameters should not be encoded by openapi-fetch
+   */
+  const urlDecodeCustomQueryParameters: Middleware = {
+    async onRequest(params) {
+      params.request = new Request(decodeCustomQueryParameters(params.request.url), params.request)
     }
   }
 
@@ -27,6 +39,7 @@ export function createOpenApiClient(
   let client = createClient<paths>({baseUrl});
   client.use(
     authMiddleware,
+    urlDecodeCustomQueryParameters,
     validateStatusMiddleware
   )
   return client

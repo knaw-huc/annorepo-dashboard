@@ -6,6 +6,7 @@ import noop from "lodash/noop";
 import {useEffect, useState} from "react";
 import omit from "lodash/omit";
 import {SearchQuery} from "../../client/ArModel.ts";
+import {mapValues} from "lodash";
 
 export function CustomQueryDetail(props: {
   name: string
@@ -13,9 +14,13 @@ export function CustomQueryDetail(props: {
 }) {
   const {name, onClose} = props;
 
-  const customQuery = useCustomQuery(name)
-
   const [query, setQuery] = useState<SearchQuery>();
+  const [queryParameters, setQueryParameters] = useState<Record<string, string>>({})
+
+  const customQuery = useCustomQuery(
+    name,
+    queryParameters
+  )
 
   useEffect(() => {
     if(customQuery.data) {
@@ -23,22 +28,30 @@ export function CustomQueryDetail(props: {
     }
   }, [customQuery.data]);
 
+  function handleSearch() {
+    if(query) {
+      setQueryParameters(mapValues(query, v => `${v}`))
+    }
+    return console.log('TODO: handle search!!!', {query});
+  }
+
   if(!customQuery.data || !query) {
     return <StatusMessage request={customQuery} />
   }
+
   return <>
     <H1>{name}</H1>
     <CustomQueryEditor
       metadata={omit(customQuery.data, 'query')}
-      template={JSON.parse(customQuery.data.queryTemplate)}
-
       onChangeMetadata={noop}
+
+      template={JSON.parse(customQuery.data.queryTemplate)}
       query={query}
       onChangeQuery={setQuery}
 
       isExistingQuery={true}
       onEditQueryTemplate={noop}
-      onSearch={() => console.log('TODO: handle search!!!', {query})}
+      onSearch={handleSearch}
       onClose={onClose}
 
       onSave={noop}
