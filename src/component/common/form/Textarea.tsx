@@ -7,7 +7,7 @@ export function Textarea(props: {
 }) {
   let textareaClassname =  "h-full block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500"
   if(props.disabled) {
-    textareaClassname += `  cursor-not-allowed`
+    textareaClassname += `  cursor-not-allowed text-slate-500`
   }
   return <div className={`relative h-full ${props.className}`}>
     <textarea

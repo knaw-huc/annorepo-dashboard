@@ -52,9 +52,6 @@ export function CustomQueryEditor(props: {
    * Update forms and errors when template changes
    */
   useEffect(() => {
-    if (isExistingQuery) {
-      return;
-    }
     const isQueryTemplateEqual = isEqual(props.queryTemplate, toSearchQuery(subqueryForms));
     if (isQueryTemplateEqual) {
       return;
@@ -114,6 +111,7 @@ export function CustomQueryEditor(props: {
       errors={subqueryErrors[i].errors}
       onChange={(es) => handleChangeSubquery(es, i)}
       onError={(error) => handleSubqueryError(error, i)}
+      isExistingQuery={props.isExistingQuery}
     />)}
     {props.isExistingQuery && <Button
       onClick={handleSubmitSearch}

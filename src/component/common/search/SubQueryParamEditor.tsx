@@ -11,8 +11,10 @@ export function SubQueryParamEditor(props: {
 
   errors: ErrorRecord<FieldQueryForm>
   onError: (error: string) => void;
+
+  isExistingQuery: boolean
 }) {
-  const {form, onChange, errors, onError} = props;
+  const {form, onChange, errors, onError, isExistingQuery} = props;
 
   const operatorValue = form.operator.valueOf();
   return <form onSubmit={e => e.preventDefault()}>
@@ -42,7 +44,7 @@ export function SubQueryParamEditor(props: {
             operator={form.operator}
             error={errors.value}
             onError={onError}
-            disabled={false}
+            disabled={!isExistingQuery}
           />
         </div>
       </div>

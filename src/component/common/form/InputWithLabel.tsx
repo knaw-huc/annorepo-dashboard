@@ -18,11 +18,15 @@ export function InputWithLabel(props: {
   }
 
   let labelClassname = "absolute text-sm duration-300 transform -translate-y-4 text-xs top-5 z-10 origin-[0] start-2.5"
-  labelClassname += props.errorLabel ? ' text-red-500' : ' text-gray-500';
+  if (props.errorLabel) {
+    labelClassname += ' text-red-500';
+  } else {
+    labelClassname += ' text-gray-500';
+  }
 
   let inputClassname = "block rounded-md px-2 pb-1 pt-5 w-full text-sm bg-gray-50 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-slate-600 peer"
   if (props.disabled) {
-    inputClassname += `  cursor-not-allowed`
+    inputClassname += `  cursor-not-allowed text-slate-500`
   }
 
   const label = props.errorLabel
