@@ -5,16 +5,16 @@ import {ErrorRecord} from "../form/util/ErrorRecord.ts";
 import noop from "lodash/noop";
 import {FieldQueryForm} from "./QueryModel.ts";
 
-export function SubQueryParamEditor(props: {
+export function CustomSubQueryEditor(props: {
   form: FieldQueryForm
   onChange: (value: FieldQueryForm['value']) => void;
 
   errors: ErrorRecord<FieldQueryForm>
   onError: (error: string) => void;
 
-  isExistingQuery: boolean
+  isParameter: boolean
 }) {
-  const {form, onChange, errors, onError, isExistingQuery} = props;
+  const {form, onChange, errors, onError, isParameter} = props;
 
   const operatorValue = form.operator.valueOf();
   return <form onSubmit={e => e.preventDefault()}>
@@ -44,7 +44,7 @@ export function SubQueryParamEditor(props: {
             operator={form.operator}
             error={errors.value}
             onError={onError}
-            disabled={!isExistingQuery}
+            disabled={!isParameter}
           />
         </div>
       </div>

@@ -8,26 +8,56 @@ import {objectEntries} from "../../util/objectEntries.ts";
 
 export function useCustomQuery(
   name: string,
-  queryParameters: Record<string, string>
 ): QR<ArCustomQueryResult> {
   const client = useOpenApiClient();
   return useQuery(
-    getCustomQuery(client, name, queryParameters)
+    getCustomQuery(client, name)
   )
 }
 
 export function getCustomQuery(
   client: AnnoRepoOpenApiClient,
   name: string,
-  queryParameters: Record<string, string>
 ) {
-  const base64Encoded = objectEntries(queryParameters)
-    .map(([k, v]) => `${k}=${encodeString(v)}`)
-    .join(',');
-  const nameWithParameters = base64Encoded ? name + ':' + base64Encoded : name
-  const params = {params: {path: {customQueryName: nameWithParameters}}};
+  const params = {params: {path: {customQueryName: name}}};
   const path: GetPath = '/global/custom-query/{customQueryName}';
   return {
+    queryKey: createQueryKey(path, params),
+    queryFn: async () => await client
+      .GET(path, params)
+      .then(({data}) => data),
+  };
+}
+
+// --
+
+export function useContainerCustomQueryCall(
+  name: string,
+  containerName: string,
+  queryParameters: Record<string, string>
+): QR<ArCustomQueryResult> {
+  const client = useOpenApiClient();
+  return useQuery(
+    getContainerCustomQueryCall(client, name, containerName, queryParameters)
+  )
+}
+
+export function getContainerCustomQueryCall(
+  client: AnnoRepoOpenApiClient,
+  queryCall: string,
+  containerName: string,
+  queryParameters: Record<string, string>
+) {
+  const base64EncodedParams = objectEntries(queryParameters)
+    .map(([k, v]) => `${k}=${encodeString(v)}`)
+    .join(',');
+  const queryCallWithParameters = base64EncodedParams
+    ? queryCall + ':' + base64EncodedParams
+    : queryCall
+  const params = {params: {path: {containerName, queryCall: queryCallWithParameters}}};
+  const path: GetPath = `/services/{containerName}/custom-query/{queryCall}`;
+  return {
+    enabled: !!containerName,
     queryKey: createQueryKey(path, params),
     queryFn: async () => await client
       .GET(path, params)

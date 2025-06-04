@@ -11,11 +11,13 @@ import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
 import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
 import {
   createFieldQueryFormErrors,
+  createFieldQueryFormHasParameter,
   FieldQueryForm,
   FieldQueryFormErrorsByField,
+  FieldQueryFormIsParameter,
   hasError
 } from "../common/search/QueryModel.ts";
-import {SubQueryParamEditor} from "../common/search/SubQueryParamEditor.tsx";
+import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
 import {useEffect, useState} from "react";
 import {isEmpty, isEqual} from "lodash";
@@ -35,37 +37,59 @@ export function CustomQueryEditor(props: {
 
   onClose: () => void
 
+  onError?: () => void
+  onClearError?: () => void
+
   isExistingQuery: boolean
   // When isExistingQuery==true:
-  onSearch: () => void
+  parameters?: string[]
   // When isExistingQuery==false:
   onSave: () => void
   onEditQueryTemplate: () => void
 }) {
 
-  const {template, metadata, onSearch, isExistingQuery, onSave} = props;
+  const {
+    template,
+    query,
+    metadata,
+    isExistingQuery,
+    onSave,
+    parameters
+  } = props;
 
   const [metadataForm, setMetadataForm] = useState<CustomQueryForm>(metadata);
   const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
 
   const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>([])
+  const [subqueryParameters, setSubqueryParameters] = useState<FieldQueryFormIsParameter[]>([])
   const [subqueryErrors, setSubqueryErrors] = useState<FieldQueryFormErrorsByField[]>([])
 
   /**
    * Update forms and errors when template changes
    */
   useEffect(() => {
-    const isQueryEqual = isEqual(props.query, toSearchQuery(subqueryForms));
+    const isQueryEqual = isEqual(query, toSearchQuery(subqueryForms));
     if (isQueryEqual) {
       return;
     }
-    const forms = toTemplates(toQueryFieldForms(props.query));
-    // const forms = isExistingQuery
-    //   ? toQueryFieldForms(props.query)
-    //   : toTemplates(toQueryFieldForms(props.query));
-    setSubqueryForms(forms)
-    setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
-  }, [template, isExistingQuery]);
+    if (isExistingQuery) {
+      const forms = toQueryFieldForms(query)
+      setSubqueryForms(forms)
+      setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
+
+      // Use template to determine if form contains a parameter or a fixed value:
+      if (!parameters) {
+        throw new Error('Existing query should have parameters')
+      }
+      const templateForm = toQueryFieldForms(template);
+      setSubqueryParameters(templateForm.map(tf => createFieldQueryFormHasParameter(tf, parameters)))
+    } else {
+      const forms = toTemplates(toQueryFieldForms(query));
+      setSubqueryForms(forms)
+      setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
+      setSubqueryParameters(forms.map(tf => createFieldQueryFormHasParameter(tf, [])))
+    }
+  }, [template, isExistingQuery,]);
 
   const handleChangeSubquery = (valueUpdate: QueryValue, index: number) => {
     const formUpdate = subqueryForms.map((form, i) =>
@@ -94,13 +118,6 @@ export function CustomQueryEditor(props: {
     ))
   }
 
-  const handleSubmitSearch = () => {
-    if (hasError(subqueryErrors)) {
-      return;
-    }
-    onSearch()
-  }
-
   return <>
     <H2>Metadata</H2>
     <CustomQueryMetadataEditor
@@ -112,29 +129,22 @@ export function CustomQueryEditor(props: {
     />
     <H2>Custom Query</H2>
     {isExistingQuery && 'Modify the parameters and click search:'}
-    {subqueryForms.map((qt, i) => <SubQueryParamEditor
+    {subqueryForms.map((form, i) => <CustomSubQueryEditor
       key={i}
-      form={qt}
+      form={form}
       errors={subqueryErrors[i].errors}
       onChange={(es) => handleChangeSubquery(es, i)}
       onError={(error) => handleSubqueryError(error, i)}
-      isExistingQuery={props.isExistingQuery}
+      isParameter={subqueryParameters[i].isParameter}
     />)}
-    {props.isExistingQuery && <Button
-      onClick={handleSubmitSearch}
-      className="pl-5"
-      disabled={false}
-    >
-      Search<Next className="ml-2"/>
-    </Button>}
-    {!props.isExistingQuery && <Button
+    {!isExistingQuery && <Button
       onClick={props.onEditQueryTemplate}
       secondary
       className="pr-5"
     >
       <Back className="mr-2"/>Edit query
     </Button>}
-    {!props.isExistingQuery && <Button
+    {!isExistingQuery && <Button
       onClick={onSave}
       className="ml-3 pl-5"
     >
@@ -157,7 +167,8 @@ export function toTemplates(query: FieldQueryForm[]): FieldQueryForm[] {
 export function toTemplate(query: FieldQueryForm): FieldQueryForm {
   const result = {...query};
   const key = result.field
-  result.value = `<${key}>`
+  const keyWithoutDots = key.replaceAll('.', '-')
+  result.value = `<${keyWithoutDots}>`
   return result
 }
 

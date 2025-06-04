@@ -30,7 +30,6 @@ export function GlobalQueryEditor(props: {
   const containerNames = getContainerNames(myContainers.data)
   const fields = useContainerFields(containerNames[0] ?? '')
   const fieldNames = fields.data ? Object.keys(fields.data) : [];
-  console.log('getting fields:', {containerNames, data: myContainers.data, fields})
 
   const {page} = useGlobalSearch(query, pageNo);
 
@@ -43,7 +42,6 @@ export function GlobalQueryEditor(props: {
   }
 
   const handleSubmitQuery = (query: SearchQuery) => {
-    console.log('handleSubmitQuery', {query})
     onChange(query);
   }
 

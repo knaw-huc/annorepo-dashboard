@@ -1,12 +1,23 @@
 import {H1} from "../common/H1.tsx";
 import {CustomQueryEditor} from "./CustomQueryEditor.tsx";
-import {useCustomQuery} from "../../client/endpoint/useCustomQuery.tsx";
+import {
+  useContainerCustomQueryCall,
+  useCustomQuery
+} from "../../client/endpoint/useCustomQuery.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import noop from "lodash/noop";
 import {useEffect, useState} from "react";
 import omit from "lodash/omit";
-import {SearchQuery} from "../../client/ArModel.ts";
-import {mapValues} from "lodash";
+import {
+  toCustomQueryParameters
+} from "./toCustomQueryParameters.ts";
+import {ArMyContainers, SearchQuery} from "../../client/ArModel.ts";
+import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
+import {Button} from "../common/Button.tsx";
+import {Next} from "../common/icon/Next.tsx";
+import {Dropdown} from "../common/form/Dropdown.tsx";
+import {QR, useGet} from "../../client/query/useGet.tsx";
+import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 
 export function CustomQueryDetail(props: {
   name: string
@@ -16,11 +27,14 @@ export function CustomQueryDetail(props: {
 
   const [query, setQuery] = useState<SearchQuery>();
   const [queryParameters, setQueryParameters] = useState<Record<string, string>>({})
+  const [hasQueryError, setQueryError] = useState<boolean>();
+  const [selectedContainer, setSelectedContainer] = useState('')
 
-  const customQuery = useCustomQuery(
-    name,
-    queryParameters
-  )
+  const customQuery = useCustomQuery(name)
+  const customQueryCall = useContainerCustomQueryCall(name, selectedContainer, queryParameters)
+  const myContainers = useGet('/my/containers') as QR<ArMyContainers>
+
+  const containerNames = getContainerNames(myContainers.data)
 
   useEffect(() => {
     if(customQuery.data) {
@@ -29,10 +43,15 @@ export function CustomQueryDetail(props: {
   }, [customQuery.data]);
 
   function handleSearch() {
-    if(query) {
-      setQueryParameters(mapValues(query, v => `${v}`))
+    if(!customQuery.data) {
+      return;
     }
-    return console.log('TODO: handle search!!!', {query});
+    if(query) {
+      const forms = toQueryFieldForms(query)
+      const templateForms = toQueryFieldForms(JSON.parse(customQuery.data.queryTemplate))
+      const newQueryParams = toCustomQueryParameters(forms, templateForms, customQuery.data.parameters);
+      setQueryParameters(newQueryParams)
+    }
   }
 
   if(!customQuery.data || !query) {
@@ -48,14 +67,33 @@ export function CustomQueryDetail(props: {
       template={JSON.parse(customQuery.data.queryTemplate)}
       query={query}
       onChangeQuery={setQuery}
-
+      onError={() => setQueryError(true)}
+      onClearError={() => setQueryError(false)}
       isExistingQuery={true}
+      parameters={customQuery.data.parameters}
       onEditQueryTemplate={noop}
-      onSearch={handleSearch}
       onClose={onClose}
 
       onSave={noop}
     />
+    <div>
+      <Dropdown
+        className="mr-3"
+        selectedValue={selectedContainer}
+        options={containerNames.map(key => ({ label: key, value: key }))}
+        onSelect={option => setSelectedContainer(option.value)}
+      />
+      <Button
+        onClick={handleSearch}
+        className="pl-5"
+        disabled={hasQueryError}
+      >
+        Search<Next className="ml-2"/>
+      </Button>
+    </div>
+    <div className="max-w-[100vw] font-mono whitespace-pre-wrap">
+      {JSON.stringify(customQueryCall.data, null, 2)}
+    </div>
   </>
 }
 

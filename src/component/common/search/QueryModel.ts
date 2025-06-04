@@ -4,7 +4,7 @@ import {
   QueryValue
 } from "../../../client/ArModel.ts";
 import {ErrorRecord} from "../form/util/ErrorRecord.ts";
-import {isEmpty, mapValues, some, values} from "lodash";
+import {isEmpty, isString, mapValues, some, values} from "lodash";
 
 export type FieldQueryForm = {
   field: string,
@@ -17,6 +17,11 @@ export type FieldQueryFormErrorsByField = {
   errors: ErrorRecord<FieldQueryForm>
 }
 
+export type FieldQueryFormIsParameter = {
+  field: string,
+  isParameter: boolean
+}
+
 export const defaultQuery: FieldQuery = {field: {[QueryOperator.equal]: "value"}}
 
 export type QueryEntry = [string, any]
@@ -27,6 +32,17 @@ export function createFieldQueryFormErrors(
   return {
     field: form.field,
     errors: mapValues(form, _ => '')
+  };
+}
+
+export function createFieldQueryFormHasParameter(
+  templateForm: FieldQueryForm,
+  parameters: string[]
+): FieldQueryFormIsParameter {
+  const value = templateForm.value;
+  return {
+    field: templateForm.field,
+    isParameter: isString(value) && parameters.some(p => value.includes(p))
   };
 }
 

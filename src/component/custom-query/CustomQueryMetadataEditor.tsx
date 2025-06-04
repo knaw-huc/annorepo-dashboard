@@ -16,9 +16,9 @@ export function CustomQueryMetadataEditor(props: {
   function handleChangeName(name: string) {
     onError({
       ...errors,
-      name: /^[a-zA-Z0-9-]+$/.test(name)
+      name: /^[a-zA-Z0-9-.]+$/.test(name)
         ? ''
-        : 'Only alpha numeric characters and dashes allowed'
+        : 'Only alpha numeric characters, dots and dashes allowed'
     })
     onChange({...form, name});
   }

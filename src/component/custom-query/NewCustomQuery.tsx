@@ -25,7 +25,7 @@ export function NewCustomQuery(props: {
 
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
   const [queryMetadata, setQueryMetadata] = useState<Omit<ArCustomQueryForm, 'query'>>(omit(defaultCustomQueryForm, 'query'));
-  const template = defaultQuery;
+  const [template, setTemplate] = useState<SearchQuery>(cloneDeep(defaultQuery));
   const [query, setQuery] = useState<SearchQuery>(cloneDeep(template));
   const [globalQuery, setGlobalQuery] = useState<SearchQuery>(cloneDeep(template));
 
@@ -61,6 +61,11 @@ export function NewCustomQuery(props: {
     setMode('create-global-query')
   }
 
+  function handleChangeQuery(query: SearchQuery) {
+    setQuery(query)
+    setTemplate(query)
+  }
+
   const title = mode === 'create-global-query'
     ? 'Create global query'
     : 'Create custom query';
@@ -80,15 +85,14 @@ export function NewCustomQuery(props: {
       </>}
       query={globalQuery}
       onChange={setGlobalQuery}
-    />
-    }
+    />}
     {mode === 'create-custom-query' && <CustomQueryEditor
       metadata={queryMetadata}
       onChangeMetadata={setQueryMetadata}
 
       template={template}
       query={query}
-      onChangeQuery={setQuery}
+      onChangeQuery={handleChangeQuery}
 
       isExistingQuery={false}
       onSave={handleSubmitSave}
