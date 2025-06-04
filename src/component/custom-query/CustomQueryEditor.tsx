@@ -128,7 +128,7 @@ export function CustomQueryEditor(props: {
       disabled={isExistingQuery}
     />
     <H2>Custom Query</H2>
-    {isExistingQuery && 'Modify the parameters and click search:'}
+    {isExistingQuery && 'Modify parameters and click search:'}
     {subqueryForms.map((form, i) => <CustomSubQueryEditor
       key={i}
       form={form}

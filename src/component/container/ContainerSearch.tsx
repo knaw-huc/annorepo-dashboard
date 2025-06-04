@@ -21,8 +21,6 @@ export type ContainerSearchProps = {
 export function ContainerSearch(props: ContainerSearchProps) {
 
   const {name} = props;
-
-
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(name)

@@ -3,11 +3,11 @@ import {keepPreviousData, useQuery} from "@tanstack/react-query";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
 import {ArQuery} from "../ArModel.ts";
 import {toName} from "../../util/toName.ts";
-import {QR} from "../query/useGet.tsx";
+import {createQueryKey, GetPath, QR} from "../query/useGet.tsx";
 
 export function useContainerSearch(
   containerName: string,
-  query?: ArQuery,
+  query: ArQuery | undefined,
   pageNo: number = 0,
 ): Record<string, QR> {
   const client = useOpenApiClient()
@@ -19,14 +19,22 @@ export function useContainerSearch(
   }) as QR<string>;
 
   const location: string | undefined = search.data;
+  const path: GetPath = '/services/{containerName}/search/{searchId}';
+  const params = {
+    params: {
+      path: {
+        containerName,
+        searchId: location!
+      },
+      query: {page: pageNo}
+    }
+  };
   const page = useQuery({
-    queryKey: [...queryKey, location, pageNo],
-    queryFn: async () => getSearchContainerResult(
-      client,
-      containerName,
-      location!,
-      pageNo
-    ),
+    queryKey: createQueryKey(path, params),
+    queryFn: async () => client.GET(
+      path,
+      params
+    ).then(({data}) => data),
     enabled: !!location,
     placeholderData: keepPreviousData,
   });
@@ -53,22 +61,3 @@ export async function searchContainer(
   });
 }
 
-export async function getSearchContainerResult(
-  client: AnnoRepoOpenApiClient,
-  containerName: string,
-  searchId: string,
-  page: number
-) {
-  return client.GET(
-    '/services/{containerName}/search/{searchId}',
-    {
-      params: {
-        path: {
-          containerName,
-          searchId
-        },
-        query: {page}
-      }
-    }
-  ).then(({data}) => data);
-}

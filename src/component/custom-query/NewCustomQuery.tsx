@@ -11,7 +11,6 @@ import {ArCustomQueryForm, SearchQuery} from "../../client/ArModel.ts";
 import {MR, usePost} from "../../client/query/usePost.tsx";
 import {defaultQuery} from "../common/search/QueryModel.ts";
 import omit from "lodash/omit";
-import noop from "lodash/noop";
 import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 import cloneDeep from "lodash/cloneDeep";
@@ -98,8 +97,6 @@ export function NewCustomQuery(props: {
       onSave={handleSubmitSave}
       onEditQueryTemplate={switchBackToGlobalQuery}
       onClose={props.onClose}
-
-      onSearch={noop}
     />}
 
   </>

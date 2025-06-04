@@ -2,7 +2,7 @@ import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
 import {createQueryKey, GetPath, QR} from "../query/useGet.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {ArCustomQueryResult} from "../ArModel.ts";
+import {ArAnnotationPage, ArCustomQueryResult} from "../ArModel.ts";
 import {encodeString} from "../../util/base64.ts";
 import {objectEntries} from "../../util/objectEntries.ts";
 
@@ -34,11 +34,12 @@ export function getCustomQuery(
 export function useContainerCustomQueryCall(
   name: string,
   containerName: string,
-  queryParameters: Record<string, string>
-): QR<ArCustomQueryResult> {
+  queryParameters: Record<string, string>,
+  pageNo: number = 0,
+): QR<ArAnnotationPage> {
   const client = useOpenApiClient();
   return useQuery(
-    getContainerCustomQueryCall(client, name, containerName, queryParameters)
+    getContainerCustomQueryCall(client, name, containerName, queryParameters, pageNo)
   )
 }
 
@@ -46,7 +47,8 @@ export function getContainerCustomQueryCall(
   client: AnnoRepoOpenApiClient,
   queryCall: string,
   containerName: string,
-  queryParameters: Record<string, string>
+  queryParameters: Record<string, string>,
+  pageNo: number = 0,
 ) {
   const base64EncodedParams = objectEntries(queryParameters)
     .map(([k, v]) => `${k}=${encodeString(v)}`)
@@ -54,7 +56,15 @@ export function getContainerCustomQueryCall(
   const queryCallWithParameters = base64EncodedParams
     ? queryCall + ':' + base64EncodedParams
     : queryCall
-  const params = {params: {path: {containerName, queryCall: queryCallWithParameters}}};
+  const params = {
+    params: {
+      path: {
+        containerName,
+        queryCall: queryCallWithParameters
+      },
+      query: {page: pageNo}
+    }
+  };
   const path: GetPath = `/services/{containerName}/custom-query/{queryCall}`;
   return {
     enabled: !!containerName,

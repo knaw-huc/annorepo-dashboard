@@ -8,9 +8,7 @@ import {StatusMessage} from "../common/StatusMessage.tsx";
 import noop from "lodash/noop";
 import {useEffect, useState} from "react";
 import omit from "lodash/omit";
-import {
-  toCustomQueryParameters
-} from "./toCustomQueryParameters.ts";
+import {toCustomQueryParameters} from "./toCustomQueryParameters.ts";
 import {ArMyContainers, SearchQuery} from "../../client/ArModel.ts";
 import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
 import {Button} from "../common/Button.tsx";
@@ -18,6 +16,8 @@ import {Next} from "../common/icon/Next.tsx";
 import {Dropdown} from "../common/form/Dropdown.tsx";
 import {QR, useGet} from "../../client/query/useGet.tsx";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
+import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
+import {toPageNo} from "../../util/toPageNo.ts";
 
 export function CustomQueryDetail(props: {
   name: string
@@ -32,6 +32,7 @@ export function CustomQueryDetail(props: {
 
   const customQuery = useCustomQuery(name)
   const customQueryCall = useContainerCustomQueryCall(name, selectedContainer, queryParameters)
+  const [pageNo, setPageNo] = useState(0)
   const myContainers = useGet('/my/containers') as QR<ArMyContainers>
 
   const containerNames = getContainerNames(myContainers.data)
@@ -52,6 +53,10 @@ export function CustomQueryDetail(props: {
       const newQueryParams = toCustomQueryParameters(forms, templateForms, customQuery.data.parameters);
       setQueryParameters(newQueryParams)
     }
+  }
+
+  const handleChangePage = (update: string) => {
+    setPageNo(toPageNo(update))
   }
 
   if(!customQuery.data || !query) {
@@ -76,7 +81,7 @@ export function CustomQueryDetail(props: {
 
       onSave={noop}
     />
-    <div>
+    <div className="mb-5">
       <Dropdown
         className="mr-3"
         selectedValue={selectedContainer}
@@ -86,13 +91,18 @@ export function CustomQueryDetail(props: {
       <Button
         onClick={handleSearch}
         className="pl-5"
-        disabled={hasQueryError}
+        disabled={hasQueryError || !selectedContainer}
       >
         Search<Next className="ml-2"/>
       </Button>
     </div>
     <div className="max-w-[100vw] font-mono whitespace-pre-wrap">
-      {JSON.stringify(customQueryCall.data, null, 2)}
+      {!!customQueryCall.data && <AnnotationPage
+          pageNo={pageNo}
+          page={customQueryCall.data}
+          onChangePageNo={handleChangePage}
+        />
+      }
     </div>
   </>
 }
