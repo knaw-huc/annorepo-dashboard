@@ -14,7 +14,7 @@ import {
   defaultQuery,
   FieldQueryForm,
   FieldQueryFormErrorsByField,
-  hasError
+  hasErrorByField
 } from "./QueryModel.ts";
 import {SubQueryEditor} from "./SubQueryEditor.tsx";
 
@@ -53,7 +53,7 @@ export function SearchEditor(props: {
     )
     setSubqueryForms(update)
     setQueryError('')
-    if (!hasError(subqueryErrors)) {
+    if (!hasErrorByField(subqueryErrors)) {
       props.onChangeQuery(toSearchQuery(update))
     }
   }
@@ -65,7 +65,7 @@ export function SearchEditor(props: {
   }
 
   const handleSubmitQuery = () => {
-    if (hasError(subqueryErrors)) {
+    if (hasErrorByField(subqueryErrors)) {
       return;
     }
     props.onSubmitQuery(toSearchQuery(subqueryForms))
@@ -120,7 +120,7 @@ export function SearchEditor(props: {
       {props.moreButtons}
 
       <Button
-        disabled={!!searchError || !subqueryForms.length || hasError(subqueryErrors)}
+        disabled={!!searchError || !subqueryForms.length || hasErrorByField(subqueryErrors)}
         type="button"
         className="pl-5 h-full border-b-2 ml-2"
         onClick={handleSubmitQuery}

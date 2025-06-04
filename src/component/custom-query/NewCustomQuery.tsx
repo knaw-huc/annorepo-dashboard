@@ -14,6 +14,8 @@ import omit from "lodash/omit";
 import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 import cloneDeep from "lodash/cloneDeep";
+import {Next} from "../common/icon/Next.tsx";
+import {Back} from "../common/icon/Back.tsx";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
@@ -94,11 +96,21 @@ export function NewCustomQuery(props: {
       onChangeQuery={handleChangeQuery}
 
       isExistingQuery={false}
-      onSave={handleSubmitSave}
-      onEditQueryTemplate={switchBackToGlobalQuery}
-      onClose={props.onClose}
+      parameters={[]}
     />}
-
+    <Button
+      onClick={switchBackToGlobalQuery}
+      secondary
+      className="pr-5"
+    >
+      <Back className="mr-2"/>Edit query
+    </Button>
+    <Button
+      onClick={handleSubmitSave}
+      className="ml-3 pl-5"
+    >
+      Save<Next className="ml-2"/>
+    </Button>
   </>
 }
 

@@ -23,19 +23,18 @@ export function CustomQueryDetail(props: {
   name: string
   onClose: () => void
 }) {
-  const {name, onClose} = props;
+  const {name} = props;
 
   const [query, setQuery] = useState<SearchQuery>();
   const [queryParameters, setQueryParameters] = useState<Record<string, string>>({})
   const [hasQueryError, setQueryError] = useState<boolean>();
   const [selectedContainer, setSelectedContainer] = useState('')
-
-  const customQuery = useCustomQuery(name)
-  const customQueryCall = useContainerCustomQueryCall(name, selectedContainer, queryParameters)
   const [pageNo, setPageNo] = useState(0)
-  const myContainers = useGet('/my/containers') as QR<ArMyContainers>
 
+  const myContainers = useGet('/my/containers') as QR<ArMyContainers>
   const containerNames = getContainerNames(myContainers.data)
+  const customQuery = useCustomQuery(name)
+  const containerCustomQueryCall = useContainerCustomQueryCall(name, selectedContainer, queryParameters)
 
   useEffect(() => {
     if(customQuery.data) {
@@ -76,10 +75,6 @@ export function CustomQueryDetail(props: {
       onClearError={() => setQueryError(false)}
       isExistingQuery={true}
       parameters={customQuery.data.parameters}
-      onEditQueryTemplate={noop}
-      onClose={onClose}
-
-      onSave={noop}
     />
     <div className="mb-5">
       <Dropdown
@@ -97,9 +92,9 @@ export function CustomQueryDetail(props: {
       </Button>
     </div>
     <div className="max-w-[100vw] font-mono whitespace-pre-wrap">
-      {!!customQueryCall.data && <AnnotationPage
+      {!!containerCustomQueryCall.data && <AnnotationPage
           pageNo={pageNo}
-          page={customQueryCall.data}
+          page={containerCustomQueryCall.data}
           onChangePageNo={handleChangePage}
         />
       }

@@ -46,10 +46,12 @@ export function createFieldQueryFormHasParameter(
   };
 }
 
-export function hasError(forms: FieldQueryFormErrorsByField[]) {
-  return some(forms, form =>
-    values(form.errors).some(
-      field => !isEmpty(field)
-    )
+export function hasErrorByField(forms: FieldQueryFormErrorsByField[]) {
+  return some(forms, hasError);
+}
+
+export function hasError<T extends object>(form: ErrorRecord<T>) {
+  return values(form).some(
+    field => !isEmpty(field)
   );
 }

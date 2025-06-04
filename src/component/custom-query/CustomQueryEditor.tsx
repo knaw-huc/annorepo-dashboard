@@ -5,8 +5,6 @@ import {
   SearchQuery
 } from "../../client/ArModel.ts";
 import {H2} from "../common/H2.tsx";
-import {Button} from "../common/Button.tsx";
-import {Next} from "../common/icon/Next.tsx";
 import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
 import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
 import {
@@ -14,15 +12,14 @@ import {
   createFieldQueryFormHasParameter,
   FieldQueryForm,
   FieldQueryFormErrorsByField,
-  FieldQueryFormIsParameter,
-  hasError
+  FieldQueryFormIsParameter, hasError,
+  hasErrorByField
 } from "../common/search/QueryModel.ts";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
 import {useEffect, useState} from "react";
 import {isEmpty, isEqual} from "lodash";
 import {toErrorRecord} from "../common/form/util/toErrorRecord.ts";
-import {Back} from "../common/icon/Back.tsx";
 
 /**
  * TODO: Create separate components for new and existing queries?
@@ -35,17 +32,11 @@ export function CustomQueryEditor(props: {
   onChangeMetadata: (query: Omit<ArCustomQueryForm, 'query'>) => void
   onChangeQuery: (query: SearchQuery) => void
 
-  onClose: () => void
-
-  onError?: () => void
-  onClearError?: () => void
-
   isExistingQuery: boolean
   // When isExistingQuery==true:
-  parameters?: string[]
-  // When isExistingQuery==false:
-  onSave: () => void
-  onEditQueryTemplate: () => void
+  parameters: string[]
+  onError?: () => void
+  onClearError?: () => void
 }) {
 
   const {
@@ -53,7 +44,6 @@ export function CustomQueryEditor(props: {
     query,
     metadata,
     isExistingQuery,
-    onSave,
     parameters
   } = props;
 
@@ -89,14 +79,22 @@ export function CustomQueryEditor(props: {
       setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
       setSubqueryParameters(forms.map(tf => createFieldQueryFormHasParameter(tf, [])))
     }
-  }, [template, isExistingQuery,]);
+  }, [template, isExistingQuery]);
+
+  useEffect(() => {
+    if(hasError(metadataErrors) || hasErrorByField(subqueryErrors)) {
+      props.onError?.()
+    } else {
+      props.onClearError?.()
+    }
+  }, [metadataErrors, subqueryErrors]);
 
   const handleChangeSubquery = (valueUpdate: QueryValue, index: number) => {
     const formUpdate = subqueryForms.map((form, i) =>
       i === index ? {...form, value: valueUpdate} : form
     )
     setSubqueryForms(formUpdate)
-    if (!hasError(subqueryErrors)) {
+    if (!hasErrorByField(subqueryErrors)) {
       props.onChangeQuery(toSearchQuery(formUpdate))
     }
   }
@@ -137,19 +135,6 @@ export function CustomQueryEditor(props: {
       onError={(error) => handleSubqueryError(error, i)}
       isParameter={subqueryParameters[i].isParameter}
     />)}
-    {!isExistingQuery && <Button
-      onClick={props.onEditQueryTemplate}
-      secondary
-      className="pr-5"
-    >
-      <Back className="mr-2"/>Edit query
-    </Button>}
-    {!isExistingQuery && <Button
-      onClick={onSave}
-      className="ml-3 pl-5"
-    >
-      Save<Next className="ml-2"/>
-    </Button>}
   </>
 }
 
