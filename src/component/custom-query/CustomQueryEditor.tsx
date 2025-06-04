@@ -1,28 +1,21 @@
 import {
   ArCustomQueryForm,
   CustomQueryForm,
-  QueryValue,
   SearchQuery
 } from "../../client/ArModel.ts";
 import {H2} from "../common/H2.tsx";
 import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
 import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
-import {
-  createFieldQueryFormErrors,
-  createFieldQueryFormHasParameter,
-  FieldQueryForm,
-  FieldQueryFormErrorsByField,
-  FieldQueryFormIsParameter, hasError,
-  hasErrorByField
-} from "../common/search/QueryModel.ts";
+import {FieldQueryForm, hasError} from "../common/search/QueryModel.ts";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
 import {useEffect, useState} from "react";
-import {isEmpty, isEqual} from "lodash";
+import {isEmpty, isEqual, noop} from "lodash";
 import {toErrorRecord} from "../common/form/util/toErrorRecord.ts";
+import {ErrorRecord} from "../common/form/util/ErrorRecord.ts";
 
 /**
- * TODO: Create separate components for new and existing queries?
+ * Allow creating a new custom query
  */
 export function CustomQueryEditor(props: {
   metadata: Omit<ArCustomQueryForm, 'query'>
@@ -30,29 +23,23 @@ export function CustomQueryEditor(props: {
   query: SearchQuery
 
   onChangeMetadata: (query: Omit<ArCustomQueryForm, 'query'>) => void
-  onChangeQuery: (query: SearchQuery) => void
 
-  isExistingQuery: boolean
-  // When isExistingQuery==true:
-  parameters: string[]
-  onError?: () => void
-  onClearError?: () => void
+  onError: () => void
+  onClearError: () => void
 }) {
 
   const {
     template,
     query,
     metadata,
-    isExistingQuery,
-    parameters
+    onError,
+    onClearError
   } = props;
 
   const [metadataForm, setMetadataForm] = useState<CustomQueryForm>(metadata);
   const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
 
   const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>([])
-  const [subqueryParameters, setSubqueryParameters] = useState<FieldQueryFormIsParameter[]>([])
-  const [subqueryErrors, setSubqueryErrors] = useState<FieldQueryFormErrorsByField[]>([])
 
   /**
    * Update forms and errors when template changes
@@ -62,42 +49,17 @@ export function CustomQueryEditor(props: {
     if (isQueryEqual) {
       return;
     }
-    if (isExistingQuery) {
-      const forms = toQueryFieldForms(query)
-      setSubqueryForms(forms)
-      setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
-
-      // Use template to determine if form contains a parameter or a fixed value:
-      if (!parameters) {
-        throw new Error('Existing query should have parameters')
-      }
-      const templateForm = toQueryFieldForms(template);
-      setSubqueryParameters(templateForm.map(tf => createFieldQueryFormHasParameter(tf, parameters)))
-    } else {
-      const forms = toTemplates(toQueryFieldForms(query));
-      setSubqueryForms(forms)
-      setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
-      setSubqueryParameters(forms.map(tf => createFieldQueryFormHasParameter(tf, [])))
-    }
-  }, [template, isExistingQuery]);
+    const forms = toQueryFieldForms(query);
+    setSubqueryForms(forms)
+  }, [template]);
 
   useEffect(() => {
-    if(hasError(metadataErrors) || hasErrorByField(subqueryErrors)) {
-      props.onError?.()
+    if (hasError(metadataErrors)) {
+      onError()
     } else {
-      props.onClearError?.()
+      onClearError()
     }
-  }, [metadataErrors, subqueryErrors]);
-
-  const handleChangeSubquery = (valueUpdate: QueryValue, index: number) => {
-    const formUpdate = subqueryForms.map((form, i) =>
-      i === index ? {...form, value: valueUpdate} : form
-    )
-    setSubqueryForms(formUpdate)
-    if (!hasErrorByField(subqueryErrors)) {
-      props.onChangeQuery(toSearchQuery(formUpdate))
-    }
-  }
+  }, [metadataErrors]);
 
   const handleChangeMetadata = (update: CustomQueryForm) => {
     setMetadataForm(update)
@@ -107,15 +69,6 @@ export function CustomQueryEditor(props: {
     }
   }
 
-  const handleSubqueryError = (error: string, index: number) => {
-    setSubqueryErrors(prev => prev.map((errorForm, i) =>
-      i === index ? {
-        ...errorForm,
-        errors: {...errorForm.errors, value: error}
-      } : errorForm
-    ))
-  }
-
   return <>
     <H2>Metadata</H2>
     <CustomQueryMetadataEditor
@@ -123,37 +76,18 @@ export function CustomQueryEditor(props: {
       errors={metadataErrors}
       onError={setMetadataErrors}
       onChange={handleChangeMetadata}
-      disabled={isExistingQuery}
     />
     <H2>Custom Query</H2>
-    {isExistingQuery && 'Modify parameters and click search:'}
     {subqueryForms.map((form, i) => <CustomSubQueryEditor
       key={i}
       form={form}
-      errors={subqueryErrors[i].errors}
-      onChange={(es) => handleChangeSubquery(es, i)}
-      onError={(error) => handleSubqueryError(error, i)}
-      isParameter={subqueryParameters[i].isParameter}
+      errors={{} as ErrorRecord<FieldQueryForm>}
+
+      // TODO: allow fixed values
+      disabled={true}
+      onChange={noop}
+      onError={noop}
     />)}
   </>
-}
-
-export const defaultCustomQueryForm: CustomQueryForm = {
-  name: "name-of-custom-query",
-  description: "Description of custom query",
-  label: "Label of custom query",
-  public: true,
-}
-
-export function toTemplates(query: FieldQueryForm[]): FieldQueryForm[] {
-  return query.map(toTemplate)
-}
-
-export function toTemplate(query: FieldQueryForm): FieldQueryForm {
-  const result = {...query};
-  const key = result.field
-  const keyWithoutDots = key.replaceAll('.', '-')
-  result.value = `<${keyWithoutDots}>`
-  return result
 }
 

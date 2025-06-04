@@ -3,10 +3,6 @@ import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {GlobalQueryEditor} from "./GlobalQueryEditor.tsx";
 import {Store} from "../common/icon/Store.tsx";
-import {
-  CustomQueryEditor,
-  defaultCustomQueryForm
-} from "./CustomQueryEditor.tsx";
 import {ArCustomQueryForm, SearchQuery} from "../../client/ArModel.ts";
 import {MR, usePost} from "../../client/query/usePost.tsx";
 import {defaultQuery} from "../common/search/QueryModel.ts";
@@ -16,6 +12,11 @@ import {invalidateBy} from "../../client/query/useGet.tsx";
 import cloneDeep from "lodash/cloneDeep";
 import {Next} from "../common/icon/Next.tsx";
 import {Back} from "../common/icon/Back.tsx";
+import {CustomQueryEditor} from "./CustomQueryEditor.tsx";
+import {toTemplates} from "./toTemplates.ts";
+import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
+import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
+import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
@@ -25,10 +26,10 @@ export function NewCustomQuery(props: {
   const queryClient = useQueryClient()
 
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
-  const [queryMetadata, setQueryMetadata] = useState<Omit<ArCustomQueryForm, 'query'>>(omit(defaultCustomQueryForm, 'query'));
-  const [template, setTemplate] = useState<SearchQuery>(cloneDeep(defaultQuery));
-  const [query, setQuery] = useState<SearchQuery>(cloneDeep(template));
-  const [globalQuery, setGlobalQuery] = useState<SearchQuery>(cloneDeep(template));
+  const [queryMetadata, setQueryMetadata] = useState(omit(defaultCustomQueryForm, 'query'));
+  const [hasMetadataError, setMetadataError] = useState<boolean>();
+  const [query, setQuery] = useState<SearchQuery>(cloneDeep(defaultQuery));
+  const [globalQuery, setGlobalQuery] = useState<SearchQuery>(cloneDeep(defaultQuery));
 
   const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
 
@@ -54,17 +55,12 @@ export function NewCustomQuery(props: {
 
 
   function handleSwitchToCustomQuery() {
-    setQuery(cloneDeep(globalQuery))
+    setQuery(toSearchQuery(toTemplates(toQueryFieldForms(cloneDeep(globalQuery)))))
     setMode('create-custom-query')
   }
 
   function switchBackToGlobalQuery() {
     setMode('create-global-query')
-  }
-
-  function handleChangeQuery(query: SearchQuery) {
-    setQuery(query)
-    setTemplate(query)
   }
 
   const title = mode === 'create-global-query'
@@ -77,7 +73,6 @@ export function NewCustomQuery(props: {
       moreButtons={<>
         <Button
           secondary
-          className=""
           onClick={handleSwitchToCustomQuery}
         >
           <Store className="mr-2"/>
@@ -91,12 +86,11 @@ export function NewCustomQuery(props: {
       metadata={queryMetadata}
       onChangeMetadata={setQueryMetadata}
 
-      template={template}
+      template={toTemplates(toQueryFieldForms(query))}
       query={query}
-      onChangeQuery={handleChangeQuery}
 
-      isExistingQuery={false}
-      parameters={[]}
+      onError={() => setMetadataError(true)}
+      onClearError={() => setMetadataError(false)}
     />}
     <Button
       onClick={switchBackToGlobalQuery}
@@ -108,6 +102,7 @@ export function NewCustomQuery(props: {
     <Button
       onClick={handleSubmitSave}
       className="ml-3 pl-5"
+      disabled={hasMetadataError}
     >
       Save<Next className="ml-2"/>
     </Button>

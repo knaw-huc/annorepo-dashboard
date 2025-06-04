@@ -12,9 +12,9 @@ export function CustomSubQueryEditor(props: {
   errors: ErrorRecord<FieldQueryForm>
   onError: (error: string) => void;
 
-  isParameter: boolean
+  disabled: boolean
 }) {
-  const {form, onChange, errors, onError, isParameter} = props;
+  const {form, onChange, errors, onError, disabled} = props;
 
   const operatorValue = form.operator.valueOf();
   return <form onSubmit={e => e.preventDefault()}>
@@ -44,7 +44,7 @@ export function CustomSubQueryEditor(props: {
             operator={form.operator}
             error={errors.value}
             onError={onError}
-            disabled={!isParameter}
+            disabled={disabled}
           />
         </div>
       </div>

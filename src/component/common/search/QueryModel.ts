@@ -47,7 +47,7 @@ export function createFieldQueryFormHasParameter(
 }
 
 export function hasErrorByField(forms: FieldQueryFormErrorsByField[]) {
-  return some(forms, hasError);
+  return some(forms, errorsByField => hasError(errorsByField.errors));
 }
 
 export function hasError<T extends object>(form: ErrorRecord<T>) {

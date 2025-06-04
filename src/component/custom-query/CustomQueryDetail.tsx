@@ -1,11 +1,10 @@
 import {H1} from "../common/H1.tsx";
-import {CustomQueryEditor} from "./CustomQueryEditor.tsx";
+import {CustomQueryCallEditor} from "./CustomQueryCallEditor.tsx";
 import {
   useContainerCustomQueryCall,
   useCustomQuery
 } from "../../client/endpoint/useCustomQuery.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
-import noop from "lodash/noop";
 import {useEffect, useState} from "react";
 import omit from "lodash/omit";
 import {toCustomQueryParameters} from "./toCustomQueryParameters.ts";
@@ -27,7 +26,7 @@ export function CustomQueryDetail(props: {
 
   const [query, setQuery] = useState<SearchQuery>();
   const [queryParameters, setQueryParameters] = useState<Record<string, string>>({})
-  const [hasQueryError, setQueryError] = useState<boolean>();
+  const [hasQueryError, setQueryError] = useState(false);
   const [selectedContainer, setSelectedContainer] = useState('')
   const [pageNo, setPageNo] = useState(0)
 
@@ -64,17 +63,14 @@ export function CustomQueryDetail(props: {
 
   return <>
     <H1>{name}</H1>
-    <CustomQueryEditor
+    <CustomQueryCallEditor
       metadata={omit(customQuery.data, 'query')}
-      onChangeMetadata={noop}
-
       template={JSON.parse(customQuery.data.queryTemplate)}
       query={query}
+      parameters={customQuery.data.parameters}
       onChangeQuery={setQuery}
       onError={() => setQueryError(true)}
       onClearError={() => setQueryError(false)}
-      isExistingQuery={true}
-      parameters={customQuery.data.parameters}
     />
     <div className="mb-5">
       <Dropdown
