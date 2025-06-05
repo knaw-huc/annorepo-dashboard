@@ -114,7 +114,7 @@ export function SearchEditor(props: {
         secondary
       >
         <Add className="mr-2"/>
-        Subquery
+        Add subquery
       </Button>
 
       {props.moreButtons}

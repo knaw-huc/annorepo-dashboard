@@ -17,7 +17,7 @@ export function CustomSubQueryEditor(props: {
   const {form, onChange, errors, onError, disabled} = props;
 
   const operatorValue = form.operator.valueOf();
-  return <form onSubmit={e => e.preventDefault()}>
+  return <div className="flex-grow">
     <fieldset>
       <div className="flex mb-3 mt-2">
         <div className="flex-auto mr-2">
@@ -49,6 +49,6 @@ export function CustomSubQueryEditor(props: {
         </div>
       </div>
     </fieldset>
-  </form>
+  </div>
 
 }

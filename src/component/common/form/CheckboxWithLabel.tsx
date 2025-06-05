@@ -1,13 +1,17 @@
+import {ReactNode} from "react";
+import {uniqueId} from "lodash";
+
 export function CheckboxWithLabel(props: {
-  label: string
+  label: ReactNode
   value: boolean
   onChange: (update: boolean) => void
   disabled?: boolean
 }) {
   const {label, value, onChange, disabled} = props;
-  return <div className="flex items-center mb-4">
+  const id = uniqueId('checkbox')
+  return <div className="flex items-center">
     <input
-      id="checkbox"
+      id={id}
       type="checkbox"
       checked={value}
       onChange={() => onChange(!value)}
@@ -15,7 +19,7 @@ export function CheckboxWithLabel(props: {
       disabled={disabled}
     />
     <label
-      htmlFor="checkbox"
+      htmlFor={id}
       className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
     >
       {label}

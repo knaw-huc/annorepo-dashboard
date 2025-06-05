@@ -15,8 +15,8 @@ import {Back} from "../common/icon/Back.tsx";
 import {CustomQueryEditor} from "./CustomQueryEditor.tsx";
 import {toTemplates} from "./toTemplates.ts";
 import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
-import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
 import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
+import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
@@ -55,7 +55,7 @@ export function NewCustomQuery(props: {
 
 
   function handleSwitchToCustomQuery() {
-    setQuery(toSearchQuery(toTemplates(toQueryFieldForms(cloneDeep(globalQuery)))))
+    setQuery(cloneDeep(globalQuery))
     setMode('create-custom-query')
   }
 
@@ -76,7 +76,7 @@ export function NewCustomQuery(props: {
           onClick={handleSwitchToCustomQuery}
         >
           <Store className="mr-2"/>
-          Store
+          Store query
         </Button>
       </>}
       query={globalQuery}
@@ -86,7 +86,7 @@ export function NewCustomQuery(props: {
       metadata={queryMetadata}
       onChangeMetadata={setQueryMetadata}
 
-      template={toTemplates(toQueryFieldForms(query))}
+      template={toSearchQuery(toTemplates(toQueryFieldForms(query)))}
       query={query}
 
       onError={() => setMetadataError(true)}
