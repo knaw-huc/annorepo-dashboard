@@ -39,7 +39,6 @@ export function NewCustomQuery(props: {
       // openapi type says string but AR api expects json:
       query: query as unknown as string
     };
-    console.log('handleSubmitSave', {arCustomQueryForm})
 
     createCustomQuery.mutate({
       params: {},
@@ -61,7 +60,6 @@ export function NewCustomQuery(props: {
   }
 
   function handleUpdateQuery(update: SearchQuery) {
-    console.log('handleUpdateQuery', {update})
     setQuery(update)
   }
 
@@ -88,31 +86,33 @@ export function NewCustomQuery(props: {
       query={globalQuery}
       onChange={setGlobalQuery}
     />}
-    {mode === 'create-custom-query' && <CustomQueryEditor
-      metadata={queryMetadata}
-      onChangeMetadata={setQueryMetadata}
-      onMetadataError={() => setMetadataError(true)}
-      onClearMetadataError={() => setMetadataError(false)}
+    {mode === 'create-custom-query' && <>
+      <CustomQueryEditor
+        metadata={queryMetadata}
+        onChangeMetadata={setQueryMetadata}
+        onMetadataError={() => setMetadataError(true)}
+        onClearMetadataError={() => setMetadataError(false)}
 
-      query={query}
-      parameterQuery={toSearchQuery(toTemplates(toQueryFieldForms(query)))}
-      globalQuery={globalQuery}
-      onChangeQuery={handleUpdateQuery}
-    />}
-    <Button
-      onClick={switchBackToGlobalQuery}
-      secondary
-      className="pr-5"
-    >
-      <Back className="mr-2"/>Edit query
-    </Button>
-    <Button
-      onClick={handleSubmitSave}
-      className="ml-3 pl-5"
-      disabled={hasMetadataError}
-    >
-      Save<Next className="ml-2"/>
-    </Button>
+        query={query}
+        parameterQuery={toSearchQuery(toTemplates(toQueryFieldForms(query)))}
+        globalQuery={globalQuery}
+        onChangeQuery={handleUpdateQuery}
+      />
+      <Button
+        onClick={switchBackToGlobalQuery}
+        secondary
+        className="pr-5"
+      >
+        <Back className="mr-2"/>Edit query
+      </Button>
+      <Button
+        onClick={handleSubmitSave}
+        className="ml-3 pl-5"
+        disabled={hasMetadataError}
+      >
+        Save<Next className="ml-2"/>
+      </Button>
+    </>}
   </>
 }
 

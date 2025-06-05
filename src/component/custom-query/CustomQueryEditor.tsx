@@ -74,7 +74,6 @@ export function CustomQueryEditor(props: {
     if (isQueryEqual) {
       return;
     }
-    console.log('query not equal to forms!', {query, subqueryForms})
     const forms = toQueryFieldForms(query);
     setSubqueryForms(forms)
     // Set all values by default to parameters:

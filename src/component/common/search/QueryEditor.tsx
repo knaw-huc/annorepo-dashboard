@@ -17,11 +17,6 @@ import {
 } from "./QueryModel.ts";
 import {SubQueryEditor} from "./SubQueryEditor.tsx";
 
-/**
- * TODO:
- * extract QueryEditor
- * use QueryEditor also in CustomQueryEditor to reuse error handling
- */
 export function QueryEditor(props: {
   query: SearchQuery
   fieldNames: string[],
