@@ -4,7 +4,6 @@ import {
   QueryValue,
   SearchQuery
 } from "../../client/ArModel.ts";
-import {H2} from "../common/H2.tsx";
 import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
 import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
 import {
@@ -16,11 +15,8 @@ import {
   hasErrorByField
 } from "../common/search/QueryModel.ts";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
-import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
 import {useEffect, useState} from "react";
 import {isEqual} from "lodash";
-import {ErrorRecord} from "../common/form/util/ErrorRecord.ts";
-import noop from "lodash/noop";
 
 export function CustomQueryCallEditor(props: {
   metadata: Omit<ArCustomQueryForm, 'query'>
@@ -33,7 +29,6 @@ export function CustomQueryCallEditor(props: {
 }) {
 
   const {
-    metadata,
     template,
     query,
     parameters
@@ -88,16 +83,6 @@ export function CustomQueryCallEditor(props: {
   }
 
   return <>
-    <H2>Metadata</H2>
-    <CustomQueryMetadataEditor
-      form={metadata}
-      errors={{} as ErrorRecord<CustomQueryForm>}
-      onError={noop}
-      onChange={noop}
-      disabled={true}
-    />
-    <H2>Custom Query</H2>
-    <p>Modify parameters and click search:</p>
     {subqueryForms.map((form, i) => <CustomSubQueryEditor
       key={i}
       form={form}

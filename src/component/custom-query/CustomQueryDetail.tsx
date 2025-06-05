@@ -17,6 +17,8 @@ import {QR, useGet} from "../../client/query/useGet.tsx";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
+import {Hint} from "../common/Hint.tsx";
+import {Pipe} from "../common/Pipe.tsx";
 
 export function CustomQueryDetail(props: {
   name: string
@@ -62,7 +64,17 @@ export function CustomQueryDetail(props: {
   }
 
   return <>
-    <H1>{name}</H1>
+    <H1>{name} <Hint>Custom query</Hint></H1>
+    <p className="mb-2">{customQuery.data.description}</p>
+    <p className="text-sm mb-5">
+      {customQuery.data.public ? 'Public' : 'Private'}
+      <Pipe />
+      <span>label: {customQuery.data.label}</span>
+      <Pipe />
+      <span>creator: {customQuery.data.createdBy}</span>
+      <Pipe />
+      <span>created at: {new Date(customQuery.data.created).toLocaleString()}</span>
+    </p>
     <CustomQueryCallEditor
       metadata={omit(customQuery.data, 'query')}
       template={JSON.parse(customQuery.data.queryTemplate)}
@@ -77,7 +89,7 @@ export function CustomQueryDetail(props: {
         placeholder="Select container"
         className="mr-3"
         selectedValue={selectedContainer}
-        options={containerNames.map(key => ({ label: key, value: key }))}
+        options={containerNames.map(key => ({label: key, value: key}))}
         onSelect={option => setSelectedContainer(option.value)}
       />
       <Button
@@ -90,10 +102,10 @@ export function CustomQueryDetail(props: {
     </div>
     <div className="max-w-[100vw] font-mono whitespace-pre-wrap">
       {!!containerCustomQueryCall.data && <AnnotationPage
-          pageNo={pageNo}
-          page={containerCustomQueryCall.data}
-          onChangePageNo={handleChangePage}
-        />
+        pageNo={pageNo}
+        page={containerCustomQueryCall.data}
+        onChangePageNo={handleChangePage}
+      />
       }
     </div>
   </>
