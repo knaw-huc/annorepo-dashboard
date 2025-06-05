@@ -31,7 +31,8 @@ export function createOpenApiClient(
   const validateStatusMiddleware: Middleware = {
     async onResponse({response}) {
       if (!response.ok) {
-        throw new Error(`Received status ${response.status}`)
+        const errorBody = await response.json();
+        throw new Error(`Error ${response.status}: ${errorBody.message ?? response.status}`)
       }
     }
   }

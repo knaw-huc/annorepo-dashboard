@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {GlobalQueryEditor} from "./GlobalQueryEditor.tsx";
@@ -17,6 +17,7 @@ import {toTemplates} from "./toTemplates.ts";
 import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
 import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
 import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
+import {Warning} from "../common/Warning.tsx";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
@@ -49,10 +50,16 @@ export function NewCustomQuery(props: {
           predicate: query => invalidateBy(query, 'custom-query')
         })
         props.onClose();
+      },
+      onError: async (...args) => {
+        console.log('onError', args)
       }
     })
   }
 
+  useEffect(() => {
+    console.log({createCustomQuery})
+  }, [createCustomQuery]);
 
   function handleSwitchToCustomQuery() {
     setQuery(toSearchQuery(toTemplates(toQueryFieldForms(cloneDeep(globalQuery)))))
@@ -73,6 +80,8 @@ export function NewCustomQuery(props: {
 
   return <>
     <H1>{title}</H1>
+    {createCustomQuery.isError && <Warning
+    >{createCustomQuery.error.message}</Warning>}
     {mode === 'create-global-query' && <GlobalQueryEditor
       moreButtons={<>
         <Button
