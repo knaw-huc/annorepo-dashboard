@@ -8,6 +8,7 @@ import {SearchWithSuggestions} from "../form/SearchWithSuggestions.tsx";
 
 export function QueryFieldInput(props: {
   value: string
+  errorLabel?: string
   operator: QueryOperator
   suggestions: string[],
   onChange: (value: string) => void
@@ -22,6 +23,7 @@ export function QueryFieldInput(props: {
   }, [operator, onChange]);
 
   return <SearchWithSuggestions
+    errorLabel={props.errorLabel}
     label="Field"
     disabled={props.disabled || isRangeQueryOperator(operator)}
     value={isRangeQueryOperator(operator) ? NO_FIELD : value}

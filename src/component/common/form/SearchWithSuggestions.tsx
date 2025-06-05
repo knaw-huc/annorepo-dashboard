@@ -6,6 +6,7 @@ import {isEmpty} from "lodash";
 export function SearchWithSuggestions(props: {
   label: string
   value: string
+  errorLabel?: string
   suggestions: string[]
   onChange: (value: string) => void
   disabled: boolean
@@ -32,6 +33,7 @@ export function SearchWithSuggestions(props: {
     <div className="relative">
       <InputWithLabel
         value={value}
+        errorLabel={props.errorLabel}
         label={label}
         onChange={handleChange}
         onFocus={() => setOpen(true)}

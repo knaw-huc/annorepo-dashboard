@@ -13,16 +13,14 @@ export function SubQueryEditor(props: {
   fieldNames: string[],
 
   form: FieldQueryForm
-  onChange: (form: FieldQueryForm) => void;
-
   errors: ErrorRecord<FieldQueryForm>
-  onError: (error: ErrorRecord<FieldQueryForm>) => void;
+
+  onChange: (form: FieldQueryForm, errors: ErrorRecord<FieldQueryForm>) => void;
 
   onRemove: () => void
   disabled?: boolean
-
 }) {
-  const {fieldNames, form, onChange, errors, onError} = props;
+  const {fieldNames, form, errors, onChange} = props;
 
   const suggestions = form.field
     ? fieldNames.filter(name => name.includes(form.field))
@@ -32,7 +30,7 @@ export function SubQueryEditor(props: {
     const operatorUpdate = toOperator(update.value)
       ?? orThrow(`Invalid operator: ${update.value}`);
 
-    onChange({...form, operator: operatorUpdate});
+    onChange({...form, operator: operatorUpdate}, errors);
   }
 
   const operatorOptions = Object
@@ -40,17 +38,27 @@ export function SubQueryEditor(props: {
     .filter(o => o !== QueryOperator.simpleQuery)
     .map(v => ({label: v, value: v}))
 
+  function handleChangeField(field: string) {
+    const formUpdate = {...form, field};
+    const errorUpdate = {...errors};
+    if (!field) {
+      errorUpdate.field = 'Field cannot be empty'
+    } else {
+      errorUpdate.field = ''
+    }
+    onChange(formUpdate, errorUpdate);
+  }
+
   return <form onSubmit={e => e.preventDefault()}>
     <fieldset disabled={props.disabled}>
       <div className="flex mb-3 mt-2">
         <div className="flex-auto mr-2">
           <QueryFieldInput
             value={form.field}
+            errorLabel={errors.field}
             operator={form.operator}
             suggestions={suggestions}
-            onChange={field => {
-              onChange({...form, field});
-            }}
+            onChange={handleChangeField}
             disabled={props.disabled}
           />
         </div>
@@ -65,10 +73,10 @@ export function SubQueryEditor(props: {
         <div className="flex-auto mr-2">
           <QueryValueInput
             queryValue={form.value}
-            onChange={value => onChange({...form, value})}
+            onChange={value => onChange({...form, value}, errors)}
             operator={form.operator}
             error={errors.value}
-            onError={error => onError({...errors, value: error})}
+            onError={error => onChange(form, {...errors, value: error})}
             disabled={props.disabled}
           />
         </div>

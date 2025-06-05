@@ -31,14 +31,14 @@ export function CustomQueryEditor(props: {
   query: SearchQuery
 
   /**
-   * Query with parameters as values
-   */
-  parameterQuery: SearchQuery
-
-  /**
-   * Query with global query values as values
+   * Query with global query values for values
    */
   globalQuery: SearchQuery
+
+  /**
+   * Query with parameters for values
+   */
+  parameterQuery: SearchQuery
 
   /**
    * Only values can change
@@ -52,12 +52,10 @@ export function CustomQueryEditor(props: {
     onClearMetadataError,
 
     query,
-    parameterQuery,
     globalQuery,
+    parameterQuery,
     onChangeQuery,
   } = props;
-
-  console.log('CustomQueryEditor', {parameterQuery, query})
 
   const [metadataForm, setMetadataForm] = useState<CustomQueryForm>(metadata);
   const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
@@ -97,7 +95,6 @@ export function CustomQueryEditor(props: {
         ? {...form, value: nextValue}
         : form;
     })
-    console.log('nextForms', nextForms)
     setSubqueryForms(nextForms)
     onChangeQuery(toSearchQuery(nextForms))
   }
@@ -132,8 +129,6 @@ export function CustomQueryEditor(props: {
         key={i}
         form={form}
         errors={{} as ErrorRecord<FieldQueryForm>}
-
-        // TODO: allow fixed values
         disabled={true}
         onChange={noop}
         onError={noop}

@@ -1,4 +1,4 @@
-import {SearchEditor} from "../common/search/SearchEditor.tsx";
+import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {Loading} from "../common/Loading.tsx";
 import {ReactNode, useState} from "react";
@@ -46,7 +46,7 @@ export function GlobalQueryEditor(props: {
   }
 
   return <>
-    <SearchEditor
+    <QueryEditor
       query={query}
       fieldNames={fieldNames}
       searchError={page.error}

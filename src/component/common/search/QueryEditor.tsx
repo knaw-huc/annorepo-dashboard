@@ -3,7 +3,6 @@ import {Button} from "../Button.tsx";
 import {Add} from "../icon/Add.tsx";
 import {Next} from "../icon/Next.tsx";
 import {ReactNode, useEffect, useState} from "react";
-import {isEqual} from "lodash";
 import {SearchQuery} from "../../../client/ArModel.ts";
 import {toQueryFieldForm} from "./util/toQueryFieldForm.ts";
 import {toQueryFieldForms} from "./util/toQueryFieldForms.ts";
@@ -23,7 +22,7 @@ import {SubQueryEditor} from "./SubQueryEditor.tsx";
  * extract QueryEditor
  * use QueryEditor also in CustomQueryEditor to reuse error handling
  */
-export function SearchEditor(props: {
+export function QueryEditor(props: {
   query: SearchQuery
   fieldNames: string[],
   onSubmitQuery: (query: SearchQuery) => void
@@ -34,34 +33,39 @@ export function SearchEditor(props: {
   const {searchError} = props;
   const [queryError, setQueryError] = useState('')
 
+  const [isInit, setInit] = useState(false)
   const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>([])
   const [subqueryErrors, setSubqueryErrors] = useState<FieldQueryFormErrorsByField[]>([])
 
   useEffect(() => {
-    const isQueryEqual = isEqual(props.query, toSearchQuery(subqueryForms));
-    if(isQueryEqual) {
+    if (isInit) {
       return;
     }
+    setInit(true)
     const forms = toQueryFieldForms(props.query);
     setSubqueryForms(forms)
     setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
-  }, [props.query]);
+  }, [isInit]);
 
-  const handleChangeSubquery = (next: FieldQueryForm, index: number) => {
-    const update = subqueryForms.map((form, i) =>
-      i === index ? next : form
+  const handleChangeSubquery = (
+    formIndex: number,
+    formUpdate: FieldQueryForm,
+    errorUpdate: ErrorRecord<FieldQueryForm>
+  ) => {
+    const formsUpdate = subqueryForms.map((form, i) =>
+      i === formIndex ? formUpdate : form
     )
-    setSubqueryForms(update)
-    setQueryError('')
-    if (!hasErrorByField(subqueryErrors)) {
-      props.onChangeQuery(toSearchQuery(update))
-    }
-  }
+    setSubqueryForms(formsUpdate)
 
-  const handleSubqueryError = (next: ErrorRecord<FieldQueryForm>, index: number) => {
-    setSubqueryErrors(prev => prev.map((errorForm, i) =>
-      i === index ? {...errorForm, errors: next} : errorForm
-    ))
+    const errorsUpdate = subqueryErrors.map((errorForm, i) =>
+      i === formIndex ? {...errorForm, errors: errorUpdate} : errorForm
+    )
+    setSubqueryErrors(errorsUpdate)
+
+    setQueryError('')
+    if (!hasErrorByField(errorsUpdate)) {
+      props.onChangeQuery(toSearchQuery(formsUpdate))
+    }
   }
 
   const handleSubmitQuery = () => {
@@ -100,9 +104,8 @@ export function SearchEditor(props: {
         key={i}
         fieldNames={props.fieldNames}
         form={f}
-        onChange={(es) => handleChangeSubquery(es, i)}
+        onChange={(f, e) => handleChangeSubquery(i, f, e)}
         errors={subqueryErrors[i].errors}
-        onError={(es) => handleSubqueryError(es, i)}
         onRemove={() => handleRemoveSubquery(i)}
       />;
     })}

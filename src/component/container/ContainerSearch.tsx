@@ -7,7 +7,7 @@ import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
-import {SearchEditor} from "../common/search/SearchEditor.tsx";
+import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {SearchQuery} from "../../client/ArModel.ts";
 import {H1} from "../common/H1.tsx";
 import {debounce} from "lodash";
@@ -51,7 +51,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   return <>
     <H1>Search annotations</H1>
-    <SearchEditor
+    <QueryEditor
       query={query}
       fieldNames={fieldNames}
       searchError={search.error}
