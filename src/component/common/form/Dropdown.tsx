@@ -4,7 +4,8 @@ import {DropdownItem} from "./DropdownItem.tsx";
 import {SelectOption} from "./SelectOption.tsx";
 
 export function Dropdown(props: {
-  selectedValue?: string
+  placeholder?: string,
+  selectedValue?: string,
   options: SelectOption[],
   onSelect: (option: SelectOption) => void
   className?: string
@@ -41,7 +42,7 @@ export function Dropdown(props: {
       className={buttonClassname}
       onBlur={() => setTimeout(() => setOpen(false), 200)}
     >
-      {props.options.find(o => o.value === props.selectedValue)?.label || 'Select below'}
+      {props.options.find(o => o.value === props.selectedValue)?.label || props.placeholder || 'Select below'}
       <Down className="text-slate-400 ml-2" />
     </button>
     {!!options.length && <ul

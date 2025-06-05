@@ -21,24 +21,43 @@ import {Info} from "../common/icon/Info.tsx";
  */
 export function CustomQueryEditor(props: {
   metadata: Omit<ArCustomQueryForm, 'query'>
-  template: SearchQuery
+  onChangeMetadata: (query: Omit<ArCustomQueryForm, 'query'>) => void
+  onMetadataError: () => void
+  onClearMetadataError: () => void
+
+  /**
+   * Current query
+   */
   query: SearchQuery
 
-  onChangeMetadata: (query: Omit<ArCustomQueryForm, 'query'>) => void
+  /**
+   * Query with parameters as values
+   */
+  parameterQuery: SearchQuery
 
-  onError: () => void
-  onClearError: () => void
+  /**
+   * Query with global query values as values
+   */
+  globalQuery: SearchQuery
+
+  /**
+   * Only values can change
+   */
+  onChangeQuery: (update: SearchQuery) => void
 }) {
 
   const {
-    template,
-    query,
     metadata,
-    onError,
-    onClearError
+    onMetadataError,
+    onClearMetadataError,
+
+    query,
+    parameterQuery,
+    globalQuery,
+    onChangeQuery,
   } = props;
 
-  console.log('CustomQueryEditor', {template, query})
+  console.log('CustomQueryEditor', {parameterQuery, query})
 
   const [metadataForm, setMetadataForm] = useState<CustomQueryForm>(metadata);
   const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
@@ -47,7 +66,7 @@ export function CustomQueryEditor(props: {
   /**
    * Is sub query value a parameter? By form index
    */
-  const [parameters, setParameters] = useState<boolean[]>([])
+  const [isParameters, setIsParameters] = useState<boolean[]>([])
 
   /**
    * Update forms and errors when template changes
@@ -57,33 +76,37 @@ export function CustomQueryEditor(props: {
     if (isQueryEqual) {
       return;
     }
-    const forms = toQueryFieldForms(template);
+    console.log('query not equal to forms!', {query, subqueryForms})
+    const forms = toQueryFieldForms(query);
     setSubqueryForms(forms)
-    setParameters(forms.map(() => true))
-  }, [template]);
+    // Set all values by default to parameters:
+    setIsParameters(forms.map(() => true))
+  }, [query]);
 
   function updateParameters(formIndex: number, update: boolean) {
-    const nextParameters = parameters.map((prev, i) => i === formIndex
+    const nextParameters = isParameters.map((prev, i) => i === formIndex
       ? update
       : prev
     )
-    setParameters(nextParameters)
+    setIsParameters(nextParameters)
     const nextForms = subqueryForms.map((form, i) => {
       const nextValue = update
-        ? toQueryFieldForms(template)[i].value
-        : toQueryFieldForms(query)[i].value;
+        ? toQueryFieldForms(parameterQuery)[i].value
+        : toQueryFieldForms(globalQuery)[i].value;
       return i === formIndex
         ? {...form, value: nextValue}
         : form;
     })
+    console.log('nextForms', nextForms)
     setSubqueryForms(nextForms)
+    onChangeQuery(toSearchQuery(nextForms))
   }
 
   useEffect(() => {
     if (hasError(metadataErrors)) {
-      onError()
+      onMetadataError()
     } else {
-      onClearError()
+      onClearMetadataError()
     }
   }, [metadataErrors]);
 
@@ -124,7 +147,7 @@ export function CustomQueryEditor(props: {
               Parameter <Info/>
             </span>
           }
-          value={parameters[i]}
+          value={isParameters[i]}
           onChange={(update) => updateParameters(i, update)}
         /></div>
     </div>)}

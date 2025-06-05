@@ -39,6 +39,7 @@ export function NewCustomQuery(props: {
       // openapi type says string but AR api expects json:
       query: query as unknown as string
     };
+    console.log('handleSubmitSave', {arCustomQueryForm})
 
     createCustomQuery.mutate({
       params: {},
@@ -55,8 +56,13 @@ export function NewCustomQuery(props: {
 
 
   function handleSwitchToCustomQuery() {
-    setQuery(cloneDeep(globalQuery))
+    setQuery(toSearchQuery(toTemplates(toQueryFieldForms(cloneDeep(globalQuery)))))
     setMode('create-custom-query')
+  }
+
+  function handleUpdateQuery(update: SearchQuery) {
+    console.log('handleUpdateQuery', {update})
+    setQuery(update)
   }
 
   function switchBackToGlobalQuery() {
@@ -85,12 +91,13 @@ export function NewCustomQuery(props: {
     {mode === 'create-custom-query' && <CustomQueryEditor
       metadata={queryMetadata}
       onChangeMetadata={setQueryMetadata}
+      onMetadataError={() => setMetadataError(true)}
+      onClearMetadataError={() => setMetadataError(false)}
 
-      template={toSearchQuery(toTemplates(toQueryFieldForms(query)))}
       query={query}
-
-      onError={() => setMetadataError(true)}
-      onClearError={() => setMetadataError(false)}
+      parameterQuery={toSearchQuery(toTemplates(toQueryFieldForms(query)))}
+      globalQuery={globalQuery}
+      onChangeQuery={handleUpdateQuery}
     />}
     <Button
       onClick={switchBackToGlobalQuery}

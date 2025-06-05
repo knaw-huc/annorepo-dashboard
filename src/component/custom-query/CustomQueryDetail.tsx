@@ -74,6 +74,7 @@ export function CustomQueryDetail(props: {
     />
     <div className="mb-5">
       <Dropdown
+        placeholder="Select container"
         className="mr-3"
         selectedValue={selectedContainer}
         options={containerNames.map(key => ({ label: key, value: key }))}
