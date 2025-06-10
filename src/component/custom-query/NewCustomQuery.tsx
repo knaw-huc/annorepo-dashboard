@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {GlobalQueryEditor} from "./GlobalQueryEditor.tsx";
@@ -57,10 +57,6 @@ export function NewCustomQuery(props: {
     })
   }
 
-  useEffect(() => {
-    console.log({createCustomQuery})
-  }, [createCustomQuery]);
-
   function handleSwitchToCustomQuery() {
     setQuery(toSearchQuery(toTemplates(toQueryFieldForms(cloneDeep(globalQuery)))))
     setMode('create-custom-query')
@@ -72,6 +68,10 @@ export function NewCustomQuery(props: {
 
   function switchBackToGlobalQuery() {
     setMode('create-global-query')
+  }
+
+  function handeSearch(query: SearchQuery) {
+    setGlobalQuery(query);
   }
 
   const title = mode === 'create-global-query'
@@ -93,7 +93,7 @@ export function NewCustomQuery(props: {
         </Button>
       </>}
       query={globalQuery}
-      onChange={setGlobalQuery}
+      onSearch={handeSearch}
     />}
     {mode === 'create-custom-query' && <>
       <CustomQueryEditor

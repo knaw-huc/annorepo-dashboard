@@ -13,9 +13,8 @@ import {isEqual} from "lodash";
 export function QueryValueInput(props: {
   operator: QueryOperator,
   queryValue: QueryValue
-  onChange: (value: QueryValue) => void
+  onChange: (value: QueryValue, error: string) => void
   error: string
-  onError: (error: string) => void
   disabled?: boolean
 }) {
 
@@ -49,10 +48,9 @@ export function QueryValueInput(props: {
     setFormValue(update);
     try {
       const queryUpdate = toQueryValue(update, props.operator);
-      props.onChange(queryUpdate);
-      props.onError("")
+      props.onChange(queryUpdate, '');
     } catch (e) {
-      props.onError(e instanceof Error ? e.message : "Invalid value")
+      props.onChange(props.queryValue, e instanceof Error ? e.message : "Invalid value")
     }
   }
 

@@ -136,7 +136,7 @@ export function CustomQueryEditor(props: {
         <CheckboxWithLabel
           label={
             <span
-              title="Search with a variable parameter, or use a fixed value?"
+              title="Search with a variable parameter, or use a fixed value"
             >
               Parameter <Info/>
             </span>

@@ -1,4 +1,8 @@
-import {QueryOperator, toOperator} from "../../../client/ArModel.ts";
+import {
+  QueryOperator,
+  QueryValue,
+  toOperator
+} from "../../../client/ArModel.ts";
 import {Dropdown} from "../form/Dropdown.tsx";
 import {orThrow} from "../../../util/orThrow.ts";
 import {SelectOption} from "../form/SelectOption.tsx";
@@ -49,6 +53,15 @@ export function SubQueryEditor(props: {
     onChange(formUpdate, errorUpdate);
   }
 
+  function handleChangeValue(
+    value: QueryValue,
+    error: string
+  ) {
+    const formUpdate = {...form, value};
+    const errorUpdate = {...errors, value: error};
+    onChange(formUpdate, errorUpdate)
+  }
+
   return <form onSubmit={e => e.preventDefault()}>
     <fieldset disabled={props.disabled}>
       <div className="flex mb-3 mt-2">
@@ -73,10 +86,9 @@ export function SubQueryEditor(props: {
         <div className="flex-auto mr-2">
           <QueryValueInput
             queryValue={form.value}
-            onChange={value => onChange({...form, value}, errors)}
             operator={form.operator}
             error={errors.value}
-            onError={error => onChange(form, {...errors, value: error})}
+            onChange={handleChangeValue}
             disabled={props.disabled}
           />
         </div>
@@ -93,5 +105,6 @@ export function SubQueryEditor(props: {
       </div>
     </fieldset>
   </form>
+
 
 }

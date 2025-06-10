@@ -9,14 +9,13 @@ import {StatusMessage} from "../common/StatusMessage.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
-import {debounce} from "lodash";
 
 export function GlobalQueryEditor(props: {
   query: SearchQuery
-  onChange: (update: SearchQuery) => void
+  onSearch: (update: SearchQuery) => void
   moreButtons?: ReactNode
 }) {
-  const {query, onChange} = props;
+  const {query, onSearch} = props;
   const [pageNo, setPageNo] = useState(0);
 
   const myContainers = useGet('/my/containers') as QR<ArMyContainers>
@@ -26,16 +25,16 @@ export function GlobalQueryEditor(props: {
 
   const {page} = useGlobalSearch(query, pageNo);
 
-  if (!page.isSuccess) {
-    return <StatusMessage request={page}/>;
-  }
-
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update))
   }
 
   const handleSubmitQuery = (query: SearchQuery) => {
-    onChange(query);
+    onSearch(query);
+  }
+
+  if (!page.isSuccess) {
+    return <StatusMessage request={page}/>;
   }
 
   return <>
@@ -43,7 +42,7 @@ export function GlobalQueryEditor(props: {
       query={query}
       fieldNames={fieldNames}
       searchError={page.error}
-      onChangeQuery={debounce(handleSubmitQuery, 500)}
+      onChangeQuery={handleSubmitQuery}
       onSubmitQuery={handleSubmitQuery}
       moreButtons={props.moreButtons}
     />
