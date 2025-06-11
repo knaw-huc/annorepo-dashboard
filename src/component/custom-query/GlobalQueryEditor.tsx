@@ -1,9 +1,9 @@
 import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {Loading} from "../common/Loading.tsx";
-import {ReactNode, useState} from "react";
+import {ReactNode, useEffect, useState} from "react";
 import {QR, useGet} from "../../client/query/useGet.tsx";
-import {ArMyContainers} from "../../client/ArModel.ts";
+import {ArMyContainers, SearchQuery} from "../../client/ArModel.ts";
 import {useGlobalSearch} from "../../client/endpoint/useGlobalSearch.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
@@ -12,7 +12,6 @@ import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
 
 export function GlobalQueryEditor(props: {
-  onSearch: () => void
   moreButtons?: ReactNode
 }) {
   const [pageNo, setPageNo] = useState(0);
@@ -22,8 +21,18 @@ export function GlobalQueryEditor(props: {
   const fields = useContainerFields(containerNames[0] ?? '')
   const fieldNames = fields.data ? Object.keys(fields.data) : [];
 
+  const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
+  const [isInit, setInit] = useState<boolean>()
   const query = useSearchQuery()
-  const {page} = useGlobalSearch(query, pageNo);
+
+  useEffect(() => {
+    if(query && !isInit) {
+      setSubmittedQuery(query)
+      setInit(true)
+    }
+  }, [query]);
+
+  const {page} = useGlobalSearch(submittedQuery, pageNo);
 
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update))
@@ -37,7 +46,7 @@ export function GlobalQueryEditor(props: {
     <QueryEditor
       fieldNames={fieldNames}
       searchError={page.error}
-      onSubmit={props.onSearch}
+      onSubmit={() => setSubmittedQuery(query)}
       moreButtons={props.moreButtons}
     />
     {page

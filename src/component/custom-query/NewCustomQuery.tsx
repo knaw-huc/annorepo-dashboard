@@ -3,7 +3,7 @@ import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {GlobalQueryEditor} from "./GlobalQueryEditor.tsx";
 import {Store} from "../common/icon/Store.tsx";
-import {ArCustomQueryForm, SearchQuery} from "../../client/ArModel.ts";
+import {ArCustomQueryForm} from "../../client/ArModel.ts";
 import {MR, usePost} from "../../client/query/usePost.tsx";
 import omit from "lodash/omit";
 import {useQueryClient} from "@tanstack/react-query";
@@ -34,11 +34,8 @@ export function NewCustomQuery(props: {
   useEffect(() => {
     if(!query) {
       initWithQuery(defaultQuery)
-      setSubmittedQuery(defaultQuery)
     }
   }, [query]);
-
-  const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
 
   const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
 
@@ -46,7 +43,7 @@ export function NewCustomQuery(props: {
     const arCustomQueryForm: ArCustomQueryForm = {
       ...queryMetadata,
       // openapi type says string but AR api expects json:
-      query: submittedQuery as unknown as string
+      query: query as unknown as string
     };
 
     createCustomQuery.mutate({
@@ -91,7 +88,6 @@ export function NewCustomQuery(props: {
           Store query
         </Button>
       </>}
-      onSearch={() => setSubmittedQuery(query)}
     />}
     {mode === 'create-custom-query' && <>
       <CustomQueryEditor
