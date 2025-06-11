@@ -1,16 +1,16 @@
-import {useDashboardStore} from "../../DashboardStore.ts";
 import {
   FieldQueryForm,
-  ValueParam
+  ParamValue
 } from "../../../component/common/search/QueryModel.ts";
 import {SearchQuery} from "../../../client/ArModel.ts";
 import {toSearchQuery} from "../util/toSearchQuery.ts";
+import {useStore} from "../../useStore.ts";
 
-export const useTemplate = useDashboardStore(store => toTemplateByParams(store.forms, store.params))
+export const useTemplate = useStore(store => toTemplateByParams(store.forms, store.params))
 
 export function toTemplateByParams(
   forms: FieldQueryForm[],
-  params: ValueParam[]
+  params: ParamValue[]
 ): SearchQuery {
   const withParams = forms.map((form, i) => ({
     ...form,

@@ -10,7 +10,8 @@ import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {SearchQuery} from "../../client/ArModel.ts";
 import {H1} from "../common/H1.tsx";
-import {debounce} from "lodash";
+import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
+import {useStore} from "../../store/useStore.ts";
 import {defaultQuery} from "../common/search/QueryModel.ts";
 
 export type ContainerSearchProps = {
@@ -24,8 +25,18 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(name)
-  const [query, setQuery] = useState<SearchQuery>(defaultQuery);
-  const {search, page} = useContainerSearch(name, query, pageNo);
+  const {initWithQuery} = useStore()
+  const query = useSearchQuery()
+
+  useEffect(() => {
+    if(!query) {
+      initWithQuery(defaultQuery)
+      setSubmittedQuery(defaultQuery)
+    }
+  }, [query]);
+
+  const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
+  const {search, page} = useContainerSearch(name, submittedQuery, pageNo);
   const {data: containerFields} = useContainerFields(name);
 
   useEffect(() => {
@@ -33,7 +44,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     if (containerPageId) {
       setPageNo(toPageNo(containerPageId))
     }
-  }, [container]);
+  }, [container.data?.first.id]);
 
   const error = search.error || page.error
   if (error) {
@@ -52,11 +63,9 @@ export function ContainerSearch(props: ContainerSearchProps) {
   return <>
     <H1>Search annotations</H1>
     <QueryEditor
-      query={query}
       fieldNames={fieldNames}
       searchError={search.error}
-      onChangeQuery={debounce(setQuery, 500)}
-      onSubmitQuery={setQuery}
+      onSubmit={() => setSubmittedQuery(query)}
     />
     {page
       ? <AnnotationPage

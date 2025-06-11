@@ -1,24 +1,25 @@
-import {
-  ErrorRecord,
-  FieldQueryForm
-} from "../../../component/common/search/QueryModel.ts";
 import {QuerySlice} from "../QuerySlice.ts";
+import {FormUpdate} from "../FormUpdate.ts";
 
 export function updateForm(
-  formIndex: number,
-  formUpdate: FieldQueryForm,
-  errorUpdate: FieldQueryErrors,
+  update: FormUpdate,
   prev: QuerySlice
 ) {
-  const formsUpdate = prev.forms.map((
-    form, i) => i === formIndex ? formUpdate : form
-  );
-  const errorsUpdate = prev.errors.map(
-    (error, i) => i === formIndex ? errorUpdate : error
-  );
+  const {formIndex, form, error, param} = update
   return {
     ...prev,
-    forms: formsUpdate,
-    errors: errorsUpdate
+    forms: form !== undefined
+      ? prev.forms.map(
+        (f, i) => i === formIndex ? form : f
+      )
+      : prev.forms,
+    errors: error !== undefined
+      ? prev.errors.map(
+        (e, i) => i === formIndex ? error : e
+      ) : prev.errors,
+    params: param !== undefined
+      ? prev.params.map(
+        (p, i) => i === formIndex ? param : p
+      ) : prev.params
   }
 }

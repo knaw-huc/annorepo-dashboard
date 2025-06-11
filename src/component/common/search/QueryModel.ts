@@ -33,7 +33,7 @@ export function createFieldQueryFormErrors(
 ): FieldQueryFormErrorsByField {
   return {
     field: form.field,
-    errors: mapValues(form, _ => '')
+    errors: mapValues(form, () => '')
   };
 }
 
@@ -52,5 +52,5 @@ export function hasErrorByField(forms: FieldQueryFormErrorsByField[]) {
   return some(forms, errorsByField => hasError(errorsByField.errors));
 }
 
-export type ValueParam = string | false;
+export type ParamValue = string | false;
 export type FieldQueryErrors = ErrorRecord<FieldQueryForm>;

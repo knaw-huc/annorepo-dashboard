@@ -2,26 +2,29 @@ import {StateCreator} from "zustand";
 import {
   FieldQueryErrors,
   FieldQueryForm,
-  ValueParam
+  ParamValue
 } from "../../component/common/search/QueryModel.ts";
 import {SearchQuery} from "../../client/ArModel.ts";
 import {initWithQuery} from "./util/initWithQuery.ts";
 import {initWithTemplate} from "./util/initWithTemplate.ts";
 import {updateForm} from "./util/updateForm.ts";
+import {FormToAdd, FormUpdate} from "./FormUpdate.ts";
+import {addForm} from "./util/addForm.ts";
+import {removeForm} from "./util/remvoeForm.ts";
 
 export type SliceCreator<SLICE> = StateCreator<SLICE, [], [], SLICE>
+
 export type QueryState = {
   forms: FieldQueryForm[]
   errors: FieldQueryErrors[]
-  params: ValueParam[]
+  params: ParamValue[]
 }
+
 export type QuerySlice = QueryState & {
   setState: (update: QueryState) => void
-  updateForm: (
-    formIndex: number,
-    form: FieldQueryForm,
-    error: FieldQueryErrors
-  ) => void
+  addForm: (toAdd: FormToAdd) => void
+  removeForm: (formIndex: number) => void
+  updateForm: (update: FormUpdate) => void
   initWithQuery: (query: SearchQuery) => void
   initWithTemplate: (query: SearchQuery, params: string[]) => void
 }
@@ -34,8 +37,14 @@ export const createQuerySlice: SliceCreator<QuerySlice> = (set) => ({
   setState: (update: QueryState) => set(
     () => ({...update})
   ),
-  updateForm: (i, form, error) => set(
-    (prev) => updateForm(i, form, error, prev)
+  addForm: (update) => set(
+    (prev) => addForm(update, prev)
+  ),
+  removeForm: (toRemove) => set(
+    (prev) => removeForm(toRemove, prev)
+  ),
+  updateForm: (update) => set(
+    (prev) => updateForm(update, prev)
   ),
   initWithQuery: (query) => set(
     () => initWithQuery(query)

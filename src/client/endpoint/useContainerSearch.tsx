@@ -12,7 +12,7 @@ export function useContainerSearch(
 ): Record<string, QR> {
   const client = useOpenApiClient()
   const queryKey = [containerName, query];
-  const search = useQuery({
+  const search  = useQuery({
     queryKey,
     queryFn: () => searchContainer(client, containerName, query!),
     enabled: !!query

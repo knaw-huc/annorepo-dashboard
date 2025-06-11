@@ -1,108 +1,65 @@
-import {Warning} from "../Warning.tsx";
 import {Button} from "../Button.tsx";
 import {Add} from "../icon/Add.tsx";
 import {Next} from "../icon/Next.tsx";
-import {ReactNode, useEffect, useState} from "react";
-import {SearchQuery} from "../../../client/ArModel.ts";
-import {
-  toQueryFieldForm,
-  toQueryFieldForms
-} from "../../../store/query/util/toQueryFieldForm.ts";
-import {toSearchQuery} from "../../../store/query/util/toSearchQuery.ts";
-import {
-  createFieldQueryFormErrors,
-  defaultQuery,
-  FieldQueryErrors,
-  FieldQueryForm,
-  FieldQueryFormErrorsByField,
-  hasErrorByField
-} from "./QueryModel.ts";
+import {ReactNode} from "react";
+import {toQueryFieldForm} from "../../../store/query/util/toQueryFieldForm.ts";
+import {defaultQuery, FieldQueryErrors, FieldQueryForm} from "./QueryModel.ts";
 import {SubQueryEditor} from "./SubQueryEditor.tsx";
+import {useStore} from "../../../store/useStore.ts";
+import {hasErrors} from "../../../store/query/util/hasErrors.ts";
+import {mapValues} from "lodash";
 
 export function QueryEditor(props: {
-  query: SearchQuery
   fieldNames: string[],
-  onSubmitQuery: (query: SearchQuery) => void
-  onChangeQuery: (query: SearchQuery) => void
+  onSubmit: () => void
   searchError?: Error | null,
   moreButtons?: ReactNode
 }) {
   const {searchError} = props;
-  const [queryError, setQueryError] = useState('')
-
-  const [isInit, setInit] = useState(false)
-  const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>([])
-  const [subqueryErrors, setSubqueryErrors] = useState<FieldQueryFormErrorsByField[]>([])
-
-  useEffect(() => {
-    if (isInit) {
-      return;
-    }
-    setInit(true)
-    const forms = toQueryFieldForms(props.query);
-    setSubqueryForms(forms)
-    setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
-  }, [isInit]);
+  const {
+    forms,
+    errors,
+    addForm,
+    removeForm,
+    updateForm,
+  } = useStore();
 
   const handleChangeSubquery = (
     formIndex: number,
-    formUpdate: FieldQueryForm,
-    errorUpdate: FieldQueryErrors
+    form: FieldQueryForm,
+    error: FieldQueryErrors
   ) => {
-    const formsUpdate = subqueryForms.map((form, i) =>
-      i === formIndex ? formUpdate : form
-    )
-    setSubqueryForms(formsUpdate)
-
-    const errorsUpdate = subqueryErrors.map((errorForm, i) =>
-      i === formIndex ? {...errorForm, errors: errorUpdate} : errorForm
-    )
-    setSubqueryErrors(errorsUpdate)
-
-    setQueryError('')
-    if (!hasErrorByField(errorsUpdate)) {
-      props.onChangeQuery(toSearchQuery(formsUpdate))
-    }
+    updateForm({formIndex, form, error})
   }
 
   const handleSubmitQuery = () => {
-    if (hasErrorByField(subqueryErrors)) {
+    if (hasErrors(errors)) {
       return;
     }
-    props.onSubmitQuery(toSearchQuery(subqueryForms))
+    props.onSubmit()
   }
 
   const handleAddSubquery = () => {
     const newQueryEntry = Object.entries(defaultQuery)[0];
-    const newForm = toQueryFieldForm(newQueryEntry)
-    const formUpdate = [...subqueryForms, newForm];
-    const errorUpdate = [...subqueryErrors, createFieldQueryFormErrors(newForm)];
-    try {
-      toSearchQuery(formUpdate);
+    const form = toQueryFieldForm(newQueryEntry)
+    const error = mapValues(form, () => '');
+    const param = false
 
-      setSubqueryForms(formUpdate)
-      setSubqueryErrors(errorUpdate)
-      setQueryError('')
-    } catch (e) {
-      const errorMessage = e instanceof Error ? e.message : ``;
-      setQueryError(['Could not add subquery', errorMessage].join(': '))
-    }
+    addForm({form, error, param})
   }
 
   const handleRemoveSubquery = (index: number) => {
-    setSubqueryErrors(prev => prev.splice(index, 1))
-    setSubqueryForms(prev => prev.splice(index, 1))
+    removeForm(index)
   }
 
   return <div>
-    {queryError && <Warning>{queryError}</Warning>}
-    {subqueryForms.map((f, i) => {
+    {forms.map((f, i) => {
       return <SubQueryEditor
         key={i}
         fieldNames={props.fieldNames}
         form={f}
         onChange={(f, e) => handleChangeSubquery(i, f, e)}
-        errors={subqueryErrors[i].errors}
+        errors={errors[i]}
         onRemove={() => handleRemoveSubquery(i)}
       />;
     })}
@@ -120,7 +77,7 @@ export function QueryEditor(props: {
       {props.moreButtons}
 
       <Button
-        disabled={!!searchError || !subqueryForms.length || hasErrorByField(subqueryErrors)}
+        disabled={!!searchError || !forms.length || hasErrors(errors)}
         type="button"
         className="pl-5 h-full border-b-2 ml-2"
         onClick={handleSubmitQuery}
@@ -131,6 +88,3 @@ export function QueryEditor(props: {
     </div>
   </div>
 }
-
-
-// TODO: move to FieldQueryFormErrorsByField

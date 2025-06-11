@@ -1,6 +1,5 @@
-import {useDashboardStore} from "../../DashboardStore.ts";
+import {useStore} from "../../useStore.ts";
+import {hasErrors} from "../util/hasErrors.ts";
 
-import {hasError} from "../util/hasError.ts";
-
-export const useHasErrors = useDashboardStore(d => !!d.errors.find(e => hasError(e)))
+export const useHasErrors = useStore(s => hasErrors(s.errors))
 

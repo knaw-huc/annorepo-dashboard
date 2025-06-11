@@ -1,36 +1,44 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {GlobalQueryEditor} from "./GlobalQueryEditor.tsx";
 import {Store} from "../common/icon/Store.tsx";
 import {ArCustomQueryForm, SearchQuery} from "../../client/ArModel.ts";
 import {MR, usePost} from "../../client/query/usePost.tsx";
-import {defaultQuery} from "../common/search/QueryModel.ts";
 import omit from "lodash/omit";
 import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
-import cloneDeep from "lodash/cloneDeep";
 import {Next} from "../common/icon/Next.tsx";
 import {Back} from "../common/icon/Back.tsx";
 import {CustomQueryEditor} from "./CustomQueryEditor.tsx";
-import {toTemplates} from "./toTemplates.ts";
 import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
-import {toSearchQuery} from "../../store/query/util/toSearchQuery.ts";
 import {Warning} from "../common/Warning.tsx";
-import {toQueryFieldForms} from "../../store/query/util/toQueryFieldForm.ts";
+import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
+import {defaultQuery} from "../common/search/QueryModel.ts";
+import {useStore} from "../../store/useStore.ts";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
 export function NewCustomQuery(props: {
   onClose: () => void
 }) {
+
+  const {initWithQuery} = useStore()
+  const query = useSearchQuery()
   const queryClient = useQueryClient()
 
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
   const [queryMetadata, setQueryMetadata] = useState(omit(defaultCustomQueryForm, 'query'));
   const [hasMetadataError, setMetadataError] = useState<boolean>();
-  const [query, setQuery] = useState<SearchQuery>(cloneDeep(defaultQuery));
-  const [globalQuery, setGlobalQuery] = useState<SearchQuery>(cloneDeep(defaultQuery));
+
+  useEffect(() => {
+    if(!query) {
+      initWithQuery(defaultQuery)
+      setSubmittedQuery(defaultQuery)
+    }
+  }, [query]);
+
+  const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
 
   const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
 
@@ -38,7 +46,7 @@ export function NewCustomQuery(props: {
     const arCustomQueryForm: ArCustomQueryForm = {
       ...queryMetadata,
       // openapi type says string but AR api expects json:
-      query: query as unknown as string
+      query: submittedQuery as unknown as string
     };
 
     createCustomQuery.mutate({
@@ -58,20 +66,11 @@ export function NewCustomQuery(props: {
   }
 
   function handleSwitchToCustomQuery() {
-    setQuery(toSearchQuery(toTemplates(toQueryFieldForms(cloneDeep(globalQuery)))))
     setMode('create-custom-query')
-  }
-
-  function handleUpdateQuery(update: SearchQuery) {
-    setQuery(update)
   }
 
   function switchBackToGlobalQuery() {
     setMode('create-global-query')
-  }
-
-  function handeSearch(query: SearchQuery) {
-    setGlobalQuery(query);
   }
 
   const title = mode === 'create-global-query'
@@ -92,8 +91,7 @@ export function NewCustomQuery(props: {
           Store query
         </Button>
       </>}
-      query={globalQuery}
-      onSearch={handeSearch}
+      onSearch={() => setSubmittedQuery(query)}
     />}
     {mode === 'create-custom-query' && <>
       <CustomQueryEditor
@@ -101,11 +99,6 @@ export function NewCustomQuery(props: {
         onChangeMetadata={setQueryMetadata}
         onMetadataError={() => setMetadataError(true)}
         onClearMetadataError={() => setMetadataError(false)}
-
-        query={query}
-        parameterQuery={toSearchQuery(toTemplates(toQueryFieldForms(query)))}
-        globalQuery={globalQuery}
-        onChangeQuery={handleUpdateQuery}
       />
       <Button
         onClick={switchBackToGlobalQuery}
