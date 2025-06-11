@@ -8,9 +8,10 @@ import {SearchQuery} from "../../client/ArModel.ts";
 import {initWithQuery} from "./util/initWithQuery.ts";
 import {initWithTemplate} from "./util/initWithTemplate.ts";
 import {updateForm} from "./util/updateForm.ts";
-import {FormToAdd, FormUpdate} from "./FormUpdate.ts";
+import {FormUpdate} from "./FormUpdate.ts";
 import {addForm} from "./util/addForm.ts";
-import {removeForm} from "./util/remvoeForm.ts";
+import {removeForm} from "./util/removeForm.ts";
+import {FormToAdd} from "./FormToAdd.ts";
 
 export type SliceCreator<SLICE> = StateCreator<SLICE, [], [], SLICE>
 

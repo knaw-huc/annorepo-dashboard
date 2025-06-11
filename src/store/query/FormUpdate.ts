@@ -10,8 +10,3 @@ export type FormUpdate = {
   error?: FieldQueryErrors,
   param?: ParamValue
 }
-export type FormToAdd = {
-  form: FieldQueryForm,
-  error: FieldQueryErrors,
-  param: ParamValue
-}

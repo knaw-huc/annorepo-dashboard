@@ -18,5 +18,5 @@ export function toTemplateByParams(
       ? form.value
       : params[i]
   }))
-  return toSearchQuery(withParams);
+  return toSearchQuery(withParams, []);
 }

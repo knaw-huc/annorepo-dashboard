@@ -1,95 +1,27 @@
-import {
-  ArCustomQueryForm,
-  CustomQueryForm,
-  QueryValue,
-  SearchQuery
-} from "../../client/ArModel.ts";
-import {toSearchQuery} from "../../store/query/util/toSearchQuery.ts";
-import {
-  createFieldQueryFormErrors,
-  createFieldQueryFormHasParameter,
-  FieldQueryForm,
-  FieldQueryFormErrorsByField,
-  FieldQueryFormIsParameter,
-  hasErrorByField
-} from "../common/search/QueryModel.ts";
+import {CustomQueryForm, QueryValue} from "../../client/ArModel.ts";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
-import {useEffect, useState} from "react";
-import {isEqual} from "lodash";
-import {toQueryFieldForms} from "../../store/query/util/toQueryFieldForm.ts";
+import {useStore} from "../../store/useStore.ts";
 
-export function CustomQueryCallEditor(props: {
-  metadata: Omit<ArCustomQueryForm, 'query'>
-  template: SearchQuery
-  query: SearchQuery
-  parameters: string[]
-  onChangeQuery: (query: SearchQuery) => void
-  onError: () => void
-  onClearError: () => void
-}) {
+export function CustomQueryCallEditor() {
 
-  const {
-    template,
-    query,
-    parameters
-  } = props;
+  const {updateForm, forms, errors, params} = useStore()
 
-  const [subqueryForms, setSubqueryForms] = useState<FieldQueryForm[]>([])
-  const [subqueryParameters, setSubqueryParameters] = useState<FieldQueryFormIsParameter[]>([])
-  const [subqueryErrors, setSubqueryErrors] = useState<FieldQueryFormErrorsByField[]>([])
-
-  /**
-   * Update forms and errors when query parameters change
-   */
-  useEffect(() => {
-    const isQueryEqual = isEqual(query, toSearchQuery(subqueryForms));
-    if (isQueryEqual) {
-      return;
-    }
-    const forms = toQueryFieldForms(query)
-    setSubqueryForms(forms)
-    setSubqueryErrors(forms.map(f => createFieldQueryFormErrors(f)))
-
-    // Use template to determine if form contains a parameter or a fixed value:
-    const templateForm = toQueryFieldForms(template);
-    setSubqueryParameters(templateForm.map(tf => createFieldQueryFormHasParameter(tf, parameters)))
-  }, [query]);
-
-  useEffect(() => {
-    if (hasErrorByField(subqueryErrors)) {
-      props.onError?.()
-    } else {
-      props.onClearError?.()
-    }
-  }, [subqueryErrors]);
-
-  const handleChangeSubquery = (valueUpdate: QueryValue, index: number) => {
-    const formUpdate = subqueryForms.map((form, i) =>
-      i === index ? {...form, value: valueUpdate} : form
-    )
-    setSubqueryForms(formUpdate)
-    if (!hasErrorByField(subqueryErrors)) {
-      props.onChangeQuery(toSearchQuery(formUpdate))
-    }
-  }
-
-  const handleSubqueryError = (error: string, index: number) => {
-    setSubqueryErrors(prev => prev.map((errorForm, i) =>
-      i === index ? {
-        ...errorForm,
-        errors: {...errorForm.errors, value: error}
-      } : errorForm
-    ))
+  const handleChangeSubquery = (
+    formIndex: number,
+    valueUpdate: QueryValue
+  ) => {
+    const form = {...forms[formIndex], value: valueUpdate}
+    updateForm({formIndex, form})
   }
 
   return <>
-    {subqueryForms.map((form, i) => <CustomSubQueryEditor
+    {forms.map((form, i) => <CustomSubQueryEditor
       key={i}
       form={form}
-      errors={subqueryErrors[i].errors}
-      onChange={(es) => handleChangeSubquery(es, i)}
-      onError={(error) => handleSubqueryError(error, i)}
-      disabled={!subqueryParameters[i].isParameter}
+      errors={errors[i]}
+      onChange={(value) => handleChangeSubquery(i, value)}
+      param={params[i]}
+      disabled={params[i] === false}
     />)}
   </>
 }

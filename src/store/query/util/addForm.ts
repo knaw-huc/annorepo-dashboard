@@ -1,6 +1,6 @@
 import {QuerySlice} from "../QuerySlice.ts";
-import {FormToAdd} from "../FormUpdate.ts";
 import {toSearchQuery} from "./toSearchQuery.ts";
+import {FormToAdd} from "../FormToAdd.ts";
 
 export function addForm(
   toAdd: FormToAdd,
@@ -10,7 +10,7 @@ export function addForm(
   const forms = [...prev.forms, form];
   try {
     // Computer says ...
-    toSearchQuery(forms)
+    toSearchQuery(forms, prev.params)
   } catch (e) {
     error.field = e instanceof Error
       ? e.message

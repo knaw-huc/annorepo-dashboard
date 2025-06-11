@@ -5,12 +5,17 @@ import {
   SearchSubquery
 } from "../../../client/ArModel.ts";
 import {objectEntries} from "../../../util/objectEntries.ts";
-import {FieldQueryForm} from "../../../component/common/search/QueryModel.ts";
+import {
+  FieldQueryForm,
+  ParamValue
+} from "../../../component/common/search/QueryModel.ts";
+import {isString} from "lodash";
 
 export function toSearchQuery(
-  forms: FieldQueryForm[]
+  forms: FieldQueryForm[],
+  params: ParamValue[]
 ): SearchQuery {
-  const subqueries = forms.map(f => convertToSubquery(f));
+  const subqueries = forms.map((f,i) => convertToSubquery(f, params[i]));
   return mergeForms(subqueries)
 }
 
@@ -40,16 +45,18 @@ function mergeForms(
 }
 
 function convertToSubquery(
-  form: FieldQueryForm
+  form: FieldQueryForm,
+  param?: ParamValue
 ): SearchSubquery {
+  const formValue = isString(param) ? param : form.value;
   if (form.operator === QueryOperator.simpleQuery) {
-    return {[form.field]: `${form.value}`}
+    return {[form.field]: `${formValue}`}
   } else if (isRangeQueryOperator(form.operator)) {
-    if (!isRangeQueryValue(form.value)) {
-      throw new Error('Expected range but got: ' + JSON.stringify(form.value))
+    if (!isRangeQueryValue(formValue)) {
+      throw new Error('Expected range but got: ' + JSON.stringify(formValue))
     }
-    return {[form.operator]: form.value}
+    return {[form.operator]: formValue}
   } else {
-    return {[form.field]: {[form.operator]: form.value}}
+    return {[form.field]: {[form.operator]: formValue}}
   }
 }

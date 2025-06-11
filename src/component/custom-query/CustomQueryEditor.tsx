@@ -37,10 +37,11 @@ export function CustomQueryEditor(props: {
   const [metadataForm, setMetadataForm] = useState<CustomQueryForm>(metadata);
   const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
 
-  function updateParameters(formIndex: number, isParam: boolean) {
+  function handleParameterChange(formIndex: number, isParam: boolean) {
     const update = isParam
       ? toParameter(forms[formIndex])
       : false
+    console.log('updateParameters', update)
     updateForm({formIndex, param: update})
   }
 
@@ -74,10 +75,10 @@ export function CustomQueryEditor(props: {
         <CustomSubQueryEditor
           key={i}
           form={form}
+          param={params[i]}
           errors={{} as FieldQueryErrors}
           disabled={true}
           onChange={noop}
-          onError={noop}
         />
         <div className="ml-4">
           <CheckboxWithLabel
@@ -89,7 +90,7 @@ export function CustomQueryEditor(props: {
               </span>
             }
             value={isString(params[i])}
-            onChange={(update) => updateParameters(i, update)}
+            onChange={(update) => handleParameterChange(i, update)}
           /></div>
       </div>)}
   </>

@@ -6,7 +6,6 @@ import {
 } from "../../client/endpoint/useCustomQuery.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {useEffect, useState} from "react";
-import omit from "lodash/omit";
 import {toCustomQueryParameters} from "./toCustomQueryParameters.ts";
 import {ArMyContainers, SearchQuery} from "../../client/ArModel.ts";
 import {Button} from "../common/Button.tsx";
@@ -19,6 +18,8 @@ import {toPageNo} from "../../util/toPageNo.ts";
 import {Hint} from "../common/Hint.tsx";
 import {Pipe} from "../common/Pipe.tsx";
 import {toQueryFieldForms} from "../../store/query/util/toQueryFieldForm.ts";
+import {hasErrors} from "../../store/query/util/hasErrors.ts";
+import {useStore} from "../../store/useStore.ts";
 
 export function CustomQueryDetail(props: {
   name: string
@@ -26,9 +27,10 @@ export function CustomQueryDetail(props: {
 }) {
   const {name} = props;
 
+  const {errors} = useStore()
+
   const [query, setQuery] = useState<SearchQuery>();
   const [queryParameters, setQueryParameters] = useState<Record<string, string>>({})
-  const [hasQueryError, setQueryError] = useState(false);
   const [selectedContainer, setSelectedContainer] = useState('')
   const [pageNo, setPageNo] = useState(0)
 
@@ -75,15 +77,7 @@ export function CustomQueryDetail(props: {
       <Pipe />
       <span>created at: {new Date(customQuery.data.created).toLocaleString()}</span>
     </p>
-    <CustomQueryCallEditor
-      metadata={omit(customQuery.data, 'query')}
-      template={JSON.parse(customQuery.data.queryTemplate)}
-      query={query}
-      parameters={customQuery.data.parameters}
-      onChangeQuery={setQuery}
-      onError={() => setQueryError(true)}
-      onClearError={() => setQueryError(false)}
-    />
+    <CustomQueryCallEditor />
     <div className="mb-5">
       <Dropdown
         placeholder="Select container"
@@ -95,7 +89,7 @@ export function CustomQueryDetail(props: {
       <Button
         onClick={handleSearch}
         className="pl-5"
-        disabled={hasQueryError || !selectedContainer}
+        disabled={hasErrors(errors) || !selectedContainer}
       >
         Search<Next className="ml-2"/>
       </Button>

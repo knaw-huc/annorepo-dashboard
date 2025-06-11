@@ -10,5 +10,5 @@ export const useSearchQuery = (): SearchQuery | undefined => useStore(store => {
   if(hasErrors(store.errors)) {
     return;
   }
-  return toSearchQuery(store.forms);
+  return toSearchQuery(store.forms, store.params);
 })
