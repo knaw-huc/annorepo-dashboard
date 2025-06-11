@@ -4,13 +4,14 @@ import {Add} from "../icon/Add.tsx";
 import {Next} from "../icon/Next.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {SearchQuery} from "../../../client/ArModel.ts";
-import {toQueryFieldForm} from "./util/toQueryFieldForm.ts";
-import {toQueryFieldForms} from "./util/toQueryFieldForms.ts";
-import {toSearchQuery} from "./util/toSearchQuery.tsx";
-import {ErrorRecord} from "../form/util/ErrorRecord.ts";
+import {
+  toQueryFieldForm,
+  toQueryFieldForms
+} from "../../../store/query/util/toQueryFieldForm.ts";
+import {toSearchQuery} from "../../../store/query/util/toSearchQuery.ts";
 import {
   createFieldQueryFormErrors,
-  defaultQuery,
+  defaultQuery, ErrorRecord,
   FieldQueryForm,
   FieldQueryFormErrorsByField,
   hasErrorByField

@@ -8,18 +8,11 @@ import isNil from "lodash/isNil";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {Button} from "../common/Button.tsx";
 import {Add} from "../common/icon/Add.tsx";
-import {useEffect} from "react";
-import {useDashboardStore} from "../../store/DashboardStore.ts";
 
 export function ContainerIndex(props: {
   onClickCreateContainer: () => void
 }) {
   const {myContainers, details} = useMyContainerDetails();
-  const {foo, setState} = useDashboardStore()
-
-  useEffect(() => {
-    setTimeout(() => setState({foo: 'bar'}), 1000)
-  }, []);
 
   if(!myContainers.isSuccess || !details.every(d => d.isSuccess)) {
     return <StatusMessage requests={details} />
@@ -35,7 +28,6 @@ export function ContainerIndex(props: {
 
   return <div>
     <H1>Containers</H1>
-    foo: {foo}
     <Button
       onClick={props.onClickCreateContainer}
       className="mt-2"

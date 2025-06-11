@@ -3,14 +3,16 @@ import {
   QueryOperator,
   QueryValue
 } from "../../../client/ArModel.ts";
-import {ErrorRecord} from "../form/util/ErrorRecord.ts";
-import {isEmpty, isString, mapValues, some, values} from "lodash";
+import {isString, mapValues, some} from "lodash";
+import {hasError} from "../../../store/query/util/hasError.ts";
 
 export type FieldQueryForm = {
   field: string,
   operator: QueryOperator
   value: QueryValue
 }
+
+export type ErrorRecord<T extends object> = Record<keyof T, string>
 
 export type FieldQueryFormErrorsByField = {
   field: string,
@@ -50,8 +52,4 @@ export function hasErrorByField(forms: FieldQueryFormErrorsByField[]) {
   return some(forms, errorsByField => hasError(errorsByField.errors));
 }
 
-export function hasError<T extends object>(form: ErrorRecord<T>) {
-  return values(form).some(
-    field => !isEmpty(field)
-  );
-}
+export type ValueParam = string | false;

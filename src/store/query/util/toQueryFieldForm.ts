@@ -4,10 +4,14 @@ import {
   isRangeQueryValue,
   NO_FIELD,
   QueryOperator,
-  QueryValue
-} from "../../../../client/ArModel.ts";
+  QueryValue,
+  SearchQuery
+} from "../../../client/ArModel.ts";
 import {isNumber, isPlainObject, isString} from "lodash";
-import {FieldQueryForm, QueryEntry} from "../QueryModel.ts";
+import {
+  FieldQueryForm,
+  QueryEntry
+} from "../../../component/common/search/QueryModel.ts";
 
 export function toQueryFieldForm(
   entry: QueryEntry
@@ -69,4 +73,12 @@ function throwUnexpected(
   } in ${
     JSON.stringify(entry)
   }`)
+}
+
+export function toQueryFieldForms(
+  query: SearchQuery
+): FieldQueryForm[] {
+  return Object.entries(query).map((entry) => {
+    return toQueryFieldForm(entry)
+  })
 }

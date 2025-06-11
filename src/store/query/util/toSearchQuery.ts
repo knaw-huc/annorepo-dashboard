@@ -3,9 +3,9 @@ import {
   QueryOperator,
   SearchQuery,
   SearchSubquery
-} from "../../../../client/ArModel.ts";
-import {objectEntries} from "../../../../util/objectEntries.ts";
-import {FieldQueryForm} from "../QueryModel.ts";
+} from "../../../client/ArModel.ts";
+import {objectEntries} from "../../../util/objectEntries.ts";
+import {FieldQueryForm} from "../../../component/common/search/QueryModel.ts";
 
 export function toSearchQuery(
   forms: FieldQueryForm[]

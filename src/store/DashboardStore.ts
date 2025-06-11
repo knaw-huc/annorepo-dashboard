@@ -1,4 +1,4 @@
-import {createQuerySlice, QuerySlice} from "./QuerySlice.ts";
+import {createQuerySlice, QuerySlice} from "./query/QuerySlice.ts";
 import {create} from "zustand/index";
 
 export type DashboardStore = QuerySlice;

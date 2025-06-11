@@ -4,17 +4,20 @@ import {
   SearchQuery
 } from "../../client/ArModel.ts";
 import {H2} from "../common/H2.tsx";
-import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
-import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
-import {FieldQueryForm, hasError} from "../common/search/QueryModel.ts";
+import {toSearchQuery} from "../../store/query/util/toSearchQuery.ts";
+import {
+  ErrorRecord,
+  FieldQueryForm
+} from "../common/search/QueryModel.ts";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
 import {useEffect, useState} from "react";
 import {isEmpty, isEqual, noop} from "lodash";
-import {toErrorRecord} from "../common/form/util/toErrorRecord.ts";
-import {ErrorRecord} from "../common/form/util/ErrorRecord.ts";
+import {toErrorRecord} from "../../store/query/util/toErrorRecord.ts";
 import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {Info} from "../common/icon/Info.tsx";
+import {toQueryFieldForms} from "../../store/query/util/toQueryFieldForm.ts";
+import {hasError} from "../../store/query/util/hasError.ts";
 
 /**
  * Allow creating a new custom query

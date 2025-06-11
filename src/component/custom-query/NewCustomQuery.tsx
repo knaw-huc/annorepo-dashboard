@@ -14,10 +14,10 @@ import {Next} from "../common/icon/Next.tsx";
 import {Back} from "../common/icon/Back.tsx";
 import {CustomQueryEditor} from "./CustomQueryEditor.tsx";
 import {toTemplates} from "./toTemplates.ts";
-import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
 import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
-import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
+import {toSearchQuery} from "../../store/query/util/toSearchQuery.ts";
 import {Warning} from "../common/Warning.tsx";
+import {toQueryFieldForms} from "../../store/query/util/toQueryFieldForm.ts";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 

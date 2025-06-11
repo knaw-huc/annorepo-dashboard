@@ -4,8 +4,7 @@ import {
   QueryValue,
   SearchQuery
 } from "../../client/ArModel.ts";
-import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
-import {toSearchQuery} from "../common/search/util/toSearchQuery.tsx";
+import {toSearchQuery} from "../../store/query/util/toSearchQuery.ts";
 import {
   createFieldQueryFormErrors,
   createFieldQueryFormHasParameter,
@@ -17,6 +16,7 @@ import {
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {useEffect, useState} from "react";
 import {isEqual} from "lodash";
+import {toQueryFieldForms} from "../../store/query/util/toQueryFieldForm.ts";
 
 export function CustomQueryCallEditor(props: {
   metadata: Omit<ArCustomQueryForm, 'query'>

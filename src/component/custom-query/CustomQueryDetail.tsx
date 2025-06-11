@@ -9,7 +9,6 @@ import {useEffect, useState} from "react";
 import omit from "lodash/omit";
 import {toCustomQueryParameters} from "./toCustomQueryParameters.ts";
 import {ArMyContainers, SearchQuery} from "../../client/ArModel.ts";
-import {toQueryFieldForms} from "../common/search/util/toQueryFieldForms.ts";
 import {Button} from "../common/Button.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {Dropdown} from "../common/form/Dropdown.tsx";
@@ -19,6 +18,7 @@ import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {Hint} from "../common/Hint.tsx";
 import {Pipe} from "../common/Pipe.tsx";
+import {toQueryFieldForms} from "../../store/query/util/toQueryFieldForm.ts";
 
 export function CustomQueryDetail(props: {
   name: string

@@ -1,6 +1,6 @@
 import {describe, expect, it} from "vitest";
 import {toQueryFieldForm} from "./toQueryFieldForm.ts";
-import {defaultQuery} from "../QueryModel.ts";
+import {defaultQuery} from "../../../component/common/search/QueryModel.ts";
 
 describe('convertToQueryFieldForm', async () => {
   it('converts default query', async () => {

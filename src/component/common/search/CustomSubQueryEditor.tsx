@@ -1,9 +1,8 @@
 import {Dropdown} from "../form/Dropdown.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
-import {ErrorRecord} from "../form/util/ErrorRecord.ts";
 import noop from "lodash/noop";
-import {FieldQueryForm} from "./QueryModel.ts";
+import {ErrorRecord, FieldQueryForm} from "./QueryModel.ts";
 
 export function CustomSubQueryEditor(props: {
   form: FieldQueryForm
@@ -14,7 +13,7 @@ export function CustomSubQueryEditor(props: {
 
   disabled: boolean
 }) {
-  const {form, onChange, errors, onError, disabled} = props;
+  const {form, onChange, errors, disabled} = props;
 
   const operatorValue = form.operator.valueOf();
   return <div className="flex-grow">
@@ -43,7 +42,6 @@ export function CustomSubQueryEditor(props: {
             onChange={onChange}
             operator={form.operator}
             error={errors.value}
-            onError={onError}
             disabled={disabled}
           />
         </div>

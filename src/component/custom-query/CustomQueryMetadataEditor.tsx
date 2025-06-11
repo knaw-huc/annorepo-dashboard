@@ -1,8 +1,8 @@
 import {CustomQueryForm} from "../../client/ArModel.ts";
-import {ErrorRecord} from "../common/form/util/ErrorRecord.ts";
 import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {Textarea} from "../common/form/Textarea.tsx";
+import {ErrorRecord} from "../common/search/QueryModel.ts";
 
 export function CustomQueryMetadataEditor(props: {
   form: CustomQueryForm
