@@ -22,7 +22,7 @@ export function toQueryFieldForm(
     field = queryKey
     operator = QueryOperator.simpleQuery
     value = queryValue
-  } else if (isRangeQueryOperator(queryValue)) {
+  } else if (isRangeQueryOperator(queryKey)) {
     // Function query:
     if (!isRangeQueryValue(queryValue)) {
       throwUnexpected(queryValue, 'range', entry);
