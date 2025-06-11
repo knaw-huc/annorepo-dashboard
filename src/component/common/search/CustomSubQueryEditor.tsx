@@ -2,13 +2,13 @@ import {Dropdown} from "../form/Dropdown.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import noop from "lodash/noop";
-import {ErrorRecord, FieldQueryForm} from "./QueryModel.ts";
+import {FieldQueryErrors, FieldQueryForm} from "./QueryModel.ts";
 
 export function CustomSubQueryEditor(props: {
   form: FieldQueryForm
   onChange: (value: FieldQueryForm['value']) => void;
 
-  errors: ErrorRecord<FieldQueryForm>
+  errors: FieldQueryErrors
   onError: (error: string) => void;
 
   disabled: boolean

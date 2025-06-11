@@ -5,10 +5,7 @@ import {
 } from "../../client/ArModel.ts";
 import {H2} from "../common/H2.tsx";
 import {toSearchQuery} from "../../store/query/util/toSearchQuery.ts";
-import {
-  ErrorRecord,
-  FieldQueryForm
-} from "../common/search/QueryModel.ts";
+import {FieldQueryErrors, FieldQueryForm} from "../common/search/QueryModel.ts";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
 import {useEffect, useState} from "react";
@@ -130,7 +127,7 @@ export function CustomQueryEditor(props: {
       <CustomSubQueryEditor
         key={i}
         form={form}
-        errors={{} as ErrorRecord<FieldQueryForm>}
+        errors={{} as FieldQueryErrors}
         disabled={true}
         onChange={noop}
         onError={noop}

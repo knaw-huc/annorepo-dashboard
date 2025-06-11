@@ -7,7 +7,7 @@ import {QuerySlice} from "../QuerySlice.ts";
 export function updateForm(
   formIndex: number,
   formUpdate: FieldQueryForm,
-  errorUpdate: ErrorRecord<FieldQueryForm>,
+  errorUpdate: FieldQueryErrors,
   prev: QuerySlice
 ) {
   const formsUpdate = prev.forms.map((

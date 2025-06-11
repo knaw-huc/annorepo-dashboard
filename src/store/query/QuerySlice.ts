@@ -1,6 +1,6 @@
 import {StateCreator} from "zustand";
 import {
-  ErrorRecord,
+  FieldQueryErrors,
   FieldQueryForm,
   ValueParam
 } from "../../component/common/search/QueryModel.ts";
@@ -10,15 +10,20 @@ import {initWithTemplate} from "./util/initWithTemplate.ts";
 import {updateForm} from "./util/updateForm.ts";
 
 export type SliceCreator<SLICE> = StateCreator<SLICE, [], [], SLICE>
-
 export type QueryState = {
   forms: FieldQueryForm[]
-  errors: ErrorRecord<FieldQueryForm>[]
+  errors: FieldQueryErrors[]
   params: ValueParam[]
 }
 export type QuerySlice = QueryState & {
   setState: (update: QueryState) => void
+  updateForm: (
+    formIndex: number,
+    form: FieldQueryForm,
+    error: FieldQueryErrors
+  ) => void
   initWithQuery: (query: SearchQuery) => void
+  initWithTemplate: (query: SearchQuery, params: string[]) => void
 }
 
 export const createQuerySlice: SliceCreator<QuerySlice> = (set) => ({
@@ -29,13 +34,13 @@ export const createQuerySlice: SliceCreator<QuerySlice> = (set) => ({
   setState: (update: QueryState) => set(
     () => ({...update})
   ),
-  updateForm: (i: number, form: FieldQueryForm, error: ErrorRecord<FieldQueryForm>) => set(
+  updateForm: (i, form, error) => set(
     (prev) => updateForm(i, form, error, prev)
   ),
-  initWithQuery: (query: SearchQuery) => set(
+  initWithQuery: (query) => set(
     () => initWithQuery(query)
   ),
-  initWithTemplate: (query: SearchQuery, params: string[]) => set(
+  initWithTemplate: (query, params) => set(
     () => initWithTemplate(query, params)
   )
 });

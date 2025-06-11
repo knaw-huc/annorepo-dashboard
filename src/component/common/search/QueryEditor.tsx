@@ -11,7 +11,8 @@ import {
 import {toSearchQuery} from "../../../store/query/util/toSearchQuery.ts";
 import {
   createFieldQueryFormErrors,
-  defaultQuery, ErrorRecord,
+  defaultQuery,
+  FieldQueryErrors,
   FieldQueryForm,
   FieldQueryFormErrorsByField,
   hasErrorByField
@@ -46,7 +47,7 @@ export function QueryEditor(props: {
   const handleChangeSubquery = (
     formIndex: number,
     formUpdate: FieldQueryForm,
-    errorUpdate: ErrorRecord<FieldQueryForm>
+    errorUpdate: FieldQueryErrors
   ) => {
     const formsUpdate = subqueryForms.map((form, i) =>
       i === formIndex ? formUpdate : form

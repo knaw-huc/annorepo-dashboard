@@ -10,15 +10,15 @@ import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import {Button} from "../Button.tsx";
 import {Remove} from "../icon/Remove.tsx";
-import {ErrorRecord, FieldQueryForm} from "./QueryModel.ts";
+import {FieldQueryErrors, FieldQueryForm} from "./QueryModel.ts";
 
 export function SubQueryEditor(props: {
   fieldNames: string[],
 
   form: FieldQueryForm
-  errors: ErrorRecord<FieldQueryForm>
+  errors: FieldQueryErrors
 
-  onChange: (form: FieldQueryForm, errors: ErrorRecord<FieldQueryForm>) => void;
+  onChange: (form: FieldQueryForm, errors: FieldQueryErrors) => void;
 
   onRemove: () => void
   disabled?: boolean

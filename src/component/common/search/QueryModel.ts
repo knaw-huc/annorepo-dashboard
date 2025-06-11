@@ -16,7 +16,7 @@ export type ErrorRecord<T extends object> = Record<keyof T, string>
 
 export type FieldQueryFormErrorsByField = {
   field: string,
-  errors: ErrorRecord<FieldQueryForm>
+  errors: FieldQueryErrors
 }
 
 export type FieldQueryFormIsParameter = {
@@ -53,3 +53,4 @@ export function hasErrorByField(forms: FieldQueryFormErrorsByField[]) {
 }
 
 export type ValueParam = string | false;
+export type FieldQueryErrors = ErrorRecord<FieldQueryForm>;
