@@ -24,7 +24,9 @@ export function NewCustomQuery(props: {
 }) {
 
   const {initWithQuery} = useStore()
-  const query = useSearchQuery()
+
+  const asTemplate = true;
+  const query = useSearchQuery(asTemplate)
   const queryClient = useQueryClient()
 
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')

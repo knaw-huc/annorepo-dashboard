@@ -1,5 +1,6 @@
 import {
-  isRangeQueryOperator, isRangeQueryValue,
+  isRangeQueryOperator,
+  isRangeQueryValue,
   QueryOperator,
   SearchQuery,
   SearchSubquery
