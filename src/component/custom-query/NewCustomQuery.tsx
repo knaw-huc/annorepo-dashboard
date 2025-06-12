@@ -32,10 +32,8 @@ export function NewCustomQuery(props: {
   const [hasMetadataError, setMetadataError] = useState<boolean>();
 
   useEffect(() => {
-    if(!query) {
-      initWithQuery(defaultQuery)
-    }
-  }, [query]);
+    initWithQuery(defaultQuery)
+  }, []);
 
   const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
 

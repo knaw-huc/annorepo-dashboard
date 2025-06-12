@@ -35,23 +35,23 @@ export const createQuerySlice: SliceCreator<QuerySlice> = (set) => ({
   errors: [],
   params: [],
 
-  setState: (update: QueryState) => set(
-    () => ({...update})
+  setState: (update: QueryState) => set(() =>
+    ({...update})
   ),
-  addForm: (update) => set(
-    (prev) => addForm(update, prev)
+  addForm: (update) => set((prev) =>
+    addForm(update, prev)
   ),
-  removeForm: (toRemove) => set(
-    (prev) => removeForm(toRemove, prev)
+  removeForm: (toRemove) => set((prev) =>
+    removeForm(toRemove, prev)
   ),
-  updateForm: (update) => set(
-    (prev) => updateForm(update, prev)
+  updateForm: (update) => set((prev) =>
+    updateForm(update, prev)
   ),
-  initWithQuery: (query) => set(
-    () => initWithQuery(query)
+  initWithQuery: (query) => set(() =>
+    initWithQuery(query)
   ),
-  initWithTemplate: (query, params) => set(
-    () => initWithTemplate(query, params)
+  initWithTemplate: (query, params) => set(() =>
+    initWithTemplate(query, params)
   )
 });
 

@@ -6,9 +6,8 @@ import {
   QueryValuesConfig
 } from "../../../client/ArModel.ts";
 import {InputWithLabel} from "../form/InputWithLabel.tsx";
-import {useEffect, useState} from "react";
 import {orThrow} from "../../../util/orThrow.ts";
-import {isEqual} from "lodash";
+import {ErroneousValue} from "./QueryModel.ts";
 
 export function QueryValueInput(props: {
   operator: QueryOperator,
@@ -17,57 +16,32 @@ export function QueryValueInput(props: {
   error: string
   disabled?: boolean
 }) {
-
-  const [formValue, setFormValue] = useState<string>(
-    toQueryValueString(props.queryValue, props.operator)
-  );
-
-  useEffect(() => {
-    const nextAsString = toQueryValueString(
-      props.queryValue,
-      props.operator
-    );
-    if (!isEqual(nextAsString, formValue)) {
-      handleChange(nextAsString)
-    }
-  }, [props.queryValue]);
-
-  useEffect(() => {
-    const newValue = updateQueryValueAfterOperatorChange(
-      props.queryValue,
-      props.operator
-    );
-    const updatedValue = toQueryValueString(
-      newValue,
-      props.operator
-    )
-    handleChange(updatedValue)
-  }, [props.operator]);
-
+  const {
+    operator,
+    queryValue,
+    onChange,
+    error,
+    disabled
+  } = props;
   function handleChange(update: string) {
-    setFormValue(update);
     try {
-      const queryUpdate = toQueryValue(update, props.operator);
-      props.onChange(queryUpdate, '');
+      const queryUpdate = toQueryValue(update, operator);
+      onChange(queryUpdate, '');
     } catch (e) {
-      props.onChange(props.queryValue, e instanceof Error ? e.message : "Invalid value")
+      onChange(
+        update as ErroneousValue,
+        e instanceof Error ? e.message : "Invalid value"
+      )
     }
   }
 
   return <InputWithLabel
-    value={formValue}
+    value={error ? queryValue as ErroneousValue : toQueryValueString(queryValue, operator)}
     label="Value"
-    errorLabel={props.error}
+    errorLabel={error}
     onChange={handleChange}
-    disabled={props.disabled}
+    disabled={disabled}
   />
-}
-
-function findQueryMappingByValue(
-  queryValue: QueryValue
-) {
-  return queryValueMapping.find(c => c.isType(queryValue))
-    ?? orThrow(`Unknown type of query value: ${queryValue}`);
 }
 
 function findMapping(operator: QueryOperator) {
@@ -97,17 +71,3 @@ function toQueryValue(
   return mapping.toValue(inputValue)
 }
 
-function updateQueryValueAfterOperatorChange(
-  currentValue: QueryValue,
-  nextOperator: QueryOperator,
-): QueryValue {
-  const currentMapping = findQueryMappingByValue(currentValue)
-  const nextType = queryOperatorValueType[nextOperator]
-  if (currentMapping.type === nextType) {
-    return currentValue
-  } else {
-    const nextMapping = queryValueMapping.find(t => t.type === nextType)
-      ?? orThrow(`No default found for ${nextType}`);
-    return nextMapping.defaultValue
-  }
-}

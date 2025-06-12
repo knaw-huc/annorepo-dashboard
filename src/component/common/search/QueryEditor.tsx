@@ -3,7 +3,7 @@ import {Add} from "../icon/Add.tsx";
 import {Next} from "../icon/Next.tsx";
 import {ReactNode} from "react";
 import {toQueryFieldForm} from "../../../store/query/util/toQueryFieldForm.ts";
-import {defaultQuery, FieldQueryErrors, FieldQueryForm} from "./QueryModel.ts";
+import {defaultQuery} from "./QueryModel.ts";
 import {SubQueryEditor} from "./SubQueryEditor.tsx";
 import {useStore} from "../../../store/useStore.ts";
 import {hasErrors} from "../../../store/query/util/hasErrors.ts";
@@ -20,17 +20,7 @@ export function QueryEditor(props: {
     forms,
     errors,
     addForm,
-    removeForm,
-    updateForm,
   } = useStore();
-
-  const handleChangeSubquery = (
-    formIndex: number,
-    form: FieldQueryForm,
-    error: FieldQueryErrors
-  ) => {
-    updateForm({formIndex, form, error})
-  }
 
   const handleSubmitQuery = () => {
     if (hasErrors(errors)) {
@@ -48,19 +38,12 @@ export function QueryEditor(props: {
     addForm({form, error, param})
   }
 
-  const handleRemoveSubquery = (index: number) => {
-    removeForm(index)
-  }
-
   return <div>
-    {forms.map((f, i) => {
+    {forms.map((_, i) => {
       return <SubQueryEditor
         key={i}
         fieldNames={props.fieldNames}
-        form={f}
-        onChange={(f, e) => handleChangeSubquery(i, f, e)}
-        errors={errors[i]}
-        onRemove={() => handleRemoveSubquery(i)}
+        formIndex={i}
       />;
     })}
     <div className="mb-7">

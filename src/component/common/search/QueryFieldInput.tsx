@@ -3,7 +3,6 @@ import {
   NO_FIELD,
   QueryOperator
 } from "../../../client/ArModel.ts";
-import {useEffect} from "react";
 import {SearchWithSuggestions} from "../form/SearchWithSuggestions.tsx";
 
 export function QueryFieldInput(props: {
@@ -15,12 +14,6 @@ export function QueryFieldInput(props: {
   disabled?: boolean
 }) {
   const {value, operator, suggestions, onChange} = props;
-
-  useEffect(() => {
-    if (value && isRangeQueryOperator(operator)) {
-      onChange('')
-    }
-  }, [operator, onChange]);
 
   return <SearchWithSuggestions
     errorLabel={props.errorLabel}

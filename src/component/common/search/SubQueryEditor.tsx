@@ -1,6 +1,9 @@
 import {
+  isRangeQueryOperator, NO_FIELD,
   QueryOperator,
+  queryOperatorValueType,
   QueryValue,
+  queryValueMapping,
   toOperator
 } from "../../../client/ArModel.ts";
 import {Dropdown} from "../form/Dropdown.tsx";
@@ -10,20 +13,23 @@ import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import {Button} from "../Button.tsx";
 import {Remove} from "../icon/Remove.tsx";
-import {FieldQueryErrors, FieldQueryForm} from "./QueryModel.ts";
+import {useStore} from "../../../store/useStore.ts";
+import {FieldQueryForm} from "./QueryModel.ts";
 
 export function SubQueryEditor(props: {
   fieldNames: string[],
-
-  form: FieldQueryForm
-  errors: FieldQueryErrors
-
-  onChange: (form: FieldQueryForm, errors: FieldQueryErrors) => void;
-
-  onRemove: () => void
+  formIndex: number,
   disabled?: boolean
 }) {
-  const {fieldNames, form, errors, onChange} = props;
+  const {fieldNames, disabled, formIndex} = props;
+
+  const {
+    forms,
+    errors,
+    removeForm,
+    updateForm,
+  } = useStore();
+  const form = forms[formIndex]
 
   const suggestions = form.field
     ? fieldNames.filter(name => name.includes(form.field))
@@ -33,7 +39,11 @@ export function SubQueryEditor(props: {
     const operatorUpdate = toOperator(update.value)
       ?? orThrow(`Invalid operator: ${update.value}`);
 
-    onChange({...form, operator: operatorUpdate}, errors);
+    const formUpdate = alignWithOperator(form, operatorUpdate)
+    updateForm({
+      formIndex,
+      form: formUpdate,
+    });
   }
 
   const operatorOptions = Object
@@ -43,13 +53,13 @@ export function SubQueryEditor(props: {
 
   function handleChangeField(field: string) {
     const formUpdate = {...form, field};
-    const errorUpdate = {...errors};
+    const errorUpdate = {...errors[formIndex]};
     if (!field) {
       errorUpdate.field = 'Field cannot be empty'
     } else {
       errorUpdate.field = ''
     }
-    onChange(formUpdate, errorUpdate);
+    updateForm({formIndex, form: formUpdate, error: errorUpdate});
   }
 
   function handleChangeValue(
@@ -57,21 +67,25 @@ export function SubQueryEditor(props: {
     error: string
   ) {
     const formUpdate = {...form, value};
-    const errorUpdate = {...errors, value: error};
-    onChange(formUpdate, errorUpdate)
+    const errorUpdate = {...errors[formIndex], value: error};
+    updateForm({formIndex, form: formUpdate, error: errorUpdate})
+  }
+
+  function handleRemoveSubQuery() {
+    return removeForm(formIndex);
   }
 
   return <form onSubmit={e => e.preventDefault()}>
-    <fieldset disabled={props.disabled}>
+    <fieldset disabled={disabled}>
       <div className="flex mb-3 mt-2">
         <div className="flex-auto mr-2">
           <QueryFieldInput
             value={form.field}
-            errorLabel={errors.field}
+            errorLabel={errors[formIndex].field}
             operator={form.operator}
             suggestions={suggestions}
             onChange={handleChangeField}
-            disabled={props.disabled}
+            disabled={disabled}
           />
         </div>
         <div className="flex-none mr-2">
@@ -79,23 +93,23 @@ export function SubQueryEditor(props: {
             selectedValue={form.operator.valueOf()}
             options={operatorOptions}
             onSelect={handleSelectOperator}
-            disabled={props.disabled}
+            disabled={disabled}
           />
         </div>
         <div className="flex-auto mr-2">
           <QueryValueInput
             queryValue={form.value}
             operator={form.operator}
-            error={errors.value}
+            error={errors[formIndex].value}
             onChange={handleChangeValue}
-            disabled={props.disabled}
+            disabled={disabled}
           />
         </div>
-        {!props.disabled && <div className="flex-none">
+        {!disabled && <div className="flex-none">
           <Button
             type="button"
             className="pl-3 h-full"
-            onClick={props.onRemove}
+            onClick={handleRemoveSubQuery}
             secondary
           >
             <Remove className="ml-1"/>
@@ -104,6 +118,31 @@ export function SubQueryEditor(props: {
       </div>
     </fieldset>
   </form>
+}
 
+function alignWithOperator(
+  prev: FieldQueryForm,
+  nextOperator: QueryOperator,
+): FieldQueryForm {
+  const currentMapping = findQueryMappingByValue(prev.value)
+  const nextType = queryOperatorValueType[nextOperator]
+  const next = {...prev, operator: nextOperator}
+  if (currentMapping.type === nextType) {
+    next.value = prev.value
+  } else {
+    const nextMapping = queryValueMapping.find(t => t.type === nextType)
+      ?? orThrow(`No default found for ${nextType}`);
+    next.value = nextMapping.defaultValue
+  }
+  if (prev.value && isRangeQueryOperator(nextOperator)) {
+    next.field = NO_FIELD
+  }
+  return next
+}
 
+function findQueryMappingByValue(
+  queryValue: QueryValue
+) {
+  return queryValueMapping.find(c => c.isType(queryValue))
+    ?? orThrow(`Unknown type of query value: ${queryValue}`);
 }

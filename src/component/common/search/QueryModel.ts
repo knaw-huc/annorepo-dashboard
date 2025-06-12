@@ -6,10 +6,13 @@ import {
 import {isString, mapValues, some} from "lodash";
 import {hasError} from "../../../store/query/util/hasError.ts";
 
+export type ErroneousValue = string
+
 export type FieldQueryForm = {
   field: string,
   operator: QueryOperator
-  value: QueryValue
+  // TODO: store erroneous value next to error
+  value: QueryValue | ErroneousValue
 }
 
 export type ErrorRecord<T extends object> = Record<keyof T, string>
