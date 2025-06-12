@@ -18,7 +18,9 @@ export function QueryValueInput(props: {
   const form = forms[formIndex]
   const error = errors[formIndex]
   const param = params[formIndex]
-  const inputValue = createInputValue(form, error.value, param, isCustom)
+  const inputValue = createInputValue(
+    form, error.value, param, isCustom, formIndex
+  )
 
   function handleChange(update: string) {
     try {

@@ -1,12 +1,13 @@
 import {ErroneousValue, FieldQueryForm, ParamValue} from "../QueryModel.ts";
-import {toParameter} from "../../../../store/query/util/toParameter.ts";
+import {toParameterName} from "../../../../store/query/util/toParameterName.ts";
 import {findMapping} from "./findMapping.tsx";
 
 export function createInputValue(
   form: FieldQueryForm,
   error: string,
   param: ParamValue,
-  isCustom: boolean
+  isCustom: boolean,
+  formIndex: number
 ): string {
   const operator = form.operator
   const value = form.value
@@ -15,7 +16,7 @@ export function createInputValue(
     if (error) {
       throw new Error('Custom query form should not contain errors')
     } else if (param) {
-      return toParameter(form)
+      return toParameterName(form, formIndex)
     } else {
       return findMapping(operator).toString(value)
     }
