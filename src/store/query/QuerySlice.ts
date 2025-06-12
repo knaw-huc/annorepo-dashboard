@@ -18,6 +18,15 @@ export type SliceCreator<SLICE> = StateCreator<SLICE, [], [], SLICE>
 export type QueryState = {
   forms: FieldQueryForm[]
   errors: FieldQueryErrors[]
+
+  /**
+   * The meaning of form values and parameters in the context of global and custom queries:
+   * - Meaning of params in a global query:
+   *   - nothing
+   * - Meaning of params[i] in a custom query:
+   *   - falsy param: form value at i is a static value
+   *   - truthy param: form value at i is a filled in parameter
+   */
   params: ParamValue[]
 }
 

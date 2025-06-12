@@ -1,73 +1,51 @@
-import {
-  QueryOperator,
-  queryOperatorValueType,
-  QueryValue,
-  queryValueMapping,
-  QueryValuesConfig
-} from "../../../client/ArModel.ts";
 import {InputWithLabel} from "../form/InputWithLabel.tsx";
-import {orThrow} from "../../../util/orThrow.ts";
-import {ErroneousValue} from "./QueryModel.ts";
+import {useStore} from "../../../store/useStore.ts";
+import {findMapping} from "./util/findMapping.tsx";
+import {createInputValue} from "./util/createInputValue.tsx";
 
 export function QueryValueInput(props: {
-  operator: QueryOperator,
-  queryValue: QueryValue
-  onChange: (value: QueryValue, error: string) => void
-  error: string
+  isCustom: boolean
+  formIndex: number,
   disabled?: boolean
 }) {
   const {
-    operator,
-    queryValue,
-    onChange,
-    error,
-    disabled
+    formIndex,
+    isCustom
   } = props;
+
+  const {forms, errors, params, updateForm} = useStore()
+
+  const form = forms[formIndex]
+  const error = errors[formIndex]
+  const param = params[formIndex]
+  const inputValue = createInputValue(form, error.value, param, isCustom)
+
   function handleChange(update: string) {
     try {
-      const queryUpdate = toQueryValue(update, operator);
-      onChange(queryUpdate, '');
+      const queryUpdate = findMapping(form.operator).toValue(update);
+      updateForm({
+        formIndex,
+        form: {...form, value: queryUpdate},
+        error: {...error, value: ''}
+      });
     } catch (e) {
-      onChange(
-        update as ErroneousValue,
-        e instanceof Error ? e.message : "Invalid value"
-      )
+      const errorUpdate = e instanceof Error ? e.message : "Invalid value";
+      updateForm({
+        formIndex,
+        form: {...form, value: update},
+        error: {...error, value: errorUpdate}
+      });
     }
   }
 
+  console.log('QueryValueInput', props, inputValue)
+
   return <InputWithLabel
-    value={error ? queryValue as ErroneousValue : toQueryValueString(queryValue, operator)}
     label="Value"
-    errorLabel={error}
+    value={inputValue}
+    errorLabel={error.value}
     onChange={handleChange}
-    disabled={disabled}
+    disabled={isCustom}
   />
-}
-
-function findMapping(operator: QueryOperator) {
-  const byOperator = (operator: QueryOperator) => {
-    return (config: QueryValuesConfig<QueryValue>) => {
-      return config.type === queryOperatorValueType[operator];
-    };
-  }
-
-  return queryValueMapping.find(byOperator(operator))
-    ?? orThrow(`Could not find mapping by operator ${operator}`);
-}
-
-function toQueryValueString(
-  queryValue: QueryValue,
-  operator: QueryOperator
-): string {
-  const mapping = findMapping(operator);
-  return mapping.toString(queryValue)
-}
-
-function toQueryValue(
-  inputValue: string,
-  operator: QueryOperator
-): QueryValue {
-  const mapping = findMapping(operator);
-  return mapping.toValue(inputValue)
 }
 

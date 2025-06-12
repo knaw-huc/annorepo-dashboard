@@ -2,18 +2,15 @@ import {Dropdown} from "../form/Dropdown.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import noop from "lodash/noop";
-import {FieldQueryErrors, FieldQueryForm, ParamValue} from "./QueryModel.ts";
-import {isString} from "lodash";
+import {useStore} from "../../../store/useStore.ts";
 
 export function CustomSubQueryEditor(props: {
-  form: FieldQueryForm
-  param: ParamValue
-  errors: FieldQueryErrors
-  onChange: (value: FieldQueryForm['value']) => void;
+  formIndex: number
   disabled: boolean
 }) {
-  const {form, param, onChange, errors, disabled} = props;
-
+  const {formIndex, disabled} = props;
+  const {forms} = useStore()
+  const form = forms[formIndex]
   const operatorValue = form.operator.valueOf();
   return <div className="flex-grow">
     <fieldset>
@@ -37,10 +34,8 @@ export function CustomSubQueryEditor(props: {
         </div>
         <div className="flex-auto mr-2">
           <QueryValueInput
-            queryValue={isString(param) ? param : form.value}
-            onChange={onChange}
-            operator={form.operator}
-            error={errors.value}
+            isCustom={true}
+            formIndex={formIndex}
             disabled={disabled}
           />
         </div>

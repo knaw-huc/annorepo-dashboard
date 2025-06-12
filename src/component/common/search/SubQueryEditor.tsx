@@ -62,15 +62,6 @@ export function SubQueryEditor(props: {
     updateForm({formIndex, form: formUpdate, error: errorUpdate});
   }
 
-  function handleChangeValue(
-    value: QueryValue,
-    error: string
-  ) {
-    const formUpdate = {...form, value};
-    const errorUpdate = {...errors[formIndex], value: error};
-    updateForm({formIndex, form: formUpdate, error: errorUpdate})
-  }
-
   function handleRemoveSubQuery() {
     return removeForm(formIndex);
   }
@@ -98,10 +89,8 @@ export function SubQueryEditor(props: {
         </div>
         <div className="flex-auto mr-2">
           <QueryValueInput
-            queryValue={form.value}
-            operator={form.operator}
-            error={errors[formIndex].value}
-            onChange={handleChangeValue}
+            formIndex={formIndex}
+            isCustom={false}
             disabled={disabled}
           />
         </div>

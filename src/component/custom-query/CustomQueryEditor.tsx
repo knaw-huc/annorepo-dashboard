@@ -1,10 +1,9 @@
 import {ArCustomQueryForm, CustomQueryForm} from "../../client/ArModel.ts";
 import {H2} from "../common/H2.tsx";
-import {FieldQueryErrors} from "../common/search/QueryModel.ts";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
 import {useEffect, useState} from "react";
-import {isEmpty, isString, noop} from "lodash";
+import {isEmpty, isString} from "lodash";
 import {toErrorRecord} from "../../store/query/util/toErrorRecord.ts";
 import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {Info} from "../common/icon/Info.tsx";
@@ -70,15 +69,12 @@ export function CustomQueryEditor(props: {
       onChange={handleChangeMetadata}
     />
     <H2>Custom Query</H2>
-    {forms.map((form, i) =>
+    {forms.map((_, i) =>
       <div key={i} className="flex items-center">
         <CustomSubQueryEditor
           key={i}
-          form={form}
-          param={params[i]}
-          errors={{} as FieldQueryErrors}
+          formIndex={i}
           disabled={true}
-          onChange={noop}
         />
         <div className="ml-4">
           <CheckboxWithLabel
