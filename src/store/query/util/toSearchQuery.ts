@@ -50,9 +50,9 @@ function convertToSubquery(
 ): SearchSubquery {
   const formValue = isString(param) ? param : form.value;
   if (form.operator === QueryOperator.simpleQuery) {
-    return {[form.field]: `${formValue}`}
+    return {[form.field]: `${isString(param) ? param : form.value}`}
   } else if (isRangeQueryOperator(form.operator)) {
-    if (!isRangeQueryValue(formValue)) {
+    if (!param && !isRangeQueryValue(formValue)) {
       throw new Error('Expected range but got: ' + JSON.stringify(formValue))
     }
     return {[form.operator]: formValue}
