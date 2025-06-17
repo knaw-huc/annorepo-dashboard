@@ -166,7 +166,7 @@ export type QueryValuesConfig<T extends QueryValue> = {
   defaultValue: T
 }
 
-export const queryValueMapping: QueryValuesConfig<QueryValue>[] = [
+export const queryValueMappers: QueryValuesConfig<QueryValue>[] = [
   {
     type: 'string',
     toValue: toString,

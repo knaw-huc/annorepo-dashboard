@@ -58,7 +58,6 @@ export function CustomQueryDetail(props: {
     }
     const parameters = toCustomQueryParameters(
       forms,
-      customQuery.data.queryTemplate,
       customQuery.data.parameters
     );
     setSubmitted({queryName, containerName, parameters, pageNo})

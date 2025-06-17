@@ -3,57 +3,21 @@ import {
   QueryOperator,
   QueryValue
 } from "../../../client/ArModel.ts";
-import {isString, mapValues, some} from "lodash";
-import {hasError} from "../../../store/query/util/hasError.ts";
 
 export type ErroneousValue = string
 
 export type FieldQueryForm = {
   field: string,
   operator: QueryOperator
-  // TODO: store erroneous value next to error
   value: QueryValue | ErroneousValue
 }
 
 export type ErrorRecord<T extends object> = Record<keyof T, string>
 
-export type FieldQueryFormErrorsByField = {
-  field: string,
-  errors: FieldQueryErrors
-}
-
-export type FieldQueryFormIsParameter = {
-  field: string,
-  isParameter: boolean
-}
-
 export const defaultQuery: FieldQuery = {field: {[QueryOperator.equal]: "value"}}
 
 export type QueryEntry = [string, any]
 
-export function createFieldQueryFormErrors(
-  form: FieldQueryForm
-): FieldQueryFormErrorsByField {
-  return {
-    field: form.field,
-    errors: mapValues(form, () => '')
-  };
-}
-
-export function createFieldQueryFormHasParameter(
-  templateForm: FieldQueryForm,
-  parameters: string[]
-): FieldQueryFormIsParameter {
-  const value = templateForm.value;
-  return {
-    field: templateForm.field,
-    isParameter: isString(value) && parameters.some(p => value.includes(p))
-  };
-}
-
-export function hasErrorByField(forms: FieldQueryFormErrorsByField[]) {
-  return some(forms, errorsByField => hasError(errorsByField.errors));
-}
-
-export type ParamValue = string | false;
+// False when form at index does not contain parameter
+export type FormParamValue = string | false;
 export type FieldQueryErrors = ErrorRecord<FieldQueryForm>;

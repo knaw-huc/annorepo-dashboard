@@ -8,13 +8,13 @@ import {
 import {objectEntries} from "../../../util/objectEntries.ts";
 import {
   FieldQueryForm,
-  ParamValue
+  FormParamValue
 } from "../../../component/common/search/QueryModel.ts";
 import {isString} from "lodash";
 
 export function toSearchQuery(
   forms: FieldQueryForm[],
-  params: ParamValue[]
+  params: FormParamValue[]
 ): SearchQuery {
   const subqueries = forms.map((f,i) => convertToSubquery(f, params[i]));
   return mergeForms(subqueries)
@@ -47,7 +47,7 @@ function mergeForms(
 
 function convertToSubquery(
   form: FieldQueryForm,
-  param?: ParamValue
+  param?: FormParamValue
 ): SearchSubquery {
   const formValue = isString(param) ? param : form.value;
   if (form.operator === QueryOperator.simpleQuery) {

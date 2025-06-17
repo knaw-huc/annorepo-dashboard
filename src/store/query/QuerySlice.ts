@@ -2,7 +2,7 @@ import {StateCreator} from "zustand";
 import {
   FieldQueryErrors,
   FieldQueryForm,
-  ParamValue
+  FormParamValue
 } from "../../component/common/search/QueryModel.ts";
 import {SearchQuery} from "../../client/ArModel.ts";
 import {initWithQuery} from "./util/initWithQuery.ts";
@@ -27,7 +27,7 @@ export type QueryState = {
    *   - falsy param: form value at i is a static value
    *   - truthy param: form value at i is a filled in parameter
    */
-  params: ParamValue[]
+  params: FormParamValue[]
 }
 
 export type QuerySlice = QueryState & {

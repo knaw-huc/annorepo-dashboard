@@ -1,6 +1,6 @@
 import {InputWithLabel} from "../form/InputWithLabel.tsx";
 import {useStore} from "../../../store/useStore.ts";
-import {findMapping} from "./util/findMapping.tsx";
+import {findMapper} from "./util/findMapper.tsx";
 import {createInputValue} from "./util/createInputValue.tsx";
 
 export function QueryValueInput(props: {
@@ -23,7 +23,7 @@ export function QueryValueInput(props: {
 
   function handleChange(update: string) {
     try {
-      const queryUpdate = findMapping(form.operator).toValue(update);
+      const queryUpdate = findMapper(form.operator).toValue(update);
       updateForm({
         formIndex,
         form: {...form, value: queryUpdate},

@@ -3,7 +3,7 @@ import {
   QueryOperator,
   queryOperatorValueType,
   QueryValue,
-  queryValueMapping,
+  queryValueMappers,
   toOperator
 } from "../../../client/ArModel.ts";
 import {Dropdown} from "../form/Dropdown.tsx";
@@ -118,7 +118,7 @@ function alignWithOperator(
   if (currentMapping.type === nextType) {
     next.value = prev.value
   } else {
-    const nextMapping = queryValueMapping.find(t => t.type === nextType)
+    const nextMapping = queryValueMappers.find(t => t.type === nextType)
       ?? orThrow(`No default found for ${nextType}`);
     next.value = nextMapping.defaultValue
   }
@@ -131,6 +131,6 @@ function alignWithOperator(
 function findQueryMappingByValue(
   queryValue: QueryValue
 ) {
-  return queryValueMapping.find(c => c.isType(queryValue))
+  return queryValueMappers.find(c => c.isType(queryValue))
     ?? orThrow(`Unknown type of query value: ${queryValue}`);
 }

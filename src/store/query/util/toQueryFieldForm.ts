@@ -12,30 +12,43 @@ import {
   FieldQueryForm,
   QueryEntry
 } from "../../../component/common/search/QueryModel.ts";
+import {
+  findMapper
+} from "../../../component/common/search/util/findMapper.tsx";
 
 export function toQueryFieldForm(
-  entry: QueryEntry
+  entry: QueryEntry,
+  // Query entry contains param when passing a template:
+  params?: string[]
 ): FieldQueryForm {
   const [queryKey, queryValue] = entry
   let field;
   let value: QueryValue;
   let operator: QueryOperator
 
-  if (isString(queryValue)) {
+  if (isRangeQueryOperator(queryKey)) {
+    // Range function query:
+    field = NO_FIELD
+    operator = queryKey as QueryOperator
+    if (containsParams(queryValue, params)) {
+      value = findMapper(operator).defaultValue
+    } else if (isRangeQueryValue(queryValue)) {
+      value = queryValue
+    } else {
+      throwUnexpected(queryValue, 'range', entry);
+    }
+  } else if (isString(queryValue)) {
     // Simple query:
     field = queryKey
     operator = QueryOperator.simpleQuery
-    value = queryValue
-  } else if (isRangeQueryOperator(queryKey)) {
-    // Function query:
-    if (!isRangeQueryValue(queryValue)) {
-      throwUnexpected(queryValue, 'range', entry);
+    if (containsParams(queryValue, params)) {
+      value = findMapper(QueryOperator.simpleQuery).defaultValue
+    } else {
+      value = queryValue
     }
-    field = NO_FIELD
-    operator = queryKey as QueryOperator
-    value = queryValue
   } else {
     // Operator query:
+    field = queryKey
     if (!isPlainObject(queryValue)) {
       throwUnexpected(queryValue, 'object', entry);
     }
@@ -46,12 +59,14 @@ export function toQueryFieldForm(
     if (!isNonFnOperator(queryObjectKey)) {
       throwUnexpected(queryObjectKey, 'non-function operator', entry);
     }
-    if (!isNumber(queryObjectValue) && !isString(queryObjectValue)) {
-      throwUnexpected(queryObjectKey, 'number or string', entry);
-    }
-    field = queryKey
     operator = queryObjectKey
-    value = queryObjectValue
+    if (containsParams(queryObjectValue, params)) {
+      value = findMapper(operator).defaultValue
+    } else if (isNumber(queryObjectValue) || isString(queryObjectValue)) {
+      value = queryObjectValue
+    } else {
+      throwUnexpected(queryObjectValue, 'number or string', entry);
+    }
   }
 
   return {
@@ -76,9 +91,19 @@ function throwUnexpected(
 }
 
 export function toQueryFieldForms(
-  query: SearchQuery
+  query: SearchQuery,
+  params?: string[]
 ): FieldQueryForm[] {
   return Object.entries(query).map((entry) => {
-    return toQueryFieldForm(entry)
+    return toQueryFieldForm(entry, params)
   })
+}
+
+export function containsParams(
+  queryValue: string,
+  params?: string[]
+): boolean {
+  return params
+      ?.some(param => queryValue.includes(param))
+    || false
 }
