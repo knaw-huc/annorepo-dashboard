@@ -48,7 +48,7 @@ export function QueryValueInput(props: {
     value={inputValue}
     errorLabel={error.value}
     onChange={handleChange}
-    disabled={!isCall}
+    disabled={!isCall || param === false}
   />
 }
 

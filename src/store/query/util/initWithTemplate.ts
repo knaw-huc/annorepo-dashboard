@@ -5,9 +5,9 @@ import {toErrorRecord} from "./toErrorRecord.ts";
 export function initWithTemplate(template: SearchQuery, paramNames: string[]) {
   const forms = toQueryFieldForms(template, paramNames)
   const errors = forms.map(f => toErrorRecord(f))
-  const params = forms.map(f => {
+  const params = Object.values(template).map(templateEntryValue => {
     const foundParamName = paramNames.find(
-      paramName => f.value.toString().includes(paramName)
+      paramName => JSON.stringify(templateEntryValue).includes(paramName)
     );
     return foundParamName
       ? foundParamName
