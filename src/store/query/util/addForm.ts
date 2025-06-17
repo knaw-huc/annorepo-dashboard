@@ -1,11 +1,11 @@
-import {QuerySlice} from "../QuerySlice.ts";
+import {QueryState} from "../QuerySlice.ts";
 import {toSearchQuery} from "./toSearchQuery.ts";
 import {FormToAdd} from "../FormToAdd.ts";
 
 export function addForm(
   toAdd: FormToAdd,
-  prev: QuerySlice
-): QuerySlice {
+  prev: QueryState
+): QueryState {
   const {form, error, param} = toAdd
   const forms = [...prev.forms, form];
   try {

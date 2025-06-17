@@ -1,10 +1,10 @@
-import {QuerySlice} from "../QuerySlice.ts";
+import {QueryState} from "../QuerySlice.ts";
 import {FormUpdate} from "../FormUpdate.ts";
 
 export function updateForm(
   update: FormUpdate,
-  prev: QuerySlice
-) {
+  prev: QueryState
+): QueryState {
   const {formIndex, form, error, param} = update
   return {
     ...prev,

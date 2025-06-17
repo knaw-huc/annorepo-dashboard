@@ -16,6 +16,7 @@ import {Warning} from "../common/Warning.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
 import {defaultQuery} from "../common/search/QueryModel.ts";
 import {useStore} from "../../store/useStore.ts";
+import {hasErrors} from "../../store/query/util/hasErrors.ts";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
@@ -23,7 +24,7 @@ export function NewCustomQuery(props: {
   onClose: () => void
 }) {
 
-  const {initWithQuery} = useStore()
+  const {initWithQuery, errors} = useStore()
 
   const asTemplate = true;
   const query = useSearchQuery(asTemplate)
@@ -57,7 +58,7 @@ export function NewCustomQuery(props: {
         props.onClose();
       },
       onError: async (...args) => {
-        console.log('onError', args)
+        console.warn('onError', args)
       }
     })
   }
@@ -83,6 +84,7 @@ export function NewCustomQuery(props: {
         <Button
           secondary
           onClick={handleSwitchToCustomQuery}
+          disabled={hasErrors(errors)}
         >
           <Store className="mr-2"/>
           Store query

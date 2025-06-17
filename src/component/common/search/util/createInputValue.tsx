@@ -6,24 +6,24 @@ export function createInputValue(
   form: FieldQueryForm,
   error: string,
   param: ParamValue,
-  isCustom: boolean,
-  formIndex: number
+  formIndex: number,
+  isCall: boolean
 ): string {
   const operator = form.operator
   const value = form.value
-  if (isCustom) {
-    // Creating custom query: value is not editable, should not contain error
+  if (isCall) {
+    // Creating a query to call: value is editable, possibly with error
     if (error) {
-      throw new Error('Custom query form should not contain errors')
-    } else if (param) {
-      return toParameterName(form, formIndex)
+      return value as ErroneousValue
     } else {
       return findMapping(operator).toString(value)
     }
   } else {
-    // Creating global query: value is editable, possibly with error
+    // Creating new custom query: value is not editable, should not contain error
     if (error) {
-      return value as ErroneousValue
+      throw new Error('Custom query form should not contain errors')
+    } else if (param) {
+      return toParameterName(form, formIndex)
     } else {
       return findMapping(operator).toString(value)
     }

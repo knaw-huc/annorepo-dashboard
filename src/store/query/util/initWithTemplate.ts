@@ -7,7 +7,7 @@ export function initWithTemplate(query: SearchQuery, paramNames: string[]) {
   const errors = forms.map(f => toErrorRecord(f))
   const params = forms.map(f => {
     const foundParamName = paramNames.find(
-      p => p === f.value.toString()
+      paramName => f.value.toString().includes(paramName)
     );
     return foundParamName
       ? foundParamName

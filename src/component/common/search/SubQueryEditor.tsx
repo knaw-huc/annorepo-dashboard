@@ -90,8 +90,7 @@ export function SubQueryEditor(props: {
         <div className="flex-auto mr-2">
           <QueryValueInput
             formIndex={formIndex}
-            isCustom={false}
-            disabled={disabled}
+            isCall={true}
           />
         </div>
         {!disabled && <div className="flex-none">

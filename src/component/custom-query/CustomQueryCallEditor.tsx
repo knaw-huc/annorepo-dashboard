@@ -4,13 +4,13 @@ import {useStore} from "../../store/useStore.ts";
 
 export function CustomQueryCallEditor() {
 
-  const {forms, params} = useStore()
+  const {forms} = useStore()
 
   return <>
     {forms.map((_, i) => <CustomSubQueryEditor
       key={i}
       formIndex={i}
-      disabled={params[i] === false}
+      isCall={true}
     />)}
   </>
 }

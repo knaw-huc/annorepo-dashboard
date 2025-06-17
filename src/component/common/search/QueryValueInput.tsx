@@ -4,13 +4,15 @@ import {findMapping} from "./util/findMapping.tsx";
 import {createInputValue} from "./util/createInputValue.tsx";
 
 export function QueryValueInput(props: {
-  isCustom: boolean
   formIndex: number,
-  disabled?: boolean
+  /**
+   * Creating a query to call? Versus creating a new custom query
+   */
+  isCall: boolean
 }) {
   const {
     formIndex,
-    isCustom
+    isCall
   } = props;
 
   const {forms, errors, params, updateForm} = useStore()
@@ -18,9 +20,6 @@ export function QueryValueInput(props: {
   const form = forms[formIndex]
   const error = errors[formIndex]
   const param = params[formIndex]
-  const inputValue = createInputValue(
-    form, error.value, param, isCustom, formIndex
-  )
 
   function handleChange(update: string) {
     try {
@@ -31,23 +30,25 @@ export function QueryValueInput(props: {
         error: {...error, value: ''}
       });
     } catch (e) {
-      const errorUpdate = e instanceof Error ? e.message : "Invalid value";
+      const errorMessage = e instanceof Error ? e.message : "Invalid value";
       updateForm({
         formIndex,
         form: {...form, value: update},
-        error: {...error, value: errorUpdate}
+        error: {...error, value: errorMessage}
       });
     }
   }
 
-  console.log('QueryValueInput', props, inputValue)
+  const inputValue = createInputValue(
+    form, error.value, param, formIndex, isCall
+  )
 
   return <InputWithLabel
     label="Value"
     value={inputValue}
     errorLabel={error.value}
     onChange={handleChange}
-    disabled={isCustom}
+    disabled={!isCall}
   />
 }
 

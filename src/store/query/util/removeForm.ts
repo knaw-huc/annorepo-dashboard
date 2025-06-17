@@ -1,9 +1,9 @@
-import {QuerySlice} from "../QuerySlice.ts";
+import {QueryState} from "../QuerySlice.ts";
 
 export function removeForm(
   toRemove: number,
-  prev: QuerySlice
-): QuerySlice {
+  prev: QueryState
+): QueryState {
   return {
     ...prev,
     forms: prev.forms.splice(toRemove, 1),

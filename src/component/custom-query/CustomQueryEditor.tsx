@@ -40,7 +40,6 @@ export function CustomQueryEditor(props: {
     const update = isParam
       ? toParameterName(forms[formIndex], formIndex)
       : false
-    console.log('updateParameters', update)
     updateForm({formIndex, param: update})
   }
 
@@ -74,7 +73,7 @@ export function CustomQueryEditor(props: {
         <CustomSubQueryEditor
           key={i}
           formIndex={i}
-          disabled={true}
+          isCall={false}
         />
         <div className="ml-4">
           <CheckboxWithLabel

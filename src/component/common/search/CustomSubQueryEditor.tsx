@@ -6,12 +6,13 @@ import {useStore} from "../../../store/useStore.ts";
 
 export function CustomSubQueryEditor(props: {
   formIndex: number
-  disabled: boolean
+  isCall: boolean
 }) {
-  const {formIndex, disabled} = props;
+  const {formIndex, isCall} = props;
   const {forms} = useStore()
   const form = forms[formIndex]
   const operatorValue = form.operator.valueOf();
+
   return <div className="flex-grow">
     <fieldset>
       <div className="flex mb-3 mt-2">
@@ -34,9 +35,8 @@ export function CustomSubQueryEditor(props: {
         </div>
         <div className="flex-auto mr-2">
           <QueryValueInput
-            isCustom={true}
             formIndex={formIndex}
-            disabled={disabled}
+            isCall={isCall}
           />
         </div>
       </div>

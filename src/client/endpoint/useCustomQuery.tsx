@@ -30,16 +30,16 @@ export function getCustomQuery(
 }
 
 // --
-
-export function useContainerCustomQueryCall(
-  name: string,
+export type CustomQueryCallArgs = {
+  queryName: string,
   containerName: string,
-  queryParameters: Record<string, string>,
-  pageNo: number = 0,
-): QR<ArAnnotationPage> {
+  parameters: Record<string, string>,
+  pageNo: number,
+}
+export function useCustomQueryCall(props: CustomQueryCallArgs): QR<ArAnnotationPage> {
   const client = useOpenApiClient();
   return useQuery(
-    getContainerCustomQueryCall(client, name, containerName, queryParameters, pageNo)
+    getContainerCustomQueryCall(client, props.queryName, props.containerName, props.parameters, props.pageNo)
   )
 }
 

@@ -6,5 +6,5 @@ export function toParameterName(query: FieldQueryForm, formIndex: number): strin
   const cleanedKey = key
     .replaceAll(/[.]/g, '-')
     .replaceAll(/[:]/g, '')
-  return `<${formIndex+1}${cleanedKey}>`
+  return `<${formIndex+1}-${cleanedKey}>`
 }

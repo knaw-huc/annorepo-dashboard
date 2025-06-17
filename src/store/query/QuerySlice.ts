@@ -39,28 +39,40 @@ export type QuerySlice = QueryState & {
   initWithTemplate: (query: SearchQuery, params: string[]) => void
 }
 
-export const createQuerySlice: SliceCreator<QuerySlice> = (set) => ({
-  forms: [],
-  errors: [],
-  params: [],
+export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {
+  return ({
+    forms: [],
+    errors: [],
+    params: [],
 
-  setState: (update: QueryState) => set(() =>
-    ({...update})
-  ),
-  addForm: (update) => set((prev) =>
-    addForm(update, prev)
-  ),
-  removeForm: (toRemove) => set((prev) =>
-    removeForm(toRemove, prev)
-  ),
-  updateForm: (update) => set((prev) =>
-    updateForm(update, prev)
-  ),
-  initWithQuery: (query) => set(() =>
-    initWithQuery(query)
-  ),
-  initWithTemplate: (query, params) => set(() =>
-    initWithTemplate(query, params)
-  )
-});
+    setState: (update: QueryState) => set(() =>
+      ({...update})
+    ),
+    addForm: (update) => set((prev) =>
+      addForm(update, prev)
+    ),
+    removeForm: (toRemove) => set((prev) =>
+      removeForm(toRemove, prev)
+    ),
+    updateForm: (update) => set((prev) =>
+      updateForm(update, prev)
+    ),
+    initWithQuery: (query) => set(() =>
+      initWithQuery(query)
+    ),
+    initWithTemplate: (query, params) => set(() =>
+      initWithTemplate(query, params)
+    )
+  });
+
+  // @ts-ignore debug util
+  function logSet(mutator: (state: QueryState) => QueryState) {
+    set((prev) => {
+      const next = mutator(prev);
+      console.info('set:', {prev, next})
+      return next;
+    });
+  }
+
+};
 

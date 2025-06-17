@@ -1,11 +1,16 @@
 import {FieldQueryForm} from "../common/search/QueryModel.ts";
 import {isString} from "lodash";
+import {toQueryFieldForms} from "../../store/query/util/toQueryFieldForm.ts";
+type ParamName = string
+type ParamValue = string
+export type CustomQueryParams = Record<ParamName, ParamValue>;
 
 export function toCustomQueryParameters(
   forms: FieldQueryForm[],
-  templateForms: FieldQueryForm[],
+  template: string,
   parameters: string[],
-): Record<string, string> {
+): CustomQueryParams {
+  const templateForms = toQueryFieldForms(JSON.parse(template))
   const result: Record<string, string> = {}
   parameters.forEach(parameter => {
     const templateForm = templateForms.find(templateForm => isString(templateForm.value) && templateForm.value.includes(parameter))
