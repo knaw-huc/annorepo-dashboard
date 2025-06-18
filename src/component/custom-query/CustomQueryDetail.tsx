@@ -27,7 +27,7 @@ export function CustomQueryDetail(props: {
 }) {
   const {name: queryName} = props;
 
-  const {forms, errors, initWithTemplate} = useStore()
+  const {forms, params, errors, initWithTemplate} = useStore()
 
   const [containerName, setContainerName] = useState('')
   const [pageNo, setPageNo] = useState(0)
@@ -58,7 +58,7 @@ export function CustomQueryDetail(props: {
     }
     const parameters = toCustomQueryParameters(
       forms,
-      customQuery.data.parameters
+      params
     );
     setSubmitted({queryName, containerName, parameters, pageNo})
   }
