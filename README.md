@@ -2,6 +2,8 @@
 
 Dashboard for [AnnoRepo](https://github.com/knaw-huc/annorepo/)
 
+_Note: Work in Progress_
+
 ## Development
 
 
