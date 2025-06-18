@@ -7,9 +7,9 @@ describe('convertToQueryFieldForm', async () => {
     const defaultQueryEntry = Object.entries(defaultQuery)[0];
     const result = toQueryFieldForm(defaultQueryEntry)
     expect(result).toEqual({
-      field: "type",
+      field: "field",
       operator: ":=",
-      value: "Annotation",
+      value: "value",
     })
   });
 });
