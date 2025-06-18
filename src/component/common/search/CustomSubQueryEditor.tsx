@@ -37,6 +37,7 @@ export function CustomSubQueryEditor(props: {
           <QueryValueInput
             formIndex={formIndex}
             isCall={isCall}
+            isCustom={true}
           />
         </div>
       </div>

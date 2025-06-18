@@ -9,10 +9,12 @@ export function QueryValueInput(props: {
    * Creating a query to call? Versus creating a new custom query
    */
   isCall: boolean
+  isCustom: boolean
 }) {
   const {
     formIndex,
-    isCall
+    isCall,
+    isCustom,
   } = props;
 
   const {forms, errors, params, updateForm} = useStore()
@@ -48,7 +50,8 @@ export function QueryValueInput(props: {
     value={inputValue}
     errorLabel={error.value}
     onChange={handleChange}
-    disabled={!isCall || param === false}
+    // Wanneer zijn params valid?
+    disabled={!isCall || (isCustom && param === false)}
   />
 }
 
