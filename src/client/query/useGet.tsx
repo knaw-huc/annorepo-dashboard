@@ -11,7 +11,7 @@ import {Params, Paths} from "../OpenApiClient.tsx";
 import {paths} from "../../openapi.ts";
 import {PathsWithMethod} from "openapi-typescript-helpers";
 
-type GetParams<P extends Paths<"get">> = Params<"get", P> & {
+export type GetParams<P extends Paths<"get">> = Params<"get", P> & {
   query?: Optional<UseQueryOptions, 'queryKey'>
 };
 
@@ -59,3 +59,4 @@ export function invalidateBy(query: Query, key: string) {
 }
 
 export type GetPath = PathsWithMethod<paths, "get">
+export type PostPath = PathsWithMethod<paths, "post">
