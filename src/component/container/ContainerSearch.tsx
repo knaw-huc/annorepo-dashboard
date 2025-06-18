@@ -1,10 +1,8 @@
 import {Loading} from "../common/Loading.tsx";
-import {useContainerSearch} from "../../client/endpoint/useContainerSearch.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
 import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
-import {ErrorMessage} from "../common/ErrorMessage.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {QueryEditor} from "../common/search/QueryEditor.tsx";
@@ -13,6 +11,7 @@ import {H1} from "../common/H1.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
 import {useStore} from "../../store/useStore.ts";
 import {defaultQuery} from "../common/search/QueryModel.ts";
+import {useContainerSearch} from "../../client/endpoint/useContainerSearch.tsx";
 
 export type ContainerSearchProps = {
   name: string,
@@ -26,17 +25,20 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   const container = useContainer(name)
   const {initWithQuery} = useStore()
+  const [isInit, setInit] = useState(false)
   const query = useSearchQuery()
 
   useEffect(() => {
-    if(!query) {
-      initWithQuery(defaultQuery)
-      setSubmittedQuery(defaultQuery)
+    if(isInit) {
+      return
     }
-  }, [query]);
+    setInit(true)
+    initWithQuery(defaultQuery)
+    setSubmittedQuery(defaultQuery)
+  }, [isInit]);
 
   const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
-  const {search, page} = useContainerSearch(name, submittedQuery, pageNo);
+  const {page} = useContainerSearch(name, submittedQuery, pageNo);
   const {data: containerFields} = useContainerFields(name);
 
   useEffect(() => {
@@ -46,10 +48,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
     }
   }, [container.data?.first.id]);
 
-  const error = search.error || page.error
-  if (error) {
-    return <ErrorMessage error={error}/>;
-  }
   if (!container.isSuccess || !page.isSuccess) {
     return <StatusMessage requests={[container, page]}/>;
   }
@@ -64,7 +62,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     <H1>Search annotations</H1>
     <QueryEditor
       fieldNames={fieldNames}
-      searchError={search.error}
+      searchError={page.error}
       onSubmit={() => setSubmittedQuery(query)}
     />
     {page
