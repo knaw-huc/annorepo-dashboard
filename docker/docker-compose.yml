@@ -5,7 +5,7 @@ services:
       - annorepo_server
     ports:
       - 1234:80
-    image: registry.diginfra.net/tt/annorepo-dashboard:latest
+    image: registry.diginfra.net/tt/annorepo-dashboard:0.1.1
     networks:
       - annorepo_network
     restart: unless-stopped

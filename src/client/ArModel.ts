@@ -5,7 +5,7 @@ export type ArAboutData = {
   version: string,
   startedAt: string,
   baseURI: string,
-  withAuthentication: string,
+  withAuthentication: boolean,
   sourceCode: string,
   mongoVersion: string
 }
