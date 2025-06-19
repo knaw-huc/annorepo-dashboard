@@ -133,4 +133,7 @@ const defaultForm: AnnotationPost = {
   target: "http://www.example.com/world.html",
 }
 
-type AnnotationPost = Omit<ArAnnotation, 'body' | 'id'> & { body: string };
+type AnnotationPost = Omit<ArAnnotation, 'id' | 'body' | 'target'> & {
+  body: string
+  target: string
+};
