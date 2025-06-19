@@ -32,7 +32,7 @@ export function ContainerCard(props: PropsWithChildren<{
     footer={
       <div className="text-right">
         <A href={toName(container.id)}>
-          Source
+          Raw
           <External className="ml-1"/>
         </A>
       </div>

@@ -45,7 +45,7 @@ export type ArAnnotation<T extends object = object> = {
 
   type: string,
   body: T,
-  target: string,
+  target: string | object,
 }
 
 export type ArContainerFields = Record<string, number>
