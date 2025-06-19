@@ -1,17 +1,16 @@
 import {H2} from "../common/H2.tsx";
 import {Hint} from "../common/Hint.tsx";
-import {ListGroup, ListItem} from "../common/ListGroup.tsx";
-import {Badge} from "../common/Badge.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {Loading} from "../common/Loading.tsx";
 import {isEmpty} from "lodash";
+import {BadgeWithCount} from "./BadgeWithCount.tsx";
 
 export function ContainerAnnotationFields(props: { name: string }) {
   const {name} = props;
   const {data: containerFields} = useContainerFields(name);
 
   if (!containerFields) {
-    return <Loading />;
+    return <Loading/>;
   }
 
   if (isEmpty(containerFields)) {
@@ -22,17 +21,10 @@ export function ContainerAnnotationFields(props: { name: string }) {
 
   return <div className="mt-5">
     <H2>Annotation fields <Hint>count</Hint></H2>
-    <ListGroup>
-      {fieldEntries.sort(countDesc).map(([field, count], i) => {
-        return <ListItem
-          key={field}
-          isLast={i >= fieldEntries.length - 1}
-        >
-          {field} <span
-          className="inline-block float-right"><Badge className="ml-2">{count}</Badge></span>
-        </ListItem>
-      })}
-    </ListGroup>
+
+    {fieldEntries.sort(countDesc).map(([field, count], i) =>
+      <BadgeWithCount key={i} count={count}>{field}</BadgeWithCount>
+    )}
   </div>
 }
 
@@ -48,3 +40,4 @@ function countDesc(
     return 0;
   }
 }
+
