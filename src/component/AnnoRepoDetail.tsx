@@ -32,6 +32,7 @@ export function AnnoRepoDetail() {
             </p>
           </Card>
           <Card
+            className="col-span-2"
             header={<p className="text-sm text-slate-500">Running at</p>}
           >
             <A href={about.baseURI} className="font-bold">
