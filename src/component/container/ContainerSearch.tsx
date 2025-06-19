@@ -38,7 +38,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }, [isInit]);
 
   const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
-  const {page} = useContainerSearch(name, submittedQuery, pageNo);
+  const {search, page} = useContainerSearch(name, submittedQuery, pageNo);
   const {data: containerFields} = useContainerFields(name);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     <H1>Search annotations</H1>
     <QueryEditor
       fieldNames={fieldNames}
-      searchError={page.error}
+      searchError={search.error}
       onSubmit={() => setSubmittedQuery(query)}
     />
     {page
