@@ -41,6 +41,7 @@ export function AnnotationCard(props: {
       </>}
   >
     <H6
+      className="cursor-pointer select-none"
       onClick={() => setBodyOpen(prev => !prev)}
     >
       Body {isBodyOpen ? <Down/> : <Next/>}
@@ -51,6 +52,7 @@ export function AnnotationCard(props: {
     />}
     <Hr size="sm"/>
     <H6
+      className="cursor-pointer select-none"
       onClick={() => setTargetOpen(prev => !prev)}
     >
       Target {isTargetOpen ? <Down/> : <Next/>}
