@@ -12,6 +12,10 @@ import {H2} from "../common/H2.tsx";
 import {Add} from "../common/icon/Add.tsx";
 import {Search} from "../common/icon/Search.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
+import {toName} from "../../util/toName.ts";
+import {A} from "../common/A.tsx";
+import {External} from "../common/icon/External.tsx";
+import {Pipe} from "../common/Pipe.tsx";
 
 export type ContainerDetailProps = {
   name: string,
@@ -44,9 +48,14 @@ export function ContainerDetail(props: ContainerDetailProps) {
 
   return <div>
     <H1>{container.data.label} <Hint>container</Hint></H1>
-    <ul className="mt-5">
-      <li>Annotation count: <Badge>{container.data.total}</Badge></li>
-    </ul>
+    <p className="mt-5 space-y-3">
+      <span>Annotations: <Badge>{container.data.total}</Badge></span>
+      <Pipe/>
+      <span>Name: <Badge>{toName(container.data.id)}</Badge></span>
+      <Pipe/>
+      <span><A href={container.data.id}>Source
+        <External className="ml-1"/></A></span>
+    </p>
     <ContainerAnnotationFields name={props.name}/>
     <H2>Annotations</H2>
 

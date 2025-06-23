@@ -31,10 +31,7 @@ export function ContainerCard(props: PropsWithChildren<{
     }
     footer={
       <div className="text-right">
-        <A href={toName(container.id)}>
-          Raw
-          <External className="ml-1"/>
-        </A>
+        <A href={toName(container.id)}>Source<External className="ml-1"/></A>
       </div>
     }
   >

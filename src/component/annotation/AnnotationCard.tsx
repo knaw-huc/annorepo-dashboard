@@ -28,7 +28,7 @@ export function AnnotationCard(props: {
     </H5>}
     footer={
       <>
-        <A href={annotation.id}>Raw <External className="ml-1"/></A>
+        <A href={annotation.id}>Source <External className="ml-1"/></A>
         {isUrl(annotation.target) &&
           <>
             <Pipe/>
