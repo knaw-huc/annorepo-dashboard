@@ -8,8 +8,9 @@ export function QueryValueInput(props: {
   /**
    * Creating a query to call? Versus creating a new custom query
    */
-  isCall: boolean
-  isCustom: boolean
+  isCall: boolean,
+  isCustom: boolean,
+  suggestions: string[]
 }) {
   const {
     formIndex,
@@ -22,6 +23,9 @@ export function QueryValueInput(props: {
   const form = forms[formIndex]
   const error = errors[formIndex]
   const param = params[formIndex]
+
+  // TODO use suggestions:
+  console.log('QueryValueInput', props.suggestions)
 
   function handleChange(update: string) {
     try {
@@ -50,7 +54,6 @@ export function QueryValueInput(props: {
     value={inputValue}
     errorLabel={error.value}
     onChange={handleChange}
-    // Wanneer zijn params valid?
     disabled={!isCall || (isCustom && param === false)}
   />
 }

@@ -19,7 +19,6 @@ export function GlobalQueryEditor(props: {
   const myContainers = useGet('/my/containers') as QR<ArMyContainers>
   const containerNames = getContainerNames(myContainers.data)
   const fields = useContainerFields(containerNames[0] ?? '')
-  const fieldNames = fields.data ? Object.keys(fields.data) : [];
 
   const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
   const [isInit, setInit] = useState<boolean>()
@@ -38,13 +37,13 @@ export function GlobalQueryEditor(props: {
     setPageNo(toPageNo(update))
   }
 
-  if (!page.isSuccess) {
-    return <StatusMessage request={page}/>;
+  if (!page.isSuccess || !fields.isSuccess) {
+    return <StatusMessage requests={[page, fields]}/>;
   }
 
   return <>
     <QueryEditor
-      fieldNames={fieldNames}
+      containerName={containerNames[0]}
       searchError={page.error}
       onSubmit={() => setSubmittedQuery(query)}
       moreButtons={props.moreButtons}

@@ -8,14 +8,21 @@ import {SubQueryEditor} from "./SubQueryEditor.tsx";
 import {useStore} from "../../../store/useStore.ts";
 import {hasErrors} from "../../../store/query/util/hasErrors.ts";
 import {mapValues} from "lodash";
+import {
+  useContainerFields
+} from "../../../client/endpoint/useContainerFields.tsx";
 
 export function QueryEditor(props: {
-  fieldNames: string[],
+  containerName: string,
   onSubmit: () => void
   searchError?: Error | null,
   moreButtons?: ReactNode
 }) {
-  const {searchError} = props;
+  const {searchError, containerName} = props;
+
+  const {data: containerFields} = useContainerFields(containerName);
+  const fieldNames = containerFields ? Object.keys(containerFields) : [];
+
   const {
     forms,
     errors,
@@ -41,8 +48,9 @@ export function QueryEditor(props: {
   return <div>
     {forms.map((_, i) => {
       return <SubQueryEditor
+        containerName={containerName}
         key={i}
-        fieldNames={props.fieldNames}
+        fieldNames={fieldNames}
         formIndex={i}
       />;
     })}

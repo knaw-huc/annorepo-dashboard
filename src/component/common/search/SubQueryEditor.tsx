@@ -1,5 +1,6 @@
 import {
-  isRangeQueryOperator, NO_FIELD,
+  isRangeQueryOperator,
+  NO_FIELD,
   QueryOperator,
   queryOperatorValueType,
   QueryValue,
@@ -15,13 +16,19 @@ import {Button} from "../Button.tsx";
 import {Remove} from "../icon/Remove.tsx";
 import {useStore} from "../../../store/useStore.ts";
 import {FieldQueryForm} from "./QueryModel.ts";
+import {
+  useContainerDistinctValues
+} from "../../../client/endpoint/useContainerDistinctValues.tsx";
+import {useDebounce} from "../../useDebounce.tsx";
+import {isNumber, isString} from "lodash";
 
 export function SubQueryEditor(props: {
   fieldNames: string[],
   formIndex: number,
-  disabled?: boolean
+  disabled?: boolean,
+  containerName?: string,
 }) {
-  const {fieldNames, disabled, formIndex} = props;
+  const {fieldNames, disabled, formIndex, containerName} = props;
 
   const {
     forms,
@@ -29,11 +36,27 @@ export function SubQueryEditor(props: {
     removeForm,
     updateForm,
   } = useStore();
+
   const form = forms[formIndex]
 
   const suggestions = form.field
     ? fieldNames.filter(name => name.includes(form.field))
     : fieldNames
+
+  const operatorOptions = Object
+    .values(QueryOperator)
+    .filter(o => o !== QueryOperator.simpleQuery)
+    .map(v => ({label: v, value: v}))
+
+  const field = forms[formIndex].field
+  const fieldDebounced = useDebounce(field)
+  const isExistingField = fieldNames.includes(fieldDebounced)
+  const fieldToSearchFor = isExistingField ? fieldDebounced : '';
+  const distinctValues = useContainerDistinctValues(containerName ?? '', fieldToSearchFor)
+  const distinctInputValues = distinctValues.data
+    ?.filter(v => isString(v) || isNumber(v))
+    .map(v => `${v}`)
+    ?? []
 
   function handleSelectOperator(update: SelectOption) {
     const operatorUpdate = toOperator(update.value)
@@ -45,11 +68,6 @@ export function SubQueryEditor(props: {
       form: formUpdate,
     });
   }
-
-  const operatorOptions = Object
-    .values(QueryOperator)
-    .filter(o => o !== QueryOperator.simpleQuery)
-    .map(v => ({label: v, value: v}))
 
   function handleChangeField(field: string) {
     const formUpdate = {...form, field};
@@ -92,6 +110,7 @@ export function SubQueryEditor(props: {
             formIndex={formIndex}
             isCall={true}
             isCustom={false}
+            suggestions={distinctInputValues}
           />
         </div>
         {!disabled && <div className="flex-none">

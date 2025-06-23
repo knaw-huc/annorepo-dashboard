@@ -4,7 +4,6 @@ import {useEffect, useState} from "react";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
-import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {SearchQuery} from "../../client/ArModel.ts";
 import {H1} from "../common/H1.tsx";
@@ -39,9 +38,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
   const {search, page} = useContainerSearch(name, submittedQuery, pageNo);
-  const {data: containerFields} = useContainerFields(name);
-  const fieldNames = containerFields ? Object.keys(containerFields) : [];
-  // TODO: valueSuggestions
 
   useEffect(() => {
     const containerPageId = container.data?.first.id;
@@ -62,7 +58,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   return <>
     <H1>Search annotations</H1>
     <QueryEditor
-      fieldNames={fieldNames}
+      containerName={name}
       searchError={search.error}
       onSubmit={() => setSubmittedQuery(query)}
     />
