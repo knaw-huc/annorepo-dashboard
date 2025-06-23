@@ -25,7 +25,7 @@ export function CustomQueryDetail(props: {
   name: string
   onClose: () => void
 }) {
-  const {name: queryName} = props;
+  const {name: customQueryName} = props;
 
   const {forms, params, errors, initWithTemplate} = useStore()
 
@@ -34,10 +34,10 @@ export function CustomQueryDetail(props: {
 
   const myContainers = useGet('/my/containers') as QR<ArMyContainers>
   const containerNames = getContainerNames(myContainers.data)
-  const customQuery = useCustomQuery(queryName)
+  const customQuery = useCustomQuery(customQueryName)
 
   const [submitted, setSubmitted] = useState<CustomQueryCallArgs>(
-    {queryName, containerName, parameters: {}, pageNo}
+    {queryName: customQueryName, containerName, parameters: {}, pageNo}
   )
   const customQueryCall = useCustomQueryCall(submitted)
 
@@ -60,7 +60,7 @@ export function CustomQueryDetail(props: {
       forms,
       params
     );
-    setSubmitted({queryName, containerName, parameters, pageNo})
+    setSubmitted({queryName: customQueryName, containerName, parameters, pageNo})
   }
 
   const handleChangePage = (update: string) => {
@@ -71,17 +71,22 @@ export function CustomQueryDetail(props: {
     return <StatusMessage request={customQuery}/>
   }
 
+  let createdBy = customQuery.data.createdBy;
   return <>
-    <H1>{queryName} <Hint>Custom query</Hint></H1>
-    <p className="mb-2">{customQuery.data.description}</p>
-    <p className="text-sm mb-5">
+    <H1>{customQueryName} <Hint>Custom query</Hint></H1>
+    <p className="text-sm mb-3">
       {customQuery.data.public ? 'Public' : 'Private'}
       <Pipe/>
-      <span>label: {customQuery.data.label}</span>
+      <span>Label: {customQuery.data.label}</span>
+      {createdBy && <>
+        <Pipe/>
+        <span>Creator: {createdBy}</span>
+      </>}
       <Pipe/>
-      <span>creator: {customQuery.data.createdBy}</span>
-      <Pipe/>
-      <span>created at: {new Date(customQuery.data.created).toLocaleString()}</span>
+      <span>Created at {new Date(customQuery.data.created).toLocaleString()}</span>
+    </p>
+    <p className="mb-5">
+      {customQuery.data.description}
     </p>
     <CustomQueryCallEditor/>
     <div className="mb-5">

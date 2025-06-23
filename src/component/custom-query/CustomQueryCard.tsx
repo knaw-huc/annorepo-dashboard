@@ -29,16 +29,16 @@ export function CustomQueryCard(props: PropsWithChildren<{
         to="/custom-query/$customQueryName"
         params={{customQueryName}}
       ><H5>
-        {customQuery.name}
+        {customQueryName}
       </H5></Link>
     }
   >
     <div>
       <p className="mb-2">{customQuery.description}</p>
-      <p>Label: {customQuery.label}</p>
+      <p className="text-sm">Label: {customQuery.label}</p>
       {customQuery.createdBy
-        ? <p>Created by <span className="font-bold">{customQuery.createdBy}</span> @ {createdDateTime} </p>
-        : <p>Created at {createdDateTime} </p>}
+        ? <p className="text-sm">Created by {customQuery.createdBy} at {createdDateTime} </p>
+        : <p className="text-sm">Created at {createdDateTime} </p>}
     </div>
   </Card>
 }
