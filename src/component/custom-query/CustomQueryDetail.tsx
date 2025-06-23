@@ -105,7 +105,7 @@ export function CustomQueryDetail(props: {
         Search<Next className="ml-2"/>
       </Button>
     </div>
-    <div className="max-w-[100vw] font-mono whitespace-pre-wrap">
+    <div className="max-w-[100vw] whitespace-pre-wrap">
       {!!customQueryCall.data && <AnnotationPage
         pageNo={pageNo}
         page={customQueryCall.data}
