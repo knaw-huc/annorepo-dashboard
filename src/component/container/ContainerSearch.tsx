@@ -40,6 +40,8 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
   const {search, page} = useContainerSearch(name, submittedQuery, pageNo);
   const {data: containerFields} = useContainerFields(name);
+  const fieldNames = containerFields ? Object.keys(containerFields) : [];
+  // TODO: valueSuggestions
 
   useEffect(() => {
     const containerPageId = container.data?.first.id;
@@ -52,7 +54,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
     return <StatusMessage requests={[container, page]}/>;
   }
 
-  const fieldNames = containerFields ? Object.keys(containerFields) : [];
 
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update))
