@@ -22,6 +22,7 @@ export function CustomQueryCard(props: PropsWithChildren<{
   }
 
   const customQuery = customQueryRequest.data;
+  const createdDateTime = new Date(customQuery.created).toLocaleString();
   return <Card
     header={
       <Link
@@ -35,7 +36,9 @@ export function CustomQueryCard(props: PropsWithChildren<{
     <div>
       <p className="mb-2">{customQuery.description}</p>
       <p>Label: {customQuery.label}</p>
-      <p>Created by <span className="font-bold">{customQuery.createdBy}</span> @ {customQuery.created} </p>
+      {customQuery.createdBy
+        ? <p>Created by <span className="font-bold">{customQuery.createdBy}</span> @ {createdDateTime} </p>
+        : <p>Created at {createdDateTime} </p>}
     </div>
   </Card>
 }
