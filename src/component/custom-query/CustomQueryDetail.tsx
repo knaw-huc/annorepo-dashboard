@@ -88,7 +88,9 @@ export function CustomQueryDetail(props: {
     <p className="mb-5">
       {customQuery.data.description}
     </p>
-    <CustomQueryCallEditor/>
+    <CustomQueryCallEditor
+      containerName={containerName}
+    />
     <div className="mb-5">
       <Dropdown
         placeholder="Select container"

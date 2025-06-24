@@ -3,15 +3,25 @@ import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import noop from "lodash/noop";
 import {useStore} from "../../../store/useStore.ts";
+import {
+  useValueSuggestions
+} from "./useValueSuggestions.tsx";
 
 export function CustomSubQueryEditor(props: {
   formIndex: number
   isCall: boolean
+  containerName?: string
 }) {
-  const {formIndex, isCall} = props;
+  const {formIndex, isCall, containerName} = props;
   const {forms} = useStore()
   const form = forms[formIndex]
   const operatorValue = form.operator.valueOf();
+
+  const valueSuggestions = useValueSuggestions({
+    containerName: containerName,
+    field: form.field,
+    value: form.value,
+  })
 
   return <div className="flex-grow">
     <fieldset>
@@ -36,7 +46,7 @@ export function CustomSubQueryEditor(props: {
         <div className="flex-auto mr-2">
           <QueryValueInput
             // TODO: use suggestions:
-            suggestions={[]}
+            suggestions={valueSuggestions}
             formIndex={formIndex}
             isCall={isCall}
             isCustom={true}

@@ -17,10 +17,8 @@ import {Remove} from "../icon/Remove.tsx";
 import {useStore} from "../../../store/useStore.ts";
 import {FieldQueryForm} from "./QueryModel.ts";
 import {
-  useContainerDistinctValues
-} from "../../../client/endpoint/useContainerDistinctValues.tsx";
-import {useDebounce} from "../../useDebounce.tsx";
-import {isNumber, isString} from "lodash";
+  useValueSuggestions
+} from "./useValueSuggestions.tsx";
 
 export function SubQueryEditor(props: {
   fieldNames: string[],
@@ -37,9 +35,9 @@ export function SubQueryEditor(props: {
     updateForm,
   } = useStore();
 
-  const form = forms[formIndex]
+  const form = forms[formIndex];
 
-  const filteredInputSuggestions = form.field
+  const fieldSuggestions = form.field
     ? fieldNames.filter(name => name.includes(form.field))
     : fieldNames
 
@@ -48,18 +46,11 @@ export function SubQueryEditor(props: {
     .filter(o => o !== QueryOperator.simpleQuery)
     .map(v => ({label: v, value: v}))
 
-  const field = forms[formIndex].field
-  const fieldDebounced = useDebounce(field)
-  const isExistingField = fieldNames.includes(fieldDebounced)
-  const fieldToSearchFor = isExistingField ? fieldDebounced : '';
-  const distinctValues = useContainerDistinctValues(containerName ?? '', fieldToSearchFor)
-  const distinctValueStrings = distinctValues.data
-    ?.filter(v => isString(v) || isNumber(v))
-    .map(v => `${v}`)
-    ?? []
-  const filteredValueSuggestions = form.value
-    ? distinctValueStrings.filter(name => name.includes(form.value.toString()))
-    : distinctValueStrings
+  const isExistingField = fieldNames.includes(form.field)
+
+  const value = form.value;
+  const field = isExistingField ? form.field : '';
+  const valueSuggestions = useValueSuggestions({containerName, field, value})
 
   function handleSelectOperator(update: SelectOption) {
     const operatorUpdate = toOperator(update.value)
@@ -95,7 +86,7 @@ export function SubQueryEditor(props: {
             value={form.field}
             errorLabel={errors[formIndex].field}
             operator={form.operator}
-            suggestions={filteredInputSuggestions}
+            suggestions={fieldSuggestions}
             onChange={handleChangeField}
             disabled={disabled}
           />
@@ -113,7 +104,7 @@ export function SubQueryEditor(props: {
             formIndex={formIndex}
             isCall={true}
             isCustom={false}
-            suggestions={filteredValueSuggestions}
+            suggestions={valueSuggestions}
           />
         </div>
 
@@ -158,3 +149,4 @@ function findQueryMappingByValue(
   return queryValueMappers.find(c => c.isType(queryValue))
     ?? orThrow(`Unknown type of query value: ${queryValue}`);
 }
+
