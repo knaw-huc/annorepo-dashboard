@@ -62,7 +62,7 @@ export function QueryValueInput(props: {
 
   const disabled = !isCall || (isCustom && param === false);
 
-  let dropdownClassname = "absolute left-0 z-20 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
+  let dropdownClassname = "absolute left-0 z-20 mt-2 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
   if (!isOpen) {
     dropdownClassname += ' hidden'
   }
@@ -94,7 +94,7 @@ export function QueryValueInput(props: {
       {!isEmpty(suggestions) && <ul
         className={dropdownClassname}
       >
-        <div className="py-1" role="none">
+        <div className="py-1 max-h-100 max-w-100 overflow-y-scroll overflow-x-visible">
           {suggestions.map((s, i) =>
             <DropdownItem
               key={s}

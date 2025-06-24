@@ -20,7 +20,7 @@ export function QueryFieldInput(props: {
   const [focussedSuggestionIndex, setFocussedSuggestionIndex] = useState<number>();
   const [isOpen, setOpen] = useState(false);
 
-  let className = "absolute left-0 z-20 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
+  let className = "absolute left-0 z-20 mt-2 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
   if (!isOpen) {
     className += ' hidden'
   }

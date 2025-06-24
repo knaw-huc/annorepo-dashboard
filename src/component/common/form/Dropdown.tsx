@@ -18,7 +18,7 @@ export function Dropdown(props: {
   if(props.className) {
     className += ` ${props.className}`
   }
-  let optionsClassName = "absolute right-0 z-20 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
+  let optionsClassName = "absolute right-0 z-20 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
   if (!isOpen) {
     optionsClassName += ' hidden'
   }
