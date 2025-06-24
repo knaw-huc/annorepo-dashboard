@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
-import {GlobalQueryEditor} from "./GlobalQueryEditor.tsx";
+import {CustomQueryPreviewEditor} from "./CustomQueryPreviewEditor.tsx";
 import {Store} from "../common/icon/Store.tsx";
 import {ArCustomQueryForm} from "../../client/ArModel.ts";
 import {MR, usePost} from "../../client/query/usePost.tsx";
@@ -71,9 +71,10 @@ export function NewCustomQuery(props: {
     <H1>{title}</H1>
     {createCustomQuery.isError && <Warning
     >{createCustomQuery.error.message}</Warning>}
-    {mode === 'create-global-query' && <GlobalQueryEditor
+    {mode === 'create-global-query' && <CustomQueryPreviewEditor
       moreButtons={<Button
         secondary
+        className="mr-3"
         onClick={() => setMode('create-custom-query')}
         disabled={hasErrors(errors)}
       >

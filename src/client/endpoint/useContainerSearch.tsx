@@ -12,14 +12,15 @@ export function useContainerSearch(
 ): Record<string, QR> {
   const client = useOpenApiClient()
   const queryKey = [containerName, query];
+  const enabled = !!query && !!containerName;
   const search  = useQuery({
     queryKey,
     queryFn: () => searchContainer(client, containerName, query!),
-    enabled: !!query
+    enabled
   }) as QR<string>;
-
   const location: string | undefined = search.data;
   const path: GetPath = '/services/{containerName}/search/{searchId}';
+  console.log('useContainerSearch', {path, containerName})
   const params = {
     params: {
       path: {

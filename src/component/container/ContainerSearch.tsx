@@ -46,13 +46,12 @@ export function ContainerSearch(props: ContainerSearchProps) {
     }
   }, [container.data?.first.id]);
 
-  if (!container.isSuccess || !page.isSuccess) {
-    return <StatusMessage requests={[container, page]}/>;
-  }
-
-
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update))
+  }
+
+  if (!container.isSuccess || !page.isSuccess) {
+    return <StatusMessage requests={[container, page]}/>;
   }
 
   return <>

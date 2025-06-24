@@ -10,8 +10,6 @@ export function CustomQueryCallEditor(props: {
 
   const {forms} = useStore()
 
-
-
   return <div>
     {forms.map((_, i) => <CustomSubQueryEditor
       containerName={containerName}

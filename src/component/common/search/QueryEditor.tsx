@@ -70,7 +70,7 @@ export function QueryEditor(props: {
       <Button
         disabled={!!searchError || !forms.length || hasErrors(errors)}
         type="button"
-        className="pl-5 h-full border-b-2 ml-2"
+        className="pl-5 h-full border-b-2"
         onClick={handleSubmitQuery}
       >
         Search

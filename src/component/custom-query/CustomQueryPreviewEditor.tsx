@@ -4,51 +4,57 @@ import {Loading} from "../common/Loading.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {QR, useGet} from "../../client/query/useGet.tsx";
 import {ArMyContainers, SearchQuery} from "../../client/ArModel.ts";
-import {useGlobalSearch} from "../../client/endpoint/useGlobalSearch.tsx";
-import {StatusMessage} from "../common/StatusMessage.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
-import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
+import {useContainerSearch} from "../../client/endpoint/useContainerSearch.tsx";
+import {Dropdown} from "../common/form/Dropdown.tsx";
 
-export function GlobalQueryEditor(props: {
+export function CustomQueryPreviewEditor(props: {
   moreButtons?: ReactNode
 }) {
   const [pageNo, setPageNo] = useState(0);
 
   const myContainers = useGet('/my/containers') as QR<ArMyContainers>
   const containerNames = getContainerNames(myContainers.data)
-  const fields = useContainerFields(containerNames[0] ?? '')
+  const [containerName, setContainerName] = useState('');
 
   const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
   const [isInit, setInit] = useState<boolean>()
   const query = useSearchQuery()
+  const {page} = useContainerSearch(containerName, submittedQuery, pageNo);
 
   useEffect(() => {
-    if(query && !isInit) {
-      setSubmittedQuery(query)
+    if(!isInit && containerNames.length && query) {
       setInit(true)
+      setSubmittedQuery(query)
+      setContainerName(containerNames[0])
     }
-  }, [query]);
+  }, [isInit, containerNames, query]);
 
-  const {page} = useGlobalSearch(submittedQuery, pageNo);
 
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update))
   }
 
-  if (!page.isSuccess || !fields.isSuccess) {
-    return <StatusMessage requests={[page, fields]}/>;
-  }
-
   return <>
     <QueryEditor
-      containerName={containerNames[0]}
+      containerName={containerName}
       searchError={page.error}
       onSubmit={() => setSubmittedQuery(query)}
-      moreButtons={props.moreButtons}
+      moreButtons={<>
+        {props.moreButtons}
+        <Dropdown
+          placeholder="Select container"
+          className="ml-5 mr-2"
+          selectedValue={containerName}
+          options={containerNames.map(key => ({label: key, value: key}))}
+          onSelect={option => setContainerName(option.value)}
+        />
+      </>}
     />
-    {page
+
+    {page.data
       ? <AnnotationPage
         pageNo={pageNo}
         page={page.data}
