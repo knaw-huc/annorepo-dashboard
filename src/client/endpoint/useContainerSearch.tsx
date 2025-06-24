@@ -5,14 +5,14 @@ import {ArQuery, SearchQuery} from "../ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {createQueryKey, GetPath, QR} from "../query/useGet.tsx";
 
-export type SubmittedQueryArgs = {
+export type ContainerSearchArgs = {
   containerName: string,
   query?: SearchQuery,
   pageNo: number
 }
 
 export function useContainerSearch(
-  args: SubmittedQueryArgs
+  args: ContainerSearchArgs
 ): Record<string, QR> {
   const {containerName, query, pageNo} = args;
   const client = useOpenApiClient()

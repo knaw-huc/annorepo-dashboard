@@ -34,7 +34,7 @@ function Component() {
         <ToContainer name={containerName}/>
       ]}>
         <ContainerSearch
-          name={containerName}
+          containerName={containerName}
           onClose={handleClose}
         />
       </Page>

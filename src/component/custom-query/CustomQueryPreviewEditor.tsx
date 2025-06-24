@@ -8,7 +8,7 @@ import {toPageNo} from "../../util/toPageNo.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
 import {
-  SubmittedQueryArgs,
+  ContainerSearchArgs,
   useContainerSearch
 } from "../../client/endpoint/useContainerSearch.tsx";
 import {Dropdown} from "../common/form/Dropdown.tsx";
@@ -24,7 +24,7 @@ export function CustomQueryPreviewEditor(props: {
   const [containerName, setContainerName] = useState('');
 
   const query = useSearchQuery()
-  const [submitted, setSubmitted] = useState<SubmittedQueryArgs>(
+  const [submitted, setSubmitted] = useState<ContainerSearchArgs>(
     {containerName, query, pageNo}
   )
   const [isInit, setInit] = useState<boolean>()
@@ -47,7 +47,7 @@ export function CustomQueryPreviewEditor(props: {
   const handleSubmit = () => {
     setSubmitted({query, pageNo, containerName})
   }
-  console.log('CustomQueryPreviewEditor')
+
   return <>
     <QueryEditor
       containerName={containerName}

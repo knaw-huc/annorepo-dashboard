@@ -64,23 +64,26 @@ export function NewCustomQuery(props: {
   }
 
   const title = mode === 'create-global-query'
-    ? 'Edit custom query'
+    ? 'Create custom query'
     : 'Store custom query';
 
   return <>
     <H1>{title}</H1>
-    {createCustomQuery.isError && <Warning
-    >{createCustomQuery.error.message}</Warning>}
+    {createCustomQuery.isError && <Warning>
+      {createCustomQuery.error.message}
+    </Warning>}
     {mode === 'create-global-query' && <CustomQueryPreviewEditor
-      moreButtons={<Button
-        secondary
-        className="mr-3"
-        onClick={() => setMode('create-custom-query')}
-        disabled={hasErrors(errors)}
-      >
-        <Store className="mr-2"/>
-        Store query
-      </Button>}
+      moreButtons={
+        <Button
+          secondary
+          className="mr-3"
+          onClick={() => setMode('create-custom-query')}
+          disabled={hasErrors(errors)}
+        >
+          <Store className="mr-2"/>
+          Store query
+        </Button>
+      }
     />}
     {mode === 'create-custom-query' && <>
       <CustomQueryEditor

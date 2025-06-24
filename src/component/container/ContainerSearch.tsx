@@ -5,39 +5,47 @@ import {toPageNo} from "../../util/toPageNo.ts";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {QueryEditor} from "../common/search/QueryEditor.tsx";
-import {SearchQuery} from "../../client/ArModel.ts";
 import {H1} from "../common/H1.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
 import {useStore} from "../../store/useStore.ts";
 import {defaultQuery} from "../common/search/QueryModel.ts";
-import {useContainerSearch} from "../../client/endpoint/useContainerSearch.tsx";
+import {
+  ContainerSearchArgs,
+  useContainerSearch
+} from "../../client/endpoint/useContainerSearch.tsx";
 
 export type ContainerSearchProps = {
-  name: string,
+  containerName: string,
   onClose: () => void
 }
 
 export function ContainerSearch(props: ContainerSearchProps) {
 
-  const {name} = props;
+  const {containerName} = props;
   const [pageNo, setPageNo] = useState(0);
 
-  const container = useContainer(name)
+  const container = useContainer(containerName)
   const {initWithQuery} = useStore()
   const [isInit, setInit] = useState(false)
   const query = useSearchQuery()
+
+  const [submitted, setSubmitted] = useState<ContainerSearchArgs>({
+    containerName,
+    query,
+    pageNo
+  })
 
   useEffect(() => {
     if(isInit) {
       return
     }
     setInit(true)
-    initWithQuery(defaultQuery)
-    setSubmittedQuery(defaultQuery)
+    const query = defaultQuery;
+    initWithQuery(query)
+    setSubmitted({containerName, query, pageNo})
   }, [isInit]);
 
-  const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
-  const {search, page} = useContainerSearch(name, submittedQuery, pageNo);
+  const {search, page} = useContainerSearch(submitted);
 
   useEffect(() => {
     const containerPageId = container.data?.first.id;
@@ -50,6 +58,10 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setPageNo(toPageNo(update))
   }
 
+  function handleSubmitSearch() {
+    setSubmitted({containerName, query, pageNo});
+  }
+
   if (!container.isSuccess || !page.isSuccess) {
     return <StatusMessage requests={[container, page]}/>;
   }
@@ -57,9 +69,9 @@ export function ContainerSearch(props: ContainerSearchProps) {
   return <>
     <H1>Search annotations</H1>
     <QueryEditor
-      containerName={name}
+      containerName={containerName}
       searchError={search.error}
-      onSubmit={() => setSubmittedQuery(query)}
+      onSubmit={handleSubmitSearch}
     />
     {page
       ? <AnnotationPage
