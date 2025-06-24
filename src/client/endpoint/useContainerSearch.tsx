@@ -1,42 +1,48 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {keepPreviousData, useQuery} from "@tanstack/react-query";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
-import {ArQuery} from "../ArModel.ts";
+import {ArQuery, SearchQuery} from "../ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {createQueryKey, GetPath, QR} from "../query/useGet.tsx";
 
-export function useContainerSearch(
+export type SubmittedQueryArgs = {
   containerName: string,
-  query: ArQuery | undefined,
-  pageNo: number = 0,
+  query?: SearchQuery,
+  pageNo: number
+}
+
+export function useContainerSearch(
+  args: SubmittedQueryArgs
 ): Record<string, QR> {
+  const {containerName, query, pageNo} = args;
   const client = useOpenApiClient()
+
   const queryKey = [containerName, query];
   const enabled = !!query && !!containerName;
-  const search  = useQuery({
+  const search = useQuery({
     queryKey,
     queryFn: () => searchContainer(client, containerName, query!),
     enabled
   }) as QR<string>;
-  const location: string | undefined = search.data;
-  const path: GetPath = '/services/{containerName}/search/{searchId}';
-  console.log('useContainerSearch', {path, containerName})
-  const params = {
+
+  const getSearchLocation: string | undefined = search.data;
+  const getSearchPath: GetPath = '/services/{containerName}/search/{searchId}';
+  const getSearchParams = {
     params: {
       path: {
         containerName,
-        searchId: location!
+        searchId: getSearchLocation!
       },
       query: {page: pageNo}
     }
   };
   const page = useQuery({
-    queryKey: createQueryKey(path, params),
+    queryKey: createQueryKey(getSearchPath, getSearchParams),
     queryFn: async () => client.GET(
-      path,
-      params
+      getSearchPath,
+      getSearchParams
     ).then(({data}) => data),
-    enabled: !!location,
+    enabled: !!getSearchLocation,
     placeholderData: keepPreviousData,
   });
 

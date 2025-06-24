@@ -3,12 +3,16 @@ import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {Loading} from "../common/Loading.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {QR, useGet} from "../../client/query/useGet.tsx";
-import {ArMyContainers, SearchQuery} from "../../client/ArModel.ts";
+import {ArMyContainers} from "../../client/ArModel.ts";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
-import {useContainerSearch} from "../../client/endpoint/useContainerSearch.tsx";
+import {
+  SubmittedQueryArgs,
+  useContainerSearch
+} from "../../client/endpoint/useContainerSearch.tsx";
 import {Dropdown} from "../common/form/Dropdown.tsx";
+
 
 export function CustomQueryPreviewEditor(props: {
   moreButtons?: ReactNode
@@ -19,16 +23,19 @@ export function CustomQueryPreviewEditor(props: {
   const containerNames = getContainerNames(myContainers.data)
   const [containerName, setContainerName] = useState('');
 
-  const [submittedQuery, setSubmittedQuery] = useState<SearchQuery>()
-  const [isInit, setInit] = useState<boolean>()
   const query = useSearchQuery()
-  const {page} = useContainerSearch(containerName, submittedQuery, pageNo);
+  const [submitted, setSubmitted] = useState<SubmittedQueryArgs>(
+    {containerName, query, pageNo}
+  )
+  const [isInit, setInit] = useState<boolean>()
+  const {page} = useContainerSearch(submitted);
 
   useEffect(() => {
     if(!isInit && containerNames.length && query) {
       setInit(true)
-      setSubmittedQuery(query)
-      setContainerName(containerNames[0])
+      const containerNameUpdate = containerNames[0];
+      setSubmitted({query, pageNo, containerName: containerNameUpdate})
+      setContainerName(containerNameUpdate)
     }
   }, [isInit, containerNames, query]);
 
@@ -37,11 +44,15 @@ export function CustomQueryPreviewEditor(props: {
     setPageNo(toPageNo(update))
   }
 
+  const handleSubmit = () => {
+    setSubmitted({query, pageNo, containerName})
+  }
+
   return <>
     <QueryEditor
       containerName={containerName}
       searchError={page.error}
-      onSubmit={() => setSubmittedQuery(query)}
+      onSubmit={handleSubmit}
       moreButtons={<>
         {props.moreButtons}
         <Dropdown
