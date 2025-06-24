@@ -4,7 +4,12 @@ import {findMapper} from "./util/findMapper.tsx";
 import {createInputValue} from "./util/createInputValue.tsx";
 import {isEmpty} from "lodash";
 import {DropdownItem} from "../form/DropdownItem.tsx";
-import {useState} from "react";
+import {
+  Dispatch,
+  PropsWithChildren,
+  SetStateAction,
+  useState
+} from "react";
 
 export function QueryValueInput(props: {
   formIndex: number,
@@ -55,44 +60,6 @@ export function QueryValueInput(props: {
     handleChange(suggestion);
   }
 
-  function handleKeyboardNavigation(
-    event: { key: string; }
-  ) {
-    if (event.key === 'ArrowDown') {
-      setFocussedSuggestionIndex(prev => {
-        if (!suggestions.length) {
-          return;
-        } else if (prev === undefined) {
-          return 0;
-        } else if (prev === suggestions.length - 1) {
-          return prev;
-        } else {
-          return prev + 1;
-        }
-      })
-    } else if (event.key === 'ArrowUp') {
-      setFocussedSuggestionIndex(prev => {
-        if (!suggestions.length) {
-          return;
-        } else if (prev === undefined) {
-          return suggestions.length - 1;
-        } else if (prev === 0) {
-          return prev;
-        } else {
-          return prev - 1;
-        }
-      })
-    } else if (event.key === 'Enter') {
-      if (focussedSuggestionIndex === undefined) {
-        return;
-      } else {
-        handleChange(suggestions[focussedSuggestionIndex])
-        setFocussedSuggestionIndex(undefined)
-        setOpen(false)
-      }
-    }
-  }
-
   const inputValue = createInputValue(
     form, error.value, param, formIndex, isCall
   )
@@ -106,33 +73,93 @@ export function QueryValueInput(props: {
 
   return <div
     className="relative"
-    onKeyUp={handleKeyboardNavigation}
   >
-    <InputWithLabel
-      label="Value"
-      value={inputValue}
-      errorLabel={error.value}
-      onChange={handleChange}
-      disabled={disabled}
-      onFocus={() => setOpen(true)}
-      // Use timeout to prevent suggestions to disappear before being clicked:
-      onBlur={() => setTimeout(() => setOpen(false), 200)}
-
-    />
-    {!isEmpty(suggestions) && <ul
-      className={dropdownClassname}
+    <DropdownNavigation
+      suggestions={props.suggestions.length}
+      focussed={focussedSuggestionIndex}
+      onFocus={setFocussedSuggestionIndex}
+      onSelect={(update) => {
+        handleChange(suggestions[update])
+        setFocussedSuggestionIndex(undefined)
+        setOpen(false)
+      }}
     >
-      <div className="py-1" role="none">
-        {suggestions.map((s, i) =>
-          <DropdownItem
-            key={s}
-            label={s}
-            onClick={() => handleSelect(s)}
-            isFocussed={i === focussedSuggestionIndex}
-          />
-        )}
-      </div>
-    </ul>}
+      <InputWithLabel
+        label="Value"
+        value={inputValue}
+        errorLabel={error.value}
+        onChange={handleChange}
+        disabled={disabled}
+        onFocus={() => setOpen(true)}
+        // Use timeout to prevent suggestions to disappear before being clicked:
+        onBlur={() => setTimeout(() => setOpen(false), 200)}
+
+      />
+      {!isEmpty(suggestions) && <ul
+        className={dropdownClassname}
+      >
+        <div className="py-1" role="none">
+          {suggestions.map((s, i) =>
+            <DropdownItem
+              key={s}
+              label={s}
+              onClick={() => handleSelect(s)}
+              isFocussed={i === focussedSuggestionIndex}
+            />
+          )}
+        </div>
+      </ul>}
+    </DropdownNavigation>
   </div>
 }
 
+export function DropdownNavigation(props: PropsWithChildren<{
+  suggestions: number
+  focussed: number | undefined
+  onFocus: Dispatch<SetStateAction<number | undefined>>
+  onSelect: (selectedIndex: number) => void
+}>) {
+  const {suggestions, onSelect, onFocus, focussed} = props;
+
+  function handleKeyboardNavigation(
+    event: { key: string; }
+  ) {
+    if (event.key === 'ArrowDown') {
+      onFocus(prev => {
+        if (!suggestions) {
+          return;
+        } else if (prev === undefined) {
+          return 0;
+        } else if (prev === suggestions - 1) {
+          return prev;
+        } else {
+          return prev + 1;
+        }
+      })
+    } else if (event.key === 'ArrowUp') {
+      onFocus(prev => {
+        if (!suggestions) {
+          return;
+        } else if (prev === undefined) {
+          return suggestions - 1;
+        } else if (prev === 0) {
+          return prev;
+        } else {
+          return prev - 1;
+        }
+      })
+    } else if (event.key === 'Enter') {
+      if (focussed === undefined) {
+        return;
+      } else {
+        onSelect(focussed)
+      }
+    }
+  }
+
+  return <span
+    onKeyUp={handleKeyboardNavigation}
+  >
+    {props.children}
+  </span>
+}
