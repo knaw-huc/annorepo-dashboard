@@ -81,7 +81,7 @@ export function NewCustomQueryEditor(props: {
           disabled={hasErrors(errors)}
         >
           <Store className="mr-2"/>
-          Store query
+          Store as custom query
         </Button>
       }
     />}
