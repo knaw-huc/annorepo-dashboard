@@ -63,14 +63,6 @@ export function NewCustomQuery(props: {
     })
   }
 
-  function handleSwitchToCustomQuery() {
-    setMode('create-custom-query')
-  }
-
-  function switchBackToGlobalQuery() {
-    setMode('create-global-query')
-  }
-
   const title = mode === 'create-global-query'
     ? 'Create global query'
     : 'Create custom query';
@@ -80,16 +72,14 @@ export function NewCustomQuery(props: {
     {createCustomQuery.isError && <Warning
     >{createCustomQuery.error.message}</Warning>}
     {mode === 'create-global-query' && <GlobalQueryEditor
-      moreButtons={<>
-        <Button
-          secondary
-          onClick={handleSwitchToCustomQuery}
-          disabled={hasErrors(errors)}
-        >
-          <Store className="mr-2"/>
-          Store query
-        </Button>
-      </>}
+      moreButtons={<Button
+        secondary
+        onClick={() => setMode('create-custom-query')}
+        disabled={hasErrors(errors)}
+      >
+        <Store className="mr-2"/>
+        Store query
+      </Button>}
     />}
     {mode === 'create-custom-query' && <>
       <CustomQueryEditor
@@ -99,7 +89,7 @@ export function NewCustomQuery(props: {
         onClearMetadataError={() => setMetadataError(false)}
       />
       <Button
-        onClick={switchBackToGlobalQuery}
+        onClick={() => setMode('create-global-query')}
         secondary
         className="pr-5"
       >
