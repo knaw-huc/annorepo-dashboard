@@ -39,7 +39,7 @@ export function SubQueryEditor(props: {
 
   const form = forms[formIndex]
 
-  const suggestions = form.field
+  const filteredInputSuggestions = form.field
     ? fieldNames.filter(name => name.includes(form.field))
     : fieldNames
 
@@ -53,10 +53,13 @@ export function SubQueryEditor(props: {
   const isExistingField = fieldNames.includes(fieldDebounced)
   const fieldToSearchFor = isExistingField ? fieldDebounced : '';
   const distinctValues = useContainerDistinctValues(containerName ?? '', fieldToSearchFor)
-  const distinctInputValues = distinctValues.data
+  const distinctValueStrings = distinctValues.data
     ?.filter(v => isString(v) || isNumber(v))
     .map(v => `${v}`)
     ?? []
+  const filteredValueSuggestions = form.value
+    ? distinctValueStrings.filter(name => name.includes(form.value.toString()))
+    : distinctValueStrings
 
   function handleSelectOperator(update: SelectOption) {
     const operatorUpdate = toOperator(update.value)
@@ -92,7 +95,7 @@ export function SubQueryEditor(props: {
             value={form.field}
             errorLabel={errors[formIndex].field}
             operator={form.operator}
-            suggestions={suggestions}
+            suggestions={filteredInputSuggestions}
             onChange={handleChangeField}
             disabled={disabled}
           />
@@ -110,9 +113,10 @@ export function SubQueryEditor(props: {
             formIndex={formIndex}
             isCall={true}
             isCustom={false}
-            suggestions={distinctInputValues}
+            suggestions={filteredValueSuggestions}
           />
         </div>
+
         {!disabled && <div className="flex-none">
           <Button
             type="button"

@@ -35,6 +35,8 @@ export function CustomSubQueryEditor(props: {
         </div>
         <div className="flex-auto mr-2">
           <QueryValueInput
+            // TODO: use suggestions:
+            suggestions={[]}
             formIndex={formIndex}
             isCall={isCall}
             isCustom={true}
