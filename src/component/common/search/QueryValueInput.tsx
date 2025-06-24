@@ -22,6 +22,8 @@ export function QueryValueInput(props: {
     suggestions
   } = props;
 
+  const [focussedSuggestionIndex, setFocussedSuggestionIndex] = useState<number>();
+
   const {forms, errors, params, updateForm} = useStore()
 
   const form = forms[formIndex]
@@ -37,6 +39,7 @@ export function QueryValueInput(props: {
         form: {...form, value: queryUpdate},
         error: {...error, value: ''}
       });
+      setOpen(true)
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
       updateForm({
@@ -52,17 +55,59 @@ export function QueryValueInput(props: {
     handleChange(suggestion);
   }
 
+  function handleKeyboardNavigation(
+    event: { key: string; }
+  ) {
+    if (event.key === 'ArrowDown') {
+      setFocussedSuggestionIndex(prev => {
+        if (!suggestions.length) {
+          return;
+        } else if (prev === undefined) {
+          return 0;
+        } else if (prev === suggestions.length - 1) {
+          return prev;
+        } else {
+          return prev + 1;
+        }
+      })
+    } else if (event.key === 'ArrowUp') {
+      setFocussedSuggestionIndex(prev => {
+        if (!suggestions.length) {
+          return;
+        } else if (prev === undefined) {
+          return suggestions.length - 1;
+        } else if (prev === 0) {
+          return prev;
+        } else {
+          return prev - 1;
+        }
+      })
+    } else if (event.key === 'Enter') {
+      if (focussedSuggestionIndex === undefined) {
+        return;
+      } else {
+        handleChange(suggestions[focussedSuggestionIndex])
+        setFocussedSuggestionIndex(undefined)
+        setOpen(false)
+      }
+    }
+  }
+
   const inputValue = createInputValue(
     form, error.value, param, formIndex, isCall
   )
+
+  const disabled = !isCall || (isCustom && param === false);
 
   let dropdownClassname = "absolute left-0 z-20 mt-2 w-56 origin-top-left rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
   if (!isOpen) {
     dropdownClassname += ' hidden'
   }
 
-  const disabled = !isCall || (isCustom && param === false);
-  return <div className="relative">
+  return <div
+    className="relative"
+    onKeyUp={handleKeyboardNavigation}
+  >
     <InputWithLabel
       label="Value"
       value={inputValue}
@@ -72,16 +117,18 @@ export function QueryValueInput(props: {
       onFocus={() => setOpen(true)}
       // Use timeout to prevent suggestions to disappear before being clicked:
       onBlur={() => setTimeout(() => setOpen(false), 200)}
+
     />
     {!isEmpty(suggestions) && <ul
       className={dropdownClassname}
     >
       <div className="py-1" role="none">
-        {suggestions.map(s =>
+        {suggestions.map((s, i) =>
           <DropdownItem
             key={s}
             label={s}
             onClick={() => handleSelect(s)}
+            isFocussed={i === focussedSuggestionIndex}
           />
         )}
       </div>
