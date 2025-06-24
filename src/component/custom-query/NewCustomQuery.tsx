@@ -64,8 +64,8 @@ export function NewCustomQuery(props: {
   }
 
   const title = mode === 'create-global-query'
-    ? 'Create global query'
-    : 'Create custom query';
+    ? 'Edit custom query'
+    : 'Store custom query';
 
   return <>
     <H1>{title}</H1>

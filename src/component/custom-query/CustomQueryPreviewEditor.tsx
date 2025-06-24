@@ -47,7 +47,7 @@ export function CustomQueryPreviewEditor(props: {
   const handleSubmit = () => {
     setSubmitted({query, pageNo, containerName})
   }
-
+  console.log('CustomQueryPreviewEditor')
   return <>
     <QueryEditor
       containerName={containerName}
