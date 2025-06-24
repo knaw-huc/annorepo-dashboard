@@ -30,9 +30,10 @@ export function CustomSubQueryEditor(props: {
           <QueryFieldInput
             value={form.field}
             operator={form.operator}
-            suggestions={[]}
+            // Disabled and cannot be changed:
             onChange={noop}
             disabled={true}
+            suggestions={[]}
           />
         </div>
         <div className="flex-none mr-2">
@@ -45,7 +46,6 @@ export function CustomSubQueryEditor(props: {
         </div>
         <div className="flex-auto mr-2">
           <QueryValueInput
-            // TODO: use suggestions:
             suggestions={valueSuggestions}
             formIndex={formIndex}
             isCall={isCall}
