@@ -13,8 +13,7 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 import {Dropdown} from "../common/form/Dropdown.tsx";
 
-
-export function CustomQueryPreviewEditor(props: {
+export function NewCustomQueryPreviewEditor(props: {
   moreButtons?: ReactNode
 }) {
   const [pageNo, setPageNo] = useState(0);

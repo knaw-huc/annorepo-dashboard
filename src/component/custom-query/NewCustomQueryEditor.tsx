@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
-import {CustomQueryPreviewEditor} from "./CustomQueryPreviewEditor.tsx";
+import {NewCustomQueryPreviewEditor} from "./NewCustomQueryPreviewEditor.tsx";
 import {Store} from "../common/icon/Store.tsx";
 import {ArCustomQueryForm} from "../../client/ArModel.ts";
 import {MR, usePost} from "../../client/query/usePost.tsx";
@@ -10,7 +10,7 @@ import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {Back} from "../common/icon/Back.tsx";
-import {CustomQueryEditor} from "./CustomQueryEditor.tsx";
+import {NewCustomQueryMetadataAndTemplateEditor} from "./NewCustomQueryMetadataAndTemplateEditor.tsx";
 import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
 import {Warning} from "../common/Warning.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
@@ -20,7 +20,7 @@ import {hasErrors} from "../../store/query/util/hasErrors.ts";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
-export function NewCustomQuery(props: {
+export function NewCustomQueryEditor(props: {
   onClose: () => void
 }) {
 
@@ -72,7 +72,7 @@ export function NewCustomQuery(props: {
     {createCustomQuery.isError && <Warning>
       {createCustomQuery.error.message}
     </Warning>}
-    {mode === 'create-global-query' && <CustomQueryPreviewEditor
+    {mode === 'create-global-query' && <NewCustomQueryPreviewEditor
       moreButtons={
         <Button
           secondary
@@ -86,7 +86,7 @@ export function NewCustomQuery(props: {
       }
     />}
     {mode === 'create-custom-query' && <>
-      <CustomQueryEditor
+      <NewCustomQueryMetadataAndTemplateEditor
         metadata={queryMetadata}
         onChangeMetadata={setQueryMetadata}
         onMetadataError={() => setMetadataError(true)}

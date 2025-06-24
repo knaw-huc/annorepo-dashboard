@@ -14,7 +14,7 @@ import {toParameterName} from "../../store/query/util/toParameterName.ts";
 /**
  * Allow creating a new custom query
  */
-export function CustomQueryEditor(props: {
+export function NewCustomQueryMetadataAndTemplateEditor(props: {
   metadata: Omit<ArCustomQueryForm, 'query'>
   onChangeMetadata: (query: Omit<ArCustomQueryForm, 'query'>) => void
   onMetadataError: () => void

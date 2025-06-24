@@ -1,7 +1,7 @@
 import {createFileRoute} from '@tanstack/react-router'
 import {
-  NewCustomQuery
-} from "../../component/custom-query/NewCustomQuery.tsx";
+  NewCustomQueryEditor
+} from "../../component/custom-query/NewCustomQueryEditor.tsx";
 import {
   ToCustomQueryIndex,
   ToHome
@@ -25,7 +25,7 @@ export const Route = createFileRoute('/custom-query/editor')({
         <ToHome/>,
         <ToCustomQueryIndex/>,
       ]}>
-        <NewCustomQuery
+        <NewCustomQueryEditor
           onClose={handleClose}
         />
       </Page>
