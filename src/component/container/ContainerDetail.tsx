@@ -2,7 +2,6 @@ import {H1} from "../common/H1.tsx";
 import {Hint} from "../common/Hint.tsx";
 import {Loading} from "../common/Loading.tsx";
 import {useContainer} from "../../client/endpoint/useContainer.tsx";
-import {Badge} from "../common/Badge.tsx";
 import {ContainerAnnotationPage} from "./ContainerAnnotationPage.tsx";
 import {ContainerAnnotationFields} from "./ContainerAnnotationFields.tsx";
 import {Button} from "../common/Button.tsx";
@@ -12,10 +11,8 @@ import {H2} from "../common/H2.tsx";
 import {Add} from "../common/icon/Add.tsx";
 import {Search} from "../common/icon/Search.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
-import {toName} from "../../util/toName.ts";
-import {A} from "../common/A.tsx";
-import {External} from "../common/icon/External.tsx";
-import {Pipe} from "../common/Pipe.tsx";
+
+import {ContainerSummary} from "./ContainerSummary.tsx";
 
 export type ContainerDetailProps = {
   name: string,
@@ -48,14 +45,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
 
   return <div>
     <H1>{container.data.label} <Hint>container</Hint></H1>
-    <p className="mt-5 space-y-3">
-      <span>Annotations: <Badge>{container.data.total}</Badge></span>
-      <Pipe/>
-      <span>Name: <Badge>{toName(container.data.id)}</Badge></span>
-      <Pipe/>
-      <span><A href={container.data.id}>Source
-        <External className="ml-1"/></A></span>
-    </p>
+    <ContainerSummary name={name} className="mt-5" />
     <ContainerAnnotationFields name={props.name}/>
     <H2>Annotations</H2>
 
