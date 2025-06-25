@@ -14,6 +14,6 @@ export function DropdownItem(props: {
     onClick={props.onClick}
     className={className}
   >
-    {label}
+    {label || <>&nbsp;</>}
   </li>
 }
