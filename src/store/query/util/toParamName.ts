@@ -1,10 +1,10 @@
 import {FieldQueryForm} from "../../../component/common/search/QueryModel.ts";
 import {isRangeQueryOperator} from "../../../client/ArModel.ts";
 
-export function toParameterName(query: FieldQueryForm, formIndex: number): string {
-  const key = isRangeQueryOperator(query.operator) ? query.operator : query.field;
+export function toParamName(form: FieldQueryForm, formIndex: number): string {
+  const key = isRangeQueryOperator(form.operator) ? form.operator : form.field;
   const cleanedKey = key
     .replaceAll(/[.]/g, '-')
     .replaceAll(/[:]/g, '')
-  return `<${formIndex+1}-${cleanedKey}>`
+  return `${formIndex + 1}-${cleanedKey}`
 }

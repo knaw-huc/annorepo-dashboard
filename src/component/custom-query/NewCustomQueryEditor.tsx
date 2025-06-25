@@ -15,7 +15,7 @@ import {
 import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
 import {Warning} from "../common/Warning.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
-import {defaultQuery} from "../common/search/QueryModel.ts";
+import {defaultParams, defaultTemplate} from "../common/search/QueryModel.ts";
 import {useStore} from "../../store/useStore.ts";
 import {hasErrors} from "../../store/query/util/hasErrors.ts";
 
@@ -35,8 +35,11 @@ export function NewCustomQueryEditor(props: {
   const [queryMetadata, setQueryMetadata] = useState(defaultCustomQueryForm);
   const [hasMetadataError, setMetadataError] = useState<boolean>();
 
+  const [containerName, setContainerName] = useState('');
+
+
   useEffect(() => {
-    initWithTemplate(defaultQuery, [])
+    initWithTemplate(defaultTemplate, defaultParams)
   }, []);
 
   const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
@@ -68,12 +71,15 @@ export function NewCustomQueryEditor(props: {
     ? 'Create custom query'
     : 'Store custom query';
 
+
   return <>
     <H1>{title}</H1>
     {createCustomQuery.isError && <Warning>
       {createCustomQuery.error.message}
     </Warning>}
     {mode === 'create-global-query' && <NewCustomQueryPreviewEditor
+      containerName={containerName}
+      onSetContainerName={setContainerName}
       moreButtons={
         <Button
           secondary
@@ -109,5 +115,6 @@ export function NewCustomQueryEditor(props: {
       </Button>
     </>}
   </>
+
 }
 

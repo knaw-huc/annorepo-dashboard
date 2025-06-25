@@ -1,25 +1,25 @@
 import {QueryState} from "../QuerySlice.ts";
-import {toSearchQuery} from "./toSearchQuery.ts";
 import {FormToAdd} from "../FormToAdd.ts";
+import {validateQuery} from "./validateQuery.ts";
 
 export function addForm(
   toAdd: FormToAdd,
   prev: QueryState
 ): QueryState {
   const {form, error, param} = toAdd
-  const forms = [...prev.forms, form];
-  try {
-    // Computer says ...
-    toSearchQuery(forms, prev.params)
-  } catch (e) {
-    error.field = e instanceof Error
-      ? e.message
-      : 'New subquery causes unknown error'
+  const formsUpdate = [...prev.forms, form];
+  const paramsUpdate = [...prev.params, param];
+
+  if(!error.field) {
+    // Validate when field does not contain error:
+    error.field = validateQuery(formsUpdate, paramsUpdate);
   }
+  const errorsUpdate = [...prev.errors, error];
+
   return {
     ...prev,
-    forms: forms,
-    errors: [...prev.errors, error],
-    params: [...prev.params, param]
+    forms: formsUpdate,
+    errors: errorsUpdate,
+    params: paramsUpdate
   }
 }

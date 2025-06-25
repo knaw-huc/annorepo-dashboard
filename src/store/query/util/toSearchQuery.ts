@@ -11,6 +11,7 @@ import {
   FormParamValue
 } from "../../../component/common/search/QueryModel.ts";
 import {isString} from "lodash";
+import {toParamTag} from "./toParamTag.ts";
 
 export function toSearchQuery(
   forms: FieldQueryForm[],
@@ -49,7 +50,7 @@ function convertToSubquery(
   form: FieldQueryForm,
   param?: FormParamValue
 ): SearchSubquery {
-  const formValue = isString(param) ? param : form.value;
+  const formValue = isString(param) ? toParamTag(param) : form.value;
   if (form.operator === QueryOperator.simpleQuery) {
     return {[form.field]: `${isString(param) ? param : form.value}`}
   } else if (isRangeQueryOperator(form.operator)) {

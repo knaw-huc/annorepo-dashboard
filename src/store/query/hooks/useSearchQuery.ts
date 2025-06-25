@@ -11,5 +11,10 @@ export const useSearchQuery = (asTemplate?: boolean): SearchQuery | undefined =>
     return;
   }
   const params = asTemplate ? store.params : [];
-  return toSearchQuery(store.forms, params);
+  try {
+    return toSearchQuery(store.forms, params);
+  } catch (e) {
+    console.info('Invalid search query, returning undefined')
+    return undefined;
+  }
 })

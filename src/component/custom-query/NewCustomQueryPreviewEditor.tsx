@@ -12,23 +12,29 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 
 import {ContainerDropdown} from "./ContainerDropdown.tsx";
+import {defaultQuery} from "../common/search/QueryModel.ts";
+import {toQueryFieldForm} from "../../store/query/util/toQueryFieldForm.ts";
+import {mapValues} from "lodash";
+import {useStore} from "../../store/useStore.ts";
+import {toParamName} from "../../store/query/util/toParamName.ts";
 
 export function NewCustomQueryPreviewEditor(props: {
-  moreButtons?: ReactNode
+  containerName: string
+  onSetContainerName: (containerName: string) => void
+  moreButtons?: ReactNode,
 }) {
+  const {containerName, onSetContainerName} = props;
   const [pageNo, setPageNo] = useState(0);
 
   const myContainers = useGet('/my/containers') as QR<ArMyContainers>
   const containerNames = getContainerNames(myContainers.data)
-  const [containerName, setContainerName] = useState('');
-
   const query = useSearchQuery()
   const [submitted, setSubmitted] = useState<ContainerSearchArgs>(
     {containerName, query, pageNo}
   )
   const [isInit, setInit] = useState<boolean>()
   const {page} = useContainerSearch(submitted);
-
+  const {forms, addForm} = useStore()
   useEffect(() => {
     if (!isInit && containerNames.length && query) {
       setInit(true)
@@ -45,16 +51,26 @@ export function NewCustomQueryPreviewEditor(props: {
     setSubmitted({query, pageNo, containerName})
   }
 
+  function handleAddSubQuery() {
+    const newQueryEntry = Object.entries(defaultQuery)[0];
+    const form = toQueryFieldForm(newQueryEntry)
+    const error = mapValues(form, () => '');
+    const newFormIndex = forms.length;
+    const param = toParamName(form, newFormIndex)
+    addForm({form, error, param})
+  }
+
   return <>
     <QueryEditor
       containerName={containerName}
       searchError={page.error}
       onSubmit={handleSubmit}
+      onAddSubQuery={handleAddSubQuery}
       moreButtons={<>
         {props.moreButtons}
         <span className="ml-5"><ContainerDropdown
           selected={containerName}
-          onSelect={setContainerName}
+          onSelect={onSetContainerName}
         /></span>
       </>}
     />

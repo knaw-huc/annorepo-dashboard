@@ -9,8 +9,9 @@ import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {Help} from "../common/icon/Help.tsx";
 import {hasError} from "../../store/query/util/hasError.ts";
 import {useStore} from "../../store/useStore.ts";
-import {toParameterName} from "../../store/query/util/toParameterName.ts";
+import {toParamTag} from "../../store/query/util/toParamTag.ts";
 import {Tooltip} from "../common/Tooltip.tsx";
+import {toParamName} from "../../store/query/util/toParamName.ts";
 
 /**
  * Allow creating a new custom query
@@ -39,7 +40,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
 
   function handleParameterChange(formIndex: number, isParam: boolean) {
     const update = isParam
-      ? toParameterName(forms[formIndex], formIndex)
+      ? toParamTag(toParamName(forms[formIndex], formIndex))
       : false
     updateForm({formIndex, param: update})
   }

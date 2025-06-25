@@ -19,6 +19,7 @@ import {FieldQueryForm} from "./QueryModel.ts";
 import {
   useValueSuggestions
 } from "./useValueSuggestions.tsx";
+import {toParamName} from "../../../store/query/util/toParamName.ts";
 
 export function SubQueryEditor(props: {
   fieldNames: string[],
@@ -31,6 +32,7 @@ export function SubQueryEditor(props: {
   const {
     forms,
     errors,
+    params,
     removeForm,
     updateForm,
   } = useStore();
@@ -66,12 +68,22 @@ export function SubQueryEditor(props: {
   function handleChangeField(field: string) {
     const formUpdate = {...form, field};
     const errorUpdate = {...errors[formIndex]};
+    let paramUpdate = params[formIndex]
+    if(params[formIndex]) {
+      // Keep param name aligned with field when it already exists:
+      paramUpdate = toParamName(formUpdate, formIndex)
+    }
     if (!field) {
       errorUpdate.field = 'Field cannot be empty'
     } else {
       errorUpdate.field = ''
     }
-    updateForm({formIndex, form: formUpdate, error: errorUpdate});
+    updateForm({
+      formIndex,
+      form: formUpdate,
+      error: errorUpdate,
+      param: paramUpdate
+    });
   }
 
   function handleRemoveSubQuery() {

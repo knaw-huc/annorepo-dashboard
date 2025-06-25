@@ -13,6 +13,8 @@ import {
   ContainerSearchArgs,
   useContainerSearch
 } from "../../client/endpoint/useContainerSearch.tsx";
+import {toQueryFieldForm} from "../../store/query/util/toQueryFieldForm.ts";
+import {mapValues} from "lodash";
 
 export type ContainerSearchProps = {
   containerName: string,
@@ -25,7 +27,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(containerName)
-  const {initWithQuery} = useStore()
+  const {initWithQuery, addForm} = useStore()
   const [isInit, setInit] = useState(false)
   const query = useSearchQuery()
 
@@ -62,6 +64,14 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setSubmitted({containerName, query, pageNo});
   }
 
+  function handleAddSubQuery() {
+    const newQueryEntry = Object.entries(defaultQuery)[0];
+    const form = toQueryFieldForm(newQueryEntry)
+    const error = mapValues(form, () => '');
+    const param = false
+    addForm({form, error, param})
+  }
+
   if (!container.isSuccess || !page.isSuccess) {
     return <StatusMessage requests={[container, page]}/>;
   }
@@ -72,6 +82,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
       containerName={containerName}
       searchError={search.error}
       onSubmit={handleSubmitSearch}
+      onAddSubQuery={handleAddSubQuery}
     />
     {page
       ? <AnnotationPage
@@ -82,4 +93,5 @@ export function ContainerSearch(props: ContainerSearchProps) {
       : <Loading/>
     }
   </>
+
 }
