@@ -1,4 +1,4 @@
-import {CustomQueryForm} from "../../client/ArModel.ts";
+import {CustomQueryMetadataForm} from "../../client/ArModel.ts";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {useStore} from "../../store/useStore.ts";
 
@@ -20,7 +20,7 @@ export function CustomQueryCallEditor(props: {
   </div>
 }
 
-export const defaultCustomQueryForm: CustomQueryForm = {
+export const defaultCustomQueryForm: CustomQueryMetadataForm = {
   name: "name-of-custom-query",
   description: "Description of custom query",
   label: "Label of custom query",

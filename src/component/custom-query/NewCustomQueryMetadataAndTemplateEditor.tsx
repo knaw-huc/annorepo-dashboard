@@ -1,4 +1,4 @@
-import {ArCustomQueryForm, CustomQueryForm} from "../../client/ArModel.ts";
+import {ArCustomQueryForm, CustomQueryMetadataForm} from "../../client/ArModel.ts";
 import {H2} from "../common/H2.tsx";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
@@ -34,7 +34,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
     updateForm
   } = useStore()
 
-  const [metadataForm, setMetadataForm] = useState<CustomQueryForm>(metadata);
+  const [metadataForm, setMetadataForm] = useState<CustomQueryMetadataForm>(metadata);
   const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
 
   function handleParameterChange(formIndex: number, isParam: boolean) {
@@ -52,7 +52,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
     }
   }, [metadataErrors]);
 
-  const handleChangeMetadata = (update: CustomQueryForm) => {
+  const handleChangeMetadata = (update: CustomQueryMetadataForm) => {
     setMetadataForm(update)
     const hasErrors = Object.values(metadataErrors).some(field => !isEmpty(field));
     if (!hasErrors) {

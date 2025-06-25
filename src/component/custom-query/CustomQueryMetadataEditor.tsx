@@ -1,14 +1,14 @@
-import {CustomQueryForm} from "../../client/ArModel.ts";
+import {CustomQueryMetadataForm} from "../../client/ArModel.ts";
 import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {Textarea} from "../common/form/Textarea.tsx";
 import {ErrorRecord} from "../common/search/QueryModel.ts";
 
 export function CustomQueryMetadataEditor(props: {
-  form: CustomQueryForm
-  errors: ErrorRecord<CustomQueryForm>
-  onChange: (update: CustomQueryForm) => void
-  onError: (errors: ErrorRecord<CustomQueryForm>) => void
+  form: CustomQueryMetadataForm
+  errors: ErrorRecord<CustomQueryMetadataForm>
+  onChange: (update: CustomQueryMetadataForm) => void
+  onError: (errors: ErrorRecord<CustomQueryMetadataForm>) => void
   disabled?: boolean
 }) {
   const {form, errors, onChange, onError, disabled} = props;

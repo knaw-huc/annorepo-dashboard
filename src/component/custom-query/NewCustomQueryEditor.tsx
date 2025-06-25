@@ -5,12 +5,13 @@ import {NewCustomQueryPreviewEditor} from "./NewCustomQueryPreviewEditor.tsx";
 import {Store} from "../common/icon/Store.tsx";
 import {ArCustomQueryForm} from "../../client/ArModel.ts";
 import {MR, usePost} from "../../client/query/usePost.tsx";
-import omit from "lodash/omit";
 import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {Back} from "../common/icon/Back.tsx";
-import {NewCustomQueryMetadataAndTemplateEditor} from "./NewCustomQueryMetadataAndTemplateEditor.tsx";
+import {
+  NewCustomQueryMetadataAndTemplateEditor
+} from "./NewCustomQueryMetadataAndTemplateEditor.tsx";
 import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
 import {Warning} from "../common/Warning.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
@@ -24,18 +25,18 @@ export function NewCustomQueryEditor(props: {
   onClose: () => void
 }) {
 
-  const {initWithQuery, errors} = useStore()
+  const {initWithTemplate, errors} = useStore()
 
   const asTemplate = true;
   const query = useSearchQuery(asTemplate)
   const queryClient = useQueryClient()
 
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
-  const [queryMetadata, setQueryMetadata] = useState(omit(defaultCustomQueryForm, 'query'));
+  const [queryMetadata, setQueryMetadata] = useState(defaultCustomQueryForm);
   const [hasMetadataError, setMetadataError] = useState<boolean>();
 
   useEffect(() => {
-    initWithQuery(defaultQuery)
+    initWithTemplate(defaultQuery, [])
   }, []);
 
   const createCustomQuery: MR<ArCustomQueryForm> = usePost('/global/custom-query')
