@@ -1,10 +1,10 @@
 import {Down} from "../icon/Down";
-import {useState} from "react";
+import {ReactNode, useState} from "react";
 import {DropdownItem} from "./DropdownItem.tsx";
 import {SelectOption} from "./SelectOption.tsx";
 
 export function Dropdown(props: {
-  placeholder?: string,
+  placeholder?: ReactNode,
   selectedValue?: string,
   options: SelectOption[],
   onSelect: (option: SelectOption) => void

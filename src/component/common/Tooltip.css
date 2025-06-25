@@ -1,0 +1,7 @@
+.tooltip {
+    @apply invisible absolute;
+}
+
+.with-tooltip:hover .tooltip {
+    @apply visible z-50;
+}

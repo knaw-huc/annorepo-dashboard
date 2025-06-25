@@ -8,18 +8,15 @@ import {
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {useEffect, useState} from "react";
 import {toCustomQueryParameters} from "./toCustomQueryParameters.ts";
-import {ArMyContainers} from "../../client/ArModel.ts";
 import {Button} from "../common/Button.tsx";
 import {Next} from "../common/icon/Next.tsx";
-import {Dropdown} from "../common/form/Dropdown.tsx";
-import {QR, useGet} from "../../client/query/useGet.tsx";
-import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {Hint} from "../common/Hint.tsx";
 import {Pipe} from "../common/Pipe.tsx";
 import {hasErrors} from "../../store/query/util/hasErrors.ts";
 import {useStore} from "../../store/useStore.ts";
+import {ContainerDropdown} from "./ContainerDropdown.tsx";
 
 export function CustomQueryDetail(props: {
   name: string
@@ -32,8 +29,6 @@ export function CustomQueryDetail(props: {
   const [containerName, setContainerName] = useState('')
   const [pageNo, setPageNo] = useState(0)
 
-  const myContainers = useGet('/my/containers') as QR<ArMyContainers>
-  const containerNames = getContainerNames(myContainers.data)
   const customQuery = useCustomQuery(customQueryName)
 
   const [submitted, setSubmitted] = useState<CustomQueryCallArgs>(
@@ -60,7 +55,12 @@ export function CustomQueryDetail(props: {
       forms,
       params
     );
-    setSubmitted({queryName: customQueryName, containerName, parameters, pageNo})
+    setSubmitted({
+      queryName: customQueryName,
+      containerName,
+      parameters,
+      pageNo
+    })
   }
 
   const handleChangePage = (update: string) => {
@@ -88,16 +88,10 @@ export function CustomQueryDetail(props: {
     <p className="mb-5">
       {customQuery.data.description}
     </p>
-    <CustomQueryCallEditor
-      containerName={containerName}
-    />
-    <div className="mb-5">
-      <Dropdown
-        placeholder="Select container"
-        className="mr-3"
-        selectedValue={containerName}
-        options={containerNames.map(key => ({label: key, value: key}))}
-        onSelect={option => setContainerName(option.value)}
+    <div className="mb-2">
+      <ContainerDropdown
+        selected={containerName}
+        onSelect={setContainerName}
       />
       <Button
         onClick={handleSearch}
@@ -107,6 +101,9 @@ export function CustomQueryDetail(props: {
         Search<Next className="ml-2"/>
       </Button>
     </div>
+    <CustomQueryCallEditor
+      containerName={containerName}
+    />
     <div className="max-w-[100vw] whitespace-pre-wrap">
       {!!customQueryCall.data && <AnnotationPage
         pageNo={pageNo}

@@ -46,15 +46,7 @@ export function QueryEditor(props: {
   }
 
   return <div>
-    {forms.map((_, i) => {
-      return <SubQueryEditor
-        containerName={containerName}
-        key={i}
-        fieldNames={fieldNames}
-        formIndex={i}
-      />;
-    })}
-    <div className="mb-7">
+    <div className="mb-2">
       <Button
         type="button"
         className="pl-3 h-full border-b-2 mr-2"
@@ -77,5 +69,13 @@ export function QueryEditor(props: {
         <Next className="ml-1"/>
       </Button>
     </div>
+    {forms.map((_, i) => {
+      return <SubQueryEditor
+        containerName={containerName}
+        key={i}
+        fieldNames={fieldNames}
+        formIndex={i}
+      />;
+    })}
   </div>
 }

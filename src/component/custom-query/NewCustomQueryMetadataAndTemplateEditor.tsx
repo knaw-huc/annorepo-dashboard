@@ -6,10 +6,11 @@ import {useEffect, useState} from "react";
 import {isEmpty, isString} from "lodash";
 import {toErrorRecord} from "../../store/query/util/toErrorRecord.ts";
 import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
-import {Info} from "../common/icon/Info.tsx";
+import {Help} from "../common/icon/Help.tsx";
 import {hasError} from "../../store/query/util/hasError.ts";
 import {useStore} from "../../store/useStore.ts";
 import {toParameterName} from "../../store/query/util/toParameterName.ts";
+import {Tooltip} from "../common/Tooltip.tsx";
 
 /**
  * Allow creating a new custom query
@@ -78,11 +79,11 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
         <div className="ml-4">
           <CheckboxWithLabel
             label={
-              <span
-                title="Search with a variable parameter, or use a fixed value"
+              <Tooltip
+                text="Search with a variable parameter, or use a fixed value"
               >
-                Parameter <Info/>
-              </span>
+                Parameter <Help/>
+              </Tooltip>
             }
             value={isString(params[i])}
             onChange={(update) => handleParameterChange(i, update)}

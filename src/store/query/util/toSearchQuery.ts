@@ -35,7 +35,7 @@ function mergeForms(
       }
       if (key in merged) {
         throw new Error(
-          `field '${key}' already exists.`
+          `'${key}' already exists.`
         );
       }
       merged[key] = value;

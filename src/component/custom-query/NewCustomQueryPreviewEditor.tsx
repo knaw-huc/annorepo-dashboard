@@ -1,6 +1,5 @@
 import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
-import {Loading} from "../common/Loading.tsx";
 import {ReactNode, useEffect, useState} from "react";
 import {QR, useGet} from "../../client/query/useGet.tsx";
 import {ArMyContainers} from "../../client/ArModel.ts";
@@ -11,7 +10,8 @@ import {
   ContainerSearchArgs,
   useContainerSearch
 } from "../../client/endpoint/useContainerSearch.tsx";
-import {Dropdown} from "../common/form/Dropdown.tsx";
+
+import {ContainerDropdown} from "./ContainerDropdown.tsx";
 
 export function NewCustomQueryPreviewEditor(props: {
   moreButtons?: ReactNode
@@ -30,11 +30,9 @@ export function NewCustomQueryPreviewEditor(props: {
   const {page} = useContainerSearch(submitted);
 
   useEffect(() => {
-    if(!isInit && containerNames.length && query) {
+    if (!isInit && containerNames.length && query) {
       setInit(true)
-      const containerNameUpdate = containerNames[0];
-      setSubmitted({query, pageNo, containerName: containerNameUpdate})
-      setContainerName(containerNameUpdate)
+      setSubmitted({query, pageNo, containerName: ''})
     }
   }, [isInit, containerNames, query]);
 
@@ -54,22 +52,18 @@ export function NewCustomQueryPreviewEditor(props: {
       onSubmit={handleSubmit}
       moreButtons={<>
         {props.moreButtons}
-        <Dropdown
-          placeholder="Select container"
-          className="ml-5 mr-2"
-          selectedValue={containerName}
-          options={containerNames.map(key => ({label: key, value: key}))}
-          onSelect={option => setContainerName(option.value)}
-        />
+        <span className="ml-5"><ContainerDropdown
+          selected={containerName}
+          onSelect={setContainerName}
+        /></span>
       </>}
     />
 
     {page.data
-      ? <AnnotationPage
+      && <AnnotationPage
         pageNo={pageNo}
         page={page.data}
         onChangePageNo={handleChangePage}
       />
-      : <Loading/>
     }</>
 }
