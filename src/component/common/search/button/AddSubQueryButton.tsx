@@ -7,7 +7,7 @@ export function AddSubQueryButton(props: {
 }) {
   return <Button
     type="button"
-    className="pl-3 h-full border-b-2 mr-2"
+    className="h-full border-b-2"
     onClick={props.onClick}
     secondary
     disabled={props.disabled}

@@ -20,10 +20,14 @@ import {toParamName} from "../../store/query/util/toParamName.ts";
 import {SearchButton} from "../common/search/button/SearchButton.tsx";
 import {hasErrors} from "../../store/query/util/hasErrors.ts";
 import {AddSubQueryButton} from "../common/search/button/AddSubQueryButton.tsx";
+import {Button} from "../common/Button.tsx";
+import {Store} from "../common/icon/Store.tsx";
+import {Next} from "../common/icon/Next.tsx";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string
   onSetContainerName: (containerName: string) => void
+  onSave: () => void
 }) {
   const {containerName, onSetContainerName} = props;
   const [pageNo, setPageNo] = useState(0);
@@ -72,33 +76,47 @@ export function NewCustomQueryPreviewEditor(props: {
     || hasErrors(errors);
 
   return <>
-    <p>
+    <div>
       <ContainerDropdown
         selected={containerName}
         onSelect={onSetContainerName}
-      />
-    </p>
-
-    <QueryEditor
-      containerName={containerName}
-    />
-
-    <div className="mb-2">
-      <AddSubQueryButton
-        onClick={handleAddSubQuery}
-        disabled={searchDisabled}
       />
       <SearchButton
         onClick={handleSubmit}
         disabled={searchDisabled}
       />
+      {containerName && <Button
+        secondary
+        className="ml-3"
+        onClick={props.onSave}
+        disabled={!containerName || hasErrors(errors)}
+      >
+        <Store className="mr-2"/>
+        Store as custom query <Next className="mr-2"/>
+      </Button>}
     </div>
 
-    {page.data
-      && <AnnotationPage
-        pageNo={pageNo}
-        page={page.data}
-        onChangePageNo={handleChangePage}
-      />
-    }</>
+    {containerName && <>
+      <div className="mt-10">
+        <QueryEditor
+          containerName={containerName}
+        />
+        <span className="inline-block">
+          <AddSubQueryButton
+            onClick={handleAddSubQuery}
+            disabled={searchDisabled}
+          />
+        </span>
+      </div>
+
+      {page.data
+        && <AnnotationPage
+          pageNo={pageNo}
+          page={page.data}
+          onChangePageNo={handleChangePage}
+        />
+      }
+    </>}
+
+  </>
 }

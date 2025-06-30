@@ -56,6 +56,7 @@ export function QueryFieldInput(props: {
       // Use timeout to prevent suggestions to disappear before being clicked:
       onBlur={() => setTimeout(() => setOpen(false), 200)}
       disabled={disabled}
+      autoComplete='off'
     />
     {!isEmpty(suggestions) && <ul
       className={className}

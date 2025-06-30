@@ -8,7 +8,7 @@ export function SearchButton(props: {
   return <Button
     disabled={props.disabled === true}
     type="button"
-    className="pl-5 h-full border-b-2"
+    className="h-full border-b-2"
     onClick={props.onClick}
   >
     Search

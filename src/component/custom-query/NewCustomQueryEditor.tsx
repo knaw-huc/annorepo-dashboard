@@ -2,7 +2,6 @@ import {useEffect, useState} from "react";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {NewCustomQueryPreviewEditor} from "./NewCustomQueryPreviewEditor.tsx";
-import {Store} from "../common/icon/Store.tsx";
 import {ArCustomQueryForm} from "../../client/ArModel.ts";
 import {MR, usePost} from "../../client/query/usePost.tsx";
 import {useQueryClient} from "@tanstack/react-query";
@@ -17,7 +16,6 @@ import {Warning} from "../common/Warning.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
 import {defaultParams, defaultTemplate} from "../common/search/QueryModel.ts";
 import {useStore} from "../../store/useStore.ts";
-import {hasErrors} from "../../store/query/util/hasErrors.ts";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
@@ -25,7 +23,7 @@ export function NewCustomQueryEditor(props: {
   onClose: () => void
 }) {
 
-  const {initWithTemplate, errors} = useStore()
+  const {initWithTemplate} = useStore()
 
   const asTemplate = true;
   const query = useSearchQuery(asTemplate)
@@ -77,28 +75,23 @@ export function NewCustomQueryEditor(props: {
     {createCustomQuery.isError && <Warning>
       {createCustomQuery.error.message}
     </Warning>}
-    <div className="mb-3">
-      {mode === 'create-global-query' ? <Button
-        secondary
-        className="mr-3"
-        onClick={() => setMode('create-custom-query')}
-        disabled={hasErrors(errors)}
-      >
-        <Store className="mr-2"/>
-        Store as custom query <Next className="mr-2"/>
-      </Button> :
-      <Button
-        onClick={() => setMode('create-global-query')}
-        secondary
-        className="pr-5"
-      >
-        <Back className="mr-2"/>Edit query
-      </Button>}
+    <div className="">
+      {mode === 'create-custom-query' &&
+        <Button
+          onClick={() => setMode('create-global-query')}
+          secondary
+          className="pr-5"
+        >
+          <Back className="mr-2"/>Edit query
+        </Button>}
     </div>
-    {mode === 'create-global-query' && <NewCustomQueryPreviewEditor
-      containerName={containerName}
-      onSetContainerName={setContainerName}
-    />}
+    {mode === 'create-global-query' && <>
+      <NewCustomQueryPreviewEditor
+        containerName={containerName}
+        onSetContainerName={setContainerName}
+        onSave={() => setMode('create-custom-query')}
+      />
+    </>}
     {mode === 'create-custom-query' && <>
       <NewCustomQueryMetadataAndTemplateEditor
         metadata={queryMetadata}

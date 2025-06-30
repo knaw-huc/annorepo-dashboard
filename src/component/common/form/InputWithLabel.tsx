@@ -10,7 +10,7 @@ export function InputWithLabel(props: {
   onChange: (value: string) => void
   onFocus?: () => void
   onBlur?: () => void
-  autoComplete: 'on' | 'off'
+  autoComplete?: 'on' | 'off'
 }) {
 
   let className = 'relative'
