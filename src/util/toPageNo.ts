@@ -8,7 +8,6 @@ export function toPageNo(id: string): number {
   } catch (cause) {
     throw new Error(`Could not transform id ${id} to url`, {cause})
   }
-  let pageNo = toNumber(url.searchParams.get('page'))
+  return toNumber(url.searchParams.get('page'))
     ?? orThrow(`No page search param in ${id}`);
-  return pageNo;
 }

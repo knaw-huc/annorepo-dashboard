@@ -5,7 +5,7 @@ export function toName(id: string): string {
   try {
     url = new URL(id);
   } catch (cause) {
-    console.warn(`Could not transform id ${id} to url`, {cause})
+    console.debug(`Could not transform id ${id} to url`, {cause})
     return id;
   }
   return url
