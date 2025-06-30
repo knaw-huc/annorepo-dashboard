@@ -72,6 +72,13 @@ export function NewCustomQueryPreviewEditor(props: {
     || hasErrors(errors);
 
   return <>
+    <p>
+      <ContainerDropdown
+        selected={containerName}
+        onSelect={onSetContainerName}
+      />
+    </p>
+
     <QueryEditor
       containerName={containerName}
     />
@@ -81,12 +88,6 @@ export function NewCustomQueryPreviewEditor(props: {
         onClick={handleAddSubQuery}
         disabled={searchDisabled}
       />
-      <span className="ml-5">
-        <ContainerDropdown
-          selected={containerName}
-          onSelect={onSetContainerName}
-        />
-      </span>
       <SearchButton
         onClick={handleSubmit}
         disabled={searchDisabled}
