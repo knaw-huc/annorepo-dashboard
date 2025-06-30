@@ -94,10 +94,10 @@ export function ContainerSearch(props: ContainerSearchProps) {
         onClick={handleAddSubQuery}
         disabled={searchDisabled}
       />
-      <SearchButton
+      <span className="ml-3"><SearchButton
         onClick={handleSubmitSearch}
         disabled={searchDisabled}
-      />
+      /></span>
     </div>
     {page
       ? <AnnotationPage
