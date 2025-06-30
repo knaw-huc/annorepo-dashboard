@@ -12,6 +12,22 @@ import {H6} from "../common/H6.tsx";
 import {useState} from "react";
 import {Down} from "../common/icon/Down.tsx";
 import {Next} from "../common/icon/Next.tsx";
+import {get, isObject} from "lodash";
+import {Badge} from "../common/Badge.tsx";
+
+/**
+ * TODO: make configurable
+ * Source: https://www.w3.org/TR/annotation-model/#model-8
+ */
+const previewPaths = [
+  "creator",
+  "created",
+  "generator",
+  "generated",
+  "modified",
+  "type",
+  "body.type"
+]
 
 export function AnnotationCard(props: {
   annotation: ArAnnotation
@@ -20,6 +36,9 @@ export function AnnotationCard(props: {
   const name = toName(annotation.via || annotation.id);
   const [isBodyOpen, setBodyOpen] = useState(false);
   const [isTargetOpen, setTargetOpen] = useState(false);
+  const previewProps = previewPaths
+    .map(path => ({path, value: get(annotation, path)}))
+
   return <Card
     header={<H5>
       {name}
@@ -40,6 +59,17 @@ export function AnnotationCard(props: {
           </>}
       </>}
   >
+    <p className="-ml-1 mt-3">
+      {previewProps
+        .filter(p => p.value)
+        .map(p => <Badge className="mr-2">
+          {p.path.replace('.', ' ')}: &nbsp;
+          <strong>{isObject(p.value) ? JSON.stringify(p.value) : p.value}</strong>
+        </Badge>)
+      }
+
+    </p>
+    <Hr size="sm"/>
     <H6
       className="cursor-pointer select-none"
       onClick={() => setBodyOpen(prev => !prev)}
