@@ -75,23 +75,24 @@ export function NewCustomQueryPreviewEditor(props: {
   return <>
     <QueryEditor
       containerName={containerName}
-      moreButtons={<>
-        {props.moreButtons}
-        <span className="ml-5"><ContainerDropdown
-          selected={containerName}
-          onSelect={onSetContainerName}
-        /></span>
-      </>}
     />
     <div className="mb-2">
       <AddSubQueryButton
         onClick={handleAddSubQuery}
         disabled={searchDisabled}
       />
+      {props.moreButtons}
+      <span className="ml-5">
+        <ContainerDropdown
+          selected={containerName}
+          onSelect={onSetContainerName}
+        />
+      </span>
       <SearchButton
         onClick={handleSubmit}
         disabled={searchDisabled}
       />
+
     </div>
     {page.data
       && <AnnotationPage

@@ -1,4 +1,3 @@
-import {ReactNode} from "react";
 import {SubQueryEditor} from "./SubQueryEditor.tsx";
 import {useStore} from "../../../store/useStore.ts";
 import {
@@ -7,7 +6,6 @@ import {
 
 export function QueryEditor(props: {
   containerName: string,
-  moreButtons?: ReactNode
 }) {
   const {containerName} = props;
 
@@ -17,9 +15,6 @@ export function QueryEditor(props: {
   const {forms} = useStore();
 
   return <div>
-    <div className="mb-2">
-      {props.moreButtons}
-    </div>
     {forms.map((_, i) => {
       return <SubQueryEditor
         key={i}
