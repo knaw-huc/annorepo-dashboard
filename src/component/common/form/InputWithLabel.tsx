@@ -10,6 +10,7 @@ export function InputWithLabel(props: {
   onChange: (value: string) => void
   onFocus?: () => void
   onBlur?: () => void
+  autoComplete: 'on' | 'off'
 }) {
 
   let className = 'relative'
@@ -43,6 +44,8 @@ export function InputWithLabel(props: {
       onFocus={props.onFocus}
       onBlur={props.onBlur}
       onChange={e => props.onChange(e.target.value)}
+      autoComplete={props.autoComplete ?? 'on'}
+
     />
     <label
       htmlFor="floating_filled"

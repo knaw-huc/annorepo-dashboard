@@ -89,12 +89,13 @@ export function QueryValueInput(props: {
         onFocus={() => setOpen(true)}
         // Use timeout to prevent suggestions to disappear before being clicked:
         onBlur={() => setTimeout(() => setOpen(false), 200)}
-
+        // Should not interfere with dropdown suggestions:
+        autoComplete="off"
       />
       {!isEmpty(suggestions) && <ul
         className={dropdownClassname}
       >
-        <div className="py-1 max-h-100 max-w-100 overflow-y-scroll overflow-x-visible">
+        <div className="py-1 max-h-100 max-w-100 overflow-y-auto overflow-x-visible">
           {suggestions.map((s, i) =>
             <DropdownItem
               key={s}
