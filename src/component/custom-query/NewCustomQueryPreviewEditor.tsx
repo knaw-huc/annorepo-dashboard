@@ -97,7 +97,7 @@ export function NewCustomQueryPreviewEditor(props: {
     </div>
 
     {containerName && <>
-      <div className="mt-10">
+      <div className="mt-7">
         <QueryEditor
           containerName={containerName}
         />

@@ -101,16 +101,15 @@ export function CustomQueryDetail(props: {
         Search<Next className="ml-2"/>
       </Button>
     </div>
-    <CustomQueryCallEditor
+    {containerName && <CustomQueryCallEditor
       containerName={containerName}
-    />
+    />}
     <div className="max-w-[100vw] whitespace-pre-wrap">
       {!!customQueryCall.data && <AnnotationPage
         pageNo={pageNo}
         page={customQueryCall.data}
         onChangePageNo={handleChangePage}
-      />
-      }
+      />}
     </div>
   </>
 }
