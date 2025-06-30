@@ -1,5 +1,5 @@
-import {Next} from "../icon/Next.tsx";
-import {Button} from "../Button.tsx";
+import {Next} from "../../icon/Next.tsx";
+import {Button} from "../../Button.tsx";
 
 export function SearchButton(props: {
   onClick: () => void,

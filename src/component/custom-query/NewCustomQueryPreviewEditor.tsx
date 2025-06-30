@@ -17,8 +17,9 @@ import {toQueryFieldForm} from "../../store/query/util/toQueryFieldForm.ts";
 import {mapValues} from "lodash";
 import {useStore} from "../../store/useStore.ts";
 import {toParamName} from "../../store/query/util/toParamName.ts";
-import {SearchButton} from "../common/search/SearchButton.tsx";
+import {SearchButton} from "../common/search/button/SearchButton.tsx";
 import {hasErrors} from "../../store/query/util/hasErrors.ts";
+import {AddSubQueryButton} from "../common/search/button/AddSubQueryButton.tsx";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string
@@ -74,7 +75,6 @@ export function NewCustomQueryPreviewEditor(props: {
   return <>
     <QueryEditor
       containerName={containerName}
-      onAddSubQuery={handleAddSubQuery}
       moreButtons={<>
         {props.moreButtons}
         <span className="ml-5"><ContainerDropdown
@@ -84,6 +84,10 @@ export function NewCustomQueryPreviewEditor(props: {
       </>}
     />
     <div className="mb-2">
+      <AddSubQueryButton
+        onClick={handleAddSubQuery}
+        disabled={searchDisabled}
+      />
       <SearchButton
         onClick={handleSubmit}
         disabled={searchDisabled}

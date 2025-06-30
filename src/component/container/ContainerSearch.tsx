@@ -15,8 +15,9 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 import {toQueryFieldForm} from "../../store/query/util/toQueryFieldForm.ts";
 import {mapValues} from "lodash";
-import {SearchButton} from "../common/search/SearchButton.tsx";
+import {SearchButton} from "../common/search/button/SearchButton.tsx";
 import {hasErrors} from "../../store/query/util/hasErrors.ts";
+import {AddSubQueryButton} from "../common/search/button/AddSubQueryButton.tsx";
 
 export type ContainerSearchProps = {
   containerName: string,
@@ -78,20 +79,24 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
 
+  const searchDisabled = !!search.error || !forms.length || hasErrors(errors);
+
   if (!container.isSuccess || !page.isSuccess) {
     return <StatusMessage requests={[container, page]}/>;
   }
-
   return <>
     <H1>Search annotations</H1>
     <QueryEditor
       containerName={containerName}
-      onAddSubQuery={handleAddSubQuery}
     />
     <div className="mb-2">
+      <AddSubQueryButton
+        onClick={handleAddSubQuery}
+        disabled={searchDisabled}
+      />
       <SearchButton
         onClick={handleSubmitSearch}
-        disabled={!!search.error || !forms.length || hasErrors(errors)}
+        disabled={searchDisabled}
       />
     </div>
     {page
