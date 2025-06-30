@@ -17,6 +17,8 @@ import {toQueryFieldForm} from "../../store/query/util/toQueryFieldForm.ts";
 import {mapValues} from "lodash";
 import {useStore} from "../../store/useStore.ts";
 import {toParamName} from "../../store/query/util/toParamName.ts";
+import {SearchButton} from "../common/search/SearchButton.tsx";
+import {hasErrors} from "../../store/query/util/hasErrors.ts";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string
@@ -34,7 +36,7 @@ export function NewCustomQueryPreviewEditor(props: {
   )
   const [isInit, setInit] = useState<boolean>()
   const {page} = useContainerSearch(submitted);
-  const {forms, addForm} = useStore()
+  const {forms, errors, addForm} = useStore()
   useEffect(() => {
     if (!isInit && containerNames.length && query) {
       setInit(true)
@@ -48,6 +50,9 @@ export function NewCustomQueryPreviewEditor(props: {
   }
 
   const handleSubmit = () => {
+    if (hasErrors(errors)) {
+      return;
+    }
     setSubmitted({query, pageNo, containerName})
   }
 
@@ -60,11 +65,15 @@ export function NewCustomQueryPreviewEditor(props: {
     addForm({form, error, param})
   }
 
+  const searchDisabled: boolean =
+    !containerName
+    || !!page.error
+    || !forms.length
+    || hasErrors(errors);
+
   return <>
     <QueryEditor
       containerName={containerName}
-      searchError={page.error}
-      onSubmit={handleSubmit}
       onAddSubQuery={handleAddSubQuery}
       moreButtons={<>
         {props.moreButtons}
@@ -74,7 +83,12 @@ export function NewCustomQueryPreviewEditor(props: {
         /></span>
       </>}
     />
-
+    <div className="mb-2">
+      <SearchButton
+        onClick={handleSubmit}
+        disabled={searchDisabled}
+      />
+    </div>
     {page.data
       && <AnnotationPage
         pageNo={pageNo}

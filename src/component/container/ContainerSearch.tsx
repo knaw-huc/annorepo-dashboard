@@ -15,6 +15,8 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 import {toQueryFieldForm} from "../../store/query/util/toQueryFieldForm.ts";
 import {mapValues} from "lodash";
+import {SearchButton} from "../common/search/SearchButton.tsx";
+import {hasErrors} from "../../store/query/util/hasErrors.ts";
 
 export type ContainerSearchProps = {
   containerName: string,
@@ -27,7 +29,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(containerName)
-  const {initWithQuery, addForm} = useStore()
+  const {initWithQuery, addForm, forms, errors} = useStore()
   const [isInit, setInit] = useState(false)
   const query = useSearchQuery()
 
@@ -61,6 +63,9 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   function handleSubmitSearch() {
+    if (hasErrors(errors)) {
+      return;
+    }
     setSubmitted({containerName, query, pageNo});
   }
 
@@ -72,6 +77,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     addForm({form, error, param})
   }
 
+
   if (!container.isSuccess || !page.isSuccess) {
     return <StatusMessage requests={[container, page]}/>;
   }
@@ -80,10 +86,14 @@ export function ContainerSearch(props: ContainerSearchProps) {
     <H1>Search annotations</H1>
     <QueryEditor
       containerName={containerName}
-      searchError={search.error}
-      onSubmit={handleSubmitSearch}
       onAddSubQuery={handleAddSubQuery}
     />
+    <div className="mb-2">
+      <SearchButton
+        onClick={handleSubmitSearch}
+        disabled={!!search.error || !forms.length || hasErrors(errors)}
+      />
+    </div>
     {page
       ? <AnnotationPage
         pageNo={pageNo}
