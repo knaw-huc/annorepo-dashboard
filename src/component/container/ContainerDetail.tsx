@@ -48,28 +48,25 @@ export function ContainerDetail(props: ContainerDetailProps) {
     <ContainerSummary name={name} className="mt-5" />
     <ContainerAnnotationFields name={props.name}/>
     <H2>Annotations</H2>
-
+    <div className="mb-3">
+      <Button
+        onClick={props.onClickCreateAnnotation}
+        className="mr-2"
+      >
+        Add<Add className="ml-1"/>
+      </Button>
+      <Button
+        onClick={props.onClickSearchAnnotations}
+      >
+        Search<Search className="ml-1"/>
+      </Button>
+    </div>
     {pageNo === NO_PAGE
       ? <Loading/>
       : <ContainerAnnotationPage
         containerName={name}
         pageNo={pageNo}
         onChangePageNo={handleChangePage}
-        moreButtons={
-          <>
-            <Button
-              onClick={props.onClickCreateAnnotation}
-              className="mr-2"
-            >
-              Add<Add className="ml-1"/>
-            </Button>
-            <Button
-              onClick={props.onClickSearchAnnotations}
-            >
-              Search<Search className="ml-1"/>
-            </Button>
-          </>
-        }
       />
     }
   </div>
