@@ -16,7 +16,7 @@ export function Card(props: PropsWithChildren<{
     >
       {props.header}
     </div>}
-    <div className=" px-6 py-3 overflow-scroll">
+    <div className=" px-6 py-3 overflow-auto">
       {props.children}
     </div>
     {props.footer && <div
