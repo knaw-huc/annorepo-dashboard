@@ -1,6 +1,6 @@
 import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
-import {ReactNode, useEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {QR, useGet} from "../../client/query/useGet.tsx";
 import {ArMyContainers} from "../../client/ArModel.ts";
 import {toPageNo} from "../../util/toPageNo.ts";
@@ -24,7 +24,6 @@ import {AddSubQueryButton} from "../common/search/button/AddSubQueryButton.tsx";
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string
   onSetContainerName: (containerName: string) => void
-  moreButtons?: ReactNode,
 }) {
   const {containerName, onSetContainerName} = props;
   const [pageNo, setPageNo] = useState(0);
@@ -76,12 +75,12 @@ export function NewCustomQueryPreviewEditor(props: {
     <QueryEditor
       containerName={containerName}
     />
+
     <div className="mb-2">
       <AddSubQueryButton
         onClick={handleAddSubQuery}
         disabled={searchDisabled}
       />
-      {props.moreButtons}
       <span className="ml-5">
         <ContainerDropdown
           selected={containerName}
@@ -92,8 +91,8 @@ export function NewCustomQueryPreviewEditor(props: {
         onClick={handleSubmit}
         disabled={searchDisabled}
       />
-
     </div>
+
     {page.data
       && <AnnotationPage
         pageNo={pageNo}

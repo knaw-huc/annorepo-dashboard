@@ -77,20 +77,27 @@ export function NewCustomQueryEditor(props: {
     {createCustomQuery.isError && <Warning>
       {createCustomQuery.error.message}
     </Warning>}
+    <div className="mb-3">
+      {mode === 'create-global-query' ? <Button
+        secondary
+        className="mr-3"
+        onClick={() => setMode('create-custom-query')}
+        disabled={hasErrors(errors)}
+      >
+        <Store className="mr-2"/>
+        Store as custom query <Next className="mr-2"/>
+      </Button> :
+      <Button
+        onClick={() => setMode('create-global-query')}
+        secondary
+        className="pr-5"
+      >
+        <Back className="mr-2"/>Edit query
+      </Button>}
+    </div>
     {mode === 'create-global-query' && <NewCustomQueryPreviewEditor
       containerName={containerName}
       onSetContainerName={setContainerName}
-      moreButtons={
-        <Button
-          secondary
-          className="mr-3"
-          onClick={() => setMode('create-custom-query')}
-          disabled={hasErrors(errors)}
-        >
-          <Store className="mr-2"/>
-          Store as custom query
-        </Button>
-      }
     />}
     {mode === 'create-custom-query' && <>
       <NewCustomQueryMetadataAndTemplateEditor
@@ -99,13 +106,6 @@ export function NewCustomQueryEditor(props: {
         onMetadataError={() => setMetadataError(true)}
         onClearMetadataError={() => setMetadataError(false)}
       />
-      <Button
-        onClick={() => setMode('create-global-query')}
-        secondary
-        className="pr-5"
-      >
-        <Back className="mr-2"/>Edit query
-      </Button>
       <Button
         onClick={handleSubmitSave}
         className="ml-3 pl-5"
