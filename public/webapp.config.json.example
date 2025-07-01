@@ -1,3 +1,14 @@
 {
-  "AR_HOST": "/api"
+  "AR_HOST": "/api",
+  "annotationCard": {
+      "paths": [
+        "creator",
+        "created",
+        "generator",
+        "generated",
+        "modified",
+        "type"
+      ],
+      "body": {"paths": ["type"]}
+    }
 }

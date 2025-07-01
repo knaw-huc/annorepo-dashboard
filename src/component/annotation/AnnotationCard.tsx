@@ -17,13 +17,12 @@ import {Badge} from "../common/Badge.tsx";
 import {useConfig} from "../ConfigProvider.tsx";
 
 type PathValue = { path: string, value: string };
-
 type PathValues = { path: string, value: string[] };
 
 export function AnnotationCard(props: {
   annotation: ArAnnotation
 }) {
-  const annotationPreview = useConfig().annotationPreview
+  const annotationPreview = useConfig().annotationCard
 
   const {annotation} = props;
   const name = toName(annotation.via || annotation.id);

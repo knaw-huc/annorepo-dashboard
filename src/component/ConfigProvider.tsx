@@ -3,7 +3,7 @@ import {merge} from "lodash";
 
 export type Config = {
   AR_HOST: string
-  annotationPreview: {
+  annotationCard: {
     paths: string[]
     body: { paths: string[] }
   }
@@ -11,17 +11,7 @@ export type Config = {
 
 const defaultConfig: Config = {
   AR_HOST: '/api',
-  annotationPreview: {
-    paths: [
-      "creator",
-      "created",
-      "generator",
-      "generated",
-      "modified",
-      "type",
-    ],
-    body: {paths: ["type"]}
-  }
+  annotationCard: {paths: [], body: {paths: []}}
 };
 
 export const ConfigContext = createContext({
