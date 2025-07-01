@@ -16,6 +16,10 @@ import {get, isObject} from "lodash";
 import {Badge} from "../common/Badge.tsx";
 import {useConfig} from "../ConfigProvider.tsx";
 
+type PathValue = { path: string, value: string };
+
+type PathValues = { path: string, value: string[] };
+
 export function AnnotationCard(props: {
   annotation: ArAnnotation
 }) {
@@ -28,12 +32,18 @@ export function AnnotationCard(props: {
 
   const previewProps = annotationPreview.paths
     .map(path => ({path, value: get(annotation, path)}))
-  const bodies = Array.isArray(annotation.body)
+  const bodies: PathValue[] = Array.isArray(annotation.body)
     ? annotation.body
     : [annotation.body];
-  const bodyPreviewProps = annotationPreview.body.paths
+  const bodyPreviewProps: PathValue[] = annotationPreview.body.paths
     .map(path => ({path, value: bodies.map(b => get(b, path))}))
-
+    .reduce((accumulator: PathValue[], currentValue: PathValues) => {
+      accumulator.push(...currentValue.value.map(v => ({
+        path: currentValue.path,
+        value: v
+      })))
+      return accumulator
+    }, [])
 
   return <Card
     header={<H5>
@@ -64,13 +74,13 @@ export function AnnotationCard(props: {
         </Badge>)
       }
         {bodyPreviewProps
-            .filter(p => p.value)
-            .map(p => <Badge className="mr-2">
-              body {p.path.replace('.', ' ')}: &nbsp;
-              <strong>{p.value.map(v => isObject(v) ? JSON.stringify(v) : v).join(', ')}</strong>
-            </Badge>)
+          .filter(p => p.value)
+          .map(p => <Badge className="mr-2">
+            body {p.path.replace('.', ' ')}: &nbsp;
+            <strong>{isObject(p.value) ? JSON.stringify(p.value) : p.value}</strong>
+          </Badge>)
         }
-          </>
+      </>
 
     </p>
     <Hr size="sm"/>
