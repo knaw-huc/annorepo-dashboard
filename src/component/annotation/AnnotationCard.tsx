@@ -14,30 +14,26 @@ import {Down} from "../common/icon/Down.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {get, isObject} from "lodash";
 import {Badge} from "../common/Badge.tsx";
-
-/**
- * TODO: make configurable
- * Source: https://www.w3.org/TR/annotation-model/#model-8
- */
-const previewPaths = [
-  "creator",
-  "created",
-  "generator",
-  "generated",
-  "modified",
-  "type",
-  "body.type"
-]
+import {useConfig} from "../ConfigProvider.tsx";
 
 export function AnnotationCard(props: {
   annotation: ArAnnotation
 }) {
+  const annotationPreview = useConfig().annotationPreview
+
   const {annotation} = props;
   const name = toName(annotation.via || annotation.id);
   const [isBodyOpen, setBodyOpen] = useState(false);
   const [isTargetOpen, setTargetOpen] = useState(false);
-  const previewProps = previewPaths
+
+  const previewProps = annotationPreview.paths
     .map(path => ({path, value: get(annotation, path)}))
+  const bodies = Array.isArray(annotation.body)
+    ? annotation.body
+    : [annotation.body];
+  const bodyPreviewProps = annotationPreview.body.paths
+    .map(path => ({path, value: bodies.map(b => get(b, path))}))
+
 
   return <Card
     header={<H5>
@@ -60,13 +56,21 @@ export function AnnotationCard(props: {
       </>}
   >
     <p className="-ml-1 mt-3">
-      {previewProps
+      <>{previewProps
         .filter(p => p.value)
         .map(p => <Badge className="mr-2">
           {p.path.replace('.', ' ')}: &nbsp;
           <strong>{isObject(p.value) ? JSON.stringify(p.value) : p.value}</strong>
         </Badge>)
       }
+        {bodyPreviewProps
+            .filter(p => p.value)
+            .map(p => <Badge className="mr-2">
+              body {p.path.replace('.', ' ')}: &nbsp;
+              <strong>{p.value.map(v => isObject(v) ? JSON.stringify(v) : v).join(', ')}</strong>
+            </Badge>)
+        }
+          </>
 
     </p>
     <Hr size="sm"/>

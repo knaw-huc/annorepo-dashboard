@@ -1,11 +1,27 @@
 import {createContext, PropsWithChildren, useContext} from 'react';
+import {merge} from "lodash";
 
 export type Config = {
   AR_HOST: string
+  annotationPreview: {
+    paths: string[]
+    body: { paths: string[] }
+  }
 }
 
 const defaultConfig: Config = {
   AR_HOST: '/api',
+  annotationPreview: {
+    paths: [
+      "creator",
+      "created",
+      "generator",
+      "generated",
+      "modified",
+      "type",
+    ],
+    body: {paths: ["type"]}
+  }
 };
 
 export const ConfigContext = createContext({
@@ -13,15 +29,16 @@ export const ConfigContext = createContext({
 });
 
 export const ConfigProvider = (props: PropsWithChildren<{
-  config: Config
+  config: Partial<Config>
 }>) => {
 
   const {config} = props;
 
-  validateConfig(config);
+  const mergedConfig: Config = merge(defaultConfig, config);
+  validateConfig(mergedConfig);
 
   return (
-    <ConfigContext.Provider value={{config}}>
+    <ConfigContext.Provider value={{config: mergedConfig}}>
       {props.children}
     </ConfigContext.Provider>
   )
