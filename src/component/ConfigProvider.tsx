@@ -1,17 +1,34 @@
 import {createContext, PropsWithChildren, useContext} from 'react';
 import {merge} from "lodash";
 
+export type AnnotationEditorFieldType =
+  | 'dateTime'
+  | 'userName'
+  | 'text'
+
+export type FieldConfig = {
+  path: string,
+  label: string,
+  type: AnnotationEditorFieldType
+};
+
 export type Config = {
   AR_HOST: string
   annotationCard: {
     paths: string[]
     body: { paths: string[] }
+  },
+  annotationEditor: {
+    fields:
+      FieldConfig[]
+
   }
 }
 
 const defaultConfig: Config = {
   AR_HOST: '/api',
-  annotationCard: {paths: [], body: {paths: []}}
+  annotationCard: {paths: [], body: {paths: []}},
+  annotationEditor: {fields: [{path: "generated", label: "generated", type: "dateTime"}]}
 };
 
 export const ConfigContext = createContext({

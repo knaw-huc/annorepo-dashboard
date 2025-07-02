@@ -36,9 +36,9 @@ export function AnnotationCard(props: {
     : [annotation.body];
   const bodyPreviewProps: PathValue[] = annotationPreview.body.paths
     .map(path => ({path, value: bodies.map(b => get(b, path))}))
-    .reduce((accumulator: PathValue[], currentValue: PathValues) => {
-      accumulator.push(...currentValue.value.map(v => ({
-        path: currentValue.path,
+    .reduce((accumulator: PathValue[], current: PathValues) => {
+      accumulator.push(...current.value.map(v => ({
+        path: current.path,
         value: v
       })))
       return accumulator

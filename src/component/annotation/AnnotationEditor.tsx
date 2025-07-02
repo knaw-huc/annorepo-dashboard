@@ -11,12 +11,16 @@ import {Textarea} from "../common/form/Textarea.tsx";
 import {Warning} from "../common/Warning.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
+import {useConfig} from "../ConfigProvider.tsx";
 
 export function AnnotationEditor(props: {
   containerName: string,
   onClose: () => void
   onCreate: (annotationName: string) => void
 }) {
+  const config = useConfig()
+  const fields = config.annotationEditor.fields
+  // TODO: convert into fields, add to form, and errors
   const {containerName} = props;
   const [slug, setSlug] = useState('')
   const [form, setForm] = useState(cloneDeep(defaultForm))
