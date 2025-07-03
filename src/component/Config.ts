@@ -16,9 +16,8 @@ export type Config = {
   },
   annotationEditor: {
     /**
-     * Some basic lifecycle information fields
+     * Obligatory fields
      */
-    lifecycle:
-      FieldConfig[]
+    fields: FieldConfig[]
   }
 }

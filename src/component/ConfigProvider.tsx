@@ -9,7 +9,7 @@ const defaultConfig: Config = {
     body: {paths: []}
   },
   annotationEditor: {
-    lifecycle: []
+    fields: []
   }
 };
 

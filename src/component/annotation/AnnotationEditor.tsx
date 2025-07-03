@@ -15,7 +15,7 @@ import {useConfig} from "../ConfigProvider.tsx";
 import {get, isString, set} from "lodash";
 import {AnnotationEditorFieldType} from "../Config.ts";
 
-export function toInitialAnnotationFieldValue(
+export function toDefaultAnnotationFieldValue(
   type: AnnotationEditorFieldType
 ): string {
   switch (type) {
@@ -37,19 +37,20 @@ export function AnnotationEditor(props: {
   const {containerName} = props;
   const [slug, setSlug] = useState('')
 
-  const lifecycleFields = config.annotationEditor.lifecycle
-  // TODO: convert into fields, add to form, and errors
+  const configFields = config.annotationEditor.fields
+
   const initialForm = cloneDeep(defaultAnnotation);
-  lifecycleFields.forEach(field => {
-    set(initialForm, field.path, toInitialAnnotationFieldValue(field.type))
+  configFields.forEach(field => {
+    set(initialForm, field.path, toDefaultAnnotationFieldValue(field.type))
   })
+
   const [form, setForm] = useState(initialForm)
-  const [error, setError] = useState<string>('')
+  const [bodyError, setBodyError] = useState<string>('')
   const queryClient = useQueryClient()
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
 
   const handleSubmit = () => {
-    if (error) {
+    if (bodyError) {
       return;
     }
     const toSubmit = {...form, body: form.body}
@@ -111,7 +112,7 @@ export function AnnotationEditor(props: {
               onChange={update => setForm(prev => ({...prev, type: update}))}
               className="mt-5"
             />
-            {lifecycleFields.map(lf => <InputWithLabel
+            {configFields.map(lf => <InputWithLabel
                 key={lf.path}
                 value={get(form, lf.path) || ''}
                 label={lf.label}
@@ -126,7 +127,7 @@ export function AnnotationEditor(props: {
             )}
             <div className="mt-5">
               <Button
-                disabled={!!error}
+                disabled={!!bodyError}
                 onClick={handleSubmit}
                 className="mr-5"
               >
@@ -137,7 +138,7 @@ export function AnnotationEditor(props: {
           </div>
 
           <div className="pb-5">
-            {error && <Warning>{error}</Warning>}
+            {bodyError && <Warning>{bodyError}</Warning>}
             <Textarea
               label="Body"
               value={JSON.stringify(form.body, null, 2)}
@@ -145,9 +146,9 @@ export function AnnotationEditor(props: {
                 let parsed: any;
                 try {
                   parsed = JSON.parse(update);
-                  setError('')
+                  setBodyError('')
                 } catch (e) {
-                  setError('Please enter valid json')
+                  setBodyError('Please enter valid json')
                 }
                 setForm(prev => ({...prev, body: parsed}));
               }}
