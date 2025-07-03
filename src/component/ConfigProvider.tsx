@@ -24,7 +24,6 @@ export const ConfigProvider = (props: PropsWithChildren<{
   const {config} = props;
 
   const mergedConfig: Config = merge(defaultConfig, config);
-  console.log(mergedConfig);
   validateConfig(mergedConfig);
 
   return (

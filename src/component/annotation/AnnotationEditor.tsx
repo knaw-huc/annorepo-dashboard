@@ -43,7 +43,6 @@ export function AnnotationEditor(props: {
   lifecycleFields.forEach(field => {
     set(initialForm, field.path, toInitialAnnotationFieldValue(field.type))
   })
-  console.log(initialForm)
   const [form, setForm] = useState(initialForm)
   const [error, setError] = useState<string>('')
   const queryClient = useQueryClient()
