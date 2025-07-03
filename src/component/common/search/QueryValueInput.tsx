@@ -1,7 +1,7 @@
 import {useStore} from "../../../store/useStore.ts";
 import {findMapper} from "./util/findMapper.tsx";
 import {createInputValue} from "./util/createInputValue.tsx";
-import {DropdownInput} from "./DropdownInput.tsx";
+import {DropdownInput} from "../form/DropdownInput.tsx";
 
 export function QueryValueInput(props: {
   formIndex: number,

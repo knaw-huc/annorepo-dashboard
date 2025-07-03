@@ -1,5 +1,5 @@
 import {isRangeQueryOperator, QueryOperator} from "../../../client/ArModel.ts";
-import {DropdownInput} from "./DropdownInput.tsx";
+import {DropdownInput} from "../form/DropdownInput.tsx";
 
 export function QueryFieldInput(props: {
   value: string

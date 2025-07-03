@@ -1,6 +1,6 @@
 import {DropdownNavigation} from "./DropdownNavigation.tsx";
-import {InputWithLabel} from "../form/InputWithLabel.tsx";
-import {DropdownList} from "../form/DropdownList.tsx";
+import {InputWithLabel} from "./InputWithLabel.tsx";
+import {DropdownList} from "./DropdownList.tsx";
 import {useState} from "react";
 
 export function DropdownInput(props: {

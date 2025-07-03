@@ -17,7 +17,7 @@ import {AnnotationEditorFieldType} from "../Config.ts";
 import {
   useContainerFieldDistinctValues
 } from "../../client/endpoint/useContainerFieldDistinctValues.tsx";
-import {DropdownInput} from "../common/search/DropdownInput.tsx";
+import {DropdownInput} from "../common/form/DropdownInput.tsx";
 
 export function toDefaultAnnotationFieldValue(
   type: AnnotationEditorFieldType
