@@ -22,7 +22,7 @@ type PathValues = { path: string, value: string[] };
 export function AnnotationCard(props: {
   annotation: ArAnnotation
 }) {
-  const annotationPreview = useConfig().annotationCard
+  const annotationPreview = useConfig().annotationPreview
 
   const {annotation} = props;
   const name = toName(annotation.via || annotation.id);

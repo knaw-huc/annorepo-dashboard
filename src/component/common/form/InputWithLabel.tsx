@@ -45,7 +45,6 @@ export function InputWithLabel(props: {
       onBlur={props.onBlur}
       onChange={e => props.onChange(e.target.value)}
       autoComplete={props.autoComplete ?? 'on'}
-
     />
     <label
       htmlFor="floating_filled"

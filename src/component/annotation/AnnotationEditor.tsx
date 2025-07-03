@@ -12,6 +12,21 @@ import {Warning} from "../common/Warning.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 import {useConfig} from "../ConfigProvider.tsx";
+import {get, set} from "lodash";
+import {AnnotationEditorFieldType} from "../Config.ts";
+
+export function toInitialAnnotationFieldValue(
+  type: AnnotationEditorFieldType
+): string {
+  switch (type) {
+    case "dateTime":
+      return new Date().toISOString();
+    case "text":
+      return ""
+    default:
+      return ""
+  }
+}
 
 export function AnnotationEditor(props: {
   containerName: string,
@@ -19,11 +34,16 @@ export function AnnotationEditor(props: {
   onCreate: (annotationName: string) => void
 }) {
   const config = useConfig()
-  const fields = config.annotationEditor.fields
-  // TODO: convert into fields, add to form, and errors
   const {containerName} = props;
   const [slug, setSlug] = useState('')
-  const [form, setForm] = useState(cloneDeep(defaultForm))
+  const lifecycleFields = config.annotationEditor.lifecycle
+  // TODO: convert into fields, add to form, and errors
+  const initialForm = cloneDeep(defaultForm);
+  lifecycleFields.forEach(field => {
+    set(initialForm, field.path, toInitialAnnotationFieldValue(field.type))
+  })
+  console.log(initialForm)
+  const [form, setForm] = useState(initialForm)
   const [error, setError] = useState<string>('')
   const queryClient = useQueryClient()
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
@@ -88,6 +108,19 @@ export function AnnotationEditor(props: {
               onChange={update => setForm(prev => ({...prev, type: update}))}
               className="mt-5"
             />
+            {lifecycleFields.map(lf => <InputWithLabel
+                key={lf.path}
+                value={get(form, lf.path) || ''}
+                label={lf.label}
+                onChange={update => setForm(prev => {
+                  const next = {...prev}
+                  set(next, lf.path, update);
+                  return next
+                })}
+                className="mt-5"
+                disabled={lf.type === 'dateTime'}
+              />
+            )}
             <div className="mt-5">
               <Button
                 disabled={!!error}
@@ -111,7 +144,7 @@ export function AnnotationEditor(props: {
                   parsed = JSON.parse(update);
                   setError('')
                 } catch (e) {
-                  setError('Please enter valid json body')
+                  setError('Please enter valid json')
                 }
                 const body = JSON.stringify(parsed, null, 2);
                 setForm(prev => ({...prev, body}));

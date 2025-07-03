@@ -3,7 +3,6 @@ import {
   useContainerAnnotation
 } from "../../client/endpoint/useContainerAnnotation.tsx";
 import {Loading} from "../common/Loading.tsx";
-import {Button} from "../common/Button.tsx";
 
 export function AnnotationDetail(props: {
   containerName: string
@@ -17,7 +16,6 @@ export function AnnotationDetail(props: {
   }
 
   return <div>
-    <Button onClick={props.onClose}>&lt; Back</Button>
     {/* Use grid to prevent overflow */}
     <div className="grid grid-cols-1">
       <AnnotationCard annotation={annotation}/>

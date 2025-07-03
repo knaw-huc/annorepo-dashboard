@@ -1,6 +1,6 @@
 {
   "AR_HOST": "/api",
-  "annotationCard": {
+  "annotationPreview": {
       "paths": [
         "creator",
         "created",
@@ -10,5 +10,11 @@
         "type"
       ],
       "body": {"paths": ["type"]}
+    },
+    "annotationEditor": {
+      "lifecycle": [
+        {"path": "creator", "label": "Creator", "type": "text"},
+        {"path": "generated", "label": "Generated", "type": "dateTime"}
+      ]
     }
 }
