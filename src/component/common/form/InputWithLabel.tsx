@@ -31,7 +31,7 @@ export function InputWithLabel(props: {
   }
 
   const label = props.errorLabel
-    ? `${props.label}: ${props.errorLabel}`
+    ? `${props.label} error: ${props.errorLabel}`
     : props.label
 
   return <div className={className}>

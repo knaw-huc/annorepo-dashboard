@@ -18,19 +18,8 @@ import {
   useContainerFieldDistinctValues
 } from "../../client/endpoint/useContainerFieldDistinctValues.tsx";
 import {DropdownInput} from "../common/form/DropdownInput.tsx";
-
-export function toDefaultAnnotationFieldValue(
-  type: AnnotationEditorFieldType
-): string {
-  switch (type) {
-    case "dateTime":
-      return new Date().toISOString();
-    case "text":
-      return ""
-    default:
-      return ""
-  }
-}
+import {orThrow} from "../../util/orThrow.ts";
+import {filterSuggestions} from "../common/form/util/filterSuggestions.tsx";
 
 export function AnnotationEditor(props: {
   containerName: string,
@@ -47,16 +36,23 @@ export function AnnotationEditor(props: {
   configFields.forEach(field => {
     set(initialForm, field.path, toDefaultAnnotationFieldValue(field.type))
   })
-
   const [form, setForm] = useState(initialForm)
+
+  const filteredConfigFieldSuggestions = configFields.map(field => ({
+    path: field.path,
+    suggestions: useContainerFieldDistinctValues(containerName, field.path)
+  })).map(field => ({
+    ...field,
+    suggestions: filterSuggestions(field.suggestions.data, get(form, field.path))
+  }))
+
   const [bodyError, setBodyError] = useState<string>('')
   const queryClient = useQueryClient()
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
 
   const typeSuggestions = useContainerFieldDistinctValues(containerName, 'type')
-  const filteredTypeSuggestions = typeSuggestions.data
-      ?.filter(suggestion => suggestion.includes(form.type))
-    ?? []
+  const filteredTypeSuggestions = filterSuggestions(typeSuggestions.data, form.type)
+
   const handleSubmit = () => {
     if (bodyError) {
       return;
@@ -128,18 +124,25 @@ export function AnnotationEditor(props: {
             />
 
             {/*TODO: add suggestions*/}
-            {configFields.map(lf => <InputWithLabel
-                key={lf.path}
-                value={get(form, lf.path) || ''}
-                label={lf.label}
-                onChange={update => setForm(prev => {
-                  const next = {...prev}
-                  set(next, lf.path, update);
-                  return next
-                })}
-                className="mt-5"
-                disabled={lf.type === 'dateTime'}
-              />
+            {configFields.map(cf => {
+                const suggestions = filteredConfigFieldSuggestions
+                    .find(cfs => cfs.path === cf.path)
+                    ?.suggestions
+                  ?? orThrow('No such path')
+                return <DropdownInput
+                  key={cf.path}
+                  value={get(form, cf.path) || ''}
+                  label={cf.label}
+                  onChange={update => setForm(prev => {
+                    const next = {...prev}
+                    set(next, cf.path, update);
+                    return next
+                  })}
+                  className="mt-5"
+                  disabled={cf.type === 'dateTime'}
+                  suggestions={suggestions}
+                />;
+              }
             )}
 
             <div className="mt-5">
@@ -174,11 +177,23 @@ export function AnnotationEditor(props: {
               className="mt-5"
             />
           </div>
-
         </div>
       </div>
     </form>
   </>
+}
+
+export function toDefaultAnnotationFieldValue(
+  type: AnnotationEditorFieldType
+): string {
+  switch (type) {
+    case "dateTime":
+      return new Date().toISOString();
+    case "text":
+      return ""
+    default:
+      return ""
+  }
 }
 
 type AnnotationPost = Omit<ArAnnotation, 'id'>

@@ -5,7 +5,7 @@ import {createQueryKey, QR} from "../query/useGet.tsx";
 export function useContainerFieldDistinctValues(
   containerName: string = '',
   field: string = ''
-): QR<any[]> {
+): QR<string[]> {
   const client = useOpenApiClient()
   const path = '/services/{containerName}/distinct-values/{field}';
   const params = {params: {path: {containerName, field}}};

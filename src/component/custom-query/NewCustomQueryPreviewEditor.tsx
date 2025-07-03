@@ -111,6 +111,7 @@ export function NewCustomQueryPreviewEditor(props: {
 
       {page.data
         && <AnnotationPage
+          className="mt-5"
           pageNo={pageNo}
           page={page.data}
           onChangePageNo={handleChangePage}

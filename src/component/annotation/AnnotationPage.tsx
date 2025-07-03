@@ -6,6 +6,7 @@ export function AnnotationPage(props: {
   pageNo: number
   page: ArAnnotationPage
   onChangePageNo: (page: string) => void
+  className?: string
 }) {
 
   const {page, pageNo, onChangePageNo} = props;
@@ -15,7 +16,7 @@ export function AnnotationPage(props: {
       <p className="mt-5">No results</p>
     </>;
   }
-  return <div>
+  return <div className={props.className || ''}>
     <div>
       <PageNavigation
         current={pageNo}

@@ -4,6 +4,7 @@ import {
   useContainerFieldDistinctValues
 } from "../../../client/endpoint/useContainerFieldDistinctValues.tsx";
 import {isNumber, isString} from "lodash";
+import {filterSuggestions} from "../form/util/filterSuggestions.tsx";
 
 export function useValueSuggestions(props: {
   containerName?: string,
@@ -20,7 +21,5 @@ export function useValueSuggestions(props: {
       ?.filter(v => isString(v) || isNumber(v))
       .map(v => `${v}`)
     ?? []
-  return value
-    ? distinctValueStrings.filter(name => name.includes(value.toString()))
-    : distinctValueStrings
+  return filterSuggestions(distinctValueStrings, value.toString())
 }
