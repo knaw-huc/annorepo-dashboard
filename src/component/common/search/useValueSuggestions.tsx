@@ -1,8 +1,8 @@
 import {QueryValue} from "../../../client/ArModel.ts";
 import {useDebounce} from "../../useDebounce.tsx";
 import {
-  useContainerDistinctValues
-} from "../../../client/endpoint/useContainerDistinctValues.tsx";
+  useContainerFieldDistinctValues
+} from "../../../client/endpoint/useContainerFieldDistinctValues.tsx";
 import {isNumber, isString} from "lodash";
 
 export function useValueSuggestions(props: {
@@ -12,7 +12,7 @@ export function useValueSuggestions(props: {
 }): string[] {
   const {field, value, containerName} = props;
   const fieldDebounced = useDebounce(field)
-  const distinctValues = useContainerDistinctValues(
+  const distinctValues = useContainerFieldDistinctValues(
     containerName ?? '',
     fieldDebounced
   )

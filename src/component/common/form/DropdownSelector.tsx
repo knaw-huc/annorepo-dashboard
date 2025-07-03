@@ -3,7 +3,7 @@ import {ReactNode, useState} from "react";
 import {DropdownItem} from "./DropdownItem.tsx";
 import {SelectOption} from "./SelectOption.tsx";
 
-export function Dropdown(props: {
+export function DropdownSelector(props: {
   placeholder?: ReactNode,
   selectedValue?: string,
   options: SelectOption[],

@@ -1,4 +1,4 @@
-import {Dropdown} from "../form/Dropdown.tsx";
+import {DropdownSelector} from "../form/DropdownSelector.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import noop from "lodash/noop";
@@ -37,7 +37,7 @@ export function CustomSubQueryEditor(props: {
           />
         </div>
         <div className="flex-none mr-2">
-          <Dropdown
+          <DropdownSelector
             selectedValue={operatorValue}
             options={[{label: operatorValue, value: operatorValue}]}
             onSelect={noop}

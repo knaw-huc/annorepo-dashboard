@@ -1,7 +1,7 @@
 import {QR, useGet} from "../../client/query/useGet.tsx";
 import {ArMyContainers} from "../../client/ArModel.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
-import {Dropdown} from "../common/form/Dropdown.tsx";
+import {DropdownSelector} from "../common/form/DropdownSelector.tsx";
 import {Tooltip} from "../common/Tooltip.tsx";
 import {Help} from "../common/icon/Help.tsx";
 
@@ -14,7 +14,7 @@ export function ContainerDropdown(props: {
   const myContainers = useGet('/my/containers') as QR<ArMyContainers>
   const containerNames = getContainerNames(myContainers.data)
 
-  return <Dropdown
+  return <DropdownSelector
     placeholder={<>
       Select container
       <Tooltip

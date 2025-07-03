@@ -7,7 +7,7 @@ import {
   queryValueMappers,
   toOperator
 } from "../../../client/ArModel.ts";
-import {Dropdown} from "../form/Dropdown.tsx";
+import {DropdownSelector} from "../form/DropdownSelector.tsx";
 import {orThrow} from "../../../util/orThrow.ts";
 import {SelectOption} from "../form/SelectOption.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
@@ -104,7 +104,7 @@ export function SubQueryEditor(props: {
           />
         </div>
         <div className="flex-none mr-2">
-          <Dropdown
+          <DropdownSelector
             selectedValue={form.operator.valueOf()}
             options={operatorOptions}
             onSelect={handleSelectOperator}

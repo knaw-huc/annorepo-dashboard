@@ -2,7 +2,7 @@ import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {createQueryKey, QR} from "../query/useGet.tsx";
 
-export function useContainerDistinctValues(
+export function useContainerFieldDistinctValues(
   containerName: string = '',
   field: string = ''
 ): QR<any[]> {

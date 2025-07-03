@@ -14,6 +14,10 @@ import {invalidateBy} from "../../client/query/useGet.tsx";
 import {useConfig} from "../ConfigProvider.tsx";
 import {get, isString, set} from "lodash";
 import {AnnotationEditorFieldType} from "../Config.ts";
+import {
+  useContainerFieldDistinctValues
+} from "../../client/endpoint/useContainerFieldDistinctValues.tsx";
+import {DropdownInput} from "../common/search/DropdownInput.tsx";
 
 export function toDefaultAnnotationFieldValue(
   type: AnnotationEditorFieldType
@@ -49,6 +53,10 @@ export function AnnotationEditor(props: {
   const queryClient = useQueryClient()
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
 
+  const typeSuggestions = useContainerFieldDistinctValues(containerName, 'type')
+  const filteredTypeSuggestions = typeSuggestions.data
+      ?.filter(suggestion => suggestion.includes(form.type))
+    ?? []
   const handleSubmit = () => {
     if (bodyError) {
       return;
@@ -97,6 +105,7 @@ export function AnnotationEditor(props: {
               onChange={update => setSlug(update)}
               className="mt-5"
             />
+
             <InputWithLabel
               value={isString(form.target)
                 ? form.target
@@ -106,12 +115,19 @@ export function AnnotationEditor(props: {
               onChange={update => setForm(prev => ({...prev, target: update}))}
               className="mt-5"
             />
-            <InputWithLabel
-              value={form.type || ''}
+
+            <DropdownInput
               label="Type"
-              onChange={update => setForm(prev => ({...prev, type: update}))}
-              className="mt-5"
+              value={form.type || ''}
+              suggestions={filteredTypeSuggestions}
+              onChange={update => setForm(prev => ({
+                ...prev,
+                type: update
+              }))}
+              className="mt-3"
             />
+
+            {/*TODO: add suggestions*/}
             {configFields.map(lf => <InputWithLabel
                 key={lf.path}
                 value={get(form, lf.path) || ''}
@@ -125,6 +141,7 @@ export function AnnotationEditor(props: {
                 disabled={lf.type === 'dateTime'}
               />
             )}
+
             <div className="mt-5">
               <Button
                 disabled={!!bodyError}
@@ -133,7 +150,9 @@ export function AnnotationEditor(props: {
               >
                 Create
               </Button>
+
               <Button onClick={props.onClose}>Close</Button>
+
             </div>
           </div>
 
