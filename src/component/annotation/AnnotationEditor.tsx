@@ -12,7 +12,7 @@ import {Warning} from "../common/Warning.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 import {useConfig} from "../ConfigProvider.tsx";
-import {get, set} from "lodash";
+import {get, isString, set} from "lodash";
 import {AnnotationEditorFieldType} from "../Config.ts";
 
 export function toInitialAnnotationFieldValue(
@@ -36,9 +36,10 @@ export function AnnotationEditor(props: {
   const config = useConfig()
   const {containerName} = props;
   const [slug, setSlug] = useState('')
+
   const lifecycleFields = config.annotationEditor.lifecycle
   // TODO: convert into fields, add to form, and errors
-  const initialForm = cloneDeep(defaultForm);
+  const initialForm = cloneDeep(defaultAnnotation);
   lifecycleFields.forEach(field => {
     set(initialForm, field.path, toInitialAnnotationFieldValue(field.type))
   })
@@ -52,7 +53,7 @@ export function AnnotationEditor(props: {
     if (error) {
       return;
     }
-    const toSubmit = {...form, body: JSON.parse(form.body)}
+    const toSubmit = {...form, body: form.body}
 
     // openapi type says string but AR api expects json:
     const mutationBody = toSubmit as unknown as string;
@@ -97,7 +98,10 @@ export function AnnotationEditor(props: {
               className="mt-5"
             />
             <InputWithLabel
-              value={form.target || ''}
+              value={isString(form.target)
+                ? form.target
+                : JSON.stringify(form.target, null, 2)
+              }
               label="Target"
               onChange={update => setForm(prev => ({...prev, target: update}))}
               className="mt-5"
@@ -137,7 +141,7 @@ export function AnnotationEditor(props: {
             {error && <Warning>{error}</Warning>}
             <Textarea
               label="Body"
-              value={form.body}
+              value={JSON.stringify(form.body, null, 2)}
               onChange={update => {
                 let parsed: any;
                 try {
@@ -146,8 +150,7 @@ export function AnnotationEditor(props: {
                 } catch (e) {
                   setError('Please enter valid json')
                 }
-                const body = JSON.stringify(parsed, null, 2);
-                setForm(prev => ({...prev, body}));
+                setForm(prev => ({...prev, body: parsed}));
               }}
               className="mt-5"
             />
@@ -159,18 +162,16 @@ export function AnnotationEditor(props: {
   </>
 }
 
-const defaultForm: AnnotationPost = {
+type AnnotationPost = Omit<ArAnnotation, 'id'>
+
+const defaultAnnotation: AnnotationPost = {
   "@context": "http://www.w3.org/ns/anno.jsonld",
   type: "Annotation",
-  body: JSON.stringify({
+  body: {
     value: "",
     type: "TextualBody",
     purpose: "classifying"
-  }, null, 2),
+  },
   target: "http://www.example.com/world.html",
-}
 
-type AnnotationPost = Omit<ArAnnotation, 'id' | 'body' | 'target'> & {
-  body: string
-  target: string
-};
+}

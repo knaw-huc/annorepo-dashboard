@@ -67,14 +67,14 @@ export function AnnotationCard(props: {
     <p className="-ml-1 mt-3">
       <>{previewProps
         .filter(p => p.value)
-        .map(p => <Badge className="mr-2">
+        .map((p,i) => <Badge className="mr-2" key={i}>
           {p.path.replace('.', ' ')}: &nbsp;
           <strong>{isObject(p.value) ? JSON.stringify(p.value) : p.value}</strong>
         </Badge>)
       }
         {bodyPreviewProps
           .filter(p => p.value)
-          .map(p => <Badge className="mr-2">
+          .map((p,i) => <Badge className="mr-2" key={i}>
             body {p.path.replace('.', ' ')}: &nbsp;
             <strong>{isObject(p.value) ? JSON.stringify(p.value) : p.value}</strong>
           </Badge>)
