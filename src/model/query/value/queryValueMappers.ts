@@ -13,7 +13,7 @@ export const queryValueMappers: QueryValuesConfig<QueryValue>[] = [
   },
   {
     type: 'number',
-    toValue: str => str === "" ? emptyValue : toNumber(str),
+    toValue: toNumberOrThrow,
     toString: toString,
     isType: isNumber,
     defaultValue: 1
@@ -33,3 +33,14 @@ export const queryValueMappers: QueryValuesConfig<QueryValue>[] = [
     defaultValue: {source: 'http://example.com', start: 0, end: 1}
   }
 ]
+
+function toNumberOrThrow(value: string) {
+  if (value === "") {
+    return emptyValue;
+  }
+  const asNumber = toNumber(value);
+  if (isNaN(asNumber)) {
+    throw new Error(`Could not convert ${value} to number`)
+  }
+  return asNumber
+}

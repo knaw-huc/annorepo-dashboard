@@ -33,15 +33,8 @@ export function QueryValueInput(props: {
   const error = errors[formIndex]
   const param = params[formIndex]
 
-  function handleChange(
+  function handleValueChange(
     inputValueUpdate: string,
-    /**
-     * TODO: hier gebleven
-     * Hoe form goed up te daten?
-     * Daarna testen of alles nu werkt
-     */
-    // @ts-ignore
-    queryValueTypeUpdate: QueryValueType
   ) {
     try {
       const queryValueUpdate = findMapperByType(form.valueType)
@@ -62,6 +55,37 @@ export function QueryValueInput(props: {
     }
   }
 
+  function handleTypeChange(
+    typeUpdate: QueryValueType
+  ) {
+    try {
+      const newMapper = findMapperByType(typeUpdate)
+      const queryValueUpdate = newMapper.toValue(inputValue)
+      console.log('handleTypeChange', {newMapper, queryValueUpdate, inputValue})
+      updateForm({
+        formIndex,
+        form: {
+          ...form,
+          value: queryValueUpdate,
+          valueType: typeUpdate
+        },
+        error: {...error, value: ''}
+      });
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : "Invalid value";
+      updateForm({
+        formIndex,
+        // Use inout value when query value conversion failed:
+        form: {
+          ...form,
+          value: inputValue,
+          valueType: typeUpdate
+        },
+        error: {...error, value: errorMessage}
+      });
+    }
+  }
+
   const inputValue = createInputValue(
     form, error.value, param, formIndex, isCall
   )
@@ -73,12 +97,14 @@ export function QueryValueInput(props: {
     .filter(type => allowedTypes.includes(type))
     .map(type => ({value: type, label: type}));
 
+  console.log(QueryValueInput.name, {valueTypeOptions, inputValue, form})
+
   return <div className="flex gap-2">
     <DropdownInput
       className="flex-1"
       value={inputValue}
       suggestions={suggestions}
-      onChange={update => handleChange(update, form.valueType)}
+      onChange={handleValueChange}
       label="Value"
       errorLabel={error.value}
       disabled={disabled}
@@ -86,7 +112,8 @@ export function QueryValueInput(props: {
     <DropdownSelector
       options={valueTypeOptions}
       selectedValue={form.valueType}
-      onSelect={update => handleChange(inputValue, update.value as QueryValueType)}
+      onSelect={option => handleTypeChange(option.value)}
+      disabled={valueTypeOptions.length < 2}
     />
   </div>
 }

@@ -3,11 +3,11 @@ import {ReactNode, useState} from "react";
 import {DropdownItem} from "./DropdownItem.tsx";
 import {SelectOption} from "./SelectOption.tsx";
 
-export function DropdownSelector(props: {
+export function DropdownSelector<T>(props: {
   placeholder?: ReactNode,
   selectedValue?: string,
-  options: SelectOption[],
-  onSelect: (option: SelectOption) => void
+  options: SelectOption<T>[],
+  onSelect: (option: SelectOption<T>) => void
   className?: string
   disabled?: boolean
 }) {
@@ -23,7 +23,7 @@ export function DropdownSelector(props: {
     optionsClassName += ' hidden'
   }
 
-  function handleSelect(option: SelectOption) {
+  function handleSelect(option: SelectOption<T>) {
     setOpen(false)
     props.onSelect(option);
   }
@@ -49,11 +49,11 @@ export function DropdownSelector(props: {
       className={optionsClassName}
     >
       <div className="py-1" role="none">
-        {options.map(o =>
+        {options.map(option =>
           <DropdownItem
-            key={o.value}
-            label={o.label}
-            onClick={() => handleSelect(o)}
+            key={`${option.value}`}
+            label={option.label}
+            onClick={() => handleSelect(option)}
           />
         )}
       </div>
