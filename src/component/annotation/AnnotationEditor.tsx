@@ -13,13 +13,17 @@ import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 import {useConfig} from "../ConfigProvider.tsx";
 import {get, isString, set} from "lodash";
-import {AnnotationEditorFieldType} from "../Config.ts";
 import {
   useContainerFieldDistinctValues
 } from "../../client/endpoint/useContainerFieldDistinctValues.tsx";
 import {DropdownInput} from "../common/form/DropdownInput.tsx";
 import {orThrow} from "../../util/orThrow.ts";
 import {filterSuggestions} from "../common/form/util/filterSuggestions.tsx";
+import {findMapperByType} from "../common/search/util/findMapperByType.tsx";
+import {
+  toDefaultAnnotationFieldValue,
+  toQueryValueType
+} from "./AnnotationFieldType.ts";
 
 export function AnnotationEditor(props: {
   containerName: string,
@@ -123,19 +127,22 @@ export function AnnotationEditor(props: {
               className="mt-3"
             />
 
-            {/*TODO: add suggestions*/}
             {configFields.map(cf => {
                 const suggestions = filteredConfigFieldSuggestions
                     .find(cfs => cfs.path === cf.path)
                     ?.suggestions
                   ?? orThrow('No such path')
+                const valueType = toQueryValueType(cf.type)
+                const mapper = findMapperByType(valueType)
                 return <DropdownInput
                   key={cf.path}
-                  value={get(form, cf.path) || ''}
+                  value={mapper.toString(get(form, cf.path))}
                   label={cf.label}
                   onChange={update => setForm(prev => {
                     const next = {...prev}
-                    set(next, cf.path, update);
+                    const mapped = mapper.toValue(update);
+                    console.log('handleChange', {update, mapped})
+                    set(next, cf.path, mapped);
                     return next
                   })}
                   className="mt-5"
@@ -181,19 +188,6 @@ export function AnnotationEditor(props: {
       </div>
     </form>
   </>
-}
-
-export function toDefaultAnnotationFieldValue(
-  type: AnnotationEditorFieldType
-): string {
-  switch (type) {
-    case "dateTime":
-      return new Date().toISOString();
-    case "text":
-      return ""
-    default:
-      return ""
-  }
 }
 
 type AnnotationPost = Omit<ArAnnotation, 'id'>

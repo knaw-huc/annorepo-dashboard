@@ -1,7 +1,5 @@
 import {
-  isRangeQueryOperator,
   isRangeQueryValue,
-  QueryOperator,
   SearchQuery,
   SearchSubquery
 } from "../../../client/ArModel.ts";
@@ -12,6 +10,8 @@ import {
 } from "../../../component/common/search/QueryModel.ts";
 import {isString} from "lodash";
 import {toParamTag} from "./toParamTag.ts";
+import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
+import {isRangeQueryOperator} from "../../../model/query/operator/RangeQueryOperator.ts";
 
 export function toSearchQuery(
   forms: FieldQueryForm[],

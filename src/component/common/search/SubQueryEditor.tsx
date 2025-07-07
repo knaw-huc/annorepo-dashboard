@@ -1,11 +1,5 @@
 import {
-  isRangeQueryOperator,
-  NO_FIELD,
-  QueryOperator,
-  queryOperatorValueType,
-  QueryValue,
-  queryValueMappers,
-  toOperator
+  NO_FIELD
 } from "../../../client/ArModel.ts";
 import {DropdownSelector} from "../form/DropdownSelector.tsx";
 import {orThrow} from "../../../util/orThrow.ts";
@@ -20,6 +14,14 @@ import {
   useValueSuggestions
 } from "./useValueSuggestions.tsx";
 import {toParamName} from "../../../store/query/util/toParamName.ts";
+import {QueryValue} from "../../../model/query/value/QueryValue.ts";
+import {
+  queryOperatorValueType
+} from "../../../model/query/value/queryOperatorValueType.ts";
+import {queryValueMappers} from "../../../model/query/value/queryValueMappers.ts";
+import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
+import {isRangeQueryOperator} from "../../../model/query/operator/RangeQueryOperator.ts";
+import {toOperator} from "../../../model/query/operator/toOperator.ts";
 
 export function SubQueryEditor(props: {
   fieldNames: string[],

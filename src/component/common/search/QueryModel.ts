@@ -1,11 +1,11 @@
 import {
-  FieldQuery,
-  QueryOperator,
-  QueryValue
+  FieldQuery
 } from "../../../client/ArModel.ts";
 import {toQueryFieldForms} from "../../../store/query/util/toQueryFieldForm.ts";
 import {toParamName} from "../../../store/query/util/toParamName.ts";
 import {toSearchQuery} from "../../../store/query/util/toSearchQuery.ts";
+import {QueryValue} from "../../../model/query/value/QueryValue.ts";
+import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
 
 export type ErroneousValue = string
 

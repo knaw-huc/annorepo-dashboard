@@ -1,4 +1,4 @@
-import {ArCustomQueryForm, CustomQueryMetadataForm} from "../../client/ArModel.ts";
+import {ArCustomQueryForm} from "../../client/ArModel.ts";
 import {H2} from "../common/H2.tsx";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
@@ -12,6 +12,7 @@ import {useStore} from "../../store/useStore.ts";
 import {toParamTag} from "../../store/query/util/toParamTag.ts";
 import {Tooltip} from "../common/Tooltip.tsx";
 import {toParamName} from "../../store/query/util/toParamName.ts";
+import {CustomQueryMetadataForm} from "./model/CustomQueryMetadataForm.ts";
 
 /**
  * Allow creating a new custom query

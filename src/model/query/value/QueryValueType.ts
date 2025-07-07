@@ -1,0 +1,1 @@
+export type QueryValueType = 'string' | 'number' | 'options' | 'range'

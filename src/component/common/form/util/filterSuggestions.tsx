@@ -8,5 +8,5 @@ export function filterSuggestions(
   if(!value) {
     return suggestions;
   }
-  return suggestions.filter(s => s.toLowerCase().includes(value.toLowerCase()));
+  return suggestions.filter(s => s.toString().toLowerCase().includes(value.toString().toLowerCase()));
 }

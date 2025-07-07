@@ -7,7 +7,7 @@ import {
 } from "../../client/endpoint/useCustomQuery.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {useEffect, useState} from "react";
-import {toCustomQueryParameters} from "./toCustomQueryParameters.ts";
+import {toCustomQueryParameters} from "./util/toCustomQueryParameters.ts";
 import {Button} from "../common/Button.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";

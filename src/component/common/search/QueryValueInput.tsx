@@ -1,5 +1,5 @@
 import {useStore} from "../../../store/useStore.ts";
-import {findMapper} from "./util/findMapper.tsx";
+import {findMapperByOperator} from "./util/findMapperByOperator.tsx";
 import {createInputValue} from "./util/createInputValue.tsx";
 import {DropdownInput} from "../form/DropdownInput.tsx";
 
@@ -27,7 +27,7 @@ export function QueryValueInput(props: {
 
   function handleChange(update: string) {
     try {
-      const queryUpdate = findMapper(form.operator).toValue(update);
+      const queryUpdate = findMapperByOperator(form.operator).toValue(update);
       updateForm({
         formIndex,
         form: {...form, value: queryUpdate},

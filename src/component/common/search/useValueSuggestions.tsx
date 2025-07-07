@@ -1,10 +1,10 @@
-import {QueryValue} from "../../../client/ArModel.ts";
 import {useDebounce} from "../../useDebounce.tsx";
 import {
   useContainerFieldDistinctValues
 } from "../../../client/endpoint/useContainerFieldDistinctValues.tsx";
 import {isNumber, isString} from "lodash";
 import {filterSuggestions} from "../form/util/filterSuggestions.tsx";
+import {QueryValue} from "../../../model/query/value/QueryValue.ts";
 
 export function useValueSuggestions(props: {
   containerName?: string,

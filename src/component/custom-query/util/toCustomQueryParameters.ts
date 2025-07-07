@@ -1,5 +1,5 @@
-import {FieldQueryForm, FormParamValue} from "../common/search/QueryModel.ts";
-import {findMapper} from "../common/search/util/findMapper.tsx";
+import {FieldQueryForm, FormParamValue} from "../../common/search/QueryModel.ts";
+import {findMapperByOperator} from "../../common/search/util/findMapperByOperator.tsx";
 
 type ParamName = string
 type ParamValue = string
@@ -16,7 +16,7 @@ export function toCustomQueryParameters(
       continue;
     }
     const form = forms[index];
-    result[parameter] = findMapper(form.operator).toString(form.value)
+    result[parameter] = findMapperByOperator(form.operator).toString(form.value)
   }
   return result;
 }

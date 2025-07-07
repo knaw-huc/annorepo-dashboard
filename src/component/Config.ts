@@ -1,11 +1,9 @@
-export type AnnotationEditorFieldType =
-  | 'dateTime'
-  | 'text'
+import {AnnotationFieldType} from "./annotation/AnnotationFieldType.ts";
 
 export type FieldConfig = {
   path: string,
   label: string,
-  type: AnnotationEditorFieldType
+  type: AnnotationFieldType
 };
 
 export type Config = {

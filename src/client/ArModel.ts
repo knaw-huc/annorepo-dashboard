@@ -1,4 +1,8 @@
-import {isNumber, isString, toNumber, toString} from "lodash";
+import {QueryValue} from "../model/query/value/QueryValue.ts";
+import {QueryOperator} from "../model/query/operator/QueryOperator.ts";
+import {
+  RangeQueryOperator
+} from "../model/query/operator/RangeQueryOperator.ts";
 
 export type ArAboutData = {
   appName: string,
@@ -50,64 +54,6 @@ export type ArAnnotation<T extends object = object> = {
 
 export type ArContainerFields = Record<string, number>
 
-/**
- * See: https://github.com/knaw-huc/annorepo/blob/main/docs/api-usage.md#create-a-query--experimental
- */
-export enum QueryOperator {
-  // Query without operator:
-  simpleQuery = 'simpleQuery',
-
-  // Operators:
-  equal = ':=',
-  notEqual = ':!=',
-  lessThan = ':<',
-  lessThanOrEqual = ':<=',
-  greaterThan = ':>',
-  greaterThanOrEqual = ':>=',
-  isIn = ':isIn',
-  isNotIn = ':isNotIn',
-
-  // Query functions:
-  isWithinTextAnchorRange = ':isWithinTextAnchorRange',
-  overlapsWithTextAnchorRange = ':overlapsWithTextAnchorRange',
-}
-
-export const nonFnQueryOperators = [
-  QueryOperator.equal,
-  QueryOperator.notEqual,
-  QueryOperator.lessThan,
-  QueryOperator.lessThanOrEqual,
-  QueryOperator.greaterThan,
-  QueryOperator.greaterThanOrEqual,
-  QueryOperator.isIn,
-  QueryOperator.isNotIn
-] as const
-
-export type NonFnQueryOperator = typeof nonFnQueryOperators[number]
-
-export const rangeQueryOperator = [
-  QueryOperator.overlapsWithTextAnchorRange,
-  QueryOperator.isWithinTextAnchorRange
-] as const
-
-export type RangeQueryOperator = typeof rangeQueryOperator[number]
-
-export function isRangeQueryOperator(toTest: string): toTest is RangeQueryOperator {
-  return rangeQueryOperator.includes(toTest as RangeQueryOperator);
-}
-
-export function isNonFnOperator(toTest: string): toTest is NonFnQueryOperator {
-  return nonFnQueryOperators.includes(toTest as NonFnQueryOperator);
-}
-
-export const queryOperatorOrFnValues: string[] = Object.values(QueryOperator)
-
-export function toOperator(value: string): QueryOperator | null {
-  if (!queryOperatorOrFnValues.includes(value)) {
-    return null
-  }
-  return value as QueryOperator;
-}
 
 export type SearchQuery = Record<string, any>;
 
@@ -141,62 +87,6 @@ export function isRangeQueryValue(
     && (toTest as RangeQueryValue).end !== undefined)
 }
 
-export type QueryValue = string | number | string[] | RangeQueryValue
-export type QueryValueType = 'string' | 'number' | 'options' | 'range'
-
-export const queryOperatorValueType: Record<QueryOperator, QueryValueType> = {
-  [QueryOperator.simpleQuery]: 'string',
-  [QueryOperator.equal]: 'string',
-  [QueryOperator.notEqual]: 'string',
-  [QueryOperator.lessThan]: 'number',
-  [QueryOperator.lessThanOrEqual]: 'number',
-  [QueryOperator.greaterThan]: 'number',
-  [QueryOperator.greaterThanOrEqual]: 'number',
-  [QueryOperator.isIn]: 'options',
-  [QueryOperator.isNotIn]: 'options',
-  [QueryOperator.isWithinTextAnchorRange]: 'range',
-  [QueryOperator.overlapsWithTextAnchorRange]: 'range',
-}
-
-export type QueryValuesConfig<T extends QueryValue> = {
-  type: QueryValueType
-  toValue: (str: string) => T
-  toString: (val: T) => string
-  isType: (val: QueryValue) => val is T
-  defaultValue: T
-}
-
-export const queryValueMappers: QueryValuesConfig<QueryValue>[] = [
-  {
-    type: 'string',
-    toValue: toString,
-    toString: toString,
-    isType: isString,
-    defaultValue: 'value'
-  },
-  {
-    type: 'number',
-    toValue: toNumber,
-    toString: toString,
-    isType: isNumber,
-    defaultValue: 1
-  },
-  {
-    type: 'options',
-    toValue: JSON.parse,
-    toString: JSON.stringify,
-    isType: Array.isArray,
-    defaultValue: ['value1', 'value2']
-  },
-  {
-    type: 'range',
-    toValue: JSON.parse,
-    toString: JSON.stringify,
-    isType: isRangeQueryValue,
-    defaultValue: {source: 'http://example.com', start: 0, end: 1}
-  }
-]
-
 export type ArCustomQueryForm = {
   name: string,
   description: string,
@@ -208,8 +98,6 @@ export type ArCustomQueryForm = {
    */
   query: string,
 }
-
-export type CustomQueryMetadataForm = Omit<ArCustomQueryForm, 'query'>
 
 export type ArCustomQueryResult = Omit<ArCustomQueryForm, "query"> & {
   created: string,

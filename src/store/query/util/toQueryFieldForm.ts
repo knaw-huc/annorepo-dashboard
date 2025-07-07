@@ -1,10 +1,6 @@
 import {
-  isNonFnOperator,
-  isRangeQueryOperator,
   isRangeQueryValue,
   NO_FIELD,
-  QueryOperator,
-  QueryValue,
   SearchQuery
 } from "../../../client/ArModel.ts";
 import {isNumber, isPlainObject, isString} from "lodash";
@@ -13,8 +9,12 @@ import {
   QueryEntry
 } from "../../../component/common/search/QueryModel.ts";
 import {
-  findMapper
-} from "../../../component/common/search/util/findMapper.tsx";
+  findMapperByOperator
+} from "../../../component/common/search/util/findMapperByOperator.tsx";
+import {QueryValue} from "../../../model/query/value/QueryValue.ts";
+import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
+import {isRangeQueryOperator} from "../../../model/query/operator/RangeQueryOperator.ts";
+import {isNonFnOperator} from "../../../model/query/operator/NonFnQueryOperator.ts";
 
 export function toQueryFieldForm(
   entry: QueryEntry,
@@ -31,7 +31,7 @@ export function toQueryFieldForm(
     field = NO_FIELD
     operator = queryKey as QueryOperator
     if (containsParams(queryValue, params)) {
-      value = findMapper(operator).defaultValue
+      value = findMapperByOperator(operator).defaultValue
     } else if (isRangeQueryValue(queryValue)) {
       value = queryValue
     } else {
@@ -42,7 +42,7 @@ export function toQueryFieldForm(
     field = queryKey
     operator = QueryOperator.simpleQuery
     if (containsParams(queryValue, params)) {
-      value = findMapper(QueryOperator.simpleQuery).defaultValue
+      value = findMapperByOperator(QueryOperator.simpleQuery).defaultValue
     } else {
       value = queryValue
     }
@@ -61,7 +61,7 @@ export function toQueryFieldForm(
     }
     operator = queryObjectKey
     if (containsParams(queryObjectValue, params)) {
-      value = findMapper(operator).defaultValue
+      value = findMapperByOperator(operator).defaultValue
     } else if (isNumber(queryObjectValue) || isString(queryObjectValue)) {
       value = queryObjectValue
     } else {

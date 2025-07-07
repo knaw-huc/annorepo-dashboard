@@ -1,6 +1,6 @@
 import {ErroneousValue, FieldQueryForm, FormParamValue} from "../QueryModel.ts";
 import {toParamTag} from "../../../../store/query/util/toParamTag.ts";
-import {findMapper} from "./findMapper.tsx";
+import {findMapperByOperator} from "./findMapperByOperator.tsx";
 import {toParamName} from "../../../../store/query/util/toParamName.ts";
 
 export function createInputValue(
@@ -17,7 +17,7 @@ export function createInputValue(
     if (error) {
       return value as ErroneousValue
     } else {
-      return findMapper(operator).toString(value)
+      return findMapperByOperator(operator).toString(value)
     }
   } else {
     // Creating new custom query: value is not editable, should not contain error
@@ -26,7 +26,7 @@ export function createInputValue(
     } else if (param) {
       return toParamTag(toParamName(form, formIndex))
     } else {
-      return findMapper(operator).toString(value)
+      return findMapperByOperator(operator).toString(value)
     }
   }
 }

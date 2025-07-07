@@ -23,7 +23,7 @@ export default defineConfig({
        * To prevent CORS issues with local AR server:
        */
       '/api': {
-        target: 'https://annorepo.demo.netwerkdigitaalerfgoed.nl',
+        target: 'http://localhost:8080',
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/api/, ''),
       }
