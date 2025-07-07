@@ -24,6 +24,7 @@ import {
   toDefaultAnnotationFieldValue,
   toQueryValueType
 } from "./AnnotationFieldType.ts";
+import {removeEmptyValues} from "../../model/query/value/QueryValue.ts";
 
 export function AnnotationEditor(props: {
   containerName: string,
@@ -61,7 +62,8 @@ export function AnnotationEditor(props: {
     if (bodyError) {
       return;
     }
-    const toSubmit = {...form, body: form.body}
+
+    const toSubmit = removeEmptyValues({...form, body: form.body})
 
     // openapi type says string but AR api expects json:
     const mutationBody = toSubmit as unknown as string;

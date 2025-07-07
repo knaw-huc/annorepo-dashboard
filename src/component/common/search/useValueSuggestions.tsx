@@ -21,5 +21,5 @@ export function useValueSuggestions(props: {
       ?.filter(v => isString(v) || isNumber(v))
       .map(v => `${v}`)
     ?? []
-  return filterSuggestions(distinctValueStrings, value.toString())
+  return filterSuggestions(distinctValueStrings, value?.toString())
 }
