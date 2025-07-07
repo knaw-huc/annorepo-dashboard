@@ -10,7 +10,8 @@ import {QueryOperator} from "../../../../model/query/operator/QueryOperator.ts";
 export function findMapperByOperator(operator: QueryOperator) {
   const byOperator = (operator: QueryOperator) => {
     return (config: QueryValuesConfig<QueryValue>) => {
-      return config.type === queryOperatorValueType[operator];
+      // Use first option by default:
+      return config.type === queryOperatorValueType[operator][0];
     };
   }
   return queryValueMappers.find(byOperator(operator))

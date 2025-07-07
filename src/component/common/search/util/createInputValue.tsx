@@ -1,7 +1,7 @@
 import {ErroneousValue, FieldQueryForm, FormParamValue} from "../QueryModel.ts";
 import {toParamTag} from "../../../../store/query/util/toParamTag.ts";
-import {findMapperByOperator} from "./findMapperByOperator.tsx";
 import {toParamName} from "../../../../store/query/util/toParamName.ts";
+import {findMapperByType} from "./findMapperByType.tsx";
 
 export function createInputValue(
   form: FieldQueryForm,
@@ -10,14 +10,13 @@ export function createInputValue(
   formIndex: number,
   isCall: boolean
 ): string {
-  const operator = form.operator
   const value = form.value
   if (isCall) {
     // Creating a query to call: value is editable, possibly with error
     if (error) {
       return value as ErroneousValue
     } else {
-      return findMapperByOperator(operator).toString(value)
+      return findMapperByType(form.valueType).toString(value)
     }
   } else {
     // Creating new custom query: value is not editable, should not contain error
@@ -26,7 +25,7 @@ export function createInputValue(
     } else if (param) {
       return toParamTag(toParamName(form, formIndex))
     } else {
-      return findMapperByOperator(operator).toString(value)
+      return findMapperByType(form.valueType).toString(value)
     }
   }
 }

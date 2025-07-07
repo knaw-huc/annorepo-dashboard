@@ -6,6 +6,7 @@ import {toParamName} from "../../../store/query/util/toParamName.ts";
 import {toSearchQuery} from "../../../store/query/util/toSearchQuery.ts";
 import {QueryValue} from "../../../model/query/value/QueryValue.ts";
 import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
+import {QueryValueType} from "../../../model/query/value/QueryValueType.ts";
 
 export type ErroneousValue = string
 
@@ -13,6 +14,7 @@ export type FieldQueryForm = {
   field: string,
   operator: QueryOperator
   value: QueryValue | ErroneousValue
+  valueType: QueryValueType
 }
 
 export type ErrorRecord<T extends object> = Record<keyof T, string>

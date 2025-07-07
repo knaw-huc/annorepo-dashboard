@@ -14,7 +14,7 @@ export function DropdownSelector(props: {
   const options = props.options.filter(o => o.value !== props.selectedValue)
 
   const [isOpen, setOpen] = useState(false);
-  let className = "relative inline-block text-left h-full";
+  let className = "relative inline-block text-left";
   if(props.className) {
     className += ` ${props.className}`
   }

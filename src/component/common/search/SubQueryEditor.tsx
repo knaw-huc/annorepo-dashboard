@@ -142,7 +142,10 @@ function alignWithOperator(
   nextOperator: QueryOperator,
 ): FieldQueryForm {
   const currentMapping = findQueryMappingByValue(prev.value)
-  const nextType = queryOperatorValueType[nextOperator]
+
+  // Use first option by default:
+  const nextType = queryOperatorValueType[nextOperator][0]
+
   const next = {...prev, operator: nextOperator}
   if (currentMapping.type === nextType) {
     next.value = prev.value
