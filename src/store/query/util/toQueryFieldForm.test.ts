@@ -10,6 +10,7 @@ describe('convertToQueryFieldForm', async () => {
       field: "field",
       operator: ":=",
       value: "value",
+      valueType: "string",
     })
   });
 });
