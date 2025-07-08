@@ -7,10 +7,10 @@ export type AnnotationIdGroups = {
   containerName: string
 };
 
-export function parseAnnotationId(annotationId: string): AnnotationIdGroups {
+export function parseAnnotationId(annotationId: string): AnnotationIdGroups | undefined {
   const match = annotationId.match(annotationUrlRegex);
   if (!match?.groups) {
-    throw new Error(`Annotation ID '${annotationId}' does not match regex: ${annotationUrlRegex}`)
+    return undefined;
   }
   return pick(match.groups, ['containerName', 'annotationName']) as AnnotationIdGroups
 }

@@ -29,7 +29,14 @@ export function AnnotationCard(props: {
 }) {
   const annotationPreview = useConfig().annotationPreview
 
-  const {containerName, annotationName} = parseAnnotationId(props.id)
+  const {id} = props;
+
+  const parsed = parseAnnotationId(id)
+  if(!parsed) {
+    console.warn(`Could not parse annotation ID ${id}`)
+    return null;
+  }
+  const {containerName, annotationName} = parsed
   const annotationRequest = useContainerAnnotation(containerName, annotationName)
   const annotation = annotationRequest.data?.annotation
   const ETag = annotationRequest.data?.ETag
@@ -46,7 +53,7 @@ export function AnnotationCard(props: {
       params: {
         path: {containerName, annotationName},
       },
-      headers: {ETag}
+      headers: {'If-Match': ETag}
     })
   }
 
