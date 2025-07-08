@@ -27,13 +27,16 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const {name} = props;
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
   const container = useContainer(name)
+  const [isInit, setInit] = useState(false)
 
   useEffect(() => {
-    const containerPageId = container.data?.first.id;
-    if (containerPageId) {
-      setPageNo(toPageNo(containerPageId))
+    if (isInit || !container.data) {
+      return;
     }
-  }, [container]);
+    setInit(true)
+    const containerPageId = container.data.first.id;
+    setPageNo(toPageNo(containerPageId))
+  }, [container, setInit]);
 
   const handleChangePage = (update: number) => {
     setPageNo(update)
@@ -45,7 +48,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
 
   return <div>
     <H1>{container.data.label} <Hint>container</Hint></H1>
-    <ContainerSummary name={name} className="mt-5" />
+    <ContainerSummary name={name} className="mt-5"/>
     <ContainerAnnotationFields name={props.name}/>
     <H2>Annotations</H2>
     <div className="mb-3">
