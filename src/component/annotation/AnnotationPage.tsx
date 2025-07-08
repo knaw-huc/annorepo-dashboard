@@ -45,7 +45,7 @@ export function AnnotationGrid(props: { items: ArAnnotation[] }) {
   >
     {items.map(item => <AnnotationCard
       key={item.id}
-      annotation={item}
+      id={item.id}
     />)}
   </div>
 }

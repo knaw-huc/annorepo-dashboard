@@ -1,4 +1,3 @@
-import {ArAnnotation} from "../../client/ArModel.ts";
 import {Card} from "../common/Card.tsx";
 import {toName} from "../../util/toName.ts";
 import {Pipe} from "../common/Pipe.tsx";
@@ -15,25 +14,54 @@ import {Next} from "../common/icon/Next.tsx";
 import {get, isObject} from "lodash";
 import {Badge} from "../common/Badge.tsx";
 import {useConfig} from "../ConfigProvider.tsx";
+import {Remove} from "../common/icon/Remove.tsx";
+import {useDelete} from "../../client/query/useDelete.tsx";
+import {parseAnnotationId} from "./parseAnnotationId.ts";
+import {
+  useContainerAnnotation
+} from "../../client/endpoint/useContainerAnnotation.tsx";
+import {StatusMessage} from "../common/StatusMessage.tsx";
 
 type PathValue = { path: string, value: string };
 type PathValues = { path: string, value: string[] };
 
 export function AnnotationCard(props: {
-  annotation: ArAnnotation
+  id: string
 }) {
   const annotationPreview = useConfig().annotationPreview
 
-  const {annotation} = props;
-  const name = toName(annotation.via || annotation.id);
+  const {containerName, annotationName} = parseAnnotationId(props.id)
+  const annotationRequest = useContainerAnnotation(containerName, annotationName)
+  const annotation = annotationRequest.data?.annotation
+  const ETag = annotationRequest.data?.ETag
   const [isBodyOpen, setBodyOpen] = useState(false);
   const [isTargetOpen, setTargetOpen] = useState(false);
 
+  const deleteAnnotation = useDelete("/w3c/{containerName}/{annotationName}")
+
+  function handleDelete() {
+    if (!window.confirm("Delete annotation?")) {
+      return;
+    }
+    deleteAnnotation.mutate({
+      params: {
+        path: {containerName, annotationName},
+      },
+      headers: {ETag}
+    })
+  }
+
+  if (!annotation) {
+    return <StatusMessage request={annotationRequest}/>
+  }
+
+  const name = toName(annotation.via || annotation.id);
   const previewProps = annotationPreview.paths
     .map(path => ({path, value: get(annotation, path)}))
   const bodies: PathValue[] = Array.isArray(annotation.body)
     ? annotation.body
     : [annotation.body];
+
   const bodyPreviewProps: PathValue[] = annotationPreview.body.paths
     .map(path => ({path, value: bodies.map(b => get(b, path))}))
     .reduce((accumulator: PathValue[], current: PathValues) => {
@@ -49,6 +77,12 @@ export function AnnotationCard(props: {
       {name}
       <Pipe/>
       {annotation.type}
+      <span
+        className="text-base float-right text-lg text-sky-800 hover:text-inherit hover:cursor-pointer"
+        onClick={handleDelete}
+      >
+        <Remove/>
+      </span>
     </H5>}
     footer={
       <>
@@ -67,14 +101,14 @@ export function AnnotationCard(props: {
     <p className="-ml-1 mt-3">
       <>{previewProps
         .filter(p => p.value)
-        .map((p,i) => <Badge className="mr-2" key={i}>
+        .map((p, i) => <Badge className="mr-2" key={i}>
           {p.path.replace('.', ' ')}: &nbsp;
           <strong>{isObject(p.value) ? JSON.stringify(p.value) : p.value}</strong>
         </Badge>)
       }
         {bodyPreviewProps
           .filter(p => p.value)
-          .map((p,i) => <Badge className="mr-2" key={i}>
+          .map((p, i) => <Badge className="mr-2" key={i}>
             body {p.path.replace('.', ' ')}: &nbsp;
             <strong>{isObject(p.value) ? JSON.stringify(p.value) : p.value}</strong>
           </Badge>)

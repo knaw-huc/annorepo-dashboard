@@ -13,7 +13,7 @@ export function createOpenApiClient(
   baseUrl: string
 ) {
 
-  const authMiddleware: Middleware = {
+  const addBearerTokenHeader: Middleware = {
     async onRequest(params) {
       params.request.headers.set('Authorization', `Bearer ${bearerToken}`)
     }
@@ -22,13 +22,13 @@ export function createOpenApiClient(
   /**
    * Custom query parameters should not be encoded by openapi-fetch
    */
-  const urlDecodeCustomQueryParameters: Middleware = {
+  const unencodeCustomQueryParameters: Middleware = {
     async onRequest(params) {
       params.request = new Request(decodeCustomQueryParameters(params.request.url), params.request)
     }
   }
 
-  const validateStatusMiddleware: Middleware = {
+  const validateResponseStatus: Middleware = {
     async onResponse({response}) {
       if (!response.ok) {
         const errorBody = await response.json();
@@ -39,9 +39,9 @@ export function createOpenApiClient(
 
   let client = createClient<paths>({baseUrl});
   client.use(
-    authMiddleware,
-    urlDecodeCustomQueryParameters,
-    validateStatusMiddleware
+    addBearerTokenHeader,
+    unencodeCustomQueryParameters,
+    validateResponseStatus
   )
   return client
 }

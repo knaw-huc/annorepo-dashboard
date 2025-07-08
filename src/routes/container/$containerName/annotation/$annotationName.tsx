@@ -9,12 +9,17 @@ import {
   ToContainers,
   ToHome
 } from "../../../../component/common/BreadcrumbNav.tsx";
+import {
+  createAnnotationId
+} from "../../../../component/annotation/createAnnotationId.ts";
+import {useConfig} from "../../../../component/ConfigProvider.tsx";
 
 export const Route = createFileRoute('/container/$containerName/annotation/$annotationName')({
   component: function () {
     const {containerName, annotationName} = Route.useParams()
-
     const navigate = Route.useNavigate()
+    const config = useConfig()
+    const id = createAnnotationId(containerName, annotationName, config.AR_HOST)
 
     const handleClose = async () => {
       navigate({
@@ -31,8 +36,7 @@ export const Route = createFileRoute('/container/$containerName/annotation/$anno
           <ToContainer name={containerName}/>
         ]}>
           <AnnotationDetail
-            containerName={containerName}
-            annotationName={annotationName}
+            id={id}
             onClose={handleClose}
           />
         </Page>

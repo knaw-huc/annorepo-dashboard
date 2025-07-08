@@ -1,10 +1,12 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
-import {createQueryKey, GetPath, QR} from "../query/useGet.tsx";
+import {createQueryKey} from "../query/useGet.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {ArAnnotationPage, ArCustomQueryResult} from "../ArModel.ts";
 import {encodeString} from "../../util/base64.ts";
 import {objectEntries} from "../../util/objectEntries.ts";
+import {QR} from "../query/QR.tsx";
+import {GetPath} from "../query/GetPath.tsx";
 
 export function useCustomQuery(
   name: string,

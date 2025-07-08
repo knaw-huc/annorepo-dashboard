@@ -10,15 +10,11 @@ import isNil from "lodash/isNil";
 import {Params, Paths} from "../OpenApiClient.tsx";
 import {paths} from "../../openapi.ts";
 import {PathsWithMethod} from "openapi-typescript-helpers";
+import {GetPath} from "./GetPath.tsx";
 
 export type GetParams<P extends Paths<"get">> = Params<"get", P> & {
   query?: Optional<UseQueryOptions, 'queryKey'>
 };
-
-/**
- * Query Result
- */
-export type QR<R = any> = UseQueryResult<R>
 
 export function useGet<P extends GetPath, RESULT>(
   path: P,
@@ -58,5 +54,4 @@ export function invalidateBy(query: Query, key: string) {
   return query.queryHash.includes(key);
 }
 
-export type GetPath = PathsWithMethod<paths, "get">
 export type PostPath = PathsWithMethod<paths, "post">

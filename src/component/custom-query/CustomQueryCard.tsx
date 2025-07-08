@@ -2,9 +2,10 @@ import {PropsWithChildren} from "react";
 import {Card} from "../common/Card.tsx";
 import {Link} from "@tanstack/react-router";
 import {H5} from "../common/H5.tsx";
-import {QR, useGet} from "../../client/query/useGet.tsx";
+import {useGet} from "../../client/query/useGet.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {ArCustomQueryResult} from "../../client/ArModel.ts";
+import {QR} from "../../client/query/QR.tsx";
 
 
 export function CustomQueryCard(props: PropsWithChildren<{

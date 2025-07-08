@@ -1,11 +1,7 @@
-import {useMutation, UseMutationResult} from "@tanstack/react-query";
+import {useMutation} from "@tanstack/react-query";
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {Params, Paths, UseMutationOptions} from "../OpenApiClient.tsx";
-
-/**
- * Mutation Result
- */
-export type MR<T> = UseMutationResult<T>;
+import {MR} from "./MR.tsx";
 
 export function usePost<P extends Paths<'post'>, T>(
   path: P,

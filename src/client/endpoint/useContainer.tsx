@@ -1,8 +1,10 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
-import {createQueryKey, GetPath, QR} from "../query/useGet.tsx";
+import {createQueryKey} from "../query/useGet.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {ArContainer} from "../ArModel.ts";
+import {QR} from "../query/QR.tsx";
+import {GetPath} from "../query/GetPath.tsx";
 
 export function useContainer(
   name: string

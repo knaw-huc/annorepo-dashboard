@@ -1,6 +1,6 @@
-import {QR} from "../../client/query/useGet.tsx";
 import {ErrorMessage} from "./ErrorMessage.tsx";
 import {Loading} from "./Loading.tsx";
+import {QR} from "../../client/query/QR.tsx";
 
 export function StatusMessage(props: {
   request?: QR

@@ -2,9 +2,10 @@ import {H1} from "../common/H1.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {Button} from "../common/Button.tsx";
 import {Add} from "../common/icon/Add.tsx";
-import {QR, useGet} from "../../client/query/useGet.tsx";
+import {useGet} from "../../client/query/useGet.tsx";
 import {ArCustomQueryResult} from "../../client/ArModel.ts";
 import { CustomQueryCard } from "./CustomQueryCard.tsx";
+import {QR} from "../../client/query/QR.tsx";
 
 export function CustomQueryIndex(props: {
   onClickCreateCustomQuery: () => void

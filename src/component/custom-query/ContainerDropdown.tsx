@@ -1,9 +1,10 @@
-import {QR, useGet} from "../../client/query/useGet.tsx";
+import {useGet} from "../../client/query/useGet.tsx";
 import {ArMyContainers} from "../../client/ArModel.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {DropdownSelector} from "../common/form/DropdownSelector.tsx";
 import {Tooltip} from "../common/Tooltip.tsx";
 import {Help} from "../common/icon/Help.tsx";
+import {QR} from "../../client/query/QR.tsx";
 
 export function ContainerDropdown(props: {
   selected: string,

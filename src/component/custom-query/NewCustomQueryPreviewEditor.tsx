@@ -1,7 +1,7 @@
 import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {useEffect, useState} from "react";
-import {QR, useGet} from "../../client/query/useGet.tsx";
+import {useGet} from "../../client/query/useGet.tsx";
 import {ArMyContainers} from "../../client/ArModel.ts";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
@@ -23,6 +23,7 @@ import {AddSubQueryButton} from "../common/search/button/AddSubQueryButton.tsx";
 import {Button} from "../common/Button.tsx";
 import {Store} from "../common/icon/Store.tsx";
 import {Next} from "../common/icon/Next.tsx";
+import {QR} from "../../client/query/QR.tsx";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string

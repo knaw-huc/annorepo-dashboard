@@ -1,6 +1,6 @@
 import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import noop from "lodash/noop";
-import {MR, usePost} from "../../client/query/usePost.tsx";
+import {usePost} from "../../client/query/usePost.tsx";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {ArAnnotation} from "../../client/ArModel.ts";
@@ -25,6 +25,7 @@ import {
   toQueryValueType
 } from "./AnnotationFieldType.ts";
 import {removeEmptyValues} from "../../model/query/value/QueryValue.ts";
+import {MR} from "../../client/query/MR.tsx";
 
 export function AnnotationEditor(props: {
   containerName: string,

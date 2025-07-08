@@ -1,7 +1,8 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {ArContainerFields} from "../ArModel.ts";
-import {createQueryKey, QR} from "../query/useGet.tsx";
+import {createQueryKey} from "../query/useGet.tsx";
+import {QR} from "../query/QR.tsx";
 
 export function useContainerFields(
   containerName: string = ''
