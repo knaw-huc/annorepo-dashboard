@@ -21,12 +21,15 @@ import {
   useContainerAnnotation
 } from "../../client/endpoint/useContainerAnnotation.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
+import {invalidateBy} from "../../client/query/useGet.tsx";
+import {useQueryClient} from "@tanstack/react-query";
 
 type PathValue = { path: string, value: string };
 
 export function AnnotationCard(props: {
   id: string
 }) {
+  const queryClient = useQueryClient()
   const annotationPreview = useConfig().annotationPreview
 
   const {id} = props;
@@ -36,6 +39,7 @@ export function AnnotationCard(props: {
     console.warn(`Could not parse annotation ID ${id}`)
     return null;
   }
+
   const {containerName, annotationName} = parsed
   const annotationRequest = useContainerAnnotation(containerName, annotationName)
   const annotation = annotationRequest.data?.annotation
@@ -49,11 +53,18 @@ export function AnnotationCard(props: {
     if (!window.confirm("Delete annotation?")) {
       return;
     }
-    deleteAnnotation.mutate({
+    deleteAnnotation.mutate(
+      {
       params: {
         path: {containerName, annotationName},
       },
-      headers: {'If-Match': ETag}
+      headers: {'If-Match': ETag},
+    }, {
+      onSuccess: async () => {
+        await queryClient.invalidateQueries({
+          predicate: query => invalidateBy(query, 'containerName')
+        })
+      }
     })
   }
 
