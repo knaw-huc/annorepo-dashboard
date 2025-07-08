@@ -23,7 +23,6 @@ import {
 import {StatusMessage} from "../common/StatusMessage.tsx";
 
 type PathValue = { path: string, value: string };
-type PathValues = { path: string, value: string[] };
 
 export function AnnotationCard(props: {
   id: string
@@ -63,14 +62,7 @@ export function AnnotationCard(props: {
     : [annotation.body];
 
   const bodyPreviewProps: PathValue[] = annotationPreview.body.paths
-    .map(path => ({path, value: bodies.map(b => get(b, path))}))
-    .reduce((accumulator: PathValue[], current: PathValues) => {
-      accumulator.push(...current.value.map(v => ({
-        path: current.path,
-        value: v
-      })))
-      return accumulator
-    }, [])
+    .map(path => ({path, value: bodies.map(b => get(b, path)).join(', ')}))
 
   return <Card
     header={<H5>
