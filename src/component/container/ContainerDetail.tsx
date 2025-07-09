@@ -13,6 +13,7 @@ import {Search} from "../common/icon/Search.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
 
 import {ContainerSummary} from "./ContainerSummary.tsx";
+import {DeleteSelected} from "./DeleteSelected.tsx";
 
 export type ContainerDetailProps = {
   name: string,
@@ -63,6 +64,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
       >
         Search<Search className="ml-1"/>
       </Button>
+      <DeleteSelected />
     </div>
     {pageNo === NO_PAGE
       ? <Loading/>
