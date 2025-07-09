@@ -1,4 +1,3 @@
-import {StateCreator} from "zustand";
 import {
   FieldQueryErrors,
   FieldQueryForm,
@@ -12,8 +11,7 @@ import {FormUpdate} from "./FormUpdate.ts";
 import {addForm} from "./util/addForm.ts";
 import {removeForm} from "./util/removeForm.ts";
 import {FormToAdd} from "./FormToAdd.ts";
-
-export type SliceCreator<SLICE> = StateCreator<SLICE, [], [], SLICE>
+import {SliceCreator} from "./SliceCreator.ts";
 
 export type QueryState = {
   forms: FieldQueryForm[]
@@ -31,7 +29,7 @@ export type QueryState = {
 }
 
 export type QuerySlice = QueryState & {
-  setState: (update: QueryState) => void
+  setQueryState: (update: QueryState) => void
   addForm: (toAdd: FormToAdd) => void
   removeForm: (formIndex: number) => void
   updateForm: (update: FormUpdate) => void
@@ -45,7 +43,7 @@ export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {
     errors: [],
     params: [],
 
-    setState: (update: QueryState) => set(() =>
+    setQueryState: (update: QueryState) => set(() =>
       ({...update})
     ),
     addForm: (update) => set((prev) =>

@@ -70,7 +70,6 @@ export function NewCustomQueryEditor(props: {
     ? 'Create custom query'
     : 'Store custom query';
 
-
   return <>
     <H1>{title}</H1>
     {createCustomQuery.isError && <Warning>

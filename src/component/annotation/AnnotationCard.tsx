@@ -23,6 +23,8 @@ import {
 import {StatusMessage} from "../common/StatusMessage.tsx";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 import {useQueryClient} from "@tanstack/react-query";
+import {Checkbox} from "../common/Checkbox.tsx";
+import {useStore} from "../../store/useStore.ts";
 
 type PathValue = { path: string, value: string };
 
@@ -34,8 +36,10 @@ export function AnnotationCard(props: {
 
   const {id} = props;
 
+  const {selectedAnnotationIds, setSelectedAnnotationsState} = useStore()
+
   const parsed = parseAnnotationId(id)
-  if(!parsed) {
+  if (!parsed) {
     console.warn(`Could not parse annotation ID ${id}`)
     return null;
   }
@@ -55,17 +59,18 @@ export function AnnotationCard(props: {
     }
     deleteAnnotation.mutate(
       {
-      params: {
-        path: {containerName, annotationName},
-      },
-      headers: {'If-Match': ETag},
-    }, {
-      onSuccess: async () => {
-        await queryClient.invalidateQueries({
-          predicate: query => invalidateBy(query, 'containerName')
-        })
+        params: {
+          path: {containerName, annotationName},
+        },
+        headers: {'If-Match': ETag},
+      }, {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({
+            predicate: query => invalidateBy(query, 'containerName')
+          })
+        }
       }
-    })
+    )
   }
 
   if (!annotation) {
@@ -82,18 +87,33 @@ export function AnnotationCard(props: {
   const bodyPreviewProps: PathValue[] = annotationPreview.body.paths
     .map(path => ({path, value: bodies.map(b => get(b, path)).join(', ')}))
 
+  const isSelected = selectedAnnotationIds.includes(id);
   return <Card
-    header={<H5>
-      {name}
-      <Pipe/>
-      {annotation.type}
-      <span
-        className="text-base float-right text-lg text-sky-800 hover:text-inherit hover:cursor-pointer"
-        onClick={handleDelete}
-      >
-        <Remove/>
-      </span>
-    </H5>}
+    header={<div className="flex items-start justify-between">
+      <H5>
+        {name}
+        <Pipe/>
+        {annotation.type}
+      </H5>
+      <div className="mt-2 flex items-center gap-x-3">
+        {<Checkbox
+          isSelected={isSelected}
+          onToggle={() => {
+            const update = isSelected
+              ? selectedAnnotationIds.filter(sa => sa !== id)
+              : [...selectedAnnotationIds, id];
+            setSelectedAnnotationsState({selectedAnnotationIds: update});
+          }}
+          className="hover:text-inherit hover:cursor-pointer text-sky-800"
+        />}
+        <span
+          onClick={handleDelete}
+          className="hover:text-inherit hover:cursor-pointer text-sky-800"
+        >
+          <Remove/>
+        </span>
+      </div>
+    </div>}
     footer={
       <>
         <A href={annotation.id}>Source <External className="ml-1"/></A>

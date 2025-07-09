@@ -2,9 +2,6 @@ import createClient, {FetchOptions, Middleware} from "openapi-fetch";
 import {paths} from "../openapi.ts";
 import {HttpMethod, PathsWithMethod} from "openapi-typescript-helpers";
 import {
-  UseMutationOptions as RQUseMutationOptions
-} from "@tanstack/react-query";
-import {
   decodeCustomQueryParameters
 } from "./util/decodeCustomQueryParameters.ts";
 
@@ -56,5 +53,3 @@ export type Paths<M extends HttpMethod> = PathsWithMethod<paths, M>
 export type Params<M extends HttpMethod, P extends Paths<M>> = M extends keyof paths[P]
   ? FetchOptions<paths[P][M]>
   : never
-// Add more options as needed:
-export type UseMutationOptions = Pick<RQUseMutationOptions, 'retry'>

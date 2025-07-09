@@ -5,10 +5,12 @@ import {useQuery} from "@tanstack/react-query";
 import {ArAnnotation} from "../ArModel.ts";
 import {QR} from "../query/QR.tsx";
 
+export type ArAnnotationWithETag = { annotation: ArAnnotation, ETag: string };
+
 export function useContainerAnnotation(
   containerName: string,
   annotationName: string
-): QR<{annotation: ArAnnotation, ETag: string}> {
+): QR<ArAnnotationWithETag> {
   const client = useOpenApiClient();
   return useQuery(
     getContainerAnnotation(client, containerName, annotationName)
