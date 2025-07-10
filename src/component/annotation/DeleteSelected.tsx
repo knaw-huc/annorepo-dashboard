@@ -6,7 +6,7 @@ import {
   useContainerAnnotations
 } from "../../client/endpoint/useContainerAnnotations.tsx";
 import {useState} from "react";
-import {parseAnnotationId} from "../annotation/parseAnnotationId.ts";
+import {parseAnnotationId} from "./parseAnnotationId.ts";
 import {invalidateBy} from "../../client/query/useGet.tsx";
 
 export function DeleteSelected() {

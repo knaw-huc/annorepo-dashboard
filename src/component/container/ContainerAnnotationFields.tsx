@@ -3,7 +3,7 @@ import {Hint} from "../common/Hint.tsx";
 import {useContainerFields} from "../../client/endpoint/useContainerFields.tsx";
 import {Loading} from "../common/Loading.tsx";
 import {isEmpty} from "lodash";
-import {BadgeWithCount} from "./BadgeWithCount.tsx";
+import {BadgeWithCount} from "../common/BadgeWithCount.tsx";
 
 export function ContainerAnnotationFields(props: { name: string }) {
   const {name} = props;

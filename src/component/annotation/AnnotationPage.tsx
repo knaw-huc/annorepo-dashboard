@@ -1,8 +1,8 @@
 import {ArAnnotation, ArAnnotationPage} from "../../client/ArModel.ts";
 import {PageNavigation} from "../common/PageNavigation.tsx";
 import {AnnotationCard} from "./AnnotationCard.tsx";
-import {SelectionStatus} from "../container/SelectionStatus.tsx";
-import {DeleteSelected} from "../container/DeleteSelected.tsx";
+import {SelectionStatus} from "./SelectionStatus.tsx";
+import {DeleteSelected} from "./DeleteSelected.tsx";
 
 export function AnnotationPage(props: {
   pageNo: number
