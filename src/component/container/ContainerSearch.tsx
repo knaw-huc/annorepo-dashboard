@@ -103,7 +103,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
         pageNo={pageNo}
         page={page.data}
         onChangePageNo={handleChangePage}
-        canDelete={true}
+        canDelete
       />
       : <Loading/>
     }
