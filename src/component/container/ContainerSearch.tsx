@@ -41,7 +41,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   })
 
   useEffect(() => {
-    if(isInit) {
+    if (isInit) {
       return
     }
     setInit(true)
@@ -103,6 +103,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
         pageNo={pageNo}
         page={page.data}
         onChangePageNo={handleChangePage}
+        canDelete={true}
       />
       : <Loading/>
     }

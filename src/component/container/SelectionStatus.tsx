@@ -25,10 +25,11 @@ export function SelectionStatus(props: {
     return null
   }
   const noneSelected = selectedAnnotationIds.length === 0;
-  const someSelected = selectedAnnotationIds.length !== 0 && selectedAnnotationIds.length < items.length;
-  const allSelected = selectedAnnotationIds.length !== 0 && selectedAnnotationIds.length === items.length;
-  return <
-    Button
+  const someSelected = !noneSelected && selectedAnnotationIds.length < items.length;
+  const allSelected = !noneSelected && selectedAnnotationIds.length === items.length;
+
+  return <Button
+    secondary
     className="ml-2"
     onClick={() => handleToggleSelect(items, allSelected)}
   >

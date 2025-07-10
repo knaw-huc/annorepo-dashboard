@@ -109,6 +109,7 @@ export function CustomQueryDetail(props: {
         pageNo={pageNo}
         page={customQueryCall.data}
         onChangePageNo={handleChangePage}
+        canDelete
       />}
     </div>
   </>

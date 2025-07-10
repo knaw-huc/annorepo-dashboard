@@ -23,6 +23,7 @@ export function ContainerAnnotationPage(props: PropsWithChildren<{
     pageNo={pageNo}
     page={page}
     onChangePageNo={handlePageChange}
+    canDelete
   />
 }
 

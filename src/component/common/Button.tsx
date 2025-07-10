@@ -15,7 +15,7 @@ export function Button(props: PropsWithChildren<{
 
   if (props.secondary) {
     if (props.disabled) {
-      classNames += ' cursor-not-allowed bg-slate-100 text-slate-500 border-1 border-solid border-b-slate-400 border-b-2'
+      classNames += ' cursor-not-allowed bg-slate-100 text-slate-400 border-1 border-solid border-b-slate-400 border-b-2'
     } else {
       classNames += ' cursor-pointer bg-slate-100 hover:bg-slate-100 hover:border-slate-100 text-slate-700 border-1 border-solid hover:border-slate-400 border-b-slate-700 border-b-2'
     }

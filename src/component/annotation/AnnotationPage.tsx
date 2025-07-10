@@ -1,15 +1,18 @@
 import {ArAnnotation, ArAnnotationPage} from "../../client/ArModel.ts";
 import {PageNavigation} from "../common/PageNavigation.tsx";
 import {AnnotationCard} from "./AnnotationCard.tsx";
+import {SelectionStatus} from "../container/SelectionStatus.tsx";
+import {DeleteSelected} from "../container/DeleteSelected.tsx";
 
 export function AnnotationPage(props: {
   pageNo: number
   page: ArAnnotationPage
   onChangePageNo: (page: string) => void
   className?: string
+  canDelete?: boolean
 }) {
 
-  const {page, pageNo, onChangePageNo} = props;
+  const {page, pageNo, onChangePageNo, canDelete} = props;
 
   const {prev, next} = page;
 
@@ -26,6 +29,10 @@ export function AnnotationPage(props: {
         next={next}
         onChange={onChangePageNo}
       />
+      {canDelete && <span className="ml-5">
+        <SelectionStatus items={page.items}/>
+        <DeleteSelected/>
+      </span>}
     </div>
     <AnnotationGrid
       items={page.items}

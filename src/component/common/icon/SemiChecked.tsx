@@ -1,4 +1,4 @@
-import {MinusSquare, Square} from "react-feather";
+import {MinusSquare} from "react-feather";
 
 export function SemiChecked(props: { className?: string }) {
   let className = "inline align-text-top";

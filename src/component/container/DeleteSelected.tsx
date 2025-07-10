@@ -40,23 +40,21 @@ export function DeleteSelected() {
 
       const pathParams = toDelete[i];
       if (!pathParams) {
-        console.warn(`Could not delete ${id}: no path params`)
+        console.warn(`Can not delete ${id}: does not match path params`)
         continue;
       }
 
       const ETag = idWithETag.find(i => i.id === id)?.ETag
       if (!ETag) {
-        console.warn(`Could not delete ${id}: no ETag`)
+        console.warn(`Can not delete ${id}: no ETag`)
         continue;
       }
-      params.push(
-        {
-          params: {
-            path: pathParams,
-          },
-          headers: {'If-Match': ETag},
-        }
-      )
+      params.push({
+        params: {
+          path: pathParams,
+        },
+        headers: {'If-Match': ETag},
+      })
     }
 
     deleteAnnotation.mutate(params, {
@@ -75,6 +73,7 @@ export function DeleteSelected() {
 
 
   return <Button
+    secondary
     className="ml-2"
     disabled={!selectedAnnotations.length}
     onClick={handleDeleteAll}
