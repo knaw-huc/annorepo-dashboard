@@ -14,6 +14,8 @@ import {StatusMessage} from "../common/StatusMessage.tsx";
 
 import {ContainerSummary} from "./ContainerSummary.tsx";
 import {DeleteSelected} from "./DeleteSelected.tsx";
+import {SelectionStatus} from "./SelectionStatus.tsx";
+import {useContainerPage} from "../../client/endpoint/useContainerPage.tsx";
 
 export type ContainerDetailProps = {
   name: string,
@@ -38,6 +40,9 @@ export function ContainerDetail(props: ContainerDetailProps) {
     const containerPageId = container.data.first.id;
     setPageNo(toPageNo(containerPageId))
   }, [container, setInit]);
+
+  const page = useContainerPage(name, pageNo)
+
 
   const handleChangePage = (update: number) => {
     setPageNo(update)
@@ -64,6 +69,9 @@ export function ContainerDetail(props: ContainerDetailProps) {
       >
         Search<Search className="ml-1"/>
       </Button>
+      <SelectionStatus
+        items={page.data?.items}
+      />
       <DeleteSelected />
     </div>
     {pageNo === NO_PAGE

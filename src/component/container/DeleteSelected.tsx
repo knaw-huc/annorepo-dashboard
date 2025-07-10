@@ -49,7 +49,6 @@ export function DeleteSelected() {
         console.warn(`Could not delete ${id}: no ETag`)
         continue;
       }
-      console.log('Start deleting', id)
       params.push(
         {
           params: {
