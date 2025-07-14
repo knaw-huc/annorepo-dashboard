@@ -1,7 +1,7 @@
 import {ErroneousValue, FieldQueryForm, FormParamValue} from "../QueryModel.ts";
 import {toParamTag} from "../../../../store/query/util/toParamTag.ts";
 import {toParamName} from "../../../../store/query/util/toParamName.ts";
-import {findMapperByType} from "./findMapperByType.tsx";
+import {findMapperByType} from "../../../../model/query/value/util/findMapperByType.ts";
 
 export function createInputValue(
   form: FieldQueryForm,

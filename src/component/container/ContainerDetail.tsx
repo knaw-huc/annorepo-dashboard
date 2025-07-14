@@ -43,7 +43,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   }
 
   if (!container.isSuccess) {
-    return <StatusMessage request={container}/>
+    return <StatusMessage requests={[container]}/>
   }
 
   return <div>

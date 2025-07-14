@@ -6,6 +6,8 @@ import {useStore} from "../../../store/useStore.ts";
 import {
   useValueSuggestions
 } from "./useValueSuggestions.tsx";
+import {SelectOption} from "../form/SelectOption.tsx";
+import {QueryValue} from "../../../model/query/value/QueryValue.ts";
 
 export function CustomSubQueryEditor(props: {
   formIndex: number
@@ -17,7 +19,7 @@ export function CustomSubQueryEditor(props: {
   const form = forms[formIndex]
   const operatorValue = form.operator.valueOf();
 
-  const valueSuggestions = useValueSuggestions({
+  const valueSuggestions: SelectOption<QueryValue>[] = useValueSuggestions({
     containerName: containerName,
     field: form.field,
     value: form.value,
@@ -32,8 +34,8 @@ export function CustomSubQueryEditor(props: {
             operator={form.operator}
             // Disabled and cannot be changed:
             onChange={noop}
-            disabled={true}
             suggestions={[]}
+            disabled={true}
           />
         </div>
         <div className="flex-none mr-2">
@@ -48,8 +50,8 @@ export function CustomSubQueryEditor(props: {
           <QueryValueInput
             suggestions={valueSuggestions}
             formIndex={formIndex}
-            isCall={isCall}
             isCustom={true}
+            isCall={isCall}
           />
         </div>
       </div>

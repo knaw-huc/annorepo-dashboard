@@ -1,11 +1,11 @@
-import {useMutation} from "@tanstack/react-query";
+import {useMutation, UseMutationOptions} from "@tanstack/react-query";
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
-import {Params, Paths, UseMutationOptions} from "../OpenApiClient.tsx";
+import {Params, Paths} from "../OpenApiClient.tsx";
 import {MR} from "./MR.tsx";
 
 export function usePost<P extends Paths<'post'>, T>(
   path: P,
-  options?: UseMutationOptions
+  options?: UseMutationOptions<any, any, Params<"post", P>>
 ): MR<T> {
   const client = useOpenApiClient();
 

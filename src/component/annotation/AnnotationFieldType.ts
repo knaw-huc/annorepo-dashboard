@@ -1,4 +1,4 @@
-import {findMapperByType} from "../common/search/util/findMapperByType.tsx";
+import {findMapperByType} from "../../model/query/value/util/findMapperByType.ts";
 import {QueryValueType} from "../../model/query/value/QueryValueType.ts";
 
 export type AnnotationFieldType =

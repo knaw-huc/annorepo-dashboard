@@ -1,7 +1,7 @@
 import {NO_FIELD} from "../../../client/ArModel.ts";
 import {DropdownSelector} from "../form/DropdownSelector.tsx";
 import {orThrow} from "../../../util/orThrow.ts";
-import {SelectOption} from "../form/SelectOption.tsx";
+import {SelectOption, toOption} from "../form/SelectOption.tsx";
 import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import {Button} from "../Button.tsx";
@@ -21,7 +21,9 @@ import {
   isRangeQueryOperator
 } from "../../../model/query/operator/RangeQueryOperator.ts";
 import {toOperator} from "../../../model/query/operator/toOperator.ts";
-import {findMapperByType} from "./util/findMapperByType.tsx";
+import {
+  findMapperByType
+} from "../../../model/query/value/util/findMapperByType.ts";
 
 export function SubQueryEditor(props: {
   fieldNames: string[],
@@ -102,7 +104,7 @@ export function SubQueryEditor(props: {
             value={form.field}
             errorLabel={errors[formIndex].field}
             operator={form.operator}
-            suggestions={fieldSuggestions}
+            suggestions={fieldSuggestions.map(toOption)}
             onChange={handleChangeField}
             disabled={disabled}
           />

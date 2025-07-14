@@ -2,10 +2,9 @@ import {toErrorMessage} from "../../util/toErrorMessage.tsx";
 import {Warning} from "./Warning.tsx";
 
 export function ErrorMessage(props: {
-  error: any
+  error?: any
 }) {
-  if(!props.error) {
-    return null;
-  }
-  return <Warning>{toErrorMessage(props.error)}</Warning>
+  const {error} = props;
+  console.warn('IS IT SHOWING?', error)
+  return <Warning>{toErrorMessage(error)}</Warning>
 }

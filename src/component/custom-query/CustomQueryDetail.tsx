@@ -44,6 +44,16 @@ export function CustomQueryDetail(props: {
     }
   }, [customQuery.data]);
 
+  useEffect(() => {
+    console.log('useEffect customQuery', {
+      data: customQuery.data,
+      error: customQuery.error,
+      isError: customQuery.isError,
+      isPaused: customQuery.isPaused,
+      isStale: customQuery.isStale
+    })
+  }, [customQuery]);
+
   function handleSearch() {
     if (!customQuery.data) {
       return;
@@ -68,9 +78,11 @@ export function CustomQueryDetail(props: {
   }
 
   if (!customQuery.data) {
-    return <StatusMessage request={customQuery}/>
+    console.log('ERROR?!')
+    return <StatusMessage requests={[customQuery]}/>
   }
 
+  console.log('NO ERROR?!')
   let createdBy = customQuery.data.createdBy;
   return <>
     <H1>{customQueryName} <Hint>Custom query</Hint></H1>

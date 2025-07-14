@@ -16,7 +16,7 @@ export function ContainerSummary(props: { name: string, className: string }) {
   }
 
   if (!container.isSuccess) {
-    return <StatusMessage request={container}/>
+    return <StatusMessage requests={[container]}/>
   }
 
   return <p className={className}>

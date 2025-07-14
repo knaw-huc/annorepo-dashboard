@@ -1,12 +1,13 @@
 import {DropdownItem} from "./DropdownItem.tsx";
 import {isEmpty} from "lodash";
+import {SelectOption} from "./SelectOption.tsx";
 
-export function DropdownList(props: {
+export function DropdownList<T = string>(props: {
   isOpen: boolean;
   setOpen: (isOpen: boolean) => void;
-  suggestions: string[]
+  suggestions: SelectOption<T>[]
   focussed: number | undefined
-  onSelect: (item: string) => void;
+  onSelect: (item: SelectOption<T>) => void;
 }) {
   const {isOpen, suggestions, focussed, onSelect} = props;
 
@@ -21,8 +22,8 @@ export function DropdownList(props: {
     <div className="py-1" role="none">
       {suggestions.map((s, i) =>
         <DropdownItem
-          key={s}
-          label={s}
+          key={`${s.value}`}
+          label={s.label}
           isFocussed={i === focussed}
           onClick={() => onSelect(s)}
         />

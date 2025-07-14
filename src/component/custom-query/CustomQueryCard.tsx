@@ -19,7 +19,7 @@ export function CustomQueryCard(props: PropsWithChildren<{
   ) as QR<ArCustomQueryResult>
 
   if (!customQueryRequest.isSuccess) {
-    return <StatusMessage request={customQueryRequest}/>
+    return <StatusMessage requests={[customQueryRequest]}/>
   }
 
   const customQuery = customQueryRequest.data;

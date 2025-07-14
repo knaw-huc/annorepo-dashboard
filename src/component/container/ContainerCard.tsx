@@ -15,7 +15,7 @@ export function ContainerCard(props: PropsWithChildren<{
   const container = useContainer(name)
 
   if (!container.isSuccess) {
-    return <StatusMessage request={container}/>
+    return <StatusMessage requests={[container]}/>
   }
 
   return <Card

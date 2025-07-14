@@ -2,11 +2,12 @@ import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {useQuery} from "@tanstack/react-query";
 import {createQueryKey} from "../query/useGet.tsx";
 import {QR} from "../query/QR.tsx";
+import {QueryValue} from "../../model/query/value/QueryValue.ts";
 
-export function useContainerFieldDistinctValues(
+export function useContainerFieldDistinctValues<T = QueryValue>(
   containerName: string = '',
   field: string = ''
-): QR<string[]> {
+): QR<T[]> {
   const client = useOpenApiClient()
   const path = '/services/{containerName}/distinct-values/{field}';
   const params = {params: {path: {containerName, field}}};

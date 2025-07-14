@@ -2,11 +2,13 @@ import {DropdownNavigation} from "./DropdownNavigation.tsx";
 import {InputWithLabel} from "./InputWithLabel.tsx";
 import {DropdownList} from "./DropdownList.tsx";
 import {useState} from "react";
+import {SelectOption} from "./SelectOption.tsx";
 
-export function DropdownInput(props: {
+export function DropdownInput<T = string>(props: {
   value: string
-  suggestions: string[]
-  onChange: (update: string) => void
+  suggestions: SelectOption<T>[]
+  onInputChange: (update: string) => void
+  onSelect: (update: SelectOption<T>) => void
   label: string
   errorLabel?: string
   disabled?: boolean
@@ -15,7 +17,8 @@ export function DropdownInput(props: {
   const {
     value,
     suggestions,
-    onChange,
+    onInputChange,
+    onSelect,
     label,
     errorLabel,
     disabled,
@@ -23,13 +26,13 @@ export function DropdownInput(props: {
   const [focussed, setFocussed] = useState<number>();
   const [isOpen, setOpen] = useState(false);
 
-  function handleChange(update: string) {
-    onChange(update);
+  function handleInputChange(update: string) {
+    onInputChange(update);
   }
 
-  const handleSelect = (suggestion: string) => {
+  const handleSelect = (suggestion: SelectOption<T>) => {
     setOpen(false)
-    onChange(suggestion);
+    onSelect(suggestion)
   }
 
   let className = 'relative'
@@ -43,7 +46,7 @@ export function DropdownInput(props: {
       focussed={focussed}
       onFocus={setFocussed}
       onSelect={(update) => {
-        handleChange(suggestions[update])
+        handleSelect(suggestions[update])
         setFocussed(undefined)
         setOpen(false)
       }}
@@ -52,7 +55,7 @@ export function DropdownInput(props: {
         label={label}
         errorLabel={errorLabel}
         value={value}
-        onChange={handleChange}
+        onChange={handleInputChange}
         onFocus={() => setOpen(true)}
         // Use timeout to prevent suggestions to disappear before being clicked:
         onBlur={() => setTimeout(() => setOpen(false), 200)}

@@ -38,10 +38,23 @@ export type CustomQueryCallArgs = {
   parameters: Record<string, string>,
   pageNo: number,
 }
+
 export function useCustomQueryCall(props: CustomQueryCallArgs): QR<ArAnnotationPage> {
   const client = useOpenApiClient();
+  const {
+    queryName,
+    containerName,
+    parameters,
+    pageNo
+  } = props;
   return useQuery(
-    getContainerCustomQueryCall(client, props.queryName, props.containerName, props.parameters, props.pageNo)
+    getContainerCustomQueryCall(
+      client,
+      queryName,
+      containerName,
+      parameters,
+      pageNo
+    )
   )
 }
 
@@ -71,8 +84,22 @@ export function getContainerCustomQueryCall(
   return {
     enabled: !!containerName,
     queryKey: createQueryKey(path, params),
-    queryFn: async () => await client
-      .GET(path, params)
-      .then(({data}) => data),
+    queryFn: async () => {
+      console.log('RUNNING')
+      try {
+        const result = await client
+          .GET(path, params);
+        if (!result.response.ok) {
+          console.error('caught?')
+          throw new Error('Network response was not ok')
+        }
+        return result.data;
+
+      } catch (e) {
+        console.error('ERRORORORRORORO!', e)
+        throw e;
+      }
+
+    },
   };
 }

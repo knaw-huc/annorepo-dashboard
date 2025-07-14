@@ -2,7 +2,7 @@ import {
   FieldQueryForm,
   FormParamValue
 } from "../../common/search/QueryModel.ts";
-import {findMapperByType} from "../../common/search/util/findMapperByType.tsx";
+import {findMapperByType} from "../../../model/query/value/util/findMapperByType.ts";
 
 type ParamName = string
 type ParamValue = string

@@ -9,7 +9,7 @@ import {StatusMessage} from "./common/StatusMessage.tsx";
 export function AnnoRepoDetail() {
   const aboutRequest = useAbout();
   if(!aboutRequest.isSuccess) {
-    return <StatusMessage request={aboutRequest} />
+    return <StatusMessage requests={[aboutRequest]} />
   }
   const about = aboutRequest.data
   return <div>

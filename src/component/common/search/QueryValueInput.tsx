@@ -9,7 +9,17 @@ import {
 import {
   queryOperatorValueType
 } from "../../../model/query/value/queryOperatorValueType.ts";
-import {findMapperByType} from "./util/findMapperByType.tsx";
+import {
+  findMapperByType
+} from "../../../model/query/value/util/findMapperByType.ts";
+import {SelectOption} from "../form/SelectOption.tsx";
+import {QueryValue} from "../../../model/query/value/QueryValue.ts";
+import {
+  findMapperByValue
+} from "../../../model/query/value/util/findMapperByValue.ts";
+import {
+  findMapperByOperator
+} from "../../../model/query/value/util/findMapperByOperator.ts";
 
 export function QueryValueInput(props: {
   formIndex: number,
@@ -18,7 +28,7 @@ export function QueryValueInput(props: {
    */
   isCall: boolean,
   isCustom: boolean,
-  suggestions: string[]
+  suggestions: SelectOption<QueryValue>[]
 }) {
   const {
     formIndex,
@@ -86,6 +96,37 @@ export function QueryValueInput(props: {
     }
   }
 
+  function handleSelect(
+    update: SelectOption<QueryValue>,
+  ) {
+
+    try {
+      const updateMapper = findMapperByValue(update.value)
+      let valueUpdate = update.value
+
+      const valueTypeUpdate = updateMapper.type
+      const allowedTypes = queryOperatorValueType[form.operator]
+      if(!allowedTypes.includes(valueTypeUpdate)) {
+        const currentMapper = findMapperByOperator(form.operator)
+        valueUpdate = currentMapper.toValue(updateMapper.toString(valueUpdate))
+      }
+
+      updateForm({
+        formIndex,
+        form: {...form, value: valueUpdate, valueType: valueTypeUpdate},
+        error: {...error, value: ''}
+      });
+    } catch (e) {
+      const errorMessage = e instanceof Error ? e.message : "Invalid value";
+      updateForm({
+        formIndex,
+        // Use inout value when query value conversion failed:
+        form: {...form, value: update.value},
+        error: {...error, value: errorMessage}
+      });
+    }
+  }
+
   const inputValue = createInputValue(
     form, error.value, param, formIndex, isCall
   )
@@ -104,7 +145,8 @@ export function QueryValueInput(props: {
       className="flex-1"
       value={inputValue}
       suggestions={suggestions}
-      onChange={handleValueChange}
+      onInputChange={handleValueChange}
+      onSelect={handleSelect}
       label="Value"
       errorLabel={error.value}
       disabled={disabled}
@@ -113,7 +155,7 @@ export function QueryValueInput(props: {
       options={valueTypeOptions}
       selectedValue={form.valueType}
       onSelect={option => handleTypeChange(option.value)}
-      disabled={valueTypeOptions.length < 2}
+      disabled={disabled || valueTypeOptions.length < 2}
     />
   </div>
 }

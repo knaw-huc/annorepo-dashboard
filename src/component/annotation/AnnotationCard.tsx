@@ -74,7 +74,7 @@ export function AnnotationCard(props: {
   }
 
   if (!annotation) {
-    return <StatusMessage request={annotationRequest}/>
+    return <StatusMessage requests={[annotationRequest]}/>
   }
 
   const name = toName(annotation.via || annotation.id);

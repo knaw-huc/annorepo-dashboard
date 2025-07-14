@@ -14,7 +14,7 @@ export function CustomQueryIndex(props: {
   const customQueries: QR<ArCustomQueryResult[]> = useGet('/global/custom-query')
 
   if (!customQueries.isSuccess) {
-    return <StatusMessage request={customQueries}/>
+    return <StatusMessage requests={[customQueries]}/>
   }
 
   return <div>

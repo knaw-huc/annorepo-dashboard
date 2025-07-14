@@ -1,6 +1,6 @@
 import {orThrow} from "../../../../util/orThrow.ts";
-import {QueryValueType} from "../../../../model/query/value/QueryValueType.ts";
-import {queryValueMappers} from "../../../../model/query/value/queryValueMappers.ts";
+import {QueryValueType} from "../QueryValueType.ts";
+import {queryValueMappers} from "../queryValueMappers.ts";
 
 export function findMapperByType(type: QueryValueType) {
   return queryValueMappers.find(m => m.type === type)

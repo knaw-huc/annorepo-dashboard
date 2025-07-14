@@ -1,11 +1,11 @@
 import {orThrow} from "../../../../util/orThrow.ts";
-import {QueryValue} from "../../../../model/query/value/QueryValue.ts";
+import {QueryValue} from "../QueryValue.ts";
 import {
   queryOperatorValueType
-} from "../../../../model/query/value/queryOperatorValueType.ts";
-import {QueryValuesConfig} from "../../../../model/query/value/QueryValuesConfig.ts";
-import {queryValueMappers} from "../../../../model/query/value/queryValueMappers.ts";
-import {QueryOperator} from "../../../../model/query/operator/QueryOperator.ts";
+} from "../queryOperatorValueType.ts";
+import {QueryValuesConfig} from "../QueryValuesConfig.ts";
+import {queryValueMappers} from "../queryValueMappers.ts";
+import {QueryOperator} from "../../operator/QueryOperator.ts";
 
 export function findMapperByOperator(operator: QueryOperator) {
   const byOperator = (operator: QueryOperator) => {

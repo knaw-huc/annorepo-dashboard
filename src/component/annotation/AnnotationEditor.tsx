@@ -19,13 +19,19 @@ import {
 import {DropdownInput} from "../common/form/DropdownInput.tsx";
 import {orThrow} from "../../util/orThrow.ts";
 import {filterSuggestions} from "../common/form/util/filterSuggestions.tsx";
-import {findMapperByType} from "../common/search/util/findMapperByType.tsx";
+import {
+  findMapperByType
+} from "../../model/query/value/util/findMapperByType.ts";
 import {
   toDefaultAnnotationFieldValue,
   toQueryValueType
 } from "./AnnotationFieldType.ts";
 import {removeEmptyValues} from "../../model/query/value/QueryValue.ts";
 import {MR} from "../../client/query/MR.tsx";
+import {SelectOption, toOption} from "../common/form/SelectOption.tsx";
+import {
+  findMapperByValue
+} from "../../model/query/value/util/findMapperByValue.ts";
 
 export function AnnotationEditor(props: {
   containerName: string,
@@ -49,15 +55,17 @@ export function AnnotationEditor(props: {
     suggestions: useContainerFieldDistinctValues(containerName, field.path)
   })).map(field => ({
     ...field,
-    suggestions: filterSuggestions(field.suggestions.data, get(form, field.path))
+    suggestions: filterSuggestions(field.suggestions.data?.map(toOption) ?? [], get(form, field.path))
   }))
 
   const [bodyError, setBodyError] = useState<string>('')
   const queryClient = useQueryClient()
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
 
-  const typeSuggestions = useContainerFieldDistinctValues(containerName, 'type')
-  const filteredTypeSuggestions = filterSuggestions(typeSuggestions.data, form.type)
+  // Annotation type should always be of type string:
+  const typeFieldSuggestions: SelectOption[] = useContainerFieldDistinctValues<string>(containerName, 'type')
+    .data?.map(toOption) ?? []
+  const filteredTypeSuggestions = filterSuggestions(typeFieldSuggestions, form.type)
 
   const handleSubmit = () => {
     if (bodyError) {
@@ -123,33 +131,47 @@ export function AnnotationEditor(props: {
               label="Type"
               value={form.type || ''}
               suggestions={filteredTypeSuggestions}
-              onChange={update => setForm(prev => ({
+              onInputChange={update => setForm(prev => ({
                 ...prev,
                 type: update
+              }))}
+              onSelect={update => setForm(prev => ({
+                ...prev,
+                type: update.value
               }))}
               className="mt-3"
             />
 
-            {configFields.map(cf => {
+            {configFields.map(configField => {
                 const suggestions = filteredConfigFieldSuggestions
-                    .find(cfs => cfs.path === cf.path)
+                    .find(cfs => cfs.path === configField.path)
                     ?.suggestions
                   ?? orThrow('No such path')
-                const valueType = toQueryValueType(cf.type)
+                const valueType = toQueryValueType(configField.type)
                 const mapper = findMapperByType(valueType)
                 return <DropdownInput
-                  key={cf.path}
-                  value={mapper.toString(get(form, cf.path))}
-                  label={cf.label}
-                  onChange={update => setForm(prev => {
+                  key={configField.path}
+                  value={mapper.toString(get(form, configField.path))}
+                  label={configField.label}
+                  onInputChange={update => setForm(prev => {
                     const next = {...prev}
                     const mapped = mapper.toValue(update);
                     console.log('handleChange', {update, mapped})
-                    set(next, cf.path, mapped);
+                    set(next, configField.path, mapped);
+                    return next
+                  })}
+                  onSelect={update => setForm(prev => {
+                    // Selected value can have a different type:
+                    const next = {...prev}
+                    const updateMapper = findMapperByValue(update.value)
+                    set(next, configField.path, update.value);
+                    const type = updateMapper.type;
+                    console.log('handleChange', {update, type})
+                    next.type = type;
                     return next
                   })}
                   className="mt-5"
-                  disabled={cf.type === 'dateTime'}
+                  disabled={configField.type === 'dateTime'}
                   suggestions={suggestions}
                 />;
               }

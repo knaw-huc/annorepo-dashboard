@@ -10,7 +10,7 @@ import {
 } from "../../../component/common/search/QueryModel.ts";
 import {
   findMapperByOperator
-} from "../../../component/common/search/util/findMapperByOperator.tsx";
+} from "../../../model/query/value/util/findMapperByOperator.ts";
 import {QueryValue} from "../../../model/query/value/QueryValue.ts";
 import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
 import {isRangeQueryOperator} from "../../../model/query/operator/RangeQueryOperator.ts";
