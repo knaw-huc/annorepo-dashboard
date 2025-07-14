@@ -5,7 +5,7 @@ import {
 import {
   findMapperByType
 } from "../../../model/query/value/util/findMapperByType.ts";
-import {CustomQueryParams} from "./CustomQueryParams.ts";
+import {CustomQueryParams} from "../model/CustomQueryParams.ts";
 
 export function toCustomQueryParameters(
   forms: FieldQueryForm[],

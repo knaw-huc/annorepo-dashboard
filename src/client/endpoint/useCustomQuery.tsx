@@ -10,7 +10,7 @@ import {GetPath} from "../query/GetPath.tsx";
 
 import {
   CustomQueryParams
-} from "../../component/custom-query/util/CustomQueryParams.ts";
+} from "../../component/custom-query/model/CustomQueryParams.ts";
 
 export function useCustomQuery(
   name: string,
