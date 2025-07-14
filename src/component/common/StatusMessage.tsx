@@ -9,9 +9,6 @@ export function StatusMessage(props: {
   if (requests.some(r => r.isError)) {
     return <ErrorMessage error={requests.find(r => r.error)!.error}/>;
   }
-  if (requests.some(r => r.isStale)) {
-    return <ErrorMessage error="Stale request" />;
-  }
   if (requests.some(r => r.isPaused)) {
     return <ErrorMessage error="Paused request" />;
   }

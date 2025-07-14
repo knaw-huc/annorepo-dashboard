@@ -8,6 +8,10 @@ import {objectEntries} from "../../util/objectEntries.ts";
 import {QR} from "../query/QR.tsx";
 import {GetPath} from "../query/GetPath.tsx";
 
+import {
+  CustomQueryParams
+} from "../../component/custom-query/util/CustomQueryParams.ts";
+
 export function useCustomQuery(
   name: string,
 ): QR<ArCustomQueryResult> {
@@ -35,7 +39,7 @@ export function getCustomQuery(
 export type CustomQueryCallArgs = {
   queryName: string,
   containerName: string,
-  parameters: Record<string, string>,
+  parameters: CustomQueryParams,
   pageNo: number,
 }
 
@@ -57,17 +61,21 @@ export function useCustomQueryCall(props: CustomQueryCallArgs): QR<ArAnnotationP
     )
   )
 }
-
+6
 export function getContainerCustomQueryCall(
   client: AnnoRepoOpenApiClient,
   queryCall: string,
   containerName: string,
-  queryParameters: Record<string, string>,
+  queryParameters: CustomQueryParams,
   pageNo: number = 0,
 ) {
+
   const base64EncodedParams = objectEntries(queryParameters)
-    .map(([k, v]) => `${k}=${encodeString(v)}`)
+    .map(([k, v]) => {
+      return `${k}=${encodeString(v)}`;
+    })
     .join(',');
+  console.log('getContainerCustomQueryCall', {queryParameters, base64EncodedParams})
   const queryCallWithParameters = base64EncodedParams
     ? queryCall + ':' + base64EncodedParams
     : queryCall

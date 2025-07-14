@@ -7,6 +7,9 @@ import {QueryValuesConfig} from "../QueryValuesConfig.ts";
 import {queryValueMappers} from "../queryValueMappers.ts";
 import {QueryOperator} from "../../operator/QueryOperator.ts";
 
+/**
+ * @see queryValueMappers
+ */
 export function findMapperByOperator(operator: QueryOperator) {
   const byOperator = (operator: QueryOperator) => {
     return (config: QueryValuesConfig<QueryValue>) => {

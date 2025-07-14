@@ -7,28 +7,32 @@ export const queryValueMappers: QueryValuesConfig<QueryValue>[] = [
   {
     type: 'string',
     toValue: str => str === "" ? emptyValue : str,
-    toString: toString,
+    toInputValue: toString,
+    toParameterValue: JSON.stringify,
     isType: isString,
     defaultValue: 'value'
   },
   {
     type: 'number',
     toValue: toNumberOrThrow,
-    toString: toString,
+    toInputValue: toString,
+    toParameterValue: toString,
     isType: isNumber,
     defaultValue: 1
   },
   {
     type: 'options',
     toValue: str => str === "" ? emptyValue : JSON.parse(str),
-    toString: JSON.stringify,
+    toInputValue: JSON.stringify,
+    toParameterValue: JSON.stringify,
     isType: Array.isArray,
     defaultValue: ['value1', 'value2']
   },
   {
     type: 'range',
     toValue: str => str === "" ? emptyValue : JSON.parse(str),
-    toString: JSON.stringify,
+    toInputValue: JSON.stringify,
+    toParameterValue: JSON.stringify,
     isType: isRangeQueryValue,
     defaultValue: {source: 'http://example.com', start: 0, end: 1}
   }

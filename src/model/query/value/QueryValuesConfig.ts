@@ -3,8 +3,16 @@ import {QueryValueType} from "./QueryValueType.ts";
 
 export type QueryValuesConfig<T extends QueryValue> = {
   type: QueryValueType
+
+  // Parsed value:
   toValue: (str: string) => T
-  toString: (val: T) => string
+
+  // As shown in input form field:
+  toInputValue: (val: T) => string
+
+  // As used in a custom query parameter string that is to be base64 encoded:
+  toParameterValue: (val: T) => string
+
   isType: (val: QueryValue) => val is T
   defaultValue: T
 }

@@ -16,7 +16,7 @@ export function createInputValue(
     if (error) {
       return value as ErroneousValue
     } else {
-      return findMapperByType(form.valueType).toString(value)
+      return findMapperByType(form.valueType).toInputValue(value)
     }
   } else {
     // Creating new custom query: value is not editable, should not contain error
@@ -25,7 +25,7 @@ export function createInputValue(
     } else if (param) {
       return toParamTag(toParamName(form, formIndex))
     } else {
-      return findMapperByType(form.valueType).toString(value)
+      return findMapperByType(form.valueType).toInputValue(value)
     }
   }
 }

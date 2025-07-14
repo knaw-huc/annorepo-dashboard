@@ -151,7 +151,7 @@ export function AnnotationEditor(props: {
                 const mapper = findMapperByType(valueType)
                 return <DropdownInput
                   key={configField.path}
-                  value={mapper.toString(get(form, configField.path))}
+                  value={mapper.toInputValue(get(form, configField.path))}
                   label={configField.label}
                   onInputChange={update => setForm(prev => {
                     const next = {...prev}

@@ -108,7 +108,7 @@ export function QueryValueInput(props: {
       const allowedTypes = queryOperatorValueType[form.operator]
       if(!allowedTypes.includes(valueTypeUpdate)) {
         const currentMapper = findMapperByOperator(form.operator)
-        valueUpdate = currentMapper.toValue(updateMapper.toString(valueUpdate))
+        valueUpdate = currentMapper.toValue(updateMapper.toInputValue(valueUpdate))
       }
 
       updateForm({
