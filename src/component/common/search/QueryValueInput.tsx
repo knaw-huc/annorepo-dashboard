@@ -47,8 +47,8 @@ export function QueryValueInput(props: {
     inputValueUpdate: string,
   ) {
     try {
-      const queryValueUpdate = findMapperByType(form.valueType)
-        .toValue(inputValueUpdate);
+      const mapper = findMapperByType(form.valueType);
+      const queryValueUpdate = mapper.toValue(inputValueUpdate);
       updateForm({
         formIndex,
         form: {...form, value: queryValueUpdate},
@@ -71,7 +71,6 @@ export function QueryValueInput(props: {
     try {
       const newMapper = findMapperByType(typeUpdate)
       const queryValueUpdate = newMapper.toValue(inputValue)
-      console.log('handleTypeChange', {newMapper, queryValueUpdate, inputValue})
       updateForm({
         formIndex,
         form: {
@@ -99,7 +98,6 @@ export function QueryValueInput(props: {
   function handleSelect(
     update: SelectOption<QueryValue>,
   ) {
-
     try {
       const updateMapper = findMapperByValue(update.value)
 

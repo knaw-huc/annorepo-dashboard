@@ -42,6 +42,10 @@ function toNumberOrThrow(value: string) {
   if (value === "") {
     return emptyValue;
   }
+  const decimalSeparator = ".";
+  if(value.endsWith(decimalSeparator)) {
+    throw new Error(`Number ${value} cannot end with ${decimalSeparator}`)
+  }
   const asNumber = toNumber(value);
   if (isNaN(asNumber)) {
     throw new Error(`Could not convert ${value} to number`)
