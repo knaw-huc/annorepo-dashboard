@@ -33,6 +33,7 @@ export function useContainerSearch(
     params: {
       path: {
         containerName,
+        // useQuery is enabled when location is not undefined:
         searchId: getSearchLocation!
       },
       query: {page: pageNo}
