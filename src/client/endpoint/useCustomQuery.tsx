@@ -11,6 +11,7 @@ import {GetPath} from "../query/GetPath.tsx";
 import {
   CustomQueryParams
 } from "../../component/custom-query/model/CustomQueryParams.ts";
+import {orThrow} from "../../util/orThrow.ts";
 
 export function useCustomQuery(
   name: string,
@@ -31,11 +32,10 @@ export function getCustomQuery(
     queryKey: createQueryKey(path, params),
     queryFn: async () => await client
       .GET(path, params)
-      .then(({data}) => data),
+      .then(({data}) => data ?? orThrow('No custom query response')),
   };
 }
 
-// --
 export type CustomQueryCallArgs = {
   queryName: string,
   containerName: string,
@@ -43,7 +43,9 @@ export type CustomQueryCallArgs = {
   pageNo: number,
 }
 
-export function useCustomQueryCall(props: CustomQueryCallArgs): QR<ArAnnotationPage> {
+export function useCustomQueryCall(
+  props: CustomQueryCallArgs
+): QR<ArAnnotationPage> {
   const client = useOpenApiClient();
   const {
     queryName,
@@ -92,8 +94,7 @@ export function getContainerCustomQueryCall(
     queryFn: async () => {
       const result = await client
         .GET(path, params);
-      return result.data;
-
+      return result.data  ?? orThrow('No annotation response');
     },
   };
 }

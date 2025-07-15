@@ -3,6 +3,7 @@ import {useQuery} from "@tanstack/react-query";
 import {ArContainerFields} from "../ArModel.ts";
 import {createQueryKey} from "../query/useGet.tsx";
 import {QR} from "../query/QR.tsx";
+import {orThrow} from "../../util/orThrow.ts";
 
 export function useContainerFields(
   containerName: string = ''
@@ -16,6 +17,6 @@ export function useContainerFields(
     queryKey: createQueryKey(path, params),
     queryFn: async () => await client
       .GET(path, params)
-      .then(({data}) => data),
+      .then(({data}) => data ?? orThrow('No container fields response')),
   }  );
 }

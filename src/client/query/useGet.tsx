@@ -1,5 +1,4 @@
 import {
-  Optional,
   Query,
   useQuery,
   UseQueryOptions,
@@ -11,6 +10,7 @@ import {Params, Paths} from "../OpenApiClient.tsx";
 import {paths} from "../../openapi.ts";
 import {PathsWithMethod} from "openapi-typescript-helpers";
 import {GetPath} from "./GetPath.tsx";
+import {Optional} from "../../util/Optional.ts";
 
 export type GetParams<P extends Paths<"get">> = Params<"get", P> & {
   query?: Optional<UseQueryOptions, 'queryKey'>

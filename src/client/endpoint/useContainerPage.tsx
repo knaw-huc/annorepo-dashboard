@@ -4,6 +4,7 @@ import {createQueryKey} from "../query/useGet.tsx";
 import {keepPreviousData, useQuery} from "@tanstack/react-query";
 import {ArAnnotationPage} from "../ArModel.ts";
 import {QR} from "../query/QR.tsx";
+import {orThrow} from "../../util/orThrow.ts";
 
 export function useContainerPage(
   containerName: string,
@@ -31,7 +32,7 @@ export function getContainerPage(
     queryKey: createQueryKey(path, params),
     queryFn: async () => await client
       .GET(path, params)
-      .then(({data}) => data),
+      .then(({data}) => data ?? orThrow('No container page response')),
     placeholderData: keepPreviousData,
   };
 }

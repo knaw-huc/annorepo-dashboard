@@ -3,6 +3,7 @@ import {useQuery} from "@tanstack/react-query";
 import {createQueryKey} from "../query/useGet.tsx";
 import {QR} from "../query/QR.tsx";
 import {QueryValue} from "../../model/query/value/QueryValue.ts";
+import {orThrow} from "../../util/orThrow.ts";
 
 export function useContainerFieldDistinctValues<T = QueryValue>(
   containerName: string = '',
@@ -18,6 +19,6 @@ export function useContainerFieldDistinctValues<T = QueryValue>(
     queryKey: queryKey,
     queryFn: async () => await client
       .GET(path, params)
-      .then(({data}) => data),
+      .then(({data}) => data ?? orThrow('No distinct values response')),
   });
 }

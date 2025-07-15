@@ -5,6 +5,7 @@ import {useQuery} from "@tanstack/react-query";
 import {ArContainer} from "../ArModel.ts";
 import {QR} from "../query/QR.tsx";
 import {GetPath} from "../query/GetPath.tsx";
+import {orThrow} from "../../util/orThrow.ts";
 
 export function useContainer(
   name: string
@@ -25,6 +26,6 @@ export function getContainer(
     queryKey: createQueryKey(path, params),
     queryFn: async () => await client
       .GET(path, params)
-      .then(({data}) => data),
+      .then(({data}) => data ?? orThrow('No container response')),
   };
 }

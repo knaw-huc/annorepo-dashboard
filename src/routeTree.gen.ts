@@ -8,166 +8,73 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-// Import Routes
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as IndexRouteImport } from './routes/index'
+import { Route as CustomQueryIndexRouteImport } from './routes/custom-query/index'
+import { Route as ContainerIndexRouteImport } from './routes/container/index'
+import { Route as CustomQueryEditorRouteImport } from './routes/custom-query/editor'
+import { Route as CustomQueryCustomQueryNameRouteImport } from './routes/custom-query/$customQueryName'
+import { Route as ContainerEditorRouteImport } from './routes/container/editor'
+import { Route as ContainerContainerNameIndexRouteImport } from './routes/container/$containerName/index'
+import { Route as ContainerContainerNameSearchRouteImport } from './routes/container/$containerName/search'
+import { Route as ContainerContainerNameAnnotationEditorRouteImport } from './routes/container/$containerName/annotation/editor'
+import { Route as ContainerContainerNameAnnotationAnnotationNameRouteImport } from './routes/container/$containerName/annotation/$annotationName'
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as IndexImport } from './routes/index'
-import { Route as CustomQueryIndexImport } from './routes/custom-query/index'
-import { Route as ContainerIndexImport } from './routes/container/index'
-import { Route as CustomQueryEditorImport } from './routes/custom-query/editor'
-import { Route as CustomQueryCustomQueryNameImport } from './routes/custom-query/$customQueryName'
-import { Route as ContainerEditorImport } from './routes/container/editor'
-import { Route as ContainerContainerNameIndexImport } from './routes/container/$containerName/index'
-import { Route as ContainerContainerNameSearchImport } from './routes/container/$containerName/search'
-import { Route as ContainerContainerNameAnnotationEditorImport } from './routes/container/$containerName/annotation/editor'
-import { Route as ContainerContainerNameAnnotationAnnotationNameImport } from './routes/container/$containerName/annotation/$annotationName'
-
-// Create/Update Routes
-
-const IndexRoute = IndexImport.update({
+const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const CustomQueryIndexRoute = CustomQueryIndexImport.update({
+const CustomQueryIndexRoute = CustomQueryIndexRouteImport.update({
   id: '/custom-query/',
   path: '/custom-query/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const ContainerIndexRoute = ContainerIndexImport.update({
+const ContainerIndexRoute = ContainerIndexRouteImport.update({
   id: '/container/',
   path: '/container/',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const CustomQueryEditorRoute = CustomQueryEditorImport.update({
+const CustomQueryEditorRoute = CustomQueryEditorRouteImport.update({
   id: '/custom-query/editor',
   path: '/custom-query/editor',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
-const CustomQueryCustomQueryNameRoute = CustomQueryCustomQueryNameImport.update(
-  {
+const CustomQueryCustomQueryNameRoute =
+  CustomQueryCustomQueryNameRouteImport.update({
     id: '/custom-query/$customQueryName',
     path: '/custom-query/$customQueryName',
-    getParentRoute: () => rootRoute,
-  } as any,
-)
-
-const ContainerEditorRoute = ContainerEditorImport.update({
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ContainerEditorRoute = ContainerEditorRouteImport.update({
   id: '/container/editor',
   path: '/container/editor',
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => rootRouteImport,
 } as any)
-
 const ContainerContainerNameIndexRoute =
-  ContainerContainerNameIndexImport.update({
+  ContainerContainerNameIndexRouteImport.update({
     id: '/container/$containerName/',
     path: '/container/$containerName/',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
-
 const ContainerContainerNameSearchRoute =
-  ContainerContainerNameSearchImport.update({
+  ContainerContainerNameSearchRouteImport.update({
     id: '/container/$containerName/search',
     path: '/container/$containerName/search',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
-
 const ContainerContainerNameAnnotationEditorRoute =
-  ContainerContainerNameAnnotationEditorImport.update({
+  ContainerContainerNameAnnotationEditorRouteImport.update({
     id: '/container/$containerName/annotation/editor',
     path: '/container/$containerName/annotation/editor',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
-
 const ContainerContainerNameAnnotationAnnotationNameRoute =
-  ContainerContainerNameAnnotationAnnotationNameImport.update({
+  ContainerContainerNameAnnotationAnnotationNameRouteImport.update({
     id: '/container/$containerName/annotation/$annotationName',
     path: '/container/$containerName/annotation/$annotationName',
-    getParentRoute: () => rootRoute,
+    getParentRoute: () => rootRouteImport,
   } as any)
-
-// Populate the FileRoutesByPath interface
-
-declare module '@tanstack/react-router' {
-  interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/container/editor': {
-      id: '/container/editor'
-      path: '/container/editor'
-      fullPath: '/container/editor'
-      preLoaderRoute: typeof ContainerEditorImport
-      parentRoute: typeof rootRoute
-    }
-    '/custom-query/$customQueryName': {
-      id: '/custom-query/$customQueryName'
-      path: '/custom-query/$customQueryName'
-      fullPath: '/custom-query/$customQueryName'
-      preLoaderRoute: typeof CustomQueryCustomQueryNameImport
-      parentRoute: typeof rootRoute
-    }
-    '/custom-query/editor': {
-      id: '/custom-query/editor'
-      path: '/custom-query/editor'
-      fullPath: '/custom-query/editor'
-      preLoaderRoute: typeof CustomQueryEditorImport
-      parentRoute: typeof rootRoute
-    }
-    '/container/': {
-      id: '/container/'
-      path: '/container'
-      fullPath: '/container'
-      preLoaderRoute: typeof ContainerIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/custom-query/': {
-      id: '/custom-query/'
-      path: '/custom-query'
-      fullPath: '/custom-query'
-      preLoaderRoute: typeof CustomQueryIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/container/$containerName/search': {
-      id: '/container/$containerName/search'
-      path: '/container/$containerName/search'
-      fullPath: '/container/$containerName/search'
-      preLoaderRoute: typeof ContainerContainerNameSearchImport
-      parentRoute: typeof rootRoute
-    }
-    '/container/$containerName/': {
-      id: '/container/$containerName/'
-      path: '/container/$containerName'
-      fullPath: '/container/$containerName'
-      preLoaderRoute: typeof ContainerContainerNameIndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/container/$containerName/annotation/$annotationName': {
-      id: '/container/$containerName/annotation/$annotationName'
-      path: '/container/$containerName/annotation/$annotationName'
-      fullPath: '/container/$containerName/annotation/$annotationName'
-      preLoaderRoute: typeof ContainerContainerNameAnnotationAnnotationNameImport
-      parentRoute: typeof rootRoute
-    }
-    '/container/$containerName/annotation/editor': {
-      id: '/container/$containerName/annotation/editor'
-      path: '/container/$containerName/annotation/editor'
-      fullPath: '/container/$containerName/annotation/editor'
-      preLoaderRoute: typeof ContainerContainerNameAnnotationEditorImport
-      parentRoute: typeof rootRoute
-    }
-  }
-}
-
-// Create and export the route tree
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -181,7 +88,6 @@ export interface FileRoutesByFullPath {
   '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
   '/container/$containerName/annotation/editor': typeof ContainerContainerNameAnnotationEditorRoute
 }
-
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/container/editor': typeof ContainerEditorRoute
@@ -194,9 +100,8 @@ export interface FileRoutesByTo {
   '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
   '/container/$containerName/annotation/editor': typeof ContainerContainerNameAnnotationEditorRoute
 }
-
 export interface FileRoutesById {
-  __root__: typeof rootRoute
+  __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/container/editor': typeof ContainerEditorRoute
   '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
@@ -208,7 +113,6 @@ export interface FileRoutesById {
   '/container/$containerName/annotation/$annotationName': typeof ContainerContainerNameAnnotationAnnotationNameRoute
   '/container/$containerName/annotation/editor': typeof ContainerContainerNameAnnotationEditorRoute
 }
-
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
@@ -248,7 +152,6 @@ export interface FileRouteTypes {
     | '/container/$containerName/annotation/editor'
   fileRoutesById: FileRoutesById
 }
-
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   ContainerEditorRoute: typeof ContainerEditorRoute
@@ -260,6 +163,81 @@ export interface RootRouteChildren {
   ContainerContainerNameIndexRoute: typeof ContainerContainerNameIndexRoute
   ContainerContainerNameAnnotationAnnotationNameRoute: typeof ContainerContainerNameAnnotationAnnotationNameRoute
   ContainerContainerNameAnnotationEditorRoute: typeof ContainerContainerNameAnnotationEditorRoute
+}
+
+declare module '@tanstack/react-router' {
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/custom-query/': {
+      id: '/custom-query/'
+      path: '/custom-query'
+      fullPath: '/custom-query'
+      preLoaderRoute: typeof CustomQueryIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/container/': {
+      id: '/container/'
+      path: '/container'
+      fullPath: '/container'
+      preLoaderRoute: typeof ContainerIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/custom-query/editor': {
+      id: '/custom-query/editor'
+      path: '/custom-query/editor'
+      fullPath: '/custom-query/editor'
+      preLoaderRoute: typeof CustomQueryEditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/custom-query/$customQueryName': {
+      id: '/custom-query/$customQueryName'
+      path: '/custom-query/$customQueryName'
+      fullPath: '/custom-query/$customQueryName'
+      preLoaderRoute: typeof CustomQueryCustomQueryNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/container/editor': {
+      id: '/container/editor'
+      path: '/container/editor'
+      fullPath: '/container/editor'
+      preLoaderRoute: typeof ContainerEditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/container/$containerName/': {
+      id: '/container/$containerName/'
+      path: '/container/$containerName'
+      fullPath: '/container/$containerName'
+      preLoaderRoute: typeof ContainerContainerNameIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/container/$containerName/search': {
+      id: '/container/$containerName/search'
+      path: '/container/$containerName/search'
+      fullPath: '/container/$containerName/search'
+      preLoaderRoute: typeof ContainerContainerNameSearchRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/container/$containerName/annotation/editor': {
+      id: '/container/$containerName/annotation/editor'
+      path: '/container/$containerName/annotation/editor'
+      fullPath: '/container/$containerName/annotation/editor'
+      preLoaderRoute: typeof ContainerContainerNameAnnotationEditorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/container/$containerName/annotation/$annotationName': {
+      id: '/container/$containerName/annotation/$annotationName'
+      path: '/container/$containerName/annotation/$annotationName'
+      fullPath: '/container/$containerName/annotation/$annotationName'
+      preLoaderRoute: typeof ContainerContainerNameAnnotationAnnotationNameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+  }
 }
 
 const rootRouteChildren: RootRouteChildren = {
@@ -276,59 +254,6 @@ const rootRouteChildren: RootRouteChildren = {
   ContainerContainerNameAnnotationEditorRoute:
     ContainerContainerNameAnnotationEditorRoute,
 }
-
-export const routeTree = rootRoute
+export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-/* ROUTE_MANIFEST_START
-{
-  "routes": {
-    "__root__": {
-      "filePath": "__root.tsx",
-      "children": [
-        "/",
-        "/container/editor",
-        "/custom-query/$customQueryName",
-        "/custom-query/editor",
-        "/container/",
-        "/custom-query/",
-        "/container/$containerName/search",
-        "/container/$containerName/",
-        "/container/$containerName/annotation/$annotationName",
-        "/container/$containerName/annotation/editor"
-      ]
-    },
-    "/": {
-      "filePath": "index.tsx"
-    },
-    "/container/editor": {
-      "filePath": "container/editor.tsx"
-    },
-    "/custom-query/$customQueryName": {
-      "filePath": "custom-query/$customQueryName.tsx"
-    },
-    "/custom-query/editor": {
-      "filePath": "custom-query/editor.tsx"
-    },
-    "/container/": {
-      "filePath": "container/index.tsx"
-    },
-    "/custom-query/": {
-      "filePath": "custom-query/index.tsx"
-    },
-    "/container/$containerName/search": {
-      "filePath": "container/$containerName/search.tsx"
-    },
-    "/container/$containerName/": {
-      "filePath": "container/$containerName/index.tsx"
-    },
-    "/container/$containerName/annotation/$annotationName": {
-      "filePath": "container/$containerName/annotation/$annotationName.tsx"
-    },
-    "/container/$containerName/annotation/editor": {
-      "filePath": "container/$containerName/annotation/editor.tsx"
-    }
-  }
-}
-ROUTE_MANIFEST_END */
