@@ -82,8 +82,7 @@ export function CustomQueryDetail(props: {
     return <StatusMessage requests={[customQuery]}/>
   }
 
-  console.log('NO ERROR?!')
-  let createdBy = customQuery.data.createdBy;
+  const createdBy = customQuery.data.createdBy;
   return <>
     <H1>{customQueryName} <Hint>Custom query</Hint></H1>
     <p className="text-sm mb-3">
@@ -113,11 +112,14 @@ export function CustomQueryDetail(props: {
         Search<Next className="ml-2"/>
       </Button>
     </div>
+    {customQueryCall.isError && <StatusMessage
+      requests={[customQueryCall]}
+    />}
     {containerName && <CustomQueryCallEditor
       containerName={containerName}
     />}
     <div className="max-w-[100vw] whitespace-pre-wrap">
-      {!!customQueryCall.data && <AnnotationPage
+      {customQueryCall.isSuccess && <AnnotationPage
         pageNo={pageNo}
         page={customQueryCall.data}
         onChangePageNo={handleChangePage}
