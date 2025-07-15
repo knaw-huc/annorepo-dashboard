@@ -3,7 +3,7 @@ import {QueryValue} from "../QueryValue.ts";
 import {
   queryOperatorValueType
 } from "../queryOperatorValueType.ts";
-import {QueryValuesConfig} from "../QueryValuesConfig.ts";
+import {QueryValueMapper} from "../QueryValueMapper.ts";
 import {queryValueMappers} from "../queryValueMappers.ts";
 import {QueryOperator} from "../../operator/QueryOperator.ts";
 
@@ -12,7 +12,7 @@ import {QueryOperator} from "../../operator/QueryOperator.ts";
  */
 export function findMapperByOperator(operator: QueryOperator) {
   const byOperator = (operator: QueryOperator) => {
-    return (config: QueryValuesConfig<QueryValue>) => {
+    return (config: QueryValueMapper<QueryValue>) => {
       // Use first option by default:
       return config.type === queryOperatorValueType[operator][0];
     };

@@ -3,11 +3,7 @@ import {QueryValueInput} from "./QueryValueInput.tsx";
 import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import noop from "lodash/noop";
 import {useStore} from "../../../store/useStore.ts";
-import {
-  useValueSuggestions
-} from "./useValueSuggestions.tsx";
-import {SelectOption} from "../form/SelectOption.tsx";
-import {QueryValue} from "../../../model/query/value/QueryValue.ts";
+import {useValueSuggestions} from "./useValueSuggestions.tsx";
 
 export function CustomSubQueryEditor(props: {
   formIndex: number
@@ -19,7 +15,7 @@ export function CustomSubQueryEditor(props: {
   const form = forms[formIndex]
   const operatorValue = form.operator.valueOf();
 
-  const valueSuggestions: SelectOption<QueryValue>[] = useValueSuggestions({
+  const valueSuggestions = useValueSuggestions({
     containerName: containerName,
     field: form.field,
     value: form.value,

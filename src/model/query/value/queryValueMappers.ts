@@ -1,9 +1,9 @@
-import {QueryValuesConfig} from "./QueryValuesConfig.ts";
+import {QueryValueMapper} from "./QueryValueMapper.ts";
 import {emptyValue, QueryValue} from "./QueryValue.ts";
 import {isNumber, isString, toNumber, toString} from "lodash";
 import {isRangeQueryValue} from "../../../client/ArModel.ts";
 
-export const queryValueMappers: QueryValuesConfig<QueryValue>[] = [
+export const queryValueMappers: QueryValueMapper<QueryValue>[] = [
   {
     type: 'string',
     toValue: str => str === "" ? emptyValue : str,

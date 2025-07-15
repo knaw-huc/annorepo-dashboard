@@ -26,7 +26,7 @@ export function filterSuggestions<T>(
 }
 
 export const compareAsNumber = (inputValue: string) => (s: number) => {
-  return s.toString().includes(inputValue);
+  return s.toString().startsWith(inputValue);
 }
 
 export const compareAsString = (inputValue: string) => (s: string) => {

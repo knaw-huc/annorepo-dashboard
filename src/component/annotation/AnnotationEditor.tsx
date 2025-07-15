@@ -28,7 +28,7 @@ import {
 } from "./AnnotationFieldType.ts";
 import {removeEmptyValues} from "../../model/query/value/QueryValue.ts";
 import {MR} from "../../client/query/MR.tsx";
-import {SelectOption, toOption} from "../common/form/SelectOption.tsx";
+import {toOption} from "../common/form/SelectOption.tsx";
 import {
   findMapperByValue
 } from "../../model/query/value/util/findMapperByValue.ts";
@@ -63,8 +63,9 @@ export function AnnotationEditor(props: {
   const createAnnotation: MR<ArAnnotation> = usePost('/w3c/{containerName}')
 
   // Annotation type should always be of type string:
-  const typeFieldSuggestions: SelectOption[] = useContainerFieldDistinctValues<string>(containerName, 'type')
-    .data?.map(toOption) ?? []
+  const typeFieldSuggestions = useContainerFieldDistinctValues<string>(containerName, 'type')
+      .data?.map(toOption)
+    ?? []
   const filteredTypeSuggestions = filterSuggestions(typeFieldSuggestions, form.type)
 
   const handleSubmit = () => {

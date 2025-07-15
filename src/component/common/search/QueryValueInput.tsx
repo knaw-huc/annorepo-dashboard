@@ -102,13 +102,17 @@ export function QueryValueInput(props: {
 
     try {
       const updateMapper = findMapperByValue(update.value)
-      let valueUpdate = update.value
 
       const valueTypeUpdate = updateMapper.type
       const allowedTypes = queryOperatorValueType[form.operator]
-      if(!allowedTypes.includes(valueTypeUpdate)) {
+      let valueUpdate
+      if (allowedTypes.includes(valueTypeUpdate)) {
+        valueUpdate = update.value
+      } else {
         const currentMapper = findMapperByOperator(form.operator)
-        valueUpdate = currentMapper.toValue(updateMapper.toInputValue(valueUpdate))
+        valueUpdate = currentMapper.toValue(
+          updateMapper.toInputValue(update.value)
+        )
       }
 
       updateForm({
@@ -137,8 +141,6 @@ export function QueryValueInput(props: {
   const valueTypeOptions = queryValueTypes
     .filter(type => allowedTypes.includes(type))
     .map(type => ({value: type, label: type}));
-
-  console.log(QueryValueInput.name, {valueTypeOptions, inputValue, form})
 
   return <div className="flex gap-2">
     <DropdownInput

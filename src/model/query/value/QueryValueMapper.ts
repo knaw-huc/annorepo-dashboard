@@ -1,7 +1,7 @@
 import {QueryValue} from "./QueryValue.ts";
 import {QueryValueType} from "./QueryValueType.ts";
 
-export type QueryValuesConfig<T extends QueryValue> = {
+export type QueryValueMapper<T extends QueryValue> = {
   type: QueryValueType
 
   // Parsed value:
