@@ -61,7 +61,7 @@ export function useCustomQueryCall(props: CustomQueryCallArgs): QR<ArAnnotationP
     )
   )
 }
-6
+
 export function getContainerCustomQueryCall(
   client: AnnoRepoOpenApiClient,
   queryCall: string,
@@ -71,11 +71,8 @@ export function getContainerCustomQueryCall(
 ) {
 
   const base64EncodedParams = objectEntries(queryParameters)
-    .map(([k, v]) => {
-      return `${k}=${encodeString(v)}`;
-    })
+    .map(([k, v]) => `${k}=${encodeString(v)}`)
     .join(',');
-  console.log('getContainerCustomQueryCall', {queryParameters, base64EncodedParams})
   const queryCallWithParameters = base64EncodedParams
     ? queryCall + ':' + base64EncodedParams
     : queryCall
@@ -93,20 +90,9 @@ export function getContainerCustomQueryCall(
     enabled: !!containerName,
     queryKey: createQueryKey(path, params),
     queryFn: async () => {
-      console.log('RUNNING')
-      try {
-        const result = await client
-          .GET(path, params);
-        if (!result.response.ok) {
-          console.error('caught?')
-          throw new Error('Network response was not ok')
-        }
-        return result.data;
-
-      } catch (e) {
-        console.error('ERRORORORRORORO!', e)
-        throw e;
-      }
+      const result = await client
+        .GET(path, params);
+      return result.data;
 
     },
   };
