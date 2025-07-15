@@ -1,57 +1,63 @@
-import {H1} from "../common/H1.tsx";
-import {CustomQueryCallEditor} from "./CustomQueryCallEditor.tsx";
+import { H1 } from "../common/H1.tsx";
+import { CustomQueryCallEditor } from "./CustomQueryCallEditor.tsx";
 import {
   CustomQueryCallArgs,
   useCustomQuery,
-  useCustomQueryCall
+  useCustomQueryCall,
 } from "../../client/endpoint/useCustomQuery.tsx";
-import {StatusMessage} from "../common/StatusMessage.tsx";
-import {useEffect, useState} from "react";
-import {toCustomQueryParameters} from "./util/toCustomQueryParameters.ts";
-import {Button} from "../common/Button.tsx";
-import {Next} from "../common/icon/Next.tsx";
-import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
-import {toPageNo} from "../../util/toPageNo.ts";
-import {Hint} from "../common/Hint.tsx";
-import {Pipe} from "../common/Pipe.tsx";
-import {hasErrors} from "../../store/query/util/hasErrors.ts";
-import {useStore} from "../../store/useStore.ts";
-import {ContainerDropdown} from "./ContainerDropdown.tsx";
+import { StatusMessage } from "../common/StatusMessage.tsx";
+import { useEffect, useState } from "react";
+import { toCustomQueryParameters } from "./util/toCustomQueryParameters.ts";
+import { Button } from "../common/Button.tsx";
+import { Next } from "../common/icon/Next.tsx";
+import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
+import { toPageNo } from "../../util/toPageNo.ts";
+import { Hint } from "../common/Hint.tsx";
+import { Pipe } from "../common/Pipe.tsx";
+import { hasErrors } from "../../store/query/util/hasErrors.ts";
+import { useStore } from "../../store/useStore.ts";
+import { ContainerDropdown } from "./ContainerDropdown.tsx";
+import { A } from "../common/A.tsx";
+import { External } from "../common/icon/External.tsx";
+import { useConfig } from "../ConfigProvider.tsx";
 
 export function CustomQueryDetail(props: {
-  name: string
-  onClose: () => void
+  name: string;
+  onClose: () => void;
 }) {
-  const {name: customQueryName} = props;
+  const { name: customQueryName } = props;
+  const config = useConfig();
+  const { forms, params, errors, initWithTemplate } = useStore();
 
-  const {forms, params, errors, initWithTemplate} = useStore()
+  const [containerName, setContainerName] = useState("");
+  const [pageNo, setPageNo] = useState(0);
 
-  const [containerName, setContainerName] = useState('')
-  const [pageNo, setPageNo] = useState(0)
+  const customQuery = useCustomQuery(customQueryName);
 
-  const customQuery = useCustomQuery(customQueryName)
-
-  const [submitted, setSubmitted] = useState<CustomQueryCallArgs>(
-    {queryName: customQueryName, containerName, parameters: {}, pageNo}
-  )
-  const customQueryCall = useCustomQueryCall(submitted)
+  const [submitted, setSubmitted] = useState<CustomQueryCallArgs>({
+    queryName: customQueryName,
+    containerName,
+    parameters: {},
+    pageNo,
+  });
+  const customQueryCall = useCustomQueryCall(submitted);
 
   useEffect(() => {
     if (customQuery.data) {
       const template = JSON.parse(customQuery.data.queryTemplate);
-      const params = customQuery.data.parameters
+      const params = customQuery.data.parameters;
       initWithTemplate(template, params);
     }
   }, [customQuery.data]);
 
   useEffect(() => {
-    console.log('useEffect customQuery', {
+    console.log("useEffect customQuery", {
       data: customQuery.data,
       error: customQuery.error,
       isError: customQuery.isError,
       isPaused: customQuery.isPaused,
-      isStale: customQuery.isStale
-    })
+      isStale: customQuery.isStale,
+    });
   }, [customQuery]);
 
   function handleSearch() {
@@ -61,71 +67,82 @@ export function CustomQueryDetail(props: {
     if (!forms.length) {
       return;
     }
-    const parameters = toCustomQueryParameters(
-      forms,
-      params
-    );
+    const parameters = toCustomQueryParameters(forms, params);
     setSubmitted({
       queryName: customQueryName,
       containerName,
       parameters,
-      pageNo
-    })
+      pageNo,
+    });
   }
 
   const handleChangePage = (update: string) => {
-    setPageNo(toPageNo(update))
-  }
+    setPageNo(toPageNo(update));
+  };
 
   if (!customQuery.data) {
-    console.log('ERROR?!')
-    return <StatusMessage requests={[customQuery]}/>
+    console.log("ERROR?!");
+    return <StatusMessage requests={[customQuery]} />;
   }
 
   const createdBy = customQuery.data.createdBy;
-  return <>
-    <H1>{customQueryName} <Hint>Custom query</Hint></H1>
-    <p className="text-sm mb-3">
-      {customQuery.data.public ? 'Public' : 'Private'}
-      <Pipe/>
-      <span>Label: {customQuery.data.label}</span>
-      {createdBy && <>
-        <Pipe/>
-        <span>Creator: {createdBy}</span>
-      </>}
-      <Pipe/>
-      <span>Created at {new Date(customQuery.data.created).toLocaleString()}</span>
-    </p>
-    <p className="mb-5">
-      {customQuery.data.description}
-    </p>
-    <div className="mb-2">
-      <ContainerDropdown
-        selected={containerName}
-        onSelect={setContainerName}
-      />
-      <Button
-        onClick={handleSearch}
-        className="pl-5"
-        disabled={hasErrors(errors) || !containerName}
-      >
-        Search<Next className="ml-2"/>
-      </Button>
-    </div>
-    {customQueryCall.isError && <StatusMessage
-      requests={[customQueryCall]}
-    />}
-    {containerName && <CustomQueryCallEditor
-      containerName={containerName}
-    />}
-    <div className="max-w-[100vw] whitespace-pre-wrap">
-      {customQueryCall.isSuccess && <AnnotationPage
-        pageNo={pageNo}
-        page={customQueryCall.data}
-        onChangePageNo={handleChangePage}
-        canDelete
-      />}
-    </div>
-  </>
+  return (
+    <>
+      <H1>
+        {customQueryName} <Hint>Custom query</Hint>
+      </H1>
+      <p className="text-sm mb-3">
+        {customQuery.data.public ? "Public" : "Private"}
+        <Pipe />
+        <span>Label: {customQuery.data.label}</span>
+        {createdBy && (
+          <>
+            <Pipe />
+            <span>Creator: {createdBy}</span>
+          </>
+        )}
+        <Pipe />
+        <span>
+          Created at {new Date(customQuery.data.created).toLocaleString()}
+        </span>
+        <Pipe />
+        <A
+          href={`${config.AR_HOST}/global/custom-query/${customQuery.data.name}`}
+          className="font-bold"
+        >
+          Source&nbsp;
+          <External className="ml-1" />
+        </A>
+      </p>
+      <p className="mb-5">{customQuery.data.description}</p>
+      <div className="mb-2">
+        <ContainerDropdown
+          selected={containerName}
+          onSelect={setContainerName}
+        />
+        <Button
+          onClick={handleSearch}
+          className="pl-5"
+          disabled={hasErrors(errors) || !containerName}
+        >
+          Search
+          <Next className="ml-2" />
+        </Button>
+      </div>
+      {customQueryCall.isError && (
+        <StatusMessage requests={[customQueryCall]} />
+      )}
+      {containerName && <CustomQueryCallEditor containerName={containerName} />}
+      <div className="max-w-[100vw] whitespace-pre-wrap">
+        {customQueryCall.isSuccess && (
+          <AnnotationPage
+            pageNo={pageNo}
+            page={customQueryCall.data}
+            onChangePageNo={handleChangePage}
+            canDelete
+          />
+        )}
+      </div>
+    </>
+  );
 }
-
