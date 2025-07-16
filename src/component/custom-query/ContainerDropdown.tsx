@@ -1,5 +1,5 @@
 import {useGet} from "../../client/query/useGet.tsx";
-import {ArMyContainers} from "../../client/ArModel.ts";
+import {ArMyContainers} from "../../model/ArModel.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {DropdownSelector} from "../common/form/DropdownSelector.tsx";
 import {Tooltip} from "../common/Tooltip.tsx";

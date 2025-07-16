@@ -4,7 +4,7 @@ import {Link} from "@tanstack/react-router";
 import {H5} from "../common/H5.tsx";
 import {useGet} from "../../client/query/useGet.tsx";
 import {StatusMessage} from "../common/StatusMessage.tsx";
-import {ArCustomQueryResult} from "../../client/ArModel.ts";
+import {ArCustomQueryResult} from "../../model/ArModel.ts";
 import {QR} from "../../client/query/QR.tsx";
 
 

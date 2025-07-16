@@ -1,14 +1,14 @@
 import {
-  FieldQueryForm,
-  FormParamValue
-} from "../../common/search/QueryModel.ts";
+  ComparisonSubQuery
+} from "../../../model/query/QueryModel.ts";
 import {
   findMapperByType
 } from "../../../model/query/value/util/findMapperByType.ts";
 import {CustomQueryParams} from "../model/CustomQueryParams.ts";
+import {FormParamValue} from "../../../model/query/FormParamValue.ts";
 
 export function toCustomQueryParameters(
-  forms: FieldQueryForm[],
+  forms: ComparisonSubQuery[],
   parameters: FormParamValue[],
 ): CustomQueryParams {
   const result: CustomQueryParams = {}

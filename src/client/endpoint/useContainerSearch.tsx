@@ -1,7 +1,7 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {keepPreviousData, useQuery} from "@tanstack/react-query";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
-import {ArQuery, SearchQuery} from "../ArModel.ts";
+import {ArQuery, SearchQueryJson} from "../../model/ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {createQueryKey} from "../query/useGet.tsx";
 import {QR} from "../query/QR.tsx";
@@ -9,7 +9,7 @@ import {GetPath} from "../query/GetPath.tsx";
 
 export type ContainerSearchArgs = {
   containerName: string,
-  query?: SearchQuery,
+  query?: SearchQueryJson,
   pageNo: number
 }
 

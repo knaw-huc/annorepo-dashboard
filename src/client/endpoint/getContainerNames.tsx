@@ -1,4 +1,4 @@
-import {ArMyContainers} from "../ArModel.ts";
+import {ArMyContainers} from "../../model/ArModel.ts";
 
 export function getContainerNames(
   myContainers?: ArMyContainers

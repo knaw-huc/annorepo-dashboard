@@ -2,7 +2,7 @@ import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {AnnotationPage} from "../annotation/AnnotationPage.tsx";
 import {useEffect, useState} from "react";
 import {useGet} from "../../client/query/useGet.tsx";
-import {ArMyContainers} from "../../client/ArModel.ts";
+import {ArMyContainers} from "../../model/ArModel.ts";
 import {toPageNo} from "../../util/toPageNo.ts";
 import {getContainerNames} from "../../client/endpoint/getContainerNames.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
@@ -12,7 +12,6 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 
 import {ContainerDropdown} from "./ContainerDropdown.tsx";
-import {defaultQuery} from "../common/search/QueryModel.ts";
 import {toQueryFieldForm} from "../../store/query/util/toQueryFieldForm.ts";
 import {mapValues} from "lodash";
 import {useStore} from "../../store/useStore.ts";
@@ -24,6 +23,7 @@ import {Button} from "../common/Button.tsx";
 import {Store} from "../common/icon/Store.tsx";
 import {Next} from "../common/icon/Next.tsx";
 import {QR} from "../../client/query/QR.tsx";
+import {defaultQuery} from "../../model/query/defaultQuery.ts";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string

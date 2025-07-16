@@ -1,8 +1,8 @@
 import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {Textarea} from "../common/form/Textarea.tsx";
-import {ErrorRecord} from "../common/search/QueryModel.ts";
 import {CustomQueryMetadataForm} from "./model/CustomQueryMetadataForm.ts";
+import {ErrorRecord} from "../../model/query/ErrorRecord.ts";
 
 export function CustomQueryMetadataEditor(props: {
   form: CustomQueryMetadataForm

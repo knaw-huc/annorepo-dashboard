@@ -1,4 +1,4 @@
-import {ArCustomQueryForm} from "../../client/ArModel.ts";
+import {ArCustomQueryForm} from "../../model/ArModel.ts";
 import {H2} from "../common/H2.tsx";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";

@@ -1,15 +1,15 @@
 import {
-  FieldQueryForm,
-  FormParamValue
-} from "../../../component/common/search/QueryModel.ts";
+  ComparisonSubQuery
+} from "../../../model/query/QueryModel.ts";
 import {toSearchQuery} from "./toSearchQuery.ts";
+import {FormParamValue} from "../../../model/query/FormParamValue.ts";
 
 /**
  * Check if forms and params can be converted into query
  * @returns error message on error
  */
 export function validateQuery(
-  forms: FieldQueryForm[],
+  forms: ComparisonSubQuery[],
   params: FormParamValue[],
 ): string {
   try {

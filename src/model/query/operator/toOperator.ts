@@ -1,10 +1,10 @@
-import {QueryOperator} from "./QueryOperator.ts";
+import {Operator} from "./Operator.ts";
 
-export const queryOperatorOrFnValues: string[] = Object.values(QueryOperator)
+export const queryOperatorOrFnValues: string[] = Object.values(Operator)
 
-export function toOperator(value: string): QueryOperator | null {
+export function toOperator(value: string): Operator | null {
   if (!queryOperatorOrFnValues.includes(value)) {
     return null
   }
-  return value as QueryOperator;
+  return value as Operator;
 }

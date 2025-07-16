@@ -8,7 +8,6 @@ import {QueryEditor} from "../common/search/QueryEditor.tsx";
 import {H1} from "../common/H1.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
 import {useStore} from "../../store/useStore.ts";
-import {defaultQuery} from "../common/search/QueryModel.ts";
 import {
   ContainerSearchArgs,
   useContainerSearch
@@ -18,6 +17,7 @@ import {mapValues} from "lodash";
 import {SearchButton} from "../common/search/button/SearchButton.tsx";
 import {hasErrors} from "../../store/query/util/hasErrors.ts";
 import {AddSubQueryButton} from "../common/search/button/AddSubQueryButton.tsx";
+import {defaultQuery} from "../../model/query/defaultQuery.ts";
 
 export type ContainerSearchProps = {
   containerName: string,

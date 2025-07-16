@@ -1,7 +1,7 @@
 /**
  * See: https://github.com/knaw-huc/annorepo/blob/main/docs/api-usage.md#create-a-query--experimental
  */
-export enum QueryOperator {
+export enum Operator {
   // Query without operator:
   simpleQuery = 'simpleQuery',
 
@@ -18,4 +18,10 @@ export enum QueryOperator {
   // Query functions:
   isWithinTextAnchorRange = ':isWithinTextAnchorRange',
   overlapsWithTextAnchorRange = ':overlapsWithTextAnchorRange',
+}
+
+export enum LogicalOperator {
+  OR = ':OR',
+  // TODO: Waiting for https://github.com/knaw-huc/annorepo/issues/270
+  AND = ':AND'
 }

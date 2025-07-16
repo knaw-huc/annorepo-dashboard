@@ -1,9 +1,7 @@
 import {
-  FieldQueryErrors,
-  FieldQueryForm,
-  FormParamValue
-} from "../../component/common/search/QueryModel.ts";
-import {SearchQuery} from "../../client/ArModel.ts";
+  ComparisonSubQuery
+} from "../../model/query/QueryModel.ts";
+import {SearchQueryJson} from "../../model/ArModel.ts";
 import {initWithQuery} from "./util/initWithQuery.ts";
 import {initWithTemplate} from "./util/initWithTemplate.ts";
 import {updateForm} from "./util/updateForm.ts";
@@ -12,10 +10,12 @@ import {addForm} from "./util/addForm.ts";
 import {removeForm} from "./util/removeForm.ts";
 import {FormToAdd} from "./FormToAdd.ts";
 import {SliceCreator} from "./SliceCreator.ts";
+import {FieldSubQueryErrors} from "../../model/query/ErrorRecord.ts";
+import {FormParamValue} from "../../model/query/FormParamValue.ts";
 
 export type QueryState = {
-  forms: FieldQueryForm[]
-  errors: FieldQueryErrors[]
+  forms: ComparisonSubQuery[]
+  errors: FieldSubQueryErrors[]
 
   /**
    * The meaning of form values and parameters in the context of global and custom queries:
@@ -33,8 +33,8 @@ export type QuerySlice = QueryState & {
   addForm: (toAdd: FormToAdd) => void
   removeForm: (formIndex: number) => void
   updateForm: (update: FormUpdate) => void
-  initWithQuery: (query: SearchQuery) => void
-  initWithTemplate: (query: SearchQuery, params: string[]) => void
+  initWithQuery: (query: SearchQueryJson) => void
+  initWithTemplate: (query: SearchQueryJson, params: string[]) => void
 }
 
 export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {

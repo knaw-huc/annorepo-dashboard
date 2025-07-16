@@ -1,4 +1,4 @@
-import {RangeQueryValue} from "../../../client/ArModel.ts";
+import {ArRangeQueryValue} from "../../ArModel.ts";
 
 export const emptyValue = null
 export type EmptyValue = typeof emptyValue
@@ -7,7 +7,7 @@ export type QueryValue =
   | string
   | number
   | string[]
-  | RangeQueryValue
+  | ArRangeQueryValue
   | EmptyValue // Absent value
 
 /**

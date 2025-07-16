@@ -1,4 +1,4 @@
-import {ArAnnotation, ArAnnotationPage} from "../../client/ArModel.ts";
+import {ArAnnotation, ArAnnotationPage} from "../../model/ArModel.ts";
 import {PageNavigation} from "../common/PageNavigation.tsx";
 import {AnnotationCard} from "./AnnotationCard.tsx";
 import {SelectionStatus} from "./SelectionStatus.tsx";

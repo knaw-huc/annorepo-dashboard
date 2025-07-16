@@ -1,6 +1,6 @@
 import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {ArContainerFields} from "../ArModel.ts";
+import {ArContainerFields} from "../../model/ArModel.ts";
 import {createQueryKey} from "../query/useGet.tsx";
 import {QR} from "../query/QR.tsx";
 import {orThrow} from "../../util/orThrow.ts";

@@ -1,8 +1,6 @@
-import {QueryValue} from "../model/query/value/QueryValue.ts";
-import {QueryOperator} from "../model/query/operator/QueryOperator.ts";
-import {
-  RangeQueryOperator
-} from "../model/query/operator/RangeQueryOperator.ts";
+import {RangeQueryOperator} from "./query/operator/RangeQueryOperator.ts";
+import {Operator} from "./query/operator/Operator.ts";
+import {QueryValue} from "./query/value/QueryValue.ts";
 
 export type ArAboutData = {
   appName: string,
@@ -55,37 +53,7 @@ export type ArAnnotation<T extends object = object> = {
 export type ArContainerFields = Record<string, number>
 
 
-export type SearchQuery = Record<string, any>;
-
-export type SearchSubquery =
-  | SimpleQuery
-  | FieldQuery
-  | RangeQuery
-
-export type SimpleQuery = Record<string, string>
-
-export type FieldQuery = Record<Field, Partial<Record<
-  QueryOperator,
-  QueryValue
->>>
-type Field = string;
-
-export type RangeQuery = Partial<Record<
-  RangeQueryOperator,
-  RangeQueryValue
->>
-export const NO_FIELD = 'n.a.'
-
-export type RangeQueryValue = { source: string, start: number, end: number };
-
-export function isRangeQueryValue(
-  toTest: QueryValue
-): toTest is RangeQueryValue {
-  return !!(toTest
-    && (toTest as RangeQueryValue).source
-    && (toTest as RangeQueryValue).start !== undefined
-    && (toTest as RangeQueryValue).end !== undefined)
-}
+export type SearchQueryJson = Record<string, any>;
 
 export type ArCustomQueryForm = {
   name: string,
@@ -94,7 +62,7 @@ export type ArCustomQueryForm = {
   public: boolean
 
   /**
-   * {@link SearchQuery}
+   * {@link SearchQueryJson}
    */
   query: string,
 }
@@ -106,3 +74,31 @@ export type ArCustomQueryResult = Omit<ArCustomQueryForm, "query"> & {
   parameters: string[]
 }
 
+export type ArField = string;
+export type ArSimpleFieldQuery = Record<string, string>
+export type ArExtendedFieldQuery = Record<ArField, Partial<Record<
+  Operator,
+  QueryValue
+>>>
+export type ArRangeQuery = Partial<Record<
+  RangeQueryOperator,
+  ArRangeQueryValue
+>>
+export const NO_FIELD = 'n.a.'
+export type ArRangeQueryValue = { source: string, start: number, end: number };
+
+export function isArRangeQueryValue(
+  toTest: QueryValue
+): toTest is ArRangeQueryValue {
+  return !!(toTest
+    && (toTest as ArRangeQueryValue).source
+    && (toTest as ArRangeQueryValue).start !== undefined
+    && (toTest as ArRangeQueryValue).end !== undefined)
+}
+
+export type ArSearchSubQuery =
+  | ArSimpleFieldQuery
+  | ArExtendedFieldQuery
+  | ArRangeQuery
+
+export type JsonQueryEntry = [string, any]

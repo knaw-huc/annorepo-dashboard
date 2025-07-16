@@ -1,12 +1,12 @@
 import {
-  FieldQueryErrors,
-  FieldQueryForm,
-  FormParamValue
-} from "../../component/common/search/QueryModel.ts";
+  ComparisonSubQuery
+} from "../../model/query/QueryModel.ts";
+import {FieldSubQueryErrors} from "../../model/query/ErrorRecord.ts";
+import {FormParamValue} from "../../model/query/FormParamValue.ts";
 
 export type FormUpdate = {
   formIndex: number,
-  form?: FieldQueryForm,
-  error?: FieldQueryErrors,
+  form?: ComparisonSubQuery,
+  error?: FieldSubQueryErrors,
   param?: FormParamValue
 }

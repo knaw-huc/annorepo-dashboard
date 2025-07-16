@@ -2,7 +2,7 @@ import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
 import {createQueryKey} from "../query/useGet.tsx";
 import {useQuery} from "@tanstack/react-query";
-import {ArAnnotationPage, ArCustomQueryResult} from "../ArModel.ts";
+import {ArAnnotationPage, ArCustomQueryResult} from "../../model/ArModel.ts";
 import {encodeString} from "../../util/base64.ts";
 import {objectEntries} from "../../util/objectEntries.ts";
 import {QR} from "../query/QR.tsx";

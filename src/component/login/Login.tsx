@@ -3,7 +3,7 @@ import {createOpenApiClient} from "../../client/OpenApiClient.tsx";
 import {OpenApiClientContext} from "../../client/OpenApiClientProvider.tsx";
 import {LoginForm} from "./LoginForm.tsx";
 import {useConfig} from "../ConfigProvider.tsx";
-import {ArAboutData} from "../../client/ArModel.ts";
+import {ArAboutData} from "../../model/ArModel.ts";
 
 export function Login(props: PropsWithChildren<{}>) {
 

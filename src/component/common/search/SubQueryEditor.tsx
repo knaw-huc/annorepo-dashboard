@@ -1,4 +1,3 @@
-import {NO_FIELD} from "../../../client/ArModel.ts";
 import {DropdownSelector} from "../form/DropdownSelector.tsx";
 import {orThrow} from "../../../util/orThrow.ts";
 import {SelectOption, toOption} from "../form/SelectOption.tsx";
@@ -7,7 +6,7 @@ import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import {Button} from "../Button.tsx";
 import {Remove} from "../icon/Remove.tsx";
 import {useStore} from "../../../store/useStore.ts";
-import {FieldQueryForm} from "./QueryModel.ts";
+import {ComparisonSubQuery} from "../../../model/query/QueryModel.ts";
 import {useValueSuggestions} from "./useValueSuggestions.tsx";
 import {toParamName} from "../../../store/query/util/toParamName.ts";
 import {
@@ -16,7 +15,7 @@ import {
 import {
   queryValueMappers
 } from "../../../model/query/value/queryValueMappers.ts";
-import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
+import {Operator} from "../../../model/query/operator/Operator.ts";
 import {
   isRangeQueryOperator
 } from "../../../model/query/operator/RangeQueryOperator.ts";
@@ -24,6 +23,7 @@ import {toOperator} from "../../../model/query/operator/toOperator.ts";
 import {
   findMapperByType
 } from "../../../model/query/value/util/findMapperByType.ts";
+import {NO_FIELD} from "../../../model/ArModel.ts";
 
 export function SubQueryEditor(props: {
   fieldNames: string[],
@@ -48,8 +48,8 @@ export function SubQueryEditor(props: {
     : fieldNames
 
   const operatorOptions = Object
-    .values(QueryOperator)
-    .filter(o => o !== QueryOperator.simpleQuery)
+    .values(Operator)
+    .filter(o => o !== Operator.simpleQuery)
     .map(v => ({label: v, value: v}))
 
   const isExistingField = fieldNames.includes(form.field)
@@ -58,7 +58,7 @@ export function SubQueryEditor(props: {
   const field = isExistingField ? form.field : '';
   const valueSuggestions = useValueSuggestions({containerName, field, value})
 
-  function handleSelectOperator(update: SelectOption<QueryOperator>) {
+  function handleSelectOperator(update: SelectOption<Operator>) {
     const operatorUpdate = toOperator(update.value)
       ?? orThrow(`Invalid operator: ${update.value}`);
 
@@ -142,15 +142,15 @@ export function SubQueryEditor(props: {
 }
 
 export function alignWithOperator(
-  prev: FieldQueryForm,
-  nextOperator: QueryOperator,
-): FieldQueryForm {
+  prev: ComparisonSubQuery,
+  nextOperator: Operator,
+): ComparisonSubQuery {
   const currentMapping = findMapperByType(prev.valueType)
 
   // Use first option by default:
   const nextType = queryOperatorValueType[nextOperator][0]
 
-  const next: FieldQueryForm = {
+  const next: ComparisonSubQuery = {
     ...prev,
     operator: nextOperator,
     valueType: nextType

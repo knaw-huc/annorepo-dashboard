@@ -1,8 +1,8 @@
-import {SearchQuery} from "../../../client/ArModel.ts";
+import {SearchQueryJson} from "../../../model/ArModel.ts";
 import {toQueryFieldForms} from "./toQueryFieldForm.ts";
 import {toErrorRecord} from "./toErrorRecord.ts";
 
-export function initWithTemplate(template: SearchQuery, paramNames: string[]) {
+export function initWithTemplate(template: SearchQueryJson, paramNames: string[]) {
   const forms = toQueryFieldForms(template, paramNames)
   const errors = forms.map(f => toErrorRecord(f))
   const params = Object.values(template).map(templateEntryValue => {

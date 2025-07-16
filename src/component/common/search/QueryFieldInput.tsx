@@ -1,5 +1,5 @@
 import {DropdownInput} from "../form/DropdownInput.tsx";
-import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
+import {Operator} from "../../../model/query/operator/Operator.ts";
 import {isRangeQueryOperator} from "../../../model/query/operator/RangeQueryOperator.ts";
 import {SelectOption} from "../form/SelectOption.tsx";
 
@@ -10,7 +10,7 @@ export function QueryFieldInput(props: {
   suggestions: SelectOption[]
   onChange: (value: string) => void
   disabled?: boolean,
-  operator: QueryOperator
+  operator: Operator
 }) {
 
   const {value, errorLabel, suggestions, onChange, operator} = props;

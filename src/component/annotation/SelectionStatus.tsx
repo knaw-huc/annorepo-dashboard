@@ -1,7 +1,7 @@
 import {useStore} from "../../store/useStore.ts";
 import {Button} from "../common/Button.tsx";
 import {Unchecked} from "../common/icon/Unchecked.tsx";
-import {ArAnnotation} from "../../client/ArModel.ts";
+import {ArAnnotation} from "../../model/ArModel.ts";
 import {SemiChecked} from "../common/icon/SemiChecked.tsx";
 import {Checked} from "../common/icon/Checked.tsx";
 

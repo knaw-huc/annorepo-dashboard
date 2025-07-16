@@ -1,10 +1,12 @@
-import {ErroneousValue, FieldQueryForm, FormParamValue} from "../QueryModel.ts";
+import {ComparisonSubQuery} from "../../../../model/query/QueryModel.ts";
 import {toParamTag} from "../../../../store/query/util/toParamTag.ts";
 import {toParamName} from "../../../../store/query/util/toParamName.ts";
 import {findMapperByType} from "../../../../model/query/value/util/findMapperByType.ts";
+import {ErroneousValue} from "../../../../model/query/ErrorRecord.ts";
+import {FormParamValue} from "../../../../model/query/FormParamValue.ts";
 
 export function createInputValue(
-  form: FieldQueryForm,
+  form: ComparisonSubQuery,
   error: string,
   param: FormParamValue,
   formIndex: number,

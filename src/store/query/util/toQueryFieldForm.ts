@@ -1,38 +1,36 @@
 import {
-  isRangeQueryValue,
-  NO_FIELD,
-  SearchQuery
-} from "../../../client/ArModel.ts";
+  isArRangeQueryValue, JsonQueryEntry, NO_FIELD,
+  SearchQueryJson
+} from "../../../model/ArModel.ts";
 import {isNumber, isPlainObject, isString} from "lodash";
 import {
-  FieldQueryForm,
-  QueryEntry
-} from "../../../component/common/search/QueryModel.ts";
+  ComparisonSubQuery
+} from "../../../model/query/QueryModel.ts";
 import {
   findMapperByOperator
 } from "../../../model/query/value/util/findMapperByOperator.ts";
 import {QueryValue} from "../../../model/query/value/QueryValue.ts";
-import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
+import {Operator} from "../../../model/query/operator/Operator.ts";
 import {isRangeQueryOperator} from "../../../model/query/operator/RangeQueryOperator.ts";
 import {isNonFnOperator} from "../../../model/query/operator/NonFnQueryOperator.ts";
 import {QueryValueType} from "../../../model/query/value/QueryValueType.ts";
 
 export function toQueryFieldForm(
-  entry: QueryEntry,
+  entry: JsonQueryEntry,
   // Query entry contains param when passing a template:
   params?: string[]
-): FieldQueryForm {
+): ComparisonSubQuery {
   const [queryKey, queryValue] = entry
   let field;
   let value: QueryValue;
-  let operator: QueryOperator
+  let operator: Operator
   let valueType: QueryValueType
 
   if (isRangeQueryOperator(queryKey)) {
     // Range function query:
 
     field = NO_FIELD
-    operator = queryKey as QueryOperator
+    operator = queryKey as Operator
     if (containsParams(queryValue, params)) {
 
       /**
@@ -42,7 +40,7 @@ export function toQueryFieldForm(
       const mapper = findMapperByOperator(operator);
       value = mapper.defaultValue
       valueType = mapper.type
-    } else if (isRangeQueryValue(queryValue)) {
+    } else if (isArRangeQueryValue(queryValue)) {
       value = queryValue
       valueType = 'range'
     } else {
@@ -52,13 +50,13 @@ export function toQueryFieldForm(
     // Simple query:
 
     field = queryKey
-    operator = QueryOperator.simpleQuery
+    operator = Operator.simpleQuery
     if (containsParams(queryValue, params)) {
       /**
        * TODO: are number params supported?
        *  And if so: how to find the correct type?
        */
-      const mapper = findMapperByOperator(QueryOperator.simpleQuery);
+      const mapper = findMapperByOperator(Operator.simpleQuery);
       value = mapper.defaultValue
       valueType = mapper.type
     } else {
@@ -117,7 +115,7 @@ export function toQueryFieldForm(
 function throwUnexpected(
   got: any,
   expected: string,
-  entry: QueryEntry
+  entry: JsonQueryEntry
 ): never {
   throw new Error(`Expected ${
     expected
@@ -129,9 +127,9 @@ function throwUnexpected(
 }
 
 export function toQueryFieldForms(
-  query: SearchQuery,
+  query: SearchQueryJson,
   params?: string[]
-): FieldQueryForm[] {
+): ComparisonSubQuery[] {
   return Object.entries(query).map((entry) => {
     return toQueryFieldForm(entry, params)
   })

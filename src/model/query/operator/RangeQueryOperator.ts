@@ -1,8 +1,8 @@
-import {QueryOperator} from "./QueryOperator.ts";
+import {Operator} from "./Operator.ts";
 
 export const rangeQueryOperator = [
-  QueryOperator.overlapsWithTextAnchorRange,
-  QueryOperator.isWithinTextAnchorRange
+  Operator.overlapsWithTextAnchorRange,
+  Operator.isWithinTextAnchorRange
 ] as const
 
 export type RangeQueryOperator = typeof rangeQueryOperator[number]

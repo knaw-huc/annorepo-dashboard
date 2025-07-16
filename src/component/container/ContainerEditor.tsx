@@ -2,7 +2,7 @@ import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
 import {usePost} from "../../client/query/usePost.tsx";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
-import {ArContainer} from "../../client/ArModel.ts";
+import {ArContainer} from "../../model/ArModel.ts";
 import {toName} from "../../util/toName.ts";
 import {useState} from "react";
 import cloneDeep from "lodash/cloneDeep";

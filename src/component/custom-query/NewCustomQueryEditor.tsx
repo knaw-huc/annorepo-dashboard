@@ -2,7 +2,7 @@ import {useEffect, useState} from "react";
 import {H1} from "../common/H1.tsx";
 import {Button} from "../common/Button.tsx";
 import {NewCustomQueryPreviewEditor} from "./NewCustomQueryPreviewEditor.tsx";
-import {ArCustomQueryForm} from "../../client/ArModel.ts";
+import {ArCustomQueryForm} from "../../model/ArModel.ts";
 import {usePost} from "../../client/query/usePost.tsx";
 import {useQueryClient} from "@tanstack/react-query";
 import {invalidateBy} from "../../client/query/useGet.tsx";
@@ -14,9 +14,12 @@ import {
 import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
 import {Warning} from "../common/Warning.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
-import {defaultParams, defaultTemplate} from "../common/search/QueryModel.ts";
 import {useStore} from "../../store/useStore.ts";
 import {MR} from "../../client/query/MR.tsx";
+import {
+  defaultParams,
+  defaultTemplate
+} from "../../model/query/defaultQuery.ts";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 

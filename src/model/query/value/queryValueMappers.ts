@@ -1,7 +1,9 @@
 import {QueryValueMapper} from "./QueryValueMapper.ts";
 import {emptyValue, QueryValue} from "./QueryValue.ts";
 import {isNumber, isString, toNumber, toString} from "lodash";
-import {isRangeQueryValue} from "../../../client/ArModel.ts";
+
+
+import {isArRangeQueryValue} from "../../ArModel.ts";
 
 export const queryValueMappers: QueryValueMapper<QueryValue>[] = [
   {
@@ -33,7 +35,7 @@ export const queryValueMappers: QueryValueMapper<QueryValue>[] = [
     toValue: str => str === "" ? emptyValue : JSON.parse(str),
     toInputValue: JSON.stringify,
     toParameterValue: JSON.stringify,
-    isType: isRangeQueryValue,
+    isType: isArRangeQueryValue,
     defaultValue: {source: 'http://example.com', start: 0, end: 1}
   }
 ]

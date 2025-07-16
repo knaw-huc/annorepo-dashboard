@@ -1,9 +1,9 @@
 import {toSearchQuery} from "../util/toSearchQuery.ts";
 import {useStore} from "../../useStore.ts";
-import {SearchQuery} from "../../../client/ArModel.ts";
+import {SearchQueryJson} from "../../../model/ArModel.ts";
 import {hasErrors} from "../util/hasErrors.ts";
 
-export const useSearchQuery = (asTemplate?: boolean): SearchQuery | undefined => useStore(store => {
+export const useSearchQuery = (asTemplate?: boolean): SearchQueryJson | undefined => useStore(store => {
   if(!store.forms.length) {
     return;
   }

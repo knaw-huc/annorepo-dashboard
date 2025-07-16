@@ -2,7 +2,7 @@ import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
 import {useQueries} from "@tanstack/react-query";
 import {useGet} from "../query/useGet.tsx";
 import {getContainer} from "./useContainer.tsx";
-import {ArContainer, ArMyContainers} from "../ArModel.ts";
+import {ArContainer, ArMyContainers} from "../../model/ArModel.ts";
 import {getContainerNames} from "./getContainerNames.tsx";
 import {QR} from "../query/QR.tsx";
 

@@ -1,14 +1,14 @@
-import {QueryOperator} from "./QueryOperator.ts";
+import {Operator} from "./Operator.ts";
 
 export const nonFnQueryOperators = [
-  QueryOperator.equal,
-  QueryOperator.notEqual,
-  QueryOperator.lessThan,
-  QueryOperator.lessThanOrEqual,
-  QueryOperator.greaterThan,
-  QueryOperator.greaterThanOrEqual,
-  QueryOperator.isIn,
-  QueryOperator.isNotIn
+  Operator.equal,
+  Operator.notEqual,
+  Operator.lessThan,
+  Operator.lessThanOrEqual,
+  Operator.greaterThan,
+  Operator.greaterThanOrEqual,
+  Operator.isIn,
+  Operator.isNotIn
 ] as const
 export type NonFnQueryOperator = typeof nonFnQueryOperators[number]
 

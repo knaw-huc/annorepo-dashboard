@@ -1,29 +1,28 @@
 import {
-  isRangeQueryValue,
-  SearchQuery,
-  SearchSubquery
-} from "../../../client/ArModel.ts";
+  ArSearchSubQuery, isArRangeQueryValue,
+  SearchQueryJson
+} from "../../../model/ArModel.ts";
 import {objectEntries} from "../../../util/objectEntries.ts";
 import {
-  FieldQueryForm,
-  FormParamValue
-} from "../../../component/common/search/QueryModel.ts";
+  ComparisonSubQuery
+} from "../../../model/query/QueryModel.ts";
 import {isString} from "lodash";
 import {toParamTag} from "./toParamTag.ts";
-import {QueryOperator} from "../../../model/query/operator/QueryOperator.ts";
+import {Operator} from "../../../model/query/operator/Operator.ts";
 import {isRangeQueryOperator} from "../../../model/query/operator/RangeQueryOperator.ts";
+import {FormParamValue} from "../../../model/query/FormParamValue.ts";
 
 export function toSearchQuery(
-  forms: FieldQueryForm[],
+  forms: ComparisonSubQuery[],
   params: FormParamValue[]
-): SearchQuery {
+): SearchQueryJson {
   const subqueries = forms.map((f,i) => convertToSubquery(f, params[i]));
   return mergeForms(subqueries)
 }
 
 function mergeForms(
-  subqueries: SearchSubquery[]
-): SearchQuery {
+  subqueries: ArSearchSubQuery[]
+): SearchQueryJson {
   const merged: Record<string, any> = {};
   for (const subquery of subqueries) {
     const fields = Object.keys(subquery)
@@ -47,14 +46,14 @@ function mergeForms(
 }
 
 function convertToSubquery(
-  form: FieldQueryForm,
+  form: ComparisonSubQuery,
   param?: FormParamValue
-): SearchSubquery {
+): ArSearchSubQuery {
   const formValue = isString(param) ? toParamTag(param) : form.value;
-  if (form.operator === QueryOperator.simpleQuery) {
+  if (form.operator === Operator.simpleQuery) {
     return {[form.field]: `${isString(param) ? param : form.value}`}
   } else if (isRangeQueryOperator(form.operator)) {
-    if (!param && !isRangeQueryValue(formValue)) {
+    if (!param && !isArRangeQueryValue(formValue)) {
       throw new Error('Expected range but got: ' + JSON.stringify(formValue))
     }
     return {[form.operator]: formValue}
