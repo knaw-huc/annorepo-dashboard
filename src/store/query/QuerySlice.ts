@@ -1,6 +1,4 @@
-import {
-  ComparisonSubQuery
-} from "../../model/query/QueryModel.ts";
+import {QueryFormWithErrors} from "../../model/query/QueryModel.ts";
 import {SearchQueryJson} from "../../model/ArModel.ts";
 import {initWithQuery} from "./util/initWithQuery.ts";
 import {initWithTemplate} from "./util/initWithTemplate.ts";
@@ -10,12 +8,19 @@ import {addForm} from "./util/addForm.ts";
 import {removeForm} from "./util/removeForm.ts";
 import {FormToAdd} from "./FormToAdd.ts";
 import {SliceCreator} from "./SliceCreator.ts";
-import {FieldSubQueryErrors} from "../../model/query/ErrorRecord.ts";
 import {FormParamValue} from "../../model/query/FormParamValue.ts";
 
 export type QueryState = {
-  forms: ComparisonSubQuery[]
-  errors: FieldSubQueryErrors[]
+
+  /**
+   * TODO:
+   * rewrite slice functions
+   * - probably best to move the error records next to the form they apply to, see {@link ComparisonSubQueryWithErrors}
+   * - forms can now be nested inside {@link LogicalSubQueryWithErrors}:
+   *   - how to add, remove and update nested subqueries and their errors? with a path?
+   *   - how to render comparison subqueries inside logical subqueries?
+   */
+  forms: QueryFormWithErrors
 
   /**
    * The meaning of form values and parameters in the context of global and custom queries:

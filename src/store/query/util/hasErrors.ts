@@ -1,6 +1,7 @@
 import {hasError} from "./hasError.ts";
-import {FieldSubQueryErrors} from "../../../model/query/ErrorRecord.ts";
 
-export function hasErrors(errors: FieldSubQueryErrors[]) {
+import {ComparisonSubQueryErrors} from "../../../model/query/QueryModel.ts";
+
+export function hasErrors(errors: ComparisonSubQueryErrors[]) {
   return errors.some(e => hasError(e));
 }

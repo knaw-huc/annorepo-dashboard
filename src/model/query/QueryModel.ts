@@ -1,11 +1,25 @@
 import {QueryValue} from "./value/QueryValue.ts";
 import {LogicalOperator, Operator} from "./operator/Operator.ts";
 import {QueryValueType} from "./value/QueryValueType.ts";
-import {ErroneousValue} from "./ErrorRecord.ts";
+import {ErroneousValue, ErrorRecord} from "./ErrorRecord.ts";
 
 export type QueryForm =
   | LogicalSubQuery
   | ComparisonSubQuery
+
+export type QueryFormWithErrors =
+  | LogicalSubQueryWithErrors
+  | ComparisonSubQueryWithErrors
+
+export type LogicalSubQueryWithErrors = {
+  operator: LogicalOperator,
+  forms: ComparisonSubQueryWithErrors,
+}
+
+export type ComparisonSubQueryWithErrors = {
+  form: ComparisonSubQuery,
+  errors: ErrorRecord<QueryFormWithErrors>
+}
 
 export type QueryForms = QueryForm[]
 
@@ -23,6 +37,8 @@ export type ComparisonSubQuery = {
   value: QueryValue | ErroneousValue
   valueType: QueryValueType
 }
+export type ComparisonSubQueryErrors = ErrorRecord<ComparisonSubQuery>;
+
 export function isComparisonSubQuery(toTest: QueryForm): toTest is ComparisonSubQuery {
   return (toTest as ComparisonSubQuery).valueType !== undefined
 }
