@@ -11,7 +11,7 @@ export type QueryValueMapper<T extends QueryValue> = {
   toInputValue: (val: T) => string
 
   // As used in a custom query parameter string that is to be base64 encoded:
-  toParameterValue: (val: T) => string
+  toParamValue: (val: T) => string
 
   isType: (val: QueryValue) => val is T
   defaultValue: T

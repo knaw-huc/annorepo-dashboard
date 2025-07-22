@@ -2,6 +2,7 @@ import {QueryValue} from "./value/QueryValue.ts";
 import {LogicalOperator, Operator} from "./operator/Operator.ts";
 import {QueryValueType} from "./value/QueryValueType.ts";
 import {ErroneousValue, ErrorRecord} from "./ErrorRecord.ts";
+import {FormParamValue} from "./FormParamValue.ts";
 
 export type ValidatedQueryForms = ValidatedQuery[];
 
@@ -12,6 +13,15 @@ export type ValidatedQuery =
 export type ValidatedComparisonSubQuery = {
   type: "comparison";
   form: ComparisonSubQueryForm;
+
+  /**
+   * - Meaning of param in a global query: nothing
+   * - Meaning of param in a custom query:
+   *   - false: form value is not a parameter and has a static value
+   *   - truthy param: form value is the value of param
+   */
+  param: FormParamValue
+
   errors: ErrorRecord<ComparisonSubQueryForm>;
 };
 

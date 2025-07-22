@@ -1,4 +1,4 @@
-import {findMapperByType} from "../../model/query/value/util/findMapperByType.ts";
+import {findMapperByValueType} from "../../model/query/value/util/findMapperByValueType.ts";
 import {QueryValueType} from "../../model/query/value/QueryValueType.ts";
 
 export type AnnotationFieldType =
@@ -28,7 +28,7 @@ export function toQueryValueType(
     return "string"
   }
   try {
-    findMapperByType(type)
+    findMapperByValueType(type)
     return type
   } catch (e) {
     throw new Error(`Annotation type ${type} not a known query type`)

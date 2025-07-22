@@ -20,8 +20,8 @@ import {DropdownInput} from "../common/form/DropdownInput.tsx";
 import {orThrow} from "../../util/orThrow.ts";
 import {filterSuggestions} from "../common/form/util/filterSuggestions.tsx";
 import {
-  findMapperByType
-} from "../../model/query/value/util/findMapperByType.ts";
+  findMapperByValueType
+} from "../../model/query/value/util/findMapperByValueType.ts";
 import {
   toDefaultAnnotationFieldValue,
   toQueryValueType
@@ -149,7 +149,7 @@ export function AnnotationEditor(props: {
                     ?.suggestions
                   ?? orThrow('No such path')
                 const valueType = toQueryValueType(configField.type)
-                const mapper = findMapperByType(valueType)
+                const mapper = findMapperByValueType(valueType)
                 return <DropdownInput
                   key={configField.path}
                   value={mapper.toInputValue(get(form, configField.path))}

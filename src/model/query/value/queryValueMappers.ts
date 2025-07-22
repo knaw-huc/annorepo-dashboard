@@ -10,7 +10,7 @@ export const queryValueMappers: QueryValueMapper<QueryValue>[] = [
     type: 'string',
     toValue: str => str === "" ? emptyValue : str,
     toInputValue: toString,
-    toParameterValue: JSON.stringify,
+    toParamValue: JSON.stringify,
     isType: isString,
     defaultValue: 'value'
   },
@@ -18,7 +18,7 @@ export const queryValueMappers: QueryValueMapper<QueryValue>[] = [
     type: 'number',
     toValue: toNumberOrThrow,
     toInputValue: toString,
-    toParameterValue: toString,
+    toParamValue: toString,
     isType: isNumber,
     defaultValue: 1
   },
@@ -26,7 +26,7 @@ export const queryValueMappers: QueryValueMapper<QueryValue>[] = [
     type: 'options',
     toValue: str => str === "" ? emptyValue : JSON.parse(str),
     toInputValue: JSON.stringify,
-    toParameterValue: JSON.stringify,
+    toParamValue: JSON.stringify,
     isType: Array.isArray,
     defaultValue: ['value1', 'value2']
   },
@@ -34,7 +34,7 @@ export const queryValueMappers: QueryValueMapper<QueryValue>[] = [
     type: 'range',
     toValue: str => str === "" ? emptyValue : JSON.parse(str),
     toInputValue: JSON.stringify,
-    toParameterValue: JSON.stringify,
+    toParamValue: JSON.stringify,
     isType: isArRangeQueryValue,
     defaultValue: {source: 'http://example.com', start: 0, end: 1}
   }

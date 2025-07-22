@@ -10,8 +10,8 @@ import {
   queryOperatorValueType
 } from "../../../model/query/value/queryOperatorValueType.ts";
 import {
-  findMapperByType
-} from "../../../model/query/value/util/findMapperByType.ts";
+  findMapperByValueType
+} from "../../../model/query/value/util/findMapperByValueType.ts";
 import {SelectOption} from "../form/SelectOption.tsx";
 import {QueryValue} from "../../../model/query/value/QueryValue.ts";
 import {
@@ -37,16 +37,16 @@ export function QueryValueInput(props: {
     suggestions
   } = props;
 
-  const {subqueries, params, updateSubquery} = useStore()
+  const {subqueries, updateSubquery} = useStore()
 
   const subquery = subqueries[formIndex]
-  const param = params[formIndex]
+  const param = subquery.param
 
   function handleValueChange(
     inputValueUpdate: string,
   ) {
     try {
-      const mapper = findMapperByType(subquery.form.valueType);
+      const mapper = findMapperByValueType(subquery.form.valueType);
       const queryValueUpdate = mapper.toValue(inputValueUpdate);
       updateSubquery({
         formIndex,
@@ -68,7 +68,7 @@ export function QueryValueInput(props: {
     typeUpdate: QueryValueType
   ) {
     try {
-      const newMapper = findMapperByType(typeUpdate)
+      const newMapper = findMapperByValueType(typeUpdate)
       const queryValueUpdate = newMapper.toValue(inputValue)
       updateSubquery({
         formIndex,

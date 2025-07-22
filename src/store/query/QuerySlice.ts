@@ -8,21 +8,9 @@ import {addForm} from "./util/addForm.ts";
 import {removeForm} from "./util/removeForm.ts";
 import {SubqueryToAdd} from "./SubqueryToAdd.ts";
 import {SliceCreator} from "./SliceCreator.ts";
-import {FormParamValue} from "../../model/query/FormParamValue.ts";
 
 export type QueryState = {
   subqueries: ValidatedComparisonSubQuery[]
-
-  /**
-   * The meaning of form values and parameters in the context of global and custom queries:
-   * - Meaning of params in a global query:
-   *   - nothing
-   * - Meaning of params[i] in a custom query:
-   *   - falsy param: form value at i is a static value
-   *   - truthy param: form value at i is a filled in parameter
-   */
-  // TODO Move to validated comparison subquery:
-  params: FormParamValue[]
 }
 
 export type QuerySlice = QueryState & {
@@ -37,8 +25,6 @@ export type QuerySlice = QueryState & {
 export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {
   return ({
     subqueries: [],
-    errors: [],
-    params: [],
 
     setQueryState: (update: QueryState) => set(() =>
       ({...update})

@@ -3,7 +3,7 @@ import {H2} from "../common/H2.tsx";
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {CustomQueryMetadataEditor} from "./CustomQueryMetadataEditor.tsx";
 import {useEffect, useState} from "react";
-import {isEmpty, isString} from "lodash";
+import {isEmpty} from "lodash";
 import {toErrorRecord} from "../../store/query/util/toErrorRecord.ts";
 import {CheckboxWithLabel} from "../common/form/CheckboxWithLabel.tsx";
 import {Help} from "../common/icon/Help.tsx";
@@ -32,7 +32,6 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
 
   const {
     subqueries,
-    params,
     updateSubquery
   } = useStore()
 
@@ -87,7 +86,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
                 Parameter <Help/>
               </Tooltip>
             }
-            value={isString(params[i])}
+            value={subqueries[i].param !== false}
             onChange={(update) => handleParameterChange(i, update)}
           /></div>
       </div>)}

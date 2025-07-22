@@ -5,7 +5,7 @@ import {queryValueMappers} from "../queryValueMappers.ts";
 /**
  * @see queryValueMappers
  */
-export function findMapperByType(type: QueryValueType) {
+export function findMapperByValueType(type: QueryValueType) {
   return queryValueMappers.find(m => m.type === type)
     ?? orThrow(`Could not find mapping by type ${type}`);
 }

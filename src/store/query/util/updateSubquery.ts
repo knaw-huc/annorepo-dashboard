@@ -11,19 +11,14 @@ export function updateSubquery(
   const subqueryUpdate = {...prevSubquery}
   subqueryUpdate.form = form ?? prevSubquery.form
   subqueryUpdate.errors = errors ?? prevSubquery.errors
+  subqueryUpdate.param = param ?? prevSubquery.param
 
   const subqueriesUpdate = prev.subqueries.map(
     (f, i) => i === formIndex ? subqueryUpdate : f
   );
-  const paramsUpdate = param !== undefined
-    ? prev.params.map(
-      (p, i) => i === formIndex ? param : p
-    ) : prev.params;
 
   return {
     ...prev,
     subqueries: subqueriesUpdate,
-    // TODO Move to subqueries:
-    params: paramsUpdate
   }
 }

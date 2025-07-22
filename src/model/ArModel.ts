@@ -101,4 +101,4 @@ export type ArSearchSubQuery =
   | ArExtendedFieldQuery
   | ArRangeQuery
 
-export type JsonQueryEntry = [string, any]
+export type ArQueryEntry = [string, any]

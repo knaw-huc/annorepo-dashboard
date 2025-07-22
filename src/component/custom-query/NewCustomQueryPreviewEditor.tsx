@@ -68,7 +68,7 @@ export function NewCustomQueryPreviewEditor(props: {
     const errors = mapValues(form, () => '');
     const newFormIndex = subqueries.length;
     const param = toParamName(form, newFormIndex)
-    addSubquery({subquery: {form, errors, type: 'comparison'}, param})
+    addSubquery({subquery: {form, errors, type: 'comparison', param}})
   }
 
   const searchDisabled: boolean =

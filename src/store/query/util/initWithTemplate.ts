@@ -7,16 +7,15 @@ export function initWithTemplate(
   paramNames: string[]
 ): QueryState {
   const subqueries = toComparisonSubQueries(template, paramNames)
-  const params = Object.values(template).map(templateEntryValue => {
+  Object.values(template).map((templateEntryValue, i) => {
     const foundParamName = paramNames.find(
       paramName => JSON.stringify(templateEntryValue).includes(paramName)
     );
-    return foundParamName
+    subqueries[i].param = foundParamName
       ? foundParamName
       : false
   })
   return {
-    subqueries,
-    params
+    subqueries
   };
 }

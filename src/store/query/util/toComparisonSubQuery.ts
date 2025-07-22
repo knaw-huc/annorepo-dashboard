@@ -1,10 +1,13 @@
 import {
-  isArRangeQueryValue, JsonQueryEntry, NO_FIELD,
+  ArQueryEntry,
+  isArRangeQueryValue,
+  NO_FIELD,
   SearchQueryJson
 } from "../../../model/ArModel.ts";
 import {isNumber, isPlainObject, isString} from "lodash";
 import {
-  ComparisonSubQueryForm, ValidatedComparisonSubQuery
+  ComparisonSubQueryForm,
+  ValidatedComparisonSubQuery
 } from "../../../model/query/QueryModel.ts";
 import {
   findMapperByOperator
@@ -19,9 +22,10 @@ import {
 } from "../../../model/query/operator/NonFnQueryOperator.ts";
 import {QueryValueType} from "../../../model/query/value/QueryValueType.ts";
 import {toErrorRecord} from "./toErrorRecord.ts";
+import {FormParamValue} from "../../../model/query/FormParamValue.ts";
 
 export function toComparisonSubQuery(
-  entry: JsonQueryEntry,
+  entry: ArQueryEntry,
   // Query entry contains param when passing a template:
   params?: string[]
 ): ComparisonSubQueryForm {
@@ -36,7 +40,7 @@ export function toComparisonSubQuery(
 
     field = NO_FIELD
     operator = queryKey as Operator
-    if (containsParams(queryValue, params)) {
+    if (findParam(queryValue, params)) {
 
       /**
        * TODO: are number params supported?
@@ -56,7 +60,7 @@ export function toComparisonSubQuery(
 
     field = queryKey
     operator = Operator.simpleQuery
-    if (containsParams(queryValue, params)) {
+    if (findParam(queryValue, params)) {
       /**
        * TODO: are number params supported?
        *  And if so: how to find the correct type?
@@ -90,7 +94,7 @@ export function toComparisonSubQuery(
       throwUnexpected(queryObjectKey, 'non-function operator', entry);
     }
     operator = queryObjectKey
-    if (containsParams(queryObjectValue, params)) {
+    if (findParam(queryObjectValue, params)) {
       /**
        * TODO: are number params supported?
        *  And if so: how to find the correct type?
@@ -120,7 +124,7 @@ export function toComparisonSubQuery(
 function throwUnexpected(
   got: any,
   expected: string,
-  entry: JsonQueryEntry
+  entry: ArQueryEntry
 ): never {
   throw new Error(`Expected ${
     expected
@@ -133,28 +137,33 @@ function throwUnexpected(
 
 export function toComparisonSubQueries(
   query: SearchQueryJson,
-  params?: string[]
+  paramNames?: string[]
 ): ValidatedComparisonSubQuery[] {
   return Object.entries(query).map((entry) => {
-    return toValidatedComparisonSubQuery(entry, params)
+    return toValidatedComparisonSubQuery(entry, paramNames)
   })
 }
 
 
 export function toValidatedComparisonSubQuery(
-  query: JsonQueryEntry,
+  query: ArQueryEntry,
   params?: string[]
 ): ValidatedComparisonSubQuery {
   const form = toComparisonSubQuery(query, params);
   const errors = toErrorRecord(form);
-  return {type: "comparison", form: form, errors}
+  return {type: "comparison", form, errors, param: false}
 }
 
-export function containsParams(
+export function findParam(
   queryValue: string,
-  params?: string[]
-): boolean {
-  return params
-      ?.some(param => queryValue.includes(param))
-    || false
+  paramNames?: string[]
+): FormParamValue {
+  if (!paramNames) {
+    return false;
+  }
+  if (!isString(queryValue)) {
+    return false;
+  }
+  const found = paramNames.find(param => param && queryValue.includes(param));
+  return found ?? false
 }

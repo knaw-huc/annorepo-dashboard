@@ -77,7 +77,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     const form = toComparisonSubQuery(newQueryEntry)
     const errors = mapValues(form, () => '');
     const param = false
-    const toAdd: SubqueryToAdd = {subquery: {type: "comparison", form, errors}, param}
+    const toAdd: SubqueryToAdd = {subquery: {type: "comparison", form, errors, param}}
     addSubquery(toAdd)
   }
 

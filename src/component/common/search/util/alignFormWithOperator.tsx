@@ -1,8 +1,8 @@
 import {ComparisonSubQueryForm} from "../../../../model/query/QueryModel.ts";
 import {Operator} from "../../../../model/query/operator/Operator.ts";
 import {
-  findMapperByType
-} from "../../../../model/query/value/util/findMapperByType.ts";
+  findMapperByValueType
+} from "../../../../model/query/value/util/findMapperByValueType.ts";
 import {
   queryOperatorValueType
 } from "../../../../model/query/value/queryOperatorValueType.ts";
@@ -19,7 +19,7 @@ export function alignFormWithOperator(
   prev: ComparisonSubQueryForm,
   nextOperator: Operator,
 ): ComparisonSubQueryForm {
-  const currentMapping = findMapperByType(prev.valueType)
+  const currentMapping = findMapperByValueType(prev.valueType)
 
   // Use first option by default:
   const nextType = queryOperatorValueType[nextOperator][0]

@@ -1,22 +1,24 @@
 import {
-  ArSearchSubQuery, isArRangeQueryValue,
+  ArSearchSubQuery,
+  isArRangeQueryValue,
   SearchQueryJson
 } from "../../../model/ArModel.ts";
 import {objectEntries} from "../../../util/objectEntries.ts";
-import {
-  ComparisonSubQueryForm, ValidatedComparisonSubQuery
-} from "../../../model/query/QueryModel.ts";
+import {ValidatedComparisonSubQuery} from "../../../model/query/QueryModel.ts";
 import {isString} from "lodash";
 import {toParamTag} from "./toParamTag.ts";
 import {Operator} from "../../../model/query/operator/Operator.ts";
-import {isRangeQueryOperator} from "../../../model/query/operator/RangeQueryOperator.ts";
-import {FormParamValue} from "../../../model/query/FormParamValue.ts";
+import {
+  isRangeQueryOperator
+} from "../../../model/query/operator/RangeQueryOperator.ts";
 
 export function toSearchQuery(
   subqueries: ValidatedComparisonSubQuery[],
-  params: FormParamValue[]
+  asTemplate: boolean
 ): SearchQueryJson {
-  const arSubqueries = subqueries.map((sq, i) => convertToArSubquery(sq.form, params[i]));
+  const arSubqueries = subqueries.map(sq =>
+    convertToArSubquery(sq, asTemplate)
+  );
   return mergeForms(arSubqueries)
 }
 
@@ -46,12 +48,16 @@ function mergeForms(
 }
 
 function convertToArSubquery(
-  form: ComparisonSubQueryForm,
-  param?: FormParamValue
+  subquery: ValidatedComparisonSubQuery,
+  asTemplate: boolean = false
 ): ArSearchSubQuery {
-  const formValue = isString(param) ? toParamTag(param) : form.value;
-  if (form.operator === Operator.simpleQuery) {
-    return {[form.field]: `${isString(param) ? param : form.value}`}
+  const {param, form} = subquery
+  const formValue = asTemplate && isString(param)
+    ? toParamTag(param)
+    : form.value;
+  if (subquery.form.operator === Operator.simpleQuery) {
+    const value = isString(param) ? param : form.value;
+    return {[form.field]: `${value}`}
   } else if (isRangeQueryOperator(form.operator)) {
     if (!param && !isArRangeQueryValue(formValue)) {
       throw new Error('Expected range but got: ' + JSON.stringify(formValue))

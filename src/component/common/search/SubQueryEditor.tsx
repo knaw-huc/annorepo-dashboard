@@ -22,7 +22,6 @@ export function SubQueryEditor(props: {
 
   const {
     subqueries,
-    params,
     removeSubquery,
     updateSubquery,
   } = useStore();
@@ -61,9 +60,8 @@ export function SubQueryEditor(props: {
     const errorUpdate = {...subquery.errors};
     const formUpdate = {...subquery.form, field};
 
-    // TODO Move to subquery
-    let paramUpdate = params[formIndex]
-    if(params[formIndex]) {
+    let paramUpdate = subquery.param
+    if(paramUpdate) {
       // Keep param name aligned with field when it already exists:
       paramUpdate = toParamName(formUpdate, formIndex)
     }

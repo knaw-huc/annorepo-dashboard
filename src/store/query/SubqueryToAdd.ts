@@ -1,8 +1,6 @@
 import {ValidatedComparisonSubQuery} from "../../model/query/QueryModel.ts";
-import {FormParamValue} from "../../model/query/FormParamValue.ts";
 
+// TODO: simplify by unnesting SubqueryToAdd.subquery
 export type SubqueryToAdd = {
   subquery: ValidatedComparisonSubQuery,
-  // TODO: move to form:
-  param: FormParamValue
 }

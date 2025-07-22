@@ -1,11 +1,11 @@
 import {ComparisonSubQueryForm} from "../../../../model/query/QueryModel.ts";
 import {toParamTag} from "../../../../store/query/util/toParamTag.ts";
 import {toParamName} from "../../../../store/query/util/toParamName.ts";
-import {findMapperByType} from "../../../../model/query/value/util/findMapperByType.ts";
+import {findMapperByValueType} from "../../../../model/query/value/util/findMapperByValueType.ts";
 import {ErroneousValue} from "../../../../model/query/ErrorRecord.ts";
 import {FormParamValue} from "../../../../model/query/FormParamValue.ts";
 
-export function createInputValue(
+  export function createInputValue(
   form: ComparisonSubQueryForm,
   error: string,
   param: FormParamValue,
@@ -18,7 +18,7 @@ export function createInputValue(
     if (error) {
       return value as ErroneousValue
     } else {
-      return findMapperByType(form.valueType).toInputValue(value)
+      return findMapperByValueType(form.valueType).toInputValue(value)
     }
   } else {
     // Creating new custom query: value is not editable, should not contain error
@@ -27,7 +27,7 @@ export function createInputValue(
     } else if (param) {
       return toParamTag(toParamName(form, formIndex))
     } else {
-      return findMapperByType(form.valueType).toInputValue(value)
+      return findMapperByValueType(form.valueType).toInputValue(value)
     }
   }
 }

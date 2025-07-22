@@ -10,4 +10,4 @@ export const defaultQuery: ArExtendedFieldQuery = {field: {[Operator.equal]: "va
 export const defaultParams: string[] = toComparisonSubQueries(defaultQuery)
   .map((sq, i) => toParamName(sq.form, i))
 const subqueries = toComparisonSubQueries(defaultQuery);
-export const defaultTemplate: ArExtendedFieldQuery = toSearchQuery(subqueries, defaultParams)
+export const defaultTemplate: ArExtendedFieldQuery = toSearchQuery(subqueries, true)

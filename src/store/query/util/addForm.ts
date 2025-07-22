@@ -6,18 +6,16 @@ export function addForm(
   toAdd: SubqueryToAdd,
   prev: QueryState
 ): QueryState {
-  const {subquery, param} = toAdd
+  const {subquery} = toAdd
   const formsUpdate = [...prev.subqueries, subquery];
-  const paramsUpdate = [...prev.params, param];
 
   if(!subquery.errors.field) {
     // Validate when field does not contain error:
-    subquery.errors.field = validateQuery(formsUpdate, paramsUpdate);
+    subquery.errors.field = validateQuery(formsUpdate);
   }
 
   return {
     ...prev,
-    subqueries: formsUpdate,
-    params: paramsUpdate
+    subqueries: formsUpdate
   }
 }
