@@ -1,25 +1,23 @@
 import {QueryState} from "../QuerySlice.ts";
-import {FormToAdd} from "../FormToAdd.ts";
+import {SubqueryToAdd} from "../SubqueryToAdd.ts";
 import {validateQuery} from "./validateQuery.ts";
 
 export function addForm(
-  toAdd: FormToAdd,
+  toAdd: SubqueryToAdd,
   prev: QueryState
 ): QueryState {
-  const {form, error, param} = toAdd
-  const formsUpdate = [...prev.forms, form];
+  const {subquery, param} = toAdd
+  const formsUpdate = [...prev.subqueries, subquery];
   const paramsUpdate = [...prev.params, param];
 
-  if(!error.field) {
+  if(!subquery.errors.field) {
     // Validate when field does not contain error:
-    error.field = validateQuery(formsUpdate, paramsUpdate);
+    subquery.errors.field = validateQuery(formsUpdate, paramsUpdate);
   }
-  const errorsUpdate = [...prev.errors, error];
 
   return {
     ...prev,
-    forms: formsUpdate,
-    errors: errorsUpdate,
+    subqueries: formsUpdate,
     params: paramsUpdate
   }
 }

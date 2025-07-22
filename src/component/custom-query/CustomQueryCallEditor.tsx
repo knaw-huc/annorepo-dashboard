@@ -1,6 +1,5 @@
 import {CustomSubQueryEditor} from "../common/search/CustomSubQueryEditor.tsx";
 import {useStore} from "../../store/useStore.ts";
-import {CustomQueryMetadataForm} from "./model/CustomQueryMetadataForm.ts";
 
 export function CustomQueryCallEditor(props: {
   containerName?: string
@@ -8,21 +7,15 @@ export function CustomQueryCallEditor(props: {
 
   const {containerName} = props;
 
-  const {forms} = useStore()
+  const {subqueries} = useStore()
 
   return <div>
-    {forms.map((_, i) => <CustomSubQueryEditor
+    {subqueries.map((_, i) => <CustomSubQueryEditor
       containerName={containerName}
       key={i}
-      formIndex={i}
+      subqueryIndex={i}
       isCall={true}
     />)}
   </div>
 }
 
-export const defaultCustomQueryForm: CustomQueryMetadataForm = {
-  name: "name-of-custom-query",
-  description: "Description of custom query",
-  label: "Label of custom query",
-  public: true,
-}

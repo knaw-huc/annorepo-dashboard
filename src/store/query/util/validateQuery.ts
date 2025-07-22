@@ -1,6 +1,4 @@
-import {
-  ComparisonSubQuery
-} from "../../../model/query/QueryModel.ts";
+import {ValidatedComparisonSubQuery} from "../../../model/query/QueryModel.ts";
 import {toSearchQuery} from "./toSearchQuery.ts";
 import {FormParamValue} from "../../../model/query/FormParamValue.ts";
 
@@ -9,7 +7,7 @@ import {FormParamValue} from "../../../model/query/FormParamValue.ts";
  * @returns error message on error
  */
 export function validateQuery(
-  forms: ComparisonSubQuery[],
+  forms: ValidatedComparisonSubQuery[],
   params: FormParamValue[],
 ): string {
   try {

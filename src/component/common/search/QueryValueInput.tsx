@@ -37,30 +37,29 @@ export function QueryValueInput(props: {
     suggestions
   } = props;
 
-  const {forms, errors, params, updateForm} = useStore()
+  const {subqueries, params, updateSubquery} = useStore()
 
-  const form = forms[formIndex]
-  const error = errors[formIndex]
+  const subquery = subqueries[formIndex]
   const param = params[formIndex]
 
   function handleValueChange(
     inputValueUpdate: string,
   ) {
     try {
-      const mapper = findMapperByType(form.valueType);
+      const mapper = findMapperByType(subquery.form.valueType);
       const queryValueUpdate = mapper.toValue(inputValueUpdate);
-      updateForm({
+      updateSubquery({
         formIndex,
-        form: {...form, value: queryValueUpdate},
-        error: {...error, value: ''}
+        form: {...subquery.form, value: queryValueUpdate},
+        errors: {...subquery.errors, value: ''}
       });
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
-      updateForm({
+      updateSubquery({
         formIndex,
         // Use inout value when query value conversion failed:
-        form: {...form, value: inputValueUpdate},
-        error: {...error, value: errorMessage}
+        form: {...subquery.form, value: inputValueUpdate},
+        errors: {...subquery.errors, value: errorMessage}
       });
     }
   }
@@ -71,26 +70,26 @@ export function QueryValueInput(props: {
     try {
       const newMapper = findMapperByType(typeUpdate)
       const queryValueUpdate = newMapper.toValue(inputValue)
-      updateForm({
+      updateSubquery({
         formIndex,
         form: {
-          ...form,
+          ...subquery.form,
           value: queryValueUpdate,
           valueType: typeUpdate
         },
-        error: {...error, value: ''}
+        errors: {...subquery.errors, value: ''}
       });
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
-      updateForm({
+      updateSubquery({
         formIndex,
         // Use inout value when query value conversion failed:
         form: {
-          ...form,
+          ...subquery.form,
           value: inputValue,
           valueType: typeUpdate
         },
-        error: {...error, value: errorMessage}
+        errors: {...subquery.errors, value: errorMessage}
       });
     }
   }
@@ -102,40 +101,40 @@ export function QueryValueInput(props: {
       const updateMapper = findMapperByValue(update.value)
 
       const valueTypeUpdate = updateMapper.type
-      const allowedTypes = queryOperatorValueType[form.operator]
+      const allowedTypes = queryOperatorValueType[subquery.form.operator]
       let valueUpdate
       if (allowedTypes.includes(valueTypeUpdate)) {
         valueUpdate = update.value
       } else {
-        const currentMapper = findMapperByOperator(form.operator)
+        const currentMapper = findMapperByOperator(subquery.form.operator)
         valueUpdate = currentMapper.toValue(
           updateMapper.toInputValue(update.value)
         )
       }
 
-      updateForm({
+      updateSubquery({
         formIndex,
-        form: {...form, value: valueUpdate, valueType: valueTypeUpdate},
-        error: {...error, value: ''}
+        form: {...subquery.form, value: valueUpdate, valueType: valueTypeUpdate},
+        errors: {...subquery.errors, value: ''}
       });
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
-      updateForm({
+      updateSubquery({
         formIndex,
         // Use inout value when query value conversion failed:
-        form: {...form, value: update.value},
-        error: {...error, value: errorMessage}
+        form: {...subquery.form, value: update.value},
+        errors: {...subquery.errors, value: errorMessage}
       });
     }
   }
 
   const inputValue = createInputValue(
-    form, error.value, param, formIndex, isCall
+    subquery.form, subquery.errors.value, param, formIndex, isCall
   )
 
   const disabled = !isCall || (isCustom && param === false);
 
-  const allowedTypes = queryOperatorValueType[form.operator]
+  const allowedTypes = queryOperatorValueType[subquery.form.operator]
   const valueTypeOptions = queryValueTypes
     .filter(type => allowedTypes.includes(type))
     .map(type => ({value: type, label: type}));
@@ -148,12 +147,12 @@ export function QueryValueInput(props: {
       onInputChange={handleValueChange}
       onSelect={handleSelect}
       label="Value"
-      errorLabel={error.value}
+      errorLabel={subquery.errors.value}
       disabled={disabled}
     />
     <DropdownSelector
       options={valueTypeOptions}
-      selectedValue={form.valueType}
+      selectedValue={subquery.form.valueType}
       onSelect={option => handleTypeChange(option.value)}
       disabled={disabled || valueTypeOptions.length < 2}
     />

@@ -1,21 +1,17 @@
-import {
-  ComparisonSubQuery
-} from "../../model/query/QueryModel.ts";
+import {ValidatedComparisonSubQuery} from "../../model/query/QueryModel.ts";
 import {SearchQueryJson} from "../../model/ArModel.ts";
 import {initWithQuery} from "./util/initWithQuery.ts";
 import {initWithTemplate} from "./util/initWithTemplate.ts";
-import {updateForm} from "./util/updateForm.ts";
-import {FormUpdate} from "./FormUpdate.ts";
+import {updateSubquery} from "./util/updateSubquery.ts";
+import {SubqueryUpdate} from "./SubqueryUpdate.ts";
 import {addForm} from "./util/addForm.ts";
 import {removeForm} from "./util/removeForm.ts";
-import {FormToAdd} from "./FormToAdd.ts";
+import {SubqueryToAdd} from "./SubqueryToAdd.ts";
 import {SliceCreator} from "./SliceCreator.ts";
-import {FieldSubQueryErrors} from "../../model/query/ErrorRecord.ts";
 import {FormParamValue} from "../../model/query/FormParamValue.ts";
 
 export type QueryState = {
-  forms: ComparisonSubQuery[]
-  errors: FieldSubQueryErrors[]
+  subqueries: ValidatedComparisonSubQuery[]
 
   /**
    * The meaning of form values and parameters in the context of global and custom queries:
@@ -25,35 +21,36 @@ export type QueryState = {
    *   - falsy param: form value at i is a static value
    *   - truthy param: form value at i is a filled in parameter
    */
+  // TODO Move to validated comparison subquery:
   params: FormParamValue[]
 }
 
 export type QuerySlice = QueryState & {
   setQueryState: (update: QueryState) => void
-  addForm: (toAdd: FormToAdd) => void
-  removeForm: (formIndex: number) => void
-  updateForm: (update: FormUpdate) => void
+  addSubquery: (toAdd: SubqueryToAdd) => void
+  removeSubquery: (subqueryIndex: number) => void
+  updateSubquery: (update: SubqueryUpdate) => void
   initWithQuery: (query: SearchQueryJson) => void
   initWithTemplate: (query: SearchQueryJson, params: string[]) => void
 }
 
 export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {
   return ({
-    forms: [],
+    subqueries: [],
     errors: [],
     params: [],
 
     setQueryState: (update: QueryState) => set(() =>
       ({...update})
     ),
-    addForm: (update) => set((prev) =>
+    addSubquery: (update) => set((prev) =>
       addForm(update, prev)
     ),
-    removeForm: (toRemove) => set((prev) =>
+    removeSubquery: (toRemove) => set((prev) =>
       removeForm(toRemove, prev)
     ),
-    updateForm: (update) => set((prev) =>
-      updateForm(update, prev)
+    updateSubquery: (update) => set((prev) =>
+      updateSubquery(update, prev)
     ),
     initWithQuery: (query) => set(() =>
       initWithQuery(query)
@@ -63,7 +60,7 @@ export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {
     )
   });
 
-  // @ts-ignore debug util
+  // @ts-expect-error
   function logSet(mutator: (state: QueryState) => QueryState) {
     set((prev) => {
       const next = mutator(prev);

@@ -1,17 +1,17 @@
 import {SearchQueryJson} from "../../../model/ArModel.ts";
-import {toQueryFieldForms} from "./toQueryFieldForm.ts";
-import {toErrorRecord} from "./toErrorRecord.ts";
-
+import {toComparisonSubQueries} from "./toComparisonSubQuery.ts";
 
 import {FormParamValue} from "../../../model/query/FormParamValue.ts";
+import {QueryState} from "../QuerySlice.ts";
 
-export function initWithQuery(query: SearchQueryJson) {
-  const forms = toQueryFieldForms(query)
-  const errors = forms.map(f => toErrorRecord(f))
-  const params = forms.map(() => false as FormParamValue)
+export function initWithQuery(
+  query: SearchQueryJson
+): QueryState {
+  const subqueries = toComparisonSubQueries(query)
+  const params = subqueries.map(() => false as FormParamValue)
+
   return {
-    forms,
-    errors,
+    subqueries,
     params
   };
 }

@@ -4,24 +4,29 @@ import {
 } from "../../../model/ArModel.ts";
 import {isNumber, isPlainObject, isString} from "lodash";
 import {
-  ComparisonSubQuery
+  ComparisonSubQueryForm, ValidatedComparisonSubQuery
 } from "../../../model/query/QueryModel.ts";
 import {
   findMapperByOperator
 } from "../../../model/query/value/util/findMapperByOperator.ts";
 import {QueryValue} from "../../../model/query/value/QueryValue.ts";
 import {Operator} from "../../../model/query/operator/Operator.ts";
-import {isRangeQueryOperator} from "../../../model/query/operator/RangeQueryOperator.ts";
-import {isNonFnOperator} from "../../../model/query/operator/NonFnQueryOperator.ts";
+import {
+  isRangeQueryOperator
+} from "../../../model/query/operator/RangeQueryOperator.ts";
+import {
+  isNonFnOperator
+} from "../../../model/query/operator/NonFnQueryOperator.ts";
 import {QueryValueType} from "../../../model/query/value/QueryValueType.ts";
+import {toErrorRecord} from "./toErrorRecord.ts";
 
-export function toQueryFieldForm(
+export function toComparisonSubQuery(
   entry: JsonQueryEntry,
   // Query entry contains param when passing a template:
   params?: string[]
-): ComparisonSubQuery {
+): ComparisonSubQueryForm {
   const [queryKey, queryValue] = entry
-  let field;
+  let field: string;
   let value: QueryValue;
   let operator: Operator
   let valueType: QueryValueType
@@ -126,13 +131,23 @@ function throwUnexpected(
   }`)
 }
 
-export function toQueryFieldForms(
+export function toComparisonSubQueries(
   query: SearchQueryJson,
   params?: string[]
-): ComparisonSubQuery[] {
+): ValidatedComparisonSubQuery[] {
   return Object.entries(query).map((entry) => {
-    return toQueryFieldForm(entry, params)
+    return toValidatedComparisonSubQuery(entry, params)
   })
+}
+
+
+export function toValidatedComparisonSubQuery(
+  query: JsonQueryEntry,
+  params?: string[]
+): ValidatedComparisonSubQuery {
+  const form = toComparisonSubQuery(query, params);
+  const errors = toErrorRecord(form);
+  return {type: "comparison", form: form, errors}
 }
 
 export function containsParams(

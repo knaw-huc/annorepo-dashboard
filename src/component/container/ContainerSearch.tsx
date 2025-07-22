@@ -12,12 +12,13 @@ import {
   ContainerSearchArgs,
   useContainerSearch
 } from "../../client/endpoint/useContainerSearch.tsx";
-import {toQueryFieldForm} from "../../store/query/util/toQueryFieldForm.ts";
+import {toComparisonSubQuery} from "../../store/query/util/toComparisonSubQuery.ts";
 import {mapValues} from "lodash";
 import {SearchButton} from "../common/search/button/SearchButton.tsx";
 import {hasErrors} from "../../store/query/util/hasErrors.ts";
 import {AddSubQueryButton} from "../common/search/button/AddSubQueryButton.tsx";
 import {defaultQuery} from "../../model/query/defaultQuery.ts";
+import {SubqueryToAdd} from "../../store/query/SubqueryToAdd.ts";
 
 export type ContainerSearchProps = {
   containerName: string,
@@ -30,7 +31,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(containerName)
-  const {initWithQuery, addForm, forms, errors} = useStore()
+  const {initWithQuery, addSubquery, subqueries} = useStore()
   const [isInit, setInit] = useState(false)
   const query = useSearchQuery()
 
@@ -48,6 +49,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     const query = defaultQuery;
     initWithQuery(query)
     setSubmitted({containerName, query, pageNo})
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isInit]);
 
   const {search, page} = useContainerSearch(submitted);
@@ -64,7 +66,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   }
 
   function handleSubmitSearch() {
-    if (hasErrors(errors)) {
+    if (hasErrors(subqueries)) {
       return;
     }
     setSubmitted({containerName, query, pageNo});
@@ -72,13 +74,14 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   function handleAddSubQuery() {
     const newQueryEntry = Object.entries(defaultQuery)[0];
-    const form = toQueryFieldForm(newQueryEntry)
-    const error = mapValues(form, () => '');
+    const form = toComparisonSubQuery(newQueryEntry)
+    const errors = mapValues(form, () => '');
     const param = false
-    addForm({form, error, param})
+    const toAdd: SubqueryToAdd = {subquery: {type: "comparison", form, errors}, param}
+    addSubquery(toAdd)
   }
 
-  const searchDisabled = !!search.error || !forms.length || hasErrors(errors);
+  const searchDisabled = !!search.error || !subqueries.length || hasErrors(subqueries);
 
   if (!container.isSuccess || !page.isSuccess) {
     return <StatusMessage requests={[container, page]}/>;

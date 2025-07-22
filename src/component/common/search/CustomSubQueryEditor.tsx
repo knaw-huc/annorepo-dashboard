@@ -6,19 +6,19 @@ import {useStore} from "../../../store/useStore.ts";
 import {useValueSuggestions} from "./useValueSuggestions.tsx";
 
 export function CustomSubQueryEditor(props: {
-  formIndex: number
+  subqueryIndex: number
   isCall: boolean
   containerName?: string
 }) {
-  const {formIndex, isCall, containerName} = props;
-  const {forms} = useStore()
-  const form = forms[formIndex]
-  const operatorValue = form.operator.valueOf();
+  const {subqueryIndex, isCall, containerName} = props;
+  const {subqueries} = useStore()
+  const subquery = subqueries[subqueryIndex]
+  const operatorValue = subquery.form.operator.valueOf();
 
   const valueSuggestions = useValueSuggestions({
     containerName: containerName,
-    field: form.field,
-    value: form.value,
+    field: subquery.form.field,
+    value: subquery.form.value,
   })
 
   return <div className="flex-grow">
@@ -26,8 +26,8 @@ export function CustomSubQueryEditor(props: {
       <div className="flex mb-3 mt-2">
         <div className="flex-auto mr-2">
           <QueryFieldInput
-            value={form.field}
-            operator={form.operator}
+            value={subquery.form.field}
+            operator={subquery.form.operator}
             // Disabled and cannot be changed:
             onChange={noop}
             suggestions={[]}
@@ -45,7 +45,7 @@ export function CustomSubQueryEditor(props: {
         <div className="flex-auto mr-2">
           <QueryValueInput
             suggestions={valueSuggestions}
-            formIndex={formIndex}
+            formIndex={subqueryIndex}
             isCustom={true}
             isCall={isCall}
           />

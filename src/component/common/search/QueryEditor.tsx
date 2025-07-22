@@ -12,10 +12,10 @@ export function QueryEditor(props: {
   const {data: containerFields} = useContainerFields(containerName);
   const fieldNames = containerFields ? Object.keys(containerFields) : [];
 
-  const {forms} = useStore();
+  const {subqueries} = useStore();
 
   return <div>
-    {forms.map((_, i) => {
+    {subqueries.map((_, i) => {
       return <SubQueryEditor
         key={i}
         containerName={containerName}

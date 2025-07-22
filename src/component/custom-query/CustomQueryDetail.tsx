@@ -27,7 +27,7 @@ export function CustomQueryDetail(props: {
 }) {
   const { name: customQueryName } = props;
   const config = useConfig();
-  const { forms, params, errors, initWithTemplate } = useStore();
+  const { subqueries, params, initWithTemplate } = useStore();
 
   const [containerName, setContainerName] = useState("");
   const [pageNo, setPageNo] = useState(0);
@@ -64,10 +64,10 @@ export function CustomQueryDetail(props: {
     if (!customQuery.data) {
       return;
     }
-    if (!forms.length) {
+    if (!subqueries.length) {
       return;
     }
-    const parameters = toCustomQueryParameters(forms, params);
+    const parameters = toCustomQueryParameters(subqueries, params);
     setSubmitted({
       queryName: customQueryName,
       containerName,
@@ -123,7 +123,7 @@ export function CustomQueryDetail(props: {
         <Button
           onClick={handleSearch}
           className="pl-5"
-          disabled={hasErrors(errors) || !containerName}
+          disabled={hasErrors(subqueries) || !containerName}
         >
           Search
           <Next className="ml-2" />
@@ -132,7 +132,9 @@ export function CustomQueryDetail(props: {
       {customQueryCall.isError && (
         <StatusMessage requests={[customQueryCall]} />
       )}
-      {containerName && <CustomQueryCallEditor containerName={containerName} />}
+      {containerName && <CustomQueryCallEditor
+        containerName={containerName}
+      />}
       <div className="max-w-[100vw] whitespace-pre-wrap">
         {customQueryCall.isSuccess && (
           <AnnotationPage

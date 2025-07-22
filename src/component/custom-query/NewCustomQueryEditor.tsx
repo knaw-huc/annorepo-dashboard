@@ -11,7 +11,6 @@ import {Back} from "../common/icon/Back.tsx";
 import {
   NewCustomQueryMetadataAndTemplateEditor
 } from "./NewCustomQueryMetadataAndTemplateEditor.tsx";
-import {defaultCustomQueryForm} from "./CustomQueryCallEditor.tsx";
 import {Warning} from "../common/Warning.tsx";
 import {useSearchQuery} from "../../store/query/hooks/useSearchQuery.ts";
 import {useStore} from "../../store/useStore.ts";
@@ -20,6 +19,7 @@ import {
   defaultParams,
   defaultTemplate
 } from "../../model/query/defaultQuery.ts";
+import {defaultCustomQueryMetadata} from "./defaultCustomQueryMetadata.ts";
 
 export type CustomQueryMode = 'create-global-query' | 'create-custom-query'
 
@@ -34,7 +34,7 @@ export function NewCustomQueryEditor(props: {
   const queryClient = useQueryClient()
 
   const [mode, setMode] = useState<CustomQueryMode>('create-global-query')
-  const [queryMetadata, setQueryMetadata] = useState(defaultCustomQueryForm);
+  const [queryMetadata, setQueryMetadata] = useState(defaultCustomQueryMetadata);
   const [hasMetadataError, setMetadataError] = useState<boolean>();
 
   const [containerName, setContainerName] = useState('');

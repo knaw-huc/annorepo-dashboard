@@ -6,8 +6,8 @@ export function removeForm(
 ): QueryState {
   return {
     ...prev,
-    forms: prev.forms.toSpliced(toRemove, 1),
-    errors: prev.errors.toSpliced(toRemove, 1),
+    subqueries: prev.subqueries.toSpliced(toRemove, 1),
+    // TODO Move to subquery:
     params: prev.params.toSpliced(toRemove, 1)
   }
 }

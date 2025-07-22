@@ -6,24 +6,11 @@ import {QueryFieldInput} from "./QueryFieldInput.tsx";
 import {Button} from "../Button.tsx";
 import {Remove} from "../icon/Remove.tsx";
 import {useStore} from "../../../store/useStore.ts";
-import {ComparisonSubQuery} from "../../../model/query/QueryModel.ts";
 import {useValueSuggestions} from "./useValueSuggestions.tsx";
 import {toParamName} from "../../../store/query/util/toParamName.ts";
-import {
-  queryOperatorValueType
-} from "../../../model/query/value/queryOperatorValueType.ts";
-import {
-  queryValueMappers
-} from "../../../model/query/value/queryValueMappers.ts";
 import {Operator} from "../../../model/query/operator/Operator.ts";
-import {
-  isRangeQueryOperator
-} from "../../../model/query/operator/RangeQueryOperator.ts";
 import {toOperator} from "../../../model/query/operator/toOperator.ts";
-import {
-  findMapperByType
-} from "../../../model/query/value/util/findMapperByType.ts";
-import {NO_FIELD} from "../../../model/ArModel.ts";
+import {alignFormWithOperator} from "./util/alignFormWithOperator.tsx";
 
 export function SubQueryEditor(props: {
   fieldNames: string[],
@@ -34,17 +21,16 @@ export function SubQueryEditor(props: {
   const {fieldNames, disabled, formIndex, containerName} = props;
 
   const {
-    forms,
-    errors,
+    subqueries,
     params,
-    removeForm,
-    updateForm,
+    removeSubquery,
+    updateSubquery,
   } = useStore();
 
-  const form = forms[formIndex];
+  const subquery = subqueries[formIndex];
 
-  const fieldSuggestions = form.field
-    ? fieldNames.filter(name => name.includes(form.field))
+  const fieldSuggestions = subquery.form.field
+    ? fieldNames.filter(name => name.includes(subquery.form.field))
     : fieldNames
 
   const operatorOptions = Object
@@ -52,48 +38,52 @@ export function SubQueryEditor(props: {
     .filter(o => o !== Operator.simpleQuery)
     .map(v => ({label: v, value: v}))
 
-  const isExistingField = fieldNames.includes(form.field)
+  const isExistingField = fieldNames.includes(subquery.form.field)
 
-  const value = form.value;
-  const field = isExistingField ? form.field : '';
+  const value = subquery.form.value;
+  const field = isExistingField ? subquery.form.field : '';
   const valueSuggestions = useValueSuggestions({containerName, field, value})
 
   function handleSelectOperator(update: SelectOption<Operator>) {
     const operatorUpdate = toOperator(update.value)
       ?? orThrow(`Invalid operator: ${update.value}`);
 
-    const formUpdate = alignWithOperator(form, operatorUpdate)
+    const formUpdate = alignFormWithOperator(subquery.form, operatorUpdate)
     console.log('handleSelectOperator', {update, formUpdate})
 
-    updateForm({
+    updateSubquery({
       formIndex,
       form: formUpdate,
     });
   }
 
   function handleChangeField(field: string) {
-    const formUpdate = {...form, field};
-    const errorUpdate = {...errors[formIndex]};
+    const errorUpdate = {...subquery.errors};
+    const formUpdate = {...subquery.form, field};
+
+    // TODO Move to subquery
     let paramUpdate = params[formIndex]
     if(params[formIndex]) {
       // Keep param name aligned with field when it already exists:
       paramUpdate = toParamName(formUpdate, formIndex)
     }
+
     if (!field) {
       errorUpdate.field = 'Field cannot be empty'
     } else {
       errorUpdate.field = ''
     }
-    updateForm({
+
+    updateSubquery({
       formIndex,
       form: formUpdate,
-      error: errorUpdate,
+      errors: errorUpdate,
       param: paramUpdate
     });
   }
 
   function handleRemoveSubQuery() {
-    return removeForm(formIndex);
+    return removeSubquery(formIndex);
   }
 
   return <form onSubmit={e => e.preventDefault()}>
@@ -101,9 +91,9 @@ export function SubQueryEditor(props: {
       <div className="flex mb-3 mt-2">
         <div className="flex-auto mr-2">
           <QueryFieldInput
-            value={form.field}
-            errorLabel={errors[formIndex].field}
-            operator={form.operator}
+            value={subquery.form.field}
+            errorLabel={subquery.errors.field}
+            operator={subquery.form.operator}
             suggestions={fieldSuggestions.map(toOption)}
             onChange={handleChangeField}
             disabled={disabled}
@@ -111,7 +101,7 @@ export function SubQueryEditor(props: {
         </div>
         <div className="flex-none mr-2">
           <DropdownSelector
-            selectedValue={form.operator.valueOf()}
+            selectedValue={subquery.form.operator.valueOf()}
             options={operatorOptions}
             onSelect={handleSelectOperator}
             disabled={disabled}
@@ -139,32 +129,5 @@ export function SubQueryEditor(props: {
       </div>
     </fieldset>
   </form>
-}
-
-export function alignWithOperator(
-  prev: ComparisonSubQuery,
-  nextOperator: Operator,
-): ComparisonSubQuery {
-  const currentMapping = findMapperByType(prev.valueType)
-
-  // Use first option by default:
-  const nextType = queryOperatorValueType[nextOperator][0]
-
-  const next: ComparisonSubQuery = {
-    ...prev,
-    operator: nextOperator,
-    valueType: nextType
-  }
-  if (currentMapping.type === nextType) {
-    next.value = prev.value
-  } else {
-    const nextMapping = queryValueMappers.find(m => m.type === nextType)
-      ?? orThrow(`No default found for ${nextType}`);
-    next.value = nextMapping.defaultValue
-  }
-  if (prev.value && isRangeQueryOperator(nextOperator)) {
-    next.field = NO_FIELD
-  }
-  return next
 }
 

@@ -12,7 +12,7 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 
 import {ContainerDropdown} from "./ContainerDropdown.tsx";
-import {toQueryFieldForm} from "../../store/query/util/toQueryFieldForm.ts";
+import {toComparisonSubQuery} from "../../store/query/util/toComparisonSubQuery.ts";
 import {mapValues} from "lodash";
 import {useStore} from "../../store/useStore.ts";
 import {toParamName} from "../../store/query/util/toParamName.ts";
@@ -41,7 +41,8 @@ export function NewCustomQueryPreviewEditor(props: {
   )
   const [isInit, setInit] = useState<boolean>()
   const {page} = useContainerSearch(submitted);
-  const {forms, errors, addForm} = useStore()
+  const {subqueries, addSubquery} = useStore()
+
   useEffect(() => {
     if (!isInit && containerNames.length && query) {
       setInit(true)
@@ -55,7 +56,7 @@ export function NewCustomQueryPreviewEditor(props: {
   }
 
   const handleSubmit = () => {
-    if (hasErrors(errors)) {
+    if (hasErrors(subqueries)) {
       return;
     }
     setSubmitted({query, pageNo, containerName})
@@ -63,18 +64,18 @@ export function NewCustomQueryPreviewEditor(props: {
 
   function handleAddSubQuery() {
     const newQueryEntry = Object.entries(defaultQuery)[0];
-    const form = toQueryFieldForm(newQueryEntry)
-    const error = mapValues(form, () => '');
-    const newFormIndex = forms.length;
+    const form = toComparisonSubQuery(newQueryEntry)
+    const errors = mapValues(form, () => '');
+    const newFormIndex = subqueries.length;
     const param = toParamName(form, newFormIndex)
-    addForm({form, error, param})
+    addSubquery({subquery: {form, errors, type: 'comparison'}, param})
   }
 
   const searchDisabled: boolean =
     !containerName
     || !!page.error
-    || !forms.length
-    || hasErrors(errors);
+    || !subqueries.length
+    || hasErrors(subqueries);
 
   return <>
     <div>
@@ -90,7 +91,7 @@ export function NewCustomQueryPreviewEditor(props: {
         secondary
         className="ml-3"
         onClick={props.onSave}
-        disabled={!containerName || hasErrors(errors)}
+        disabled={!containerName || hasErrors(subqueries)}
       >
         <Store className="mr-2"/>
         Store as custom query <Next className="mr-2"/>

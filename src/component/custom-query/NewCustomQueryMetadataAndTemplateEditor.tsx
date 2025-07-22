@@ -31,9 +31,9 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
   } = props;
 
   const {
-    forms,
+    subqueries,
     params,
-    updateForm
+    updateSubquery
   } = useStore()
 
   const [metadataForm, setMetadataForm] = useState<CustomQueryMetadataForm>(metadata);
@@ -41,9 +41,9 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
 
   function handleParameterChange(formIndex: number, isParam: boolean) {
     const update = isParam
-      ? toParamTag(toParamName(forms[formIndex], formIndex))
+      ? toParamTag(toParamName(subqueries[formIndex].form, formIndex))
       : false
-    updateForm({formIndex, param: update})
+    updateSubquery({formIndex, param: update})
   }
 
   useEffect(() => {
@@ -71,11 +71,11 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
       onChange={handleChangeMetadata}
     />
     <H2>Custom Query</H2>
-    {forms.map((_, i) =>
+    {subqueries.map((_, i) =>
       <div key={i} className="flex items-center">
         <CustomSubQueryEditor
           key={i}
-          formIndex={i}
+          subqueryIndex={i}
           isCall={false}
         />
         <div className="ml-4">
