@@ -1,29 +1,46 @@
-import {QueryValue} from "./value/QueryValue.ts";
-import {LogicalOperator, Operator} from "./operator/Operator.ts";
-import {QueryValueType} from "./value/QueryValueType.ts";
-import {ErroneousValue} from "./ErrorRecord.ts";
+import { QueryValue } from "./value/QueryValue.ts";
+import { LogicalOperator, Operator } from "./operator/Operator.ts";
+import { QueryValueType } from "./value/QueryValueType.ts";
+import { ErroneousValue, ErrorRecord } from "./ErrorRecord.ts";
 
-export type QueryForm =
-  | LogicalSubQuery
-  | ComparisonSubQuery
+export type ValidatedQueryForms = ValidatedQuery[];
 
-export type QueryForms = QueryForm[]
+export type ValidatedQuery =
+  | ValidatedLogicalSubQuery
+  | ValidatedComparisonSubQuery;
+
+export type ValidatedComparisonSubQuery = {
+  type: "comparison";
+  form: ComparisonSubQuery;
+  errors: ErrorRecord<ComparisonSubQuery>;
+};
+export function isValidatedComparisonSubQuery(
+  toTest: ValidatedQuery,
+): toTest is ValidatedComparisonSubQuery {
+  return (toTest as ValidatedComparisonSubQuery).type === "comparison";
+}
+
+export type ValidatedLogicalSubQuery = {
+  type: "logical";
+  operator: LogicalOperator;
+  forms: ValidatedQuery[];
+};
+export function isValidatedLogicalSubQuery(
+  toTest: ValidatedQuery,
+): toTest is ValidatedLogicalSubQuery {
+  return (toTest as ValidatedLogicalSubQuery).type === "logical";
+}
+
+export type SubQuery = LogicalSubQuery | ComparisonSubQuery;
 
 export type LogicalSubQuery = {
-  operator: LogicalOperator
-  expressions: ComparisonSubQuery[]
-}
-export function isLogicalSubQuery(toTest: QueryForm): toTest is LogicalSubQuery {
-    return Array.isArray((toTest as LogicalSubQuery).expressions)
-}
+  operator: LogicalOperator;
+  expressions: SubQuery[];
+};
 
 export type ComparisonSubQuery = {
-  field: string,
-  operator: Operator
-  value: QueryValue | ErroneousValue
-  valueType: QueryValueType
-}
-export function isComparisonSubQuery(toTest: QueryForm): toTest is ComparisonSubQuery {
-  return (toTest as ComparisonSubQuery).valueType !== undefined
-}
-
+  field: string;
+  operator: Operator;
+  value: QueryValue | ErroneousValue;
+  valueType: QueryValueType;
+};
