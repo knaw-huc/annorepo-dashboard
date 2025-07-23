@@ -1,24 +1,24 @@
-import {QueryState} from "../QuerySlice.ts";
-import {SubqueryUpdate} from "../SubqueryUpdate.ts";
+import { QueryState } from "../QuerySlice.ts";
+import { SubqueryUpdate } from "../SubqueryUpdate.ts";
+import { get, set } from "lodash";
 
 export function updateSubquery(
   update: SubqueryUpdate,
-  prev: QueryState
+  prev: QueryState,
 ): QueryState {
-  const {formIndex, param, form, errors} = update
+  const { path, param, form, errors } = update;
 
-  const prevSubquery = prev.subqueries[formIndex];
-  const subqueryUpdate = {...prevSubquery}
-  subqueryUpdate.form = form ?? prevSubquery.form
-  subqueryUpdate.errors = errors ?? prevSubquery.errors
-  subqueryUpdate.param = param ?? prevSubquery.param
+  const prevSubquery = get(prev.subqueries, path);
+  const subqueryUpdate = { ...prevSubquery };
+  subqueryUpdate.form = form ?? prevSubquery.form;
+  subqueryUpdate.errors = errors ?? prevSubquery.errors;
+  subqueryUpdate.param = param ?? prevSubquery.param;
 
-  const subqueriesUpdate = prev.subqueries.map(
-    (f, i) => i === formIndex ? subqueryUpdate : f
-  );
+  const subqueriesUpdate = structuredClone(prev.subqueries);
+  set(subqueriesUpdate, path, subqueryUpdate);
 
   return {
     ...prev,
     subqueries: subqueriesUpdate,
-  }
+  };
 }
