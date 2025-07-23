@@ -3,25 +3,24 @@
  */
 export enum Operator {
   // Query without operator:
-  simpleQuery = 'simpleQuery',
+  simpleQuery = "simpleQuery",
 
   // Operators:
-  equal = ':=',
-  notEqual = ':!=',
-  lessThan = ':<',
-  lessThanOrEqual = ':<=',
-  greaterThan = ':>',
-  greaterThanOrEqual = ':>=',
-  isIn = ':isIn',
-  isNotIn = ':isNotIn',
+  equal = ":=",
+  notEqual = ":!=",
+  lessThan = ":<",
+  lessThanOrEqual = ":<=",
+  greaterThan = ":>",
+  greaterThanOrEqual = ":>=",
+  isIn = ":isIn",
+  isNotIn = ":isNotIn",
 
   // Query functions:
-  isWithinTextAnchorRange = ':isWithinTextAnchorRange',
-  overlapsWithTextAnchorRange = ':overlapsWithTextAnchorRange',
+  isWithinTextAnchorRange = ":isWithinTextAnchorRange",
+  overlapsWithTextAnchorRange = ":overlapsWithTextAnchorRange",
 }
 
 export enum LogicalOperator {
-  OR = ':OR',
-  // TODO: Waiting for https://github.com/knaw-huc/annorepo/issues/270
-  AND = ':AND'
+  OR = ":OR",
+  AND = ":AND",
 }

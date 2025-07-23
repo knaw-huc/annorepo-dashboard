@@ -11,18 +11,19 @@ import { toParamName } from "../../../store/query/util/toParamName.ts";
 import { Operator } from "../../../model/query/operator/Operator.ts";
 import { toOperator } from "../../../model/query/operator/toOperator.ts";
 import { alignFormWithOperator } from "./util/alignFormWithOperator.tsx";
+import { get, PropertyName } from "lodash";
 
-export function SubQueryEditor(props: {
+export function SubqueryEditor(props: {
   fieldNames: string[];
-  formIndex: number;
+  path: PropertyName[];
   disabled?: boolean;
   containerName?: string;
 }) {
-  const { fieldNames, disabled, formIndex, containerName } = props;
+  const { fieldNames, disabled, path, containerName } = props;
 
   const { subqueries, removeSubquery, updateSubquery } = useStore();
 
-  const subquery = subqueries[formIndex];
+  const subquery = get(subqueries, path);
 
   const fieldSuggestions = subquery.form.field
     ? fieldNames.filter((name) => name.includes(subquery.form.field))
@@ -46,7 +47,7 @@ export function SubQueryEditor(props: {
     console.log("handleSelectOperator", { update, formUpdate });
 
     updateSubquery({
-      path: [formIndex],
+      path,
       form: formUpdate,
     });
   }
@@ -58,7 +59,7 @@ export function SubQueryEditor(props: {
     let paramUpdate = subquery.param;
     if (paramUpdate) {
       // Keep param name aligned with field when it already exists:
-      paramUpdate = toParamName(formUpdate, formIndex);
+      paramUpdate = toParamName(formUpdate, path);
     }
 
     if (!field) {
@@ -68,7 +69,7 @@ export function SubQueryEditor(props: {
     }
 
     updateSubquery({
-      path: [formIndex],
+      path,
       form: formUpdate,
       errors: errorUpdate,
       param: paramUpdate,
@@ -76,7 +77,7 @@ export function SubQueryEditor(props: {
   }
 
   function handleRemoveSubQuery() {
-    return removeSubquery([formIndex]);
+    return removeSubquery(path);
   }
 
   return (
@@ -103,7 +104,7 @@ export function SubQueryEditor(props: {
           </div>
           <div className="flex-auto mr-2">
             <QueryValueInput
-              formIndex={formIndex}
+              path={path}
               isCall={true}
               isCustom={false}
               suggestions={valueSuggestions}

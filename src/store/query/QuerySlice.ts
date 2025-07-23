@@ -1,4 +1,4 @@
-import { ComparisonSubquery } from "../../model/query/QueryModel.ts";
+import { Subquery } from "../../model/query/QueryModel.ts";
 import { SearchQueryJson } from "../../model/ArModel.ts";
 import { initWithQuery } from "./util/initWithQuery.ts";
 import { initWithTemplate } from "./util/initWithTemplate.ts";
@@ -11,7 +11,7 @@ import { SliceCreator } from "./SliceCreator.ts";
 import { PropertyName } from "lodash";
 
 export type QueryState = {
-  subqueries: ComparisonSubquery[];
+  subqueries: Subquery[];
 };
 
 export type QuerySlice = QueryState & {

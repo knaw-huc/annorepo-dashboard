@@ -16,9 +16,11 @@ import { toComparisonForm } from "../../store/query/util/toComparisonForm.ts";
 import { mapValues } from "lodash";
 import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/hasErrors.ts";
-import { AddSubQueryButton } from "../common/search/button/AddSubQueryButton.tsx";
+import { AddSubqueryButton } from "../common/search/button/AddSubqueryButton.tsx";
 import { defaultQuery } from "../../model/query/defaultQuery.ts";
 import { SubqueryToAdd } from "../../store/query/SubqueryToAdd.ts";
+import { Button } from "../common/Button.tsx";
+import { LogicalOperator } from "../../model/query/operator/Operator.ts";
 
 export type ContainerSearchProps = {
   containerName: string;
@@ -71,14 +73,21 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setSubmitted({ containerName, query, pageNo });
   }
 
-  function handleAddSubQuery() {
+  function addComparisionSubquery() {
     const newQueryEntry = Object.entries(defaultQuery)[0];
     const form = toComparisonForm(newQueryEntry);
     const errors = mapValues(form, () => "");
     const param = false;
-    const toAdd: SubqueryToAdd = {
+    addSubquery({
       path: [subqueries.length],
       subquery: { type: "comparison", form, errors, param },
+    });
+  }
+
+  function addLogicalSubquery(operator: LogicalOperator) {
+    const toAdd: SubqueryToAdd = {
+      path: [subqueries.length],
+      subquery: { type: "logical", operator, forms: [] },
     };
     addSubquery(toAdd);
   }
@@ -94,10 +103,28 @@ export function ContainerSearch(props: ContainerSearchProps) {
       <H1>Search annotations</H1>
       <QueryEditor containerName={containerName} />
       <div className="mb-2">
-        <AddSubQueryButton
-          onClick={handleAddSubQuery}
+        <AddSubqueryButton
+          onClick={addComparisionSubquery}
           disabled={searchDisabled}
         />
+        <Button
+          onClick={() => addLogicalSubquery(LogicalOperator.OR)}
+          disabled={searchDisabled}
+          secondary
+          className="ml-2"
+        >
+          Add &nbsp;
+          <code>:OR</code>
+        </Button>
+        <Button
+          onClick={() => addLogicalSubquery(LogicalOperator.AND)}
+          disabled={searchDisabled}
+          className="ml-2"
+          secondary
+        >
+          Add &nbsp;
+          <code>:AND</code>
+        </Button>
         <span className="ml-3">
           <SearchButton
             onClick={handleSubmitSearch}

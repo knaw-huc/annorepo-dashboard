@@ -4,8 +4,6 @@ import { QueryValueType } from "./value/QueryValueType.ts";
 import { ErroneousValue, ErrorRecord } from "./ErrorRecord.ts";
 import { ParamValue } from "./ParamValue.ts";
 
-export type ValidatedQueryForms = Subquery[];
-
 export type Subquery = LogicalSubquery | ComparisonSubquery;
 
 export type ComparisonSubquery = {
@@ -23,7 +21,7 @@ export type ComparisonSubquery = {
   errors: ErrorRecord<ComparisonForm>;
 };
 
-export function isComparisonSubQuery(
+export function isComparisonSubquery(
   toTest: Subquery,
 ): toTest is ComparisonSubquery {
   return (toTest as ComparisonSubquery).type === "comparison";
@@ -35,7 +33,7 @@ export type LogicalSubquery = {
   forms: Subquery[];
 };
 
-export function isLogicalSubQuery(toTest: Subquery): toTest is LogicalSubquery {
+export function isLogicalSubquery(toTest: Subquery): toTest is LogicalSubquery {
   return (toTest as LogicalSubquery).type === "logical";
 }
 

@@ -13,7 +13,7 @@ export function removeSubquery(
     const parent = get(update, initial(toRemove));
     remove(parent, (v) => v !== undefined);
   } else {
-    remove(update, (v) => !v);
+    remove(update, (v) => v !== undefined);
   }
 
   return {

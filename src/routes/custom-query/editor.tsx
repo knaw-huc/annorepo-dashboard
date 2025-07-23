@@ -1,35 +1,28 @@
-import {createFileRoute} from '@tanstack/react-router'
-import {
-  NewCustomQueryEditor
-} from "../../component/custom-query/NewCustomQueryEditor.tsx";
+import { createFileRoute } from "@tanstack/react-router";
+import { NewCustomQueryEditor } from "../../component/custom-query/NewCustomQueryEditor.tsx";
 import {
   ToCustomQueryIndex,
-  ToHome
+  ToHome,
 } from "../../component/common/BreadcrumbNav.tsx";
-import {Login} from "../../component/login/Login.tsx";
-import {Page} from "../../component";
+import { Login } from "../../component/login/Login.tsx";
+import { Page } from "../../component";
 
-// TODO: rename all form routes to editor routes
-export const Route = createFileRoute('/custom-query/editor')({
-  component: () => {
-    const navigate = Route.useNavigate()
+export const Route = createFileRoute("/custom-query/editor")({
+  component: function Component() {
+    const navigate = Route.useNavigate();
 
     const handleClose = async () => {
       navigate({
-        to: '/custom-query',
+        to: "/custom-query",
       });
     };
 
-    return <Login>
-      <Page breadcrumbs={[
-        <ToHome/>,
-        <ToCustomQueryIndex/>,
-      ]}>
-        <NewCustomQueryEditor
-          onClose={handleClose}
-        />
-      </Page>
-    </Login>;
+    return (
+      <Login>
+        <Page breadcrumbs={[<ToHome />, <ToCustomQueryIndex />]}>
+          <NewCustomQueryEditor onClose={handleClose} />
+        </Page>
+      </Login>
+    );
   },
-})
-
+});

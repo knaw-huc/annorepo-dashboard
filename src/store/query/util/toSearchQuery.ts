@@ -4,7 +4,10 @@ import {
   SearchQueryJson,
 } from "../../../model/ArModel.ts";
 import { objectEntries } from "../../../util/objectEntries.ts";
-import { ComparisonSubquery } from "../../../model/query/QueryModel.ts";
+import {
+  isLogicalSubquery,
+  Subquery,
+} from "../../../model/query/QueryModel.ts";
 import { isString } from "lodash";
 import { toParamTag } from "./toParamTag.ts";
 import { Operator } from "../../../model/query/operator/Operator.ts";
@@ -12,7 +15,7 @@ import { isRangeQueryOperator } from "../../../model/query/operator/RangeQueryOp
 import { Any } from "./Any.ts";
 
 export function toSearchQuery(
-  subqueries: ComparisonSubquery[],
+  subqueries: Subquery[],
   asTemplate: boolean,
 ): SearchQueryJson {
   const arSubqueries = subqueries.map((sq) =>
@@ -43,9 +46,14 @@ function mergeForms(subqueries: ArSearchSubQuery[]): SearchQueryJson {
 }
 
 function convertToArSubquery(
-  subquery: ComparisonSubquery,
+  subquery: Subquery,
   asTemplate: boolean = false,
 ): ArSearchSubQuery {
+  if (isLogicalSubquery(subquery)) {
+    // TODO
+    console.log("TODO: handle LogicalSubquery");
+    return {};
+  }
   const { param, form } = subquery;
   const formValue =
     asTemplate && isString(param) ? toParamTag(param) : form.value;

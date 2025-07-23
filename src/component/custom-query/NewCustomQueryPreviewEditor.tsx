@@ -18,7 +18,7 @@ import { useStore } from "../../store/useStore.ts";
 import { toParamName } from "../../store/query/util/toParamName.ts";
 import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/hasErrors.ts";
-import { AddSubQueryButton } from "../common/search/button/AddSubQueryButton.tsx";
+import { AddSubqueryButton } from "../common/search/button/AddSubqueryButton.tsx";
 import { Button } from "../common/Button.tsx";
 import { Store } from "../common/icon/Store.tsx";
 import { Next } from "../common/icon/Next.tsx";
@@ -67,10 +67,10 @@ export function NewCustomQueryPreviewEditor(props: {
     const newQueryEntry = Object.entries(defaultQuery)[0];
     const form = toComparisonForm(newQueryEntry);
     const errors = mapValues(form, () => "");
-    const newFormIndex = subqueries.length;
-    const param = toParamName(form, newFormIndex);
+    const path = [subqueries.length];
+    const param = toParamName(form, path);
     addSubquery({
-      path: [subqueries.length],
+      path,
       subquery: { form, errors, type: "comparison", param },
     });
   }
@@ -107,7 +107,7 @@ export function NewCustomQueryPreviewEditor(props: {
           <div className="mt-7">
             <QueryEditor containerName={containerName} />
             <span className="inline-block">
-              <AddSubQueryButton
+              <AddSubqueryButton
                 onClick={handleAddSubQuery}
                 disabled={searchDisabled}
               />

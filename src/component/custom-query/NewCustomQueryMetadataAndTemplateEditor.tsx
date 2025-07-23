@@ -1,9 +1,9 @@
 import { ArCustomQueryForm } from "../../model/ArModel.ts";
 import { H2 } from "../common/H2.tsx";
-import { CustomSubQueryEditor } from "../common/search/CustomSubQueryEditor.tsx";
+import { CustomSubqueryEditor } from "../common/search/CustomSubqueryEditor.tsx";
 import { CustomQueryMetadataEditor } from "./CustomQueryMetadataEditor.tsx";
 import { useEffect, useState } from "react";
-import { isEmpty } from "lodash";
+import { get, isEmpty, PropertyName } from "lodash";
 import { toErrorRecord } from "../../store/query/util/toErrorRecord.ts";
 import { CheckboxWithLabel } from "../common/form/CheckboxWithLabel.tsx";
 import { Help } from "../common/icon/Help.tsx";
@@ -31,11 +31,10 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
     useState<CustomQueryMetadataForm>(metadata);
   const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
 
-  function handleParameterChange(formIndex: number, isParam: boolean) {
-    const update = isParam
-      ? toParamTag(toParamName(subqueries[formIndex].form, formIndex))
-      : false;
-    updateSubquery({ path: [formIndex], param: update });
+  function handleParameterChange(path: PropertyName[], isParam: boolean) {
+    const form = get(subqueries, path).form;
+    const update = isParam ? toParamTag(toParamName(form, path)) : false;
+    updateSubquery({ path, param: update });
   }
 
   useEffect(() => {
@@ -66,22 +65,26 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
         onChange={handleChangeMetadata}
       />
       <H2>Custom Query</H2>
-      {subqueries.map((_, i) => (
-        <div key={i} className="flex items-center">
-          <CustomSubQueryEditor key={i} subqueryIndex={i} isCall={false} />
-          <div className="ml-4">
-            <CheckboxWithLabel
-              label={
-                <Tooltip text="Search with a variable parameter, or use a fixed value">
-                  Parameter <Help />
-                </Tooltip>
-              }
-              value={subqueries[i].param !== false}
-              onChange={(update) => handleParameterChange(i, update)}
-            />
+      {subqueries.map((_, i) => {
+        const path = [i];
+        const subquery = get(subqueries, path);
+        return (
+          <div key={path.join()} className="flex items-center">
+            <CustomSubqueryEditor path={path} isCall={false} />
+            <div className="ml-4">
+              <CheckboxWithLabel
+                label={
+                  <Tooltip text="Search with a variable parameter, or use a fixed value">
+                    Parameter <Help />
+                  </Tooltip>
+                }
+                value={subquery.param !== false}
+                onChange={(update) => handleParameterChange(path, update)}
+              />
+            </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
     </>
   );
 }

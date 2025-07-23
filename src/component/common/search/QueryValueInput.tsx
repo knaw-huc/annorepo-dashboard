@@ -12,9 +12,11 @@ import { SelectOption } from "../form/SelectOption.tsx";
 import { QueryValue } from "../../../model/query/value/QueryValue.ts";
 import { findMapperByValue } from "../../../model/query/value/util/findMapperByValue.ts";
 import { findMapperByOperator } from "../../../model/query/value/util/findMapperByOperator.ts";
+import { PropertyName } from "lodash";
+import { getComparisonSubquery } from "./getComparisonSubquery.ts";
 
 export function QueryValueInput(props: {
-  formIndex: number;
+  path: PropertyName[];
   /**
    * Creating a query to call? Versus creating a new custom query
    */
@@ -22,11 +24,11 @@ export function QueryValueInput(props: {
   isCustom: boolean;
   suggestions: SelectOption<QueryValue>[];
 }) {
-  const { formIndex, isCall, isCustom, suggestions } = props;
+  const { path, isCall, isCustom, suggestions } = props;
 
   const { subqueries, updateSubquery } = useStore();
 
-  const subquery = subqueries[formIndex];
+  const subquery = getComparisonSubquery(subqueries, path);
   const param = subquery.param;
 
   function handleValueChange(inputValueUpdate: string) {
@@ -34,14 +36,14 @@ export function QueryValueInput(props: {
       const mapper = findMapperByValueType(subquery.form.valueType);
       const queryValueUpdate = mapper.toValue(inputValueUpdate);
       updateSubquery({
-        path: [formIndex],
+        path,
         form: { ...subquery.form, value: queryValueUpdate },
         errors: { ...subquery.errors, value: "" },
       });
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
       updateSubquery({
-        path: [formIndex],
+        path,
         // Use inout value when query value conversion failed:
         form: { ...subquery.form, value: inputValueUpdate },
         errors: { ...subquery.errors, value: errorMessage },
@@ -54,7 +56,7 @@ export function QueryValueInput(props: {
       const newMapper = findMapperByValueType(typeUpdate);
       const queryValueUpdate = newMapper.toValue(inputValue);
       updateSubquery({
-        path: [formIndex],
+        path,
         form: {
           ...subquery.form,
           value: queryValueUpdate,
@@ -65,7 +67,7 @@ export function QueryValueInput(props: {
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
       updateSubquery({
-        path: [formIndex],
+        path,
         // Use inout value when query value conversion failed:
         form: {
           ...subquery.form,
@@ -94,7 +96,7 @@ export function QueryValueInput(props: {
       }
 
       updateSubquery({
-        path: [formIndex],
+        path,
         form: {
           ...subquery.form,
           value: valueUpdate,
@@ -105,7 +107,7 @@ export function QueryValueInput(props: {
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
       updateSubquery({
-        path: [formIndex],
+        path,
         // Use inout value when query value conversion failed:
         form: { ...subquery.form, value: update.value },
         errors: { ...subquery.errors, value: errorMessage },
@@ -117,7 +119,7 @@ export function QueryValueInput(props: {
     subquery.form,
     subquery.errors.value,
     param,
-    formIndex,
+    path,
     isCall,
   );
 

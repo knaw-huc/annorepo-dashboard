@@ -4,12 +4,13 @@ import { toParamName } from "../../../../store/query/util/toParamName.ts";
 import { findMapperByValueType } from "../../../../model/query/value/util/findMapperByValueType.ts";
 import { ErroneousValue } from "../../../../model/query/ErrorRecord.ts";
 import { ParamValue } from "../../../../model/query/ParamValue.ts";
+import { PropertyName } from "lodash";
 
 export function createInputValue(
   form: ComparisonForm,
   error: string,
   param: ParamValue,
-  formIndex: number,
+  path: PropertyName[],
   isCall: boolean,
 ): string {
   const value = form.value;
@@ -25,7 +26,7 @@ export function createInputValue(
     if (error) {
       throw new Error("Custom query form should not contain errors");
     } else if (param) {
-      return toParamTag(toParamName(form, formIndex));
+      return toParamTag(toParamName(form, path));
     } else {
       return findMapperByValueType(form.valueType).toInputValue(value);
     }
