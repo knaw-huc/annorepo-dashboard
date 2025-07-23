@@ -12,7 +12,7 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 
 import {ContainerDropdown} from "./ContainerDropdown.tsx";
-import {toComparisonSubQuery} from "../../store/query/util/toComparisonSubQuery.ts";
+import {toComparisonSubQueryForm} from "../../store/query/util/toComparisonSubQueryForm.ts";
 import {mapValues} from "lodash";
 import {useStore} from "../../store/useStore.ts";
 import {toParamName} from "../../store/query/util/toParamName.ts";
@@ -64,7 +64,7 @@ export function NewCustomQueryPreviewEditor(props: {
 
   function handleAddSubQuery() {
     const newQueryEntry = Object.entries(defaultQuery)[0];
-    const form = toComparisonSubQuery(newQueryEntry)
+    const form = toComparisonSubQueryForm(newQueryEntry)
     const errors = mapValues(form, () => '');
     const newFormIndex = subqueries.length;
     const param = toParamName(form, newFormIndex)

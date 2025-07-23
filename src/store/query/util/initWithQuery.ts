@@ -1,6 +1,6 @@
 import {SearchQueryJson} from "../../../model/ArModel.ts";
-import {toComparisonSubQueries} from "./toComparisonSubQuery.ts";
 import {QueryState} from "../QuerySlice.ts";
+import {toComparisonSubQueries} from "./toComparisonSubQueries.ts";
 
 export function initWithQuery(
   query: SearchQueryJson

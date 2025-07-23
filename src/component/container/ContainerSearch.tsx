@@ -12,7 +12,7 @@ import {
   ContainerSearchArgs,
   useContainerSearch
 } from "../../client/endpoint/useContainerSearch.tsx";
-import {toComparisonSubQuery} from "../../store/query/util/toComparisonSubQuery.ts";
+import {toComparisonSubQueryForm} from "../../store/query/util/toComparisonSubQueryForm.ts";
 import {mapValues} from "lodash";
 import {SearchButton} from "../common/search/button/SearchButton.tsx";
 import {hasErrors} from "../../store/query/util/hasErrors.ts";
@@ -74,7 +74,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
 
   function handleAddSubQuery() {
     const newQueryEntry = Object.entries(defaultQuery)[0];
-    const form = toComparisonSubQuery(newQueryEntry)
+    const form = toComparisonSubQueryForm(newQueryEntry)
     const errors = mapValues(form, () => '');
     const param = false
     const toAdd: SubqueryToAdd = {subquery: {type: "comparison", form, errors, param}}

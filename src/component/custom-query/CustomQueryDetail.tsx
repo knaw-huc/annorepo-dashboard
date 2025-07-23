@@ -1,4 +1,4 @@
-import { H1 } from "../common/H1.tsx";
+  import { H1 } from "../common/H1.tsx";
 import { CustomQueryCallEditor } from "./CustomQueryCallEditor.tsx";
 import {
   CustomQueryCallArgs,
