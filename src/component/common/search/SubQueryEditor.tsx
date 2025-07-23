@@ -76,7 +76,7 @@ export function SubQueryEditor(props: {
   }
 
   function handleRemoveSubQuery() {
-    return removeSubquery(formIndex);
+    return removeSubquery([formIndex]);
   }
 
   return (

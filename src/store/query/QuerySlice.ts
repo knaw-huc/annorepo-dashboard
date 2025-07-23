@@ -4,10 +4,11 @@ import { initWithQuery } from "./util/initWithQuery.ts";
 import { initWithTemplate } from "./util/initWithTemplate.ts";
 import { updateSubquery } from "./util/updateSubquery.ts";
 import { SubqueryUpdate } from "./SubqueryUpdate.ts";
-import { addForm } from "./util/addForm.ts";
-import { removeForm } from "./util/removeForm.ts";
+import { addSubquery } from "./util/addSubquery.ts";
+import { removeSubquery } from "./util/removeSubquery.ts";
 import { SubqueryToAdd } from "./SubqueryToAdd.ts";
 import { SliceCreator } from "./SliceCreator.ts";
+import { PropertyName } from "lodash";
 
 export type QueryState = {
   subqueries: ComparisonSubquery[];
@@ -15,9 +16,11 @@ export type QueryState = {
 
 export type QuerySlice = QueryState & {
   setQueryState: (update: QueryState) => void;
+
   addSubquery: (toAdd: SubqueryToAdd) => void;
-  removeSubquery: (subqueryIndex: number) => void;
+  removeSubquery: (path: PropertyName[]) => void;
   updateSubquery: (update: SubqueryUpdate) => void;
+
   initWithQuery: (query: SearchQueryJson) => void;
   initWithTemplate: (query: SearchQueryJson, params: string[]) => void;
 };
@@ -27,8 +30,8 @@ export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {
     subqueries: [],
 
     setQueryState: (update: QueryState) => set(() => ({ ...update })),
-    addSubquery: (update) => set((prev) => addForm(update, prev)),
-    removeSubquery: (toRemove) => set((prev) => removeForm(toRemove, prev)),
+    addSubquery: (update) => set((prev) => addSubquery(update, prev)),
+    removeSubquery: (toRemove) => set((prev) => removeSubquery(toRemove, prev)),
     updateSubquery: (update) => set((prev) => updateSubquery(update, prev)),
     initWithQuery: (query) => set(() => initWithQuery(query)),
     initWithTemplate: (query, params) =>

@@ -77,6 +77,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
     const errors = mapValues(form, () => "");
     const param = false;
     const toAdd: SubqueryToAdd = {
+      path: [subqueries.length],
       subquery: { type: "comparison", form, errors, param },
     };
     addSubquery(toAdd);

@@ -1,6 +1,7 @@
 import { QueryState } from "../QuerySlice.ts";
 import { SubqueryUpdate } from "../SubqueryUpdate.ts";
 import { get, set } from "lodash";
+import { validateQuery } from "./validateQuery.ts";
 
 export function updateSubquery(
   update: SubqueryUpdate,
@@ -16,6 +17,11 @@ export function updateSubquery(
 
   const subqueriesUpdate = structuredClone(prev.subqueries);
   set(subqueriesUpdate, path, subqueryUpdate);
+
+  if (!subqueryUpdate.errors.field) {
+    // Check updated subquery does not invalidate query:
+    subqueryUpdate.errors.field = validateQuery(subqueriesUpdate);
+  }
 
   return {
     ...prev,
