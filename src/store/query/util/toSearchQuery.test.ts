@@ -15,29 +15,30 @@ import { toSearchQuery } from "./toSearchQuery.ts";
 import { toSubquery } from "./toSubqueries.ts";
 
 describe(toSearchQuery.name, async () => {
+  const eq = Operator.equal;
+  const or = LogicalOperator.or;
+  const noCompareErrors = {
+    field: "",
+    operator: "",
+    value: "",
+    valueType: "",
+  };
+
   it("converts :or", async () => {
-    const entry: ArLogicalEntry = [
-      LogicalOperator.or,
-      { f: { [Operator.equal]: "v" } },
-    ];
+    const entry: ArLogicalEntry = [or, { f: { [eq]: "v" } }];
 
     const result: Subquery = toSubquery(entry);
 
     const isEqualSubquery: ComparisonSubquery = {
-      errors: { field: "", operator: "", value: "", valueType: "" },
-      form: {
-        field: "f",
-        operator: Operator.equal,
-        value: "v",
-        valueType: "string",
-      },
-      param: false,
       type: "comparison",
+      form: { field: "f", operator: eq, value: "v", valueType: "string" },
+      errors: noCompareErrors,
+      param: false,
     };
     const orSubquery: LogicalSubquery = {
-      forms: [isEqualSubquery],
-      operator: LogicalOperator.or,
       type: "logical",
+      forms: [isEqualSubquery],
+      operator: or,
       error: "",
     };
     expect(result).toEqual(orSubquery);
@@ -47,8 +48,8 @@ describe(toSearchQuery.name, async () => {
     const entry: ArLogicalEntry = [
       LogicalOperator.and,
       {
-        f: { [Operator.equal]: "v" },
-        f2: { [Operator.equal]: "v2" },
+        f: { [eq]: "v" },
+        f2: { [eq]: "v2" },
       },
     ];
 

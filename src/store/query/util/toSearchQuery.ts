@@ -1,11 +1,15 @@
 import {
   ArCompareRecord,
+  ArLogicalRecord,
+  ArSubqueryRecord,
   isArRangeQueryValue,
   SearchQueryJson,
 } from "../../../model/ArModel.ts";
 import { objectEntries } from "../../../util/objectEntries.ts";
 import {
+  ComparisonSubquery,
   isLogicalSubquery,
+  LogicalSubquery,
   Subquery,
 } from "../../../model/query/QueryModel.ts";
 import { toParamTag } from "./toParamTag.ts";
@@ -17,13 +21,24 @@ export function toSearchQuery(
   subqueries: Subquery[],
   asTemplate: boolean,
 ): SearchQueryJson {
-  const arSubqueries = subqueries.map((sq) =>
-    convertToArSubquery(sq, asTemplate),
-  );
-  return mergeForms(arSubqueries);
+  return toArSubqueryRecord(subqueries, asTemplate);
 }
 
-function mergeForms(subqueries: ArCompareRecord[]): SearchQueryJson {
+/**
+ * Top level query is an implicit :and-query of subqueries grouped inside an object
+ * Note: as in every json object, keys (i.e. subquery operators or fields) can appear only once
+ */
+function toArSubqueryRecord(
+  subqueries: Subquery[],
+  asTemplate: boolean,
+): ArSubqueryRecord {
+  const arRecords = subqueries.map((sq) => convertToArSubquery(sq, asTemplate));
+  return mergeArSubqueryRecords(arRecords);
+}
+
+function mergeArSubqueryRecords(
+  subqueries: ArSubqueryRecord[],
+): SearchQueryJson {
   const merged: Record<string, Any> = {};
   for (const subquery of subqueries) {
     const fields = Object.keys(subquery);
@@ -47,12 +62,26 @@ function mergeForms(subqueries: ArCompareRecord[]): SearchQueryJson {
 function convertToArSubquery(
   subquery: Subquery,
   asTemplate: boolean = false,
-): ArCompareRecord {
+): ArSubqueryRecord {
   if (isLogicalSubquery(subquery)) {
-    // TODO
-    console.log("TODO: handle LogicalSubquery");
-    return {};
+    return toArLogical(subquery, asTemplate);
   }
+  return toArCompare(subquery, asTemplate);
+}
+
+function toArLogical(
+  subquery: LogicalSubquery,
+  asTemplate: boolean,
+): ArLogicalRecord {
+  return {
+    [subquery.operator]: toArSubqueryRecord(subquery.forms, asTemplate),
+  };
+}
+
+function toArCompare(
+  subquery: ComparisonSubquery,
+  asTemplate: boolean,
+): ArCompareRecord {
   const { param, form } = subquery;
   const value = asTemplate && param !== false ? toParamTag(param) : form.value;
   if (subquery.form.operator === Operator.simpleQuery) {

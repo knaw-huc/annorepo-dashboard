@@ -1,4 +1,5 @@
 import {
+  ArCompareEntry,
   ArLogicalEntry,
   ArQueryEntry,
   isArCompareEntry,
@@ -15,7 +16,6 @@ import { toComparisonForm } from "./toComparisonForm.ts";
 import { toErrorRecord } from "./toErrorRecord.ts";
 
 export function toSubqueries(
-  // TODO: replace with ArCompareRecord or 'ArQueryRecord'
   query: SearchQueryJson,
   paramNames?: string[],
 ): Subquery[] {
@@ -47,7 +47,7 @@ function toLogicalSubquery(
 }
 
 function toComparisonSubquery(
-  entry: ArQueryEntry,
+  entry: ArCompareEntry,
   paramNames?: string[],
 ): ComparisonSubquery {
   const form = toComparisonForm(entry, paramNames);

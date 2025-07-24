@@ -57,7 +57,8 @@ export type ArAnnotation<T extends object = object> = {
 export type ArContainerFields = Record<string, number>;
 
 /**
- * TODO: use {@link ArQueryEntry}
+ * TODO: replace with ArCompareRecord or 'ArQueryRecord'
+ *  use {@link ArQueryEntry}?
  */
 export type SearchQueryJson = Record<string, Any>;
 
@@ -87,6 +88,7 @@ export type EntryToRecord<ENTRY extends [Any, Any]> = {
 };
 
 export type ArField = string;
+export type ArSubqueryRecord = ArCompareRecord | ArLogicalRecord;
 
 export type ArSimpleEntry = [ArField, string];
 export type ArSimpleSubquery = EntryToRecord<ArSimpleEntry>;
@@ -118,9 +120,22 @@ export function isArRangeQueryValue(toTest: Any): toTest is ArRangeQueryValue {
   );
 }
 
-export type ArLogicalEntry = [LogicalOperator, ArCompareRecord];
+export type ArLogicalEntry = [LogicalOperator, ArSubqueryRecord];
+
+// Use interface to prevent circular dependency (TS2456)
+export interface ArLogicalRecord {
+  [LogicalOperator.or]?: ArSubqueryRecord[];
+  [LogicalOperator.and]?: ArSubqueryRecord[];
+}
+
 export function isArLogicalEntry(
   toTest: ArQueryEntry,
 ): toTest is ArLogicalEntry {
   return isLogicalOperator(toTest[0]);
 }
+
+export type Foo = {
+  a: number;
+};
+export type FooEntry = [string, Foo];
+export type FooRecord = EntryToRecord<FooEntry>;
