@@ -1,23 +1,19 @@
-import { assert, describe, expect, it } from "vitest";
-import {
-  ComparisonSubquery,
-  isComparisonSubquery,
-  isLogicalSubquery,
-  LogicalSubquery,
-  Subquery,
-} from "../../../model/query/QueryModel.ts";
+import { describe, expect, it } from "vitest";
 import {
   LogicalOperator,
   Operator,
 } from "../../../model/query/operator/Operator.ts";
-import { ArLogicalEntry } from "../../../model/ArModel.ts";
 import { toSearchQuery } from "./toSearchQuery.ts";
-import { toSubquery } from "./toSubqueries.ts";
+import { ComparisonForm } from "../../../model/query/QueryModel.ts";
+
+function testForm(field: string, eq: Operator, value: string): ComparisonForm {
+  return { field: field, operator: eq, value: value, valueType: "string" };
+}
 
 describe(toSearchQuery.name, async () => {
-  const eq = Operator.equal;
   const or = LogicalOperator.or;
-  const noCompareErrors = {
+  const eq = Operator.equal;
+  const noErrors = {
     field: "",
     operator: "",
     value: "",
@@ -25,45 +21,33 @@ describe(toSearchQuery.name, async () => {
   };
 
   it("converts :or", async () => {
-    const entry: ArLogicalEntry = [or, { f: { [eq]: "v" } }];
-
-    const result: Subquery = toSubquery(entry);
-
-    const isEqualSubquery: ComparisonSubquery = {
-      type: "comparison",
-      form: { field: "f", operator: eq, value: "v", valueType: "string" },
-      errors: noCompareErrors,
-      param: false,
-    };
-    const orSubquery: LogicalSubquery = {
-      type: "logical",
-      forms: [isEqualSubquery],
-      operator: or,
-      error: "",
-    };
-    expect(result).toEqual(orSubquery);
-  });
-
-  it("converts :and with two operant forms", async () => {
-    const entry: ArLogicalEntry = [
-      LogicalOperator.and,
-      {
-        f: { [eq]: "v" },
-        f2: { [eq]: "v2" },
-      },
-    ];
-
-    const result: Subquery = toSubquery(entry);
-    assert(isLogicalSubquery(result));
-    expect(result.operator).toEqual(":and");
-    expect(result.forms.length).toEqual(2);
-
-    const subquery1 = result.forms[0];
-    assert(isComparisonSubquery(subquery1));
-    expect(subquery1.form.field).toBe("f");
-
-    const subquery2 = result.forms[1];
-    assert(isComparisonSubquery(subquery2));
-    expect(subquery2.form.field).toBe("f2");
+    const result = toSearchQuery(
+      [
+        {
+          type: "logical",
+          operator: or,
+          error: "",
+          forms: [
+            {
+              type: "comparison",
+              form: testForm("f", eq, "v"),
+              errors: noErrors,
+              param: false,
+            },
+            {
+              type: "comparison",
+              form: testForm("f2", eq, "v2"),
+              errors: noErrors,
+              param: false,
+            },
+          ],
+        },
+      ],
+      false,
+    );
+    // TODO: fix this test:
+    expect(result).toBe({
+      ":or": [{ f: { ":=": "v" } }, { f2: { ":=": "v2" } }],
+    });
   });
 });
