@@ -1,8 +1,7 @@
 import { QueryState } from "../QuerySlice.ts";
 import { SubqueryToAdd } from "../SubqueryToAdd.ts";
-import { validateQuery } from "./validateQuery.ts";
 import { set } from "lodash";
-import { isComparisonSubquery } from "../../../model/query/QueryModel.ts";
+import { validateSubquery } from "./validateSubquery.ts";
 
 export function addSubquery(
   toAdd: SubqueryToAdd,
@@ -12,10 +11,9 @@ export function addSubquery(
   const update = structuredClone(prev.subqueries);
   set(update, path, subquery);
 
-  if (isComparisonSubquery(subquery) && !subquery.errors.field) {
-    // Check newly added subquery does not invalidate query:
-    subquery.errors.field = validateQuery(update);
-  }
+  validateSubquery(subquery, update);
+
+  console.log("addSubquery", { toAdd, prev, update });
 
   return {
     ...prev,

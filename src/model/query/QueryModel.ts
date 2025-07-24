@@ -31,6 +31,7 @@ export type LogicalSubquery = {
   type: "logical";
   operator: LogicalOperator;
   forms: Subquery[];
+  error: string;
 };
 
 export function isLogicalSubquery(toTest: Subquery): toTest is LogicalSubquery {

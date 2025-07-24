@@ -1,7 +1,9 @@
 import { assert, describe, expect, it } from "vitest";
 import {
+  ComparisonSubquery,
   isComparisonSubquery,
   isLogicalSubquery,
+  LogicalSubquery,
   Subquery,
 } from "../../../model/query/QueryModel.ts";
 import {
@@ -21,16 +23,22 @@ describe(toSearchQuery.name, async () => {
 
     const result: Subquery = toSubquery(entry);
 
-    const isEqualSubquery = {
+    const isEqualSubquery: ComparisonSubquery = {
       errors: { field: "", operator: "", value: "", valueType: "" },
-      form: { field: "f", operator: ":=", value: "v", valueType: "string" },
+      form: {
+        field: "f",
+        operator: Operator.equal,
+        value: "v",
+        valueType: "string",
+      },
       param: false,
       type: "comparison",
     };
-    const orSubquery = {
+    const orSubquery: LogicalSubquery = {
       forms: [isEqualSubquery],
-      operator: ":or",
+      operator: LogicalOperator.or,
       type: "logical",
+      error: "",
     };
     expect(result).toEqual(orSubquery);
   });

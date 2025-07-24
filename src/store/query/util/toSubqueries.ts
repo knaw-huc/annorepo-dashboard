@@ -33,7 +33,7 @@ export function toSubquery(
   } else if (isArLogicalEntry(entry)) {
     return toLogicalSubquery(entry, paramNames);
   } else {
-    throw new Error("Unhandled subquery type");
+    throw new Error(`Unhandled subquery type: ${JSON.stringify(entry)}`);
   }
 }
 
@@ -42,11 +42,8 @@ function toLogicalSubquery(
   paramNames?: string[],
 ): LogicalSubquery {
   const [operator, operands] = entry;
-  return {
-    type: "logical",
-    operator,
-    forms: toSubqueries(operands, paramNames),
-  };
+  const forms = toSubqueries(operands, paramNames);
+  return { type: "logical", operator, forms, error: "" };
 }
 
 function toComparisonSubquery(
@@ -59,10 +56,5 @@ function toComparisonSubquery(
     JSON.stringify(entry).includes(paramName),
   );
   const param = foundParamName ? foundParamName : false;
-  return {
-    type: "comparison",
-    form,
-    errors,
-    param,
-  };
+  return { type: "comparison", form, errors, param };
 }

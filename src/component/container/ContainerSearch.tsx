@@ -87,7 +87,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   function addLogicalSubquery(operator: LogicalOperator) {
     const toAdd: SubqueryToAdd = {
       path: [subqueries.length],
-      subquery: { type: "logical", operator, forms: [] },
+      subquery: { type: "logical", operator, forms: [], error: "" },
     };
     addSubquery(toAdd);
   }

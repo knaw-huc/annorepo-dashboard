@@ -12,6 +12,7 @@ import {
 } from "../../../model/query/QueryModel.ts";
 import { getLogicalSubquery } from "../../../store/query/util/getLogicalSubquery.ts";
 import { getOrThrow } from "../../../store/query/util/getOrThrow.ts";
+import { Warning } from "../Warning.tsx";
 
 export function QueryEditor(props: { containerName: string }) {
   const { containerName } = props;
@@ -71,6 +72,7 @@ export function LogicalEditor(props: ComparisonEditorProps) {
   return (
     <div className="border border-slate-400 w-full py-2 my-2">
       <p>{subquery.operator}</p>
+      {subquery.error && <Warning>{subquery.error}</Warning>}
       <div>
         <SubqueriesEditor
           containerName={containerName}
