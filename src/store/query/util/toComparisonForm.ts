@@ -13,7 +13,9 @@ import { isNonFnOperator } from "../../../model/query/operator/NonFnQueryOperato
 import { QueryValueType } from "../../../model/query/value/QueryValueType.ts";
 import { findParam } from "./findParam.ts";
 import { Any } from "./Any.ts";
-
+/**
+ * TODO: handle single <> and double <<>> parameters properly
+ */
 export function toComparisonForm(
   entry: ArQueryEntry,
   // Query entry contains param when passing a template:
@@ -31,10 +33,6 @@ export function toComparisonForm(
     field = NO_FIELD;
     operator = queryKey as Operator;
     if (findParam(queryValue, paramNames)) {
-      /**
-       * TODO: are number params supported?
-       *  And if so: how to find the correct type?
-       */
       const mapper = findMapperByOperator(operator);
       value = mapper.defaultValue;
       valueType = mapper.type;
