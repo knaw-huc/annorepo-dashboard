@@ -1,0 +1,57 @@
+import {
+  ArQueryEntry,
+  isArCompareEntry,
+  isArLogicalEntry,
+  ArLogicalEntry,
+} from "../../../model/ArModel.ts";
+import {
+  ComparisonSubquery,
+  LogicalSubquery,
+  Subquery,
+} from "../../../model/query/QueryModel.ts";
+import { toErrorRecord } from "./toErrorRecord.ts";
+import { toComparisonForm } from "./toComparisonForm.ts";
+import { toSubqueries } from "./toSubqueries.ts";
+
+export function toSubquery(
+  entry: ArQueryEntry,
+  paramNames?: string[],
+): Subquery {
+  if (isArCompareEntry(entry)) {
+    return toComparisonSubquery(entry, paramNames);
+  } else if (isArLogicalEntry(entry)) {
+    return toLogicalSubquery(entry, paramNames);
+  } else {
+    throw new Error("Unhandled subquery type");
+  }
+}
+
+function toLogicalSubquery(
+  entry: ArLogicalEntry,
+  paramNames?: string[],
+): LogicalSubquery {
+  const [operator, operands] = entry;
+  return {
+    type: "logical",
+    operator,
+    forms: toSubqueries(operands, paramNames),
+  };
+}
+
+function toComparisonSubquery(
+  entry: ArQueryEntry,
+  paramNames?: string[],
+): ComparisonSubquery {
+  const form = toComparisonForm(entry, paramNames);
+  const errors = toErrorRecord(form);
+  const foundParamName = paramNames?.find((paramName) =>
+    JSON.stringify(entry).includes(paramName),
+  );
+  const param = foundParamName ? foundParamName : false;
+  return {
+    type: "comparison",
+    form,
+    errors,
+    param,
+  };
+}

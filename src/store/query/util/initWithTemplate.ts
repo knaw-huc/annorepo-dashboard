@@ -1,14 +1,14 @@
-import {SearchQueryJson} from "../../../model/ArModel.ts";
-import {QueryState} from "../QuerySlice.ts";
-import {toComparisonSubQueries} from "./toComparisonSubQueries.ts";
+import { SearchQueryJson } from "../../../model/ArModel.ts";
+import { QueryState } from "../QuerySlice.ts";
+import { toSubqueries } from "./toSubqueries.ts";
 
 export function initWithTemplate(
   template: SearchQueryJson,
-  paramNames: string[]
+  paramNames: string[],
 ): QueryState {
-  const subqueries = toComparisonSubQueries(template, paramNames)
+  const subqueries = toSubqueries(template, paramNames);
 
   return {
-    subqueries
+    subqueries,
   };
 }

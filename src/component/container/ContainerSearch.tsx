@@ -108,7 +108,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
           disabled={searchDisabled}
         />
         <Button
-          onClick={() => addLogicalSubquery(LogicalOperator.OR)}
+          onClick={() => addLogicalSubquery(LogicalOperator.or)}
           disabled={searchDisabled}
           secondary
           className="ml-2"
@@ -117,7 +117,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
           <code>:OR</code>
         </Button>
         <Button
-          onClick={() => addLogicalSubquery(LogicalOperator.AND)}
+          onClick={() => addLogicalSubquery(LogicalOperator.and)}
           disabled={searchDisabled}
           className="ml-2"
           secondary

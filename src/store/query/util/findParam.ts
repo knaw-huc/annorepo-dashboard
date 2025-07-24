@@ -1,8 +1,9 @@
 import { ParamValue } from "../../../model/query/ParamValue.ts";
 import { isString } from "lodash";
+import { ArCompareValue } from "../../../model/ArModel.ts";
 
 export function findParam(
-  queryValue: string,
+  queryValue: ArCompareValue,
   paramNames?: string[],
 ): ParamValue {
   if (!paramNames) {

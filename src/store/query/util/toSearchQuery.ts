@@ -1,5 +1,5 @@
 import {
-  ArSearchSubQuery,
+  ArQueryRecord,
   isArRangeQueryValue,
   SearchQueryJson,
 } from "../../../model/ArModel.ts";
@@ -8,7 +8,6 @@ import {
   isLogicalSubquery,
   Subquery,
 } from "../../../model/query/QueryModel.ts";
-import { isString } from "lodash";
 import { toParamTag } from "./toParamTag.ts";
 import { Operator } from "../../../model/query/operator/Operator.ts";
 import { isRangeQueryOperator } from "../../../model/query/operator/RangeQueryOperator.ts";
@@ -24,7 +23,7 @@ export function toSearchQuery(
   return mergeForms(arSubqueries);
 }
 
-function mergeForms(subqueries: ArSearchSubQuery[]): SearchQueryJson {
+function mergeForms(subqueries: ArQueryRecord[]): SearchQueryJson {
   const merged: Record<string, Any> = {};
   for (const subquery of subqueries) {
     const fields = Object.keys(subquery);
@@ -48,24 +47,23 @@ function mergeForms(subqueries: ArSearchSubQuery[]): SearchQueryJson {
 function convertToArSubquery(
   subquery: Subquery,
   asTemplate: boolean = false,
-): ArSearchSubQuery {
+): ArQueryRecord {
   if (isLogicalSubquery(subquery)) {
     // TODO
     console.log("TODO: handle LogicalSubquery");
     return {};
   }
   const { param, form } = subquery;
-  const formValue =
-    asTemplate && isString(param) ? toParamTag(param) : form.value;
+  const value = asTemplate && param !== false ? toParamTag(param) : form.value;
   if (subquery.form.operator === Operator.simpleQuery) {
-    const value = isString(param) ? param : form.value;
     return { [form.field]: `${value}` };
   } else if (isRangeQueryOperator(form.operator)) {
-    if (!param && !isArRangeQueryValue(formValue)) {
-      throw new Error("Expected range but got: " + JSON.stringify(formValue));
+    if (!isArRangeQueryValue(value)) {
+      throw new Error("Expected range but got: " + JSON.stringify(value));
+    } else {
+      return { [form.operator]: value };
     }
-    return { [form.operator]: formValue };
   } else {
-    return { [form.field]: { [form.operator]: formValue } };
+    return { [form.field]: { [form.operator]: value } };
   }
 }

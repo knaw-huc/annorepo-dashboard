@@ -21,6 +21,12 @@ export enum Operator {
 }
 
 export enum LogicalOperator {
-  OR = ":OR",
-  AND = ":AND",
+  or = ":or",
+  and = ":and",
+}
+
+export function isLogicalOperator(
+  toTest: string | LogicalOperator,
+): toTest is LogicalOperator {
+  return Object.values(LogicalOperator).includes(toTest as LogicalOperator);
 }

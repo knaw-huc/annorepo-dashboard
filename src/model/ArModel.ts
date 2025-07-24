@@ -1,5 +1,9 @@
 import { RangeQueryOperator } from "./query/operator/RangeQueryOperator.ts";
-import { Operator } from "./query/operator/Operator.ts";
+import {
+  isLogicalOperator,
+  LogicalOperator,
+  Operator,
+} from "./query/operator/Operator.ts";
 import { QueryValue } from "./query/value/QueryValue.ts";
 import { Any } from "../store/query/util/Any.ts";
 
@@ -52,6 +56,9 @@ export type ArAnnotation<T extends object = object> = {
 
 export type ArContainerFields = Record<string, number>;
 
+/**
+ * TODO: use {@link ArQueryEntry}
+ */
 export type SearchQueryJson = Record<string, Any>;
 
 export type ArCustomQueryForm = {
@@ -73,21 +80,32 @@ export type ArCustomQueryResult = Omit<ArCustomQueryForm, "query"> & {
   parameters: string[];
 };
 
+export type ArQueryEntry = ArCompareEntry | ArLogicalEntry;
+
+export type EntryToRecord<ENTRY extends [Any, Any]> = {
+  [KEY in ENTRY[0]]: ENTRY[1];
+};
+
 export type ArField = string;
-export type ArSimpleFieldQuery = Record<string, string>;
-export type ArExtendedFieldQuery = Record<
-  ArField,
-  Partial<Record<Operator, QueryValue>>
->;
-export type ArRangeQuery = Partial<
-  Record<RangeQueryOperator, ArRangeQueryValue>
->;
+
+export type ArSimpleEntry = [ArField, string];
+export type ArSimpleSubquery = EntryToRecord<ArSimpleEntry>;
+
+export type ArExtendedValue = Partial<Record<Operator, QueryValue>>;
+export type ArExtendedEntry = [ArField, ArExtendedValue];
+export type ArExtendedSubquery = EntryToRecord<ArExtendedEntry>;
+
+export type ArRangeEntry = [RangeQueryOperator, ArRangeQueryValue];
+export type ArRangeSubquery = EntryToRecord<ArRangeEntry>;
+
+export type ArCompareEntry = ArRangeEntry | ArExtendedEntry | ArSimpleEntry;
+
+export type ArCompareValue = ArCompareEntry[1];
+
 export const NO_FIELD = "n.a.";
 export type ArRangeQueryValue = { source: string; start: number; end: number };
 
-export function isArRangeQueryValue(
-  toTest: QueryValue,
-): toTest is ArRangeQueryValue {
+export function isArRangeQueryValue(toTest: Any): toTest is ArRangeQueryValue {
   return !!(
     toTest &&
     (toTest as ArRangeQueryValue).source &&
@@ -96,9 +114,18 @@ export function isArRangeQueryValue(
   );
 }
 
-export type ArSearchSubQuery =
-  | ArSimpleFieldQuery
-  | ArExtendedFieldQuery
-  | ArRangeQuery;
+export type ArQueryRecord = EntryToRecord<ArCompareEntry>;
 
-export type ArQueryEntry = [string, Any];
+export function isArCompareEntry(
+  toTest: ArQueryEntry,
+): toTest is ArCompareEntry {
+  return !isArLogicalEntry(toTest);
+}
+
+export type ArLogicalEntry = [LogicalOperator, ArQueryRecord];
+
+export function isArLogicalEntry(
+  toTest: ArQueryEntry,
+): toTest is ArLogicalEntry {
+  return isLogicalOperator(toTest[0]);
+}
