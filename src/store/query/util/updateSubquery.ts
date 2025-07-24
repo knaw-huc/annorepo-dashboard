@@ -1,7 +1,8 @@
 import { QueryState } from "../QuerySlice.ts";
 import { SubqueryUpdate } from "../SubqueryUpdate.ts";
-import { get, set } from "lodash";
+import { set } from "lodash";
 import { validateQuery } from "./validateQuery.ts";
+import { getOrThrow } from "./getOrThrow.ts";
 
 export function updateSubquery(
   update: SubqueryUpdate,
@@ -9,7 +10,7 @@ export function updateSubquery(
 ): QueryState {
   const { path, param, form, errors } = update;
 
-  const prevSubquery = get(prev.subqueries, path);
+  const prevSubquery = getOrThrow(prev.subqueries, path);
   const subqueryUpdate = { ...prevSubquery };
   subqueryUpdate.form = form ?? prevSubquery.form;
   subqueryUpdate.errors = errors ?? prevSubquery.errors;

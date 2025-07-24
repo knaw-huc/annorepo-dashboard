@@ -96,15 +96,19 @@ export type ArExtendedEntry = [ArField, ArExtendedValue];
 export type ArExtendedSubquery = EntryToRecord<ArExtendedEntry>;
 
 export type ArRangeEntry = [RangeQueryOperator, ArRangeQueryValue];
-export type ArRangeSubquery = EntryToRecord<ArRangeEntry>;
 
 export type ArCompareEntry = ArRangeEntry | ArExtendedEntry | ArSimpleEntry;
+export function isArCompareEntry(
+  toTest: ArQueryEntry,
+): toTest is ArCompareEntry {
+  return !isArLogicalEntry(toTest);
+}
 
 export type ArCompareValue = ArCompareEntry[1];
+export type ArCompareRecord = EntryToRecord<ArCompareEntry>;
 
 export const NO_FIELD = "n.a.";
 export type ArRangeQueryValue = { source: string; start: number; end: number };
-
 export function isArRangeQueryValue(toTest: Any): toTest is ArRangeQueryValue {
   return !!(
     toTest &&
@@ -114,16 +118,7 @@ export function isArRangeQueryValue(toTest: Any): toTest is ArRangeQueryValue {
   );
 }
 
-export type ArQueryRecord = EntryToRecord<ArCompareEntry>;
-
-export function isArCompareEntry(
-  toTest: ArQueryEntry,
-): toTest is ArCompareEntry {
-  return !isArLogicalEntry(toTest);
-}
-
-export type ArLogicalEntry = [LogicalOperator, ArQueryRecord];
-
+export type ArLogicalEntry = [LogicalOperator, ArCompareRecord];
 export function isArLogicalEntry(
   toTest: ArQueryEntry,
 ): toTest is ArLogicalEntry {

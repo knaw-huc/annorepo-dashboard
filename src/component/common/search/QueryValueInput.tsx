@@ -13,7 +13,7 @@ import { QueryValue } from "../../../model/query/value/QueryValue.ts";
 import { findMapperByValue } from "../../../model/query/value/util/findMapperByValue.ts";
 import { findMapperByOperator } from "../../../model/query/value/util/findMapperByOperator.ts";
 import { PropertyName } from "lodash";
-import { getComparisonSubquery } from "./getComparisonSubquery.ts";
+import { getComparisonSubquery } from "../../../store/query/util/getComparisonSubquery.ts";
 
 export function QueryValueInput(props: {
   path: PropertyName[];

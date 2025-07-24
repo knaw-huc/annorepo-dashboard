@@ -3,15 +3,12 @@ import {
   isComparisonSubquery,
   Subquery,
 } from "../../../model/query/QueryModel.ts";
-import { get, PropertyName } from "lodash";
+import { PropertyName } from "lodash";
+import { getSubqueryByType } from "./getSubqueryByType.ts";
 
 export function getComparisonSubquery(
   subqueries: Subquery[],
   path: PropertyName[],
 ): ComparisonSubquery {
-  const subquery = get(subqueries, path);
-  if (!isComparisonSubquery(subquery)) {
-    throw new Error("Expected comparison subquery");
-  }
-  return subquery;
+  return getSubqueryByType(subqueries, path, isComparisonSubquery);
 }

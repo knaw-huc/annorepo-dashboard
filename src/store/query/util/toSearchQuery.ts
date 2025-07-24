@@ -1,5 +1,5 @@
 import {
-  ArQueryRecord,
+  ArCompareRecord,
   isArRangeQueryValue,
   SearchQueryJson,
 } from "../../../model/ArModel.ts";
@@ -23,7 +23,7 @@ export function toSearchQuery(
   return mergeForms(arSubqueries);
 }
 
-function mergeForms(subqueries: ArQueryRecord[]): SearchQueryJson {
+function mergeForms(subqueries: ArCompareRecord[]): SearchQueryJson {
   const merged: Record<string, Any> = {};
   for (const subquery of subqueries) {
     const fields = Object.keys(subquery);
@@ -47,7 +47,7 @@ function mergeForms(subqueries: ArQueryRecord[]): SearchQueryJson {
 function convertToArSubquery(
   subquery: Subquery,
   asTemplate: boolean = false,
-): ArQueryRecord {
+): ArCompareRecord {
   if (isLogicalSubquery(subquery)) {
     // TODO
     console.log("TODO: handle LogicalSubquery");

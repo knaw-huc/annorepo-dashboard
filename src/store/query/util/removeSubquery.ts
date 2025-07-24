@@ -1,5 +1,6 @@
 import { QueryState } from "../QuerySlice.ts";
-import { get, initial, PropertyName, remove, unset } from "lodash";
+import { initial, PropertyName, remove, unset } from "lodash";
+import { getOrThrow } from "./getOrThrow.ts";
 
 export function removeSubquery(
   toRemove: PropertyName[],
@@ -10,7 +11,7 @@ export function removeSubquery(
 
   // Remove empty slots:
   if (toRemove.length > 1) {
-    const parent = get(update, initial(toRemove));
+    const parent = getOrThrow(update, initial(toRemove));
     remove(parent, (v) => v !== undefined);
   } else {
     remove(update, (v) => v !== undefined);

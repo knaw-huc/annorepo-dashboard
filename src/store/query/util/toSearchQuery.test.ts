@@ -9,8 +9,8 @@ import {
   Operator,
 } from "../../../model/query/operator/Operator.ts";
 import { ArLogicalEntry } from "../../../model/ArModel.ts";
-import { toSubquery } from "./toSubquery.ts";
 import { toSearchQuery } from "./toSearchQuery.ts";
+import { toSubquery } from "./toSubqueries.ts";
 
 describe(toSearchQuery.name, async () => {
   it("converts :or", async () => {

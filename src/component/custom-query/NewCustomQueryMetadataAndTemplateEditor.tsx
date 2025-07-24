@@ -3,7 +3,7 @@ import { H2 } from "../common/H2.tsx";
 import { CustomSubqueryEditor } from "../common/search/CustomSubqueryEditor.tsx";
 import { CustomQueryMetadataEditor } from "./CustomQueryMetadataEditor.tsx";
 import { useEffect, useState } from "react";
-import { get, isEmpty, PropertyName } from "lodash";
+import { isEmpty, PropertyName } from "lodash";
 import { toErrorRecord } from "../../store/query/util/toErrorRecord.ts";
 import { CheckboxWithLabel } from "../common/form/CheckboxWithLabel.tsx";
 import { Help } from "../common/icon/Help.tsx";
@@ -13,6 +13,7 @@ import { toParamTag } from "../../store/query/util/toParamTag.ts";
 import { Tooltip } from "../common/Tooltip.tsx";
 import { toParamName } from "../../store/query/util/toParamName.ts";
 import { CustomQueryMetadataForm } from "./model/CustomQueryMetadataForm.ts";
+import { getOrThrow } from "../../store/query/util/getOrThrow.ts";
 
 /**
  * Allow creating a new custom query
@@ -32,7 +33,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
   const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
 
   function handleParameterChange(path: PropertyName[], isParam: boolean) {
-    const form = get(subqueries, path).form;
+    const form = getOrThrow(subqueries, path).form;
     const update = isParam ? toParamTag(toParamName(form, path)) : false;
     updateSubquery({ path, param: update });
   }
@@ -67,7 +68,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
       <H2>Custom Query</H2>
       {subqueries.map((_, i) => {
         const path = [i];
-        const subquery = get(subqueries, path);
+        const subquery = getOrThrow(subqueries, path);
         return (
           <div key={path.join()} className="flex items-center">
             <CustomSubqueryEditor path={path} isCall={false} />

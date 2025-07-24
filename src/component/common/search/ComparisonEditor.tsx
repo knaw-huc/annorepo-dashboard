@@ -11,19 +11,22 @@ import { toParamName } from "../../../store/query/util/toParamName.ts";
 import { Operator } from "../../../model/query/operator/Operator.ts";
 import { toOperator } from "../../../model/query/operator/toOperator.ts";
 import { alignFormWithOperator } from "./util/alignFormWithOperator.tsx";
-import { get, PropertyName } from "lodash";
+import { PropertyName } from "lodash";
+import { getComparisonSubquery } from "../../../store/query/util/getComparisonSubquery.ts";
 
-export function SubqueryEditor(props: {
+export type ComparisonEditorProps = {
   fieldNames: string[];
   path: PropertyName[];
   disabled?: boolean;
   containerName?: string;
-}) {
+};
+
+export function ComparisonEditor(props: ComparisonEditorProps) {
   const { fieldNames, disabled, path, containerName } = props;
 
   const { subqueries, removeSubquery, updateSubquery } = useStore();
 
-  const subquery = get(subqueries, path);
+  const subquery = getComparisonSubquery(subqueries, path);
 
   const fieldSuggestions = subquery.form.field
     ? fieldNames.filter((name) => name.includes(subquery.form.field))

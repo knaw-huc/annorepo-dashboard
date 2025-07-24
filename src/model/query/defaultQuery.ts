@@ -8,9 +8,11 @@ import { isComparisonSubquery } from "./QueryModel.ts";
 export const defaultQuery: ArExtendedSubquery = {
   field: { [Operator.equal]: "value" },
 };
+
 export const defaultParams: string[] = toSubqueries(defaultQuery)
   .filter(isComparisonSubquery)
   .map((sq, i) => toParamName(sq.form, [i]));
+
 const subqueries = toSubqueries(defaultQuery);
 export const defaultTemplate: ArExtendedSubquery = toSearchQuery(
   subqueries,
