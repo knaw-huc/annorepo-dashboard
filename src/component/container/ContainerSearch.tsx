@@ -70,8 +70,8 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setSubmitted({ containerName, query, pageNo });
   }
 
-  const searchDisabled =
-    !!search.error || !subqueries.length || hasErrors(subqueries);
+  const hasSearchErrors = !!search.error || hasErrors(subqueries);
+  const isSearchDisabled = !subqueries.length || hasSearchErrors;
 
   if (!container.isSuccess || !page.isSuccess) {
     return <StatusMessage requests={[container, page]} />;
@@ -85,24 +85,24 @@ export function ContainerSearch(props: ContainerSearchProps) {
         <AddComparisonSubqueryButton
           path={newSubqueryPath}
           isParam={false}
-          disabled={searchDisabled}
+          disabled={hasSearchErrors}
         />
         <AddLogicalSubqueryButton
           path={newSubqueryPath}
-          disabled={searchDisabled}
+          disabled={hasSearchErrors}
           operator={LogicalOperator.and}
           className="ml-3"
         />
         <AddLogicalSubqueryButton
           path={newSubqueryPath}
-          disabled={searchDisabled}
+          disabled={hasSearchErrors}
           operator={LogicalOperator.or}
           className="ml-3"
         />
         <span className="ml-3">
           <SearchButton
             onClick={handleSubmitSearch}
-            disabled={searchDisabled}
+            disabled={isSearchDisabled}
           />
         </span>
       </div>
