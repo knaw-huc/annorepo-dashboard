@@ -5,12 +5,14 @@ import { toArQuery } from "./toArQuery.ts";
  * Check if forms and params can be converted into query
  * @returns error message on error
  */
-export function validateQuery(subqueries: Subquery[]): string {
+export function validateQuery(query: Subquery[]): string {
   try {
     // Computer says ...
-    toArQuery(subqueries, false);
+    toArQuery(query, false);
     return "";
   } catch (e) {
-    return e instanceof Error ? e.message : "New subquery causes unknown error";
+    return e instanceof Error
+      ? e.message
+      : "Query conversion causes unknown error";
   }
 }

@@ -1,12 +1,17 @@
 import { describe, expect, it } from "vitest";
-import { LogicalOperator } from "../../../model/query/operator/Operator.ts";
+import {
+  LogicalOperator,
+  Operator,
+} from "../../../model/query/operator/Operator.ts";
 import { validateSubquery } from "./validateSubquery.ts";
 import { LogicalSubquery } from "../../../model/query/QueryModel.ts";
+import { createLogical } from "./test/createLogical.ts";
+import { createCompare } from "./test/createCompare.ts";
 
 describe(validateSubquery.name, () => {
   const { and, or } = LogicalOperator;
-
-  it("returns error on two adjacent :ors", () => {
+  const { equal } = Operator;
+  it("sets error on two adjacent :ors", () => {
     const toValidate: LogicalSubquery = {
       type: "logical",
       forms: [],
@@ -40,7 +45,7 @@ describe(validateSubquery.name, () => {
     expect(andToValidate.error).toBe("");
   });
 
-  it("validates second erroneous value ignoring first", () => {
+  it("invalidates second erroneous value ignoring first", () => {
     const andToValidate: LogicalSubquery = {
       type: "logical",
       forms: [],
@@ -59,5 +64,21 @@ describe(validateSubquery.name, () => {
       andToValidate,
     ]);
     expect(andToValidate.error).toBe("':and' already exists.");
+  });
+
+  /**
+   * Fields can have the same name in nested subqueries:
+   * no merging into single record, so no crashing json object keys
+   */
+  it("validates nested fields with same name", () => {
+    const duplicateField = "field";
+    const toValidate = createCompare(duplicateField, equal, "value");
+    validateSubquery(toValidate, [
+      createLogical(and, [
+        createCompare(duplicateField, equal, "value"),
+        toValidate,
+      ]),
+    ]);
+    expect(toValidate.errors.field).toBe("");
   });
 });
