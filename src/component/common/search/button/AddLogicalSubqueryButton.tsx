@@ -9,6 +9,7 @@ export function AddLogicalSubqueryButton(props: {
   disabled?: boolean;
   operator: LogicalOperator;
   path: PropertyName[];
+  className?: string;
 }) {
   const { disabled, path, operator } = props;
   const { addSubquery } = useStore();
@@ -26,7 +27,7 @@ export function AddLogicalSubqueryButton(props: {
   return (
     <Button
       type="button"
-      className="h-full border-b-2"
+      className={`h-full border-b-2 ${props.className}`}
       onClick={addOrSubquery}
       secondary
       disabled={disabled}

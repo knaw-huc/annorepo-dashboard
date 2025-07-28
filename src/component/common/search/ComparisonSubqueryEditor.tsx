@@ -21,7 +21,7 @@ export type ComparisonEditorProps = {
   containerName?: string;
 };
 
-export function ComparisonEditor(props: ComparisonEditorProps) {
+export function ComparisonSubqueryEditor(props: ComparisonEditorProps) {
   const { fieldNames, disabled, path, containerName } = props;
 
   const { subqueries, removeSubquery, updateSubquery } = useStore();

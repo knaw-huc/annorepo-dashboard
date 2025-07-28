@@ -1,7 +1,7 @@
 import {
-  ComparisonEditor,
   ComparisonEditorProps,
-} from "./ComparisonEditor.tsx";
+  ComparisonSubqueryEditor,
+} from "./ComparisonSubqueryEditor.tsx";
 import { useStore } from "../../../store/useStore.ts";
 import {
   isComparisonSubquery,
@@ -26,12 +26,12 @@ export function SubqueriesEditor(props: ComparisonEditorProps) {
               key={i}
               containerName={containerName}
               fieldNames={fieldNames}
-              path={[i]}
+              path={[...path, i]}
             />
           );
         } else if (isComparisonSubquery(subquery)) {
           return (
-            <ComparisonEditor
+            <ComparisonSubqueryEditor
               key={i}
               containerName={containerName}
               fieldNames={fieldNames}

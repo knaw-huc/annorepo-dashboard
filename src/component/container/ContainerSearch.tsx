@@ -91,11 +91,13 @@ export function ContainerSearch(props: ContainerSearchProps) {
           path={newSubqueryPath}
           disabled={searchDisabled}
           operator={LogicalOperator.and}
+          className="ml-3"
         />
         <AddLogicalSubqueryButton
           path={newSubqueryPath}
           disabled={searchDisabled}
           operator={LogicalOperator.or}
+          className="ml-3"
         />
         <span className="ml-3">
           <SearchButton
