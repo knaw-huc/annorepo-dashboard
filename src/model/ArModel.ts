@@ -5,7 +5,7 @@ import {
   Operator,
 } from "./query/operator/Operator.ts";
 import { QueryValue } from "./query/value/QueryValue.ts";
-import { Any } from "../store/query/util/Any.ts";
+import { Any } from "./Any.ts";
 
 export type ArAboutData = {
   appName: string;

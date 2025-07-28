@@ -13,7 +13,7 @@ import { isRangeQueryOperator } from "../../../model/query/operator/RangeQueryOp
 import { isNonFnOperator } from "../../../model/query/operator/NonFnQueryOperator.ts";
 import { QueryValueType } from "../../../model/query/value/QueryValueType.ts";
 import { findParam } from "./findParam.ts";
-import { Any } from "./Any.ts";
+import { Any } from "../../../model/Any.ts";
 /**
  * TODO: handle single <> and double <<>> parameters properly
  */

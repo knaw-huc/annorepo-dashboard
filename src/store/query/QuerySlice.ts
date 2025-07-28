@@ -3,7 +3,7 @@ import { ArQuery } from "../../model/ArModel.ts";
 import { initWithQuery } from "./util/initWithQuery.ts";
 import { initWithTemplate } from "./util/initWithTemplate.ts";
 import { updateSubquery } from "./util/updateSubquery.ts";
-import { SubqueryUpdate } from "./SubqueryUpdate.ts";
+import { SubqueryToUpdate } from "./SubqueryToUpdate.ts";
 import { addSubquery } from "./util/addSubquery.ts";
 import { removeSubquery } from "./util/removeSubquery.ts";
 import { SubqueryToAdd } from "./SubqueryToAdd.ts";
@@ -19,7 +19,7 @@ export type QuerySlice = QueryState & {
 
   addSubquery: (toAdd: SubqueryToAdd) => void;
   removeSubquery: (path: PropertyName[]) => void;
-  updateSubquery: (update: SubqueryUpdate) => void;
+  updateSubquery: (update: SubqueryToUpdate) => void;
 
   initWithQuery: (query: ArQuery) => void;
   initWithTemplate: (query: ArQuery, params: string[]) => void;

@@ -3,7 +3,7 @@ import { FieldSubQueryErrors } from "../../model/query/ErrorRecord.ts";
 import { ParamValue } from "../../model/query/ParamValue.ts";
 import { PropertyName } from "lodash";
 
-export type SubqueryUpdate = {
+export type SubqueryToUpdate = {
   path: PropertyName[];
   form?: ComparisonForm;
   errors?: FieldSubQueryErrors;

@@ -15,7 +15,7 @@ import {
 import { toParamTag } from "./toParamTag.ts";
 import { Operator } from "../../../model/query/operator/Operator.ts";
 import { isRangeQueryOperator } from "../../../model/query/operator/RangeQueryOperator.ts";
-import { Any } from "./Any.ts";
+import { Any } from "../../../model/Any.ts";
 
 /**
  * From internal to AR query
