@@ -12,18 +12,14 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 
 import { ContainerDropdown } from "./ContainerDropdown.tsx";
-import { toComparisonForm } from "../../store/query/util/toComparisonForm.ts";
-import { mapValues } from "lodash";
 import { useStore } from "../../store/useStore.ts";
-import { toParamName } from "../../store/query/util/toParamName.ts";
 import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/hasErrors.ts";
-import { AddSubqueryButton } from "../common/search/button/AddSubqueryButton.tsx";
+import { AddCompareSubqueryButton } from "../common/search/button/AddCompareSubqueryButton.tsx";
 import { Button } from "../common/Button.tsx";
 import { Store } from "../common/icon/Store.tsx";
 import { Next } from "../common/icon/Next.tsx";
 import { QR } from "../../client/query/QR.tsx";
-import { defaultQuery } from "../../model/query/defaultQuery.ts";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string;
@@ -43,7 +39,7 @@ export function NewCustomQueryPreviewEditor(props: {
   });
   const [isInit, setInit] = useState<boolean>();
   const { page } = useContainerSearch(submitted);
-  const { subqueries, addSubquery } = useStore();
+  const { subqueries } = useStore();
 
   useEffect(() => {
     if (!isInit && containerNames.length && query) {
@@ -62,18 +58,6 @@ export function NewCustomQueryPreviewEditor(props: {
     }
     setSubmitted({ query, pageNo, containerName });
   };
-
-  function handleAddSubQuery() {
-    const newQueryEntry = Object.entries(defaultQuery)[0];
-    const form = toComparisonForm(newQueryEntry);
-    const errors = mapValues(form, () => "");
-    const path = [subqueries.length];
-    const param = toParamName(form, path);
-    addSubquery({
-      path,
-      subquery: { form, errors, type: "comparison", param },
-    });
-  }
 
   const searchDisabled: boolean =
     !containerName ||
@@ -107,8 +91,9 @@ export function NewCustomQueryPreviewEditor(props: {
           <div className="mt-7">
             <QueryEditor containerName={containerName} />
             <span className="inline-block">
-              <AddSubqueryButton
-                onClick={handleAddSubQuery}
+              <AddCompareSubqueryButton
+                path={[subqueries.length]}
+                isParam={true}
                 disabled={searchDisabled}
               />
             </span>

@@ -12,15 +12,12 @@ import {
   ContainerSearchArgs,
   useContainerSearch,
 } from "../../client/endpoint/useContainerSearch.tsx";
-import { toComparisonForm } from "../../store/query/util/toComparisonForm.ts";
-import { mapValues } from "lodash";
 import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/hasErrors.ts";
-import { AddSubqueryButton } from "../common/search/button/AddSubqueryButton.tsx";
+import { AddCompareSubqueryButton } from "../common/search/button/AddCompareSubqueryButton.tsx";
 import { defaultQuery } from "../../model/query/defaultQuery.ts";
-import { SubqueryToAdd } from "../../store/query/SubqueryToAdd.ts";
-import { Button } from "../common/Button.tsx";
 import { LogicalOperator } from "../../model/query/operator/Operator.ts";
+import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
 
 export type ContainerSearchProps = {
   containerName: string;
@@ -32,7 +29,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const [pageNo, setPageNo] = useState(0);
 
   const container = useContainer(containerName);
-  const { initWithQuery, addSubquery, subqueries } = useStore();
+  const { initWithQuery, subqueries } = useStore();
   const [isInit, setInit] = useState(false);
   const query = useSearchQuery();
 
@@ -73,58 +70,33 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setSubmitted({ containerName, query, pageNo });
   }
 
-  function addComparisionSubquery() {
-    const newQueryEntry = Object.entries(defaultQuery)[0];
-    const form = toComparisonForm(newQueryEntry);
-    const errors = mapValues(form, () => "");
-    const param = false;
-    addSubquery({
-      path: [subqueries.length],
-      subquery: { type: "comparison", form, errors, param },
-    });
-  }
-
-  function addLogicalSubquery(operator: LogicalOperator) {
-    const toAdd: SubqueryToAdd = {
-      path: [subqueries.length],
-      subquery: { type: "logical", operator, forms: [], error: "" },
-    };
-    addSubquery(toAdd);
-  }
-
   const searchDisabled =
     !!search.error || !subqueries.length || hasErrors(subqueries);
 
   if (!container.isSuccess || !page.isSuccess) {
     return <StatusMessage requests={[container, page]} />;
   }
+  const newSubqueryPath = [subqueries.length];
   return (
     <>
       <H1>Search annotations</H1>
       <QueryEditor containerName={containerName} />
       <div className="mb-2">
-        <AddSubqueryButton
-          onClick={addComparisionSubquery}
+        <AddCompareSubqueryButton
+          path={newSubqueryPath}
+          isParam={false}
           disabled={searchDisabled}
         />
-        <Button
-          onClick={() => addLogicalSubquery(LogicalOperator.or)}
+        <AddLogicalSubqueryButton
+          path={newSubqueryPath}
           disabled={searchDisabled}
-          secondary
-          className="ml-2"
-        >
-          Add &nbsp;
-          <code>:OR</code>
-        </Button>
-        <Button
-          onClick={() => addLogicalSubquery(LogicalOperator.and)}
+          operator={LogicalOperator.and}
+        />
+        <AddLogicalSubqueryButton
+          path={newSubqueryPath}
           disabled={searchDisabled}
-          className="ml-2"
-          secondary
-        >
-          Add &nbsp;
-          <code>:AND</code>
-        </Button>
+          operator={LogicalOperator.or}
+        />
         <span className="ml-3">
           <SearchButton
             onClick={handleSubmitSearch}
