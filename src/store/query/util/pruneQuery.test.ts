@@ -4,20 +4,19 @@ import {
   Operator,
 } from "../../../model/query/operator/Operator.ts";
 import {
-  ComparisonSubquery,
   isComparisonSubquery,
   isLogicalSubquery,
-  LogicalSubquery,
-  Subquery,
 } from "../../../model/query/QueryModel.ts";
 import { pruneQuery } from "./pruneQuery.ts";
+import { createComparison } from "./test/createComparison.ts";
+import { createLogical } from "./test/createLogical.ts";
 
 describe(pruneQuery.name, async () => {
   const eq = Operator.equal;
 
   it("prunes by value", async () => {
     const result = pruneQuery(
-      [testCompare("f", eq, "v"), testCompare("f2", eq, "v2")],
+      [createComparison("f", eq, "v"), createComparison("f2", eq, "v2")],
       (sq) => isComparisonSubquery(sq) && sq.form.value === "v2",
     );
 
@@ -30,9 +29,9 @@ describe(pruneQuery.name, async () => {
   it("prunes nested value", async () => {
     const result = pruneQuery(
       [
-        testLogical(LogicalOperator.and, [
-          testCompare("f", eq, "v"),
-          testCompare("f2", eq, "v2"),
+        createLogical(LogicalOperator.and, [
+          createComparison("f", eq, "v"),
+          createComparison("f2", eq, "v2"),
         ]),
       ],
       (sq) => isComparisonSubquery(sq) && sq.form.value === "v2",
@@ -44,35 +43,3 @@ describe(pruneQuery.name, async () => {
     expect(s1.form.value).toBe("v");
   });
 });
-
-function testLogical(or: LogicalOperator, forms: Subquery[]): LogicalSubquery {
-  return {
-    type: "logical",
-    operator: or,
-    error: "",
-    forms,
-  };
-}
-
-function testCompare(
-  field: string,
-  operator: Operator,
-  value: string,
-): ComparisonSubquery {
-  return {
-    type: "comparison",
-    form: {
-      field,
-      operator,
-      value,
-      valueType: "string",
-    },
-    errors: {
-      field: "",
-      operator: "",
-      value: "",
-      valueType: "",
-    },
-    param: false,
-  };
-}

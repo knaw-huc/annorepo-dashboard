@@ -6,7 +6,7 @@ import {
 import { validateSubquery } from "./validateSubquery.ts";
 import { LogicalSubquery } from "../../../model/query/QueryModel.ts";
 import { createLogical } from "./test/createLogical.ts";
-import { createCompare } from "./test/createCompare.ts";
+import { createComparison } from "./test/createComparison.ts";
 
 describe(validateSubquery.name, () => {
   const { and, or } = LogicalOperator;
@@ -72,10 +72,10 @@ describe(validateSubquery.name, () => {
    */
   it("validates nested fields with same name", () => {
     const duplicateField = "field";
-    const toValidate = createCompare(duplicateField, equal, "value");
+    const toValidate = createComparison(duplicateField, equal, "value");
     validateSubquery(toValidate, [
       createLogical(and, [
-        createCompare(duplicateField, equal, "value"),
+        createComparison(duplicateField, equal, "value"),
         toValidate,
       ]),
     ]);

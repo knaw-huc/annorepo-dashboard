@@ -7,7 +7,7 @@ import { Remove } from "../icon/Remove.tsx";
 import { Warning } from "../Warning.tsx";
 
 import { SubqueriesEditor } from "./SubqueriesEditor.tsx";
-import { AddCompareSubqueryButton } from "./button/AddCompareSubqueryButton.tsx";
+import { AddComparisonSubqueryButton } from "./button/AddComparisonSubqueryButton.tsx";
 import { AddLogicalSubqueryButton } from "./button/AddLogicalSubqueryButton.tsx";
 import { LogicalOperator } from "../../../model/query/operator/Operator.ts";
 
@@ -32,7 +32,7 @@ export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
           <Remove />
         </Button>
 
-        <AddCompareSubqueryButton
+        <AddComparisonSubqueryButton
           path={newSubqueryPath}
           isParam={false}
           disabled={!!subquery.error}

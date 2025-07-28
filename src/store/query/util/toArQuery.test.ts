@@ -5,15 +5,15 @@ import {
 } from "../../../model/query/operator/Operator.ts";
 import { toArQuery } from "./toArQuery.ts";
 import { createLogical } from "./test/createLogical.ts";
-import { createCompare } from "./test/createCompare.ts";
+import { createComparison } from "./test/createComparison.ts";
 
 describe(toArQuery.name, async () => {
   const { or, and } = LogicalOperator;
   const eq = Operator.equal;
 
   it("converts :or", async () => {
-    const f = createCompare("f", eq, "v");
-    const f2 = createCompare("f2", eq, "v2");
+    const f = createComparison("f", eq, "v");
+    const f2 = createComparison("f2", eq, "v2");
     const toTest = createLogical(or, [f, f2]);
     const result = toArQuery([toTest], false);
 
@@ -26,8 +26,8 @@ describe(toArQuery.name, async () => {
     const result = toArQuery(
       [
         createLogical(and, [
-          createCompare("f", eq, "v"),
-          createCompare("f2", eq, "v2"),
+          createComparison("f", eq, "v"),
+          createComparison("f2", eq, "v2"),
         ]),
       ],
       false,
@@ -41,12 +41,12 @@ describe(toArQuery.name, async () => {
       [
         createLogical(and, [
           createLogical(or, [
-            createCompare("f", eq, "v"),
-            createCompare("f2", eq, "v2"),
+            createComparison("f", eq, "v"),
+            createComparison("f2", eq, "v2"),
           ]),
           createLogical(or, [
-            createCompare("f3", eq, "v3"),
-            createCompare("f4", eq, "v4"),
+            createComparison("f3", eq, "v3"),
+            createComparison("f4", eq, "v4"),
           ]),
         ]),
       ],

@@ -1,7 +1,7 @@
 import { Operator } from "../../../../model/query/operator/Operator.ts";
 import { ComparisonSubquery } from "../../../../model/query/QueryModel.ts";
 
-export function createCompare(
+export function createComparison(
   field: string,
   operator: Operator,
   value: string,

@@ -1,5 +1,5 @@
 import {
-  ArCompareRecord,
+  ArComparisonRecord,
   ArLogicalRecord,
   ArSubqueryRecord,
   isArRangeQueryValue,
@@ -60,7 +60,7 @@ function toArSubquery(
   if (isLogicalSubquery(subquery)) {
     return toArLogical(subquery, asTemplate);
   }
-  return toArCompare(subquery, asTemplate);
+  return toArComparison(subquery, asTemplate);
 }
 
 function toArLogical(
@@ -73,10 +73,10 @@ function toArLogical(
   };
 }
 
-function toArCompare(
+function toArComparison(
   subquery: ComparisonSubquery,
   asTemplate: boolean,
-): ArCompareRecord {
+): ArComparisonRecord {
   const { param, form } = subquery;
   const value = asTemplate && param !== false ? toParamTag(param) : form.value;
   if (subquery.form.operator === Operator.simpleQuery) {

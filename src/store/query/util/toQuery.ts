@@ -1,8 +1,8 @@
 import {
-  ArCompareEntry,
+  ArComparisonEntry,
   ArLogicalEntry,
   ArQueryEntry,
-  isArCompareEntry,
+  isArComparisonEntry,
   isArLogicalEntry,
   ArQuery,
 } from "../../../model/ArModel.ts";
@@ -31,7 +31,7 @@ export function toSubquery(
   entry: ArQueryEntry,
   paramNames?: string[],
 ): Subquery {
-  if (isArCompareEntry(entry)) {
+  if (isArComparisonEntry(entry)) {
     return toComparisonSubquery(entry, paramNames);
   } else if (isArLogicalEntry(entry)) {
     return toLogicalSubquery(entry, paramNames);
@@ -50,7 +50,7 @@ function toLogicalSubquery(
 }
 
 function toComparisonSubquery(
-  entry: ArCompareEntry,
+  entry: ArComparisonEntry,
   paramNames?: string[],
 ): ComparisonSubquery {
   const form = toComparisonForm(entry, paramNames);

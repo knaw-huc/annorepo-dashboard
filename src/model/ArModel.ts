@@ -75,14 +75,14 @@ export type ArCustomQueryResult = Omit<ArCustomQueryForm, "query"> & {
   parameters: string[];
 };
 
-export type ArQueryEntry = ArCompareEntry | ArLogicalEntry;
+export type ArQueryEntry = ArComparisonEntry | ArLogicalEntry;
 
 export type EntryToRecord<ENTRY extends [Any, Any]> = {
   [KEY in ENTRY[0]]: ENTRY[1];
 };
 
 export type ArField = string;
-export type ArSubqueryRecord = ArCompareRecord | ArLogicalRecord;
+export type ArSubqueryRecord = ArComparisonRecord | ArLogicalRecord;
 
 export type ArSimpleEntry = [ArField, string];
 export type ArSimpleSubquery = EntryToRecord<ArSimpleEntry>;
@@ -93,15 +93,15 @@ export type ArExtendedSubquery = EntryToRecord<ArExtendedEntry>;
 
 export type ArRangeEntry = [RangeQueryOperator, ArRangeQueryValue];
 
-export type ArCompareEntry = ArRangeEntry | ArExtendedEntry | ArSimpleEntry;
-export function isArCompareEntry(
+export type ArComparisonEntry = ArRangeEntry | ArExtendedEntry | ArSimpleEntry;
+export function isArComparisonEntry(
   toTest: ArQueryEntry,
-): toTest is ArCompareEntry {
+): toTest is ArComparisonEntry {
   return !isArLogicalEntry(toTest);
 }
 
-export type ArCompareValue = ArCompareEntry[1];
-export type ArCompareRecord = EntryToRecord<ArCompareEntry>;
+export type ArComparisonValue = ArComparisonEntry[1];
+export type ArComparisonRecord = EntryToRecord<ArComparisonEntry>;
 
 export const NO_FIELD = "n.a.";
 export type ArRangeQueryValue = { source: string; start: number; end: number };

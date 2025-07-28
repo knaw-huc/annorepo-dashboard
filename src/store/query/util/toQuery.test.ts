@@ -15,7 +15,7 @@ import { toSubquery } from "./toQuery.ts";
 describe(toSubquery.name, async () => {
   const eq = Operator.equal;
   const or = LogicalOperator.or;
-  const noCompareErrors = {
+  const noComparisonErrors = {
     field: "",
     operator: "",
     value: "",
@@ -33,7 +33,7 @@ describe(toSubquery.name, async () => {
         {
           type: "comparison",
           form: { field: "f", operator: eq, value: "v", valueType: "string" },
-          errors: noCompareErrors,
+          errors: noComparisonErrors,
           param: false,
         },
       ],

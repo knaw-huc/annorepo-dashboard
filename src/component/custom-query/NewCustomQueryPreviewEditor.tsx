@@ -15,7 +15,7 @@ import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { useStore } from "../../store/useStore.ts";
 import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/hasErrors.ts";
-import { AddCompareSubqueryButton } from "../common/search/button/AddCompareSubqueryButton.tsx";
+import { AddComparisonSubqueryButton } from "../common/search/button/AddComparisonSubqueryButton.tsx";
 import { Button } from "../common/Button.tsx";
 import { Store } from "../common/icon/Store.tsx";
 import { Next } from "../common/icon/Next.tsx";
@@ -91,7 +91,7 @@ export function NewCustomQueryPreviewEditor(props: {
           <div className="mt-7">
             <QueryEditor containerName={containerName} />
             <span className="inline-block">
-              <AddCompareSubqueryButton
+              <AddComparisonSubqueryButton
                 path={[subqueries.length]}
                 isParam={true}
                 disabled={searchDisabled}

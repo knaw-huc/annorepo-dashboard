@@ -6,7 +6,7 @@ import { mapValues, PropertyName } from "lodash";
 import { useStore } from "../../../../store/useStore.ts";
 import { toParamName } from "../../../../store/query/util/toParamName.ts";
 
-export function AddCompareSubqueryButton(props: {
+export function AddComparisonSubqueryButton(props: {
   disabled?: boolean;
   path: PropertyName[];
   isParam: boolean;

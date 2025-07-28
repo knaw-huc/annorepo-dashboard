@@ -1,5 +1,5 @@
 import {
-  ArCompareEntry,
+  ArComparisonEntry,
   ArQueryEntry,
   isArRangeQueryValue,
   NO_FIELD,
@@ -18,7 +18,7 @@ import { Any } from "./Any.ts";
  * TODO: handle single <> and double <<>> parameters properly
  */
 export function toComparisonForm(
-  entry: ArCompareEntry,
+  entry: ArComparisonEntry,
   // Query entry contains param when passing a template:
   paramNames?: string[],
 ): ComparisonForm {

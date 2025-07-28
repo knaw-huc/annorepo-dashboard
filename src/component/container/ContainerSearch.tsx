@@ -14,7 +14,7 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/hasErrors.ts";
-import { AddCompareSubqueryButton } from "../common/search/button/AddCompareSubqueryButton.tsx";
+import { AddComparisonSubqueryButton } from "../common/search/button/AddComparisonSubqueryButton.tsx";
 import { defaultQuery } from "../../model/query/defaultQuery.ts";
 import { LogicalOperator } from "../../model/query/operator/Operator.ts";
 import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
@@ -82,7 +82,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
       <H1>Search annotations</H1>
       <QueryEditor containerName={containerName} />
       <div className="mb-2">
-        <AddCompareSubqueryButton
+        <AddComparisonSubqueryButton
           path={newSubqueryPath}
           isParam={false}
           disabled={searchDisabled}
