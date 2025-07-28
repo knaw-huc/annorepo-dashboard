@@ -21,24 +21,10 @@ export function toSearchQuery(
   subqueries: Subquery[],
   asTemplate: boolean,
 ): SearchQueryJson {
-  return toArSubqueryRecord(subqueries, asTemplate);
+  return mergeArEntries(subqueries.map((sq) => toArSubquery(sq, asTemplate)));
 }
 
-/**
- * Top level query is an implicit :and-query of subqueries grouped inside an object
- * Note: as in every json object, keys (i.e. subquery operators or fields) can appear only once
- */
-function toArSubqueryRecord(
-  subqueries: Subquery[],
-  asTemplate: boolean,
-): ArSubqueryRecord {
-  const arRecords = subqueries.map((sq) => convertToArSubquery(sq, asTemplate));
-  return mergeArSubqueryRecords(arRecords);
-}
-
-function mergeArSubqueryRecords(
-  subqueries: ArSubqueryRecord[],
-): SearchQueryJson {
+function mergeArEntries(subqueries: ArSubqueryRecord[]): SearchQueryJson {
   const merged: Record<string, Any> = {};
   for (const subquery of subqueries) {
     const fields = Object.keys(subquery);
@@ -59,7 +45,7 @@ function mergeArSubqueryRecords(
   return merged;
 }
 
-function convertToArSubquery(
+function toArSubquery(
   subquery: Subquery,
   asTemplate: boolean = false,
 ): ArSubqueryRecord {
@@ -73,8 +59,9 @@ function toArLogical(
   subquery: LogicalSubquery,
   asTemplate: boolean,
 ): ArLogicalRecord {
+  const { operator, forms } = subquery;
   return {
-    [subquery.operator]: toArSubqueryRecord(subquery.forms, asTemplate),
+    [operator]: forms.map((f) => toArSubquery(f, asTemplate)),
   };
 }
 
