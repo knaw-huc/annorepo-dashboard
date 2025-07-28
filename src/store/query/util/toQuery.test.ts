@@ -10,7 +10,7 @@ import {
   Operator,
 } from "../../../model/query/operator/Operator.ts";
 import { ArLogicalEntry } from "../../../model/ArModel.ts";
-import { toSubquery } from "./toSubqueries.ts";
+import { toSubquery } from "./toQuery.ts";
 
 describe(toSubquery.name, async () => {
   const eq = Operator.equal;

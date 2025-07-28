@@ -1,12 +1,12 @@
-import { SearchQueryJson } from "../../../model/ArModel.ts";
+import { ArQuery } from "../../../model/ArModel.ts";
 import { QueryState } from "../QuerySlice.ts";
-import { toSubqueries } from "./toSubqueries.ts";
+import { toQuery } from "./toQuery.ts";
 
 export function initWithTemplate(
-  template: SearchQueryJson,
+  template: ArQuery,
   paramNames: string[],
 ): QueryState {
-  const subqueries = toSubqueries(template, paramNames);
+  const subqueries = toQuery(template, paramNames);
 
   return {
     subqueries,

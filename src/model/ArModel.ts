@@ -41,8 +41,6 @@ export type ArContainer = {
   readOnlyForAnonymousUsers: boolean;
 };
 
-export type ArQuery = object;
-
 export type ArAnnotation<T extends object = object> = {
   "@context": "http://www.w3.org/ns/anno.jsonld";
 
@@ -56,11 +54,7 @@ export type ArAnnotation<T extends object = object> = {
 
 export type ArContainerFields = Record<string, number>;
 
-/**
- * TODO: replace with ArCompareRecord or 'ArQueryRecord'
- *  use {@link ArQueryEntry}?
- */
-export type SearchQueryJson = Record<string, Any>;
+export type ArQuery = Record<string, Any>;
 
 export type ArCustomQueryForm = {
   name: string;
@@ -69,7 +63,7 @@ export type ArCustomQueryForm = {
   public: boolean;
 
   /**
-   * {@link SearchQueryJson}
+   * {@link ArQuery}
    */
   query: string;
 };
@@ -133,9 +127,3 @@ export function isArLogicalEntry(
 ): toTest is ArLogicalEntry {
   return isLogicalOperator(toTest[0]);
 }
-
-export type Foo = {
-  a: number;
-};
-export type FooEntry = [string, Foo];
-export type FooRecord = EntryToRecord<FooEntry>;

@@ -3,7 +3,7 @@ import {
   ArLogicalRecord,
   ArSubqueryRecord,
   isArRangeQueryValue,
-  SearchQueryJson,
+  ArQuery,
 } from "../../../model/ArModel.ts";
 import { objectEntries } from "../../../util/objectEntries.ts";
 import {
@@ -17,14 +17,18 @@ import { Operator } from "../../../model/query/operator/Operator.ts";
 import { isRangeQueryOperator } from "../../../model/query/operator/RangeQueryOperator.ts";
 import { Any } from "./Any.ts";
 
-export function toSearchQuery(
+/**
+ * From internal to AR query
+ * See also {@link toQuery}
+ */
+export function toArQuery(
   subqueries: Subquery[],
   asTemplate: boolean,
-): SearchQueryJson {
+): ArQuery {
   return mergeArEntries(subqueries.map((sq) => toArSubquery(sq, asTemplate)));
 }
 
-function mergeArEntries(subqueries: ArSubqueryRecord[]): SearchQueryJson {
+function mergeArEntries(subqueries: ArSubqueryRecord[]): ArQuery {
   const merged: Record<string, Any> = {};
   for (const subquery of subqueries) {
     const fields = Object.keys(subquery);

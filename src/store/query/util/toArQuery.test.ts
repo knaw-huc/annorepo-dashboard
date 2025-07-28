@@ -3,14 +3,14 @@ import {
   LogicalOperator,
   Operator,
 } from "../../../model/query/operator/Operator.ts";
-import { toSearchQuery } from "./toSearchQuery.ts";
+import { toArQuery } from "./toArQuery.ts";
 import {
   ComparisonSubquery,
   LogicalSubquery,
   Subquery,
 } from "../../../model/query/QueryModel.ts";
 
-describe(toSearchQuery.name, async () => {
+describe(toArQuery.name, async () => {
   const { or, and } = LogicalOperator;
   const eq = Operator.equal;
 
@@ -18,7 +18,7 @@ describe(toSearchQuery.name, async () => {
     const f = testCompare("f", eq, "v");
     const f2 = testCompare("f2", eq, "v2");
     const toTest = testLogical(or, [f, f2]);
-    const result = toSearchQuery([toTest], false);
+    const result = toArQuery([toTest], false);
 
     expect(result).toEqual({
       ":or": [{ f: { ":=": "v" } }, { f2: { ":=": "v2" } }],
@@ -26,7 +26,7 @@ describe(toSearchQuery.name, async () => {
   });
 
   it("converts :and", async () => {
-    const result = toSearchQuery(
+    const result = toArQuery(
       [
         testLogical(and, [
           testCompare("f", eq, "v"),
@@ -40,7 +40,7 @@ describe(toSearchQuery.name, async () => {
     });
   });
   it("converts :and with two :ors", async () => {
-    const result = toSearchQuery(
+    const result = toArQuery(
       [
         testLogical(and, [
           testLogical(or, [

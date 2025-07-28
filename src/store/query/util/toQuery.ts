@@ -4,7 +4,7 @@ import {
   ArQueryEntry,
   isArCompareEntry,
   isArLogicalEntry,
-  SearchQueryJson,
+  ArQuery,
 } from "../../../model/ArModel.ts";
 import {
   ComparisonSubquery,
@@ -15,10 +15,11 @@ import { objectEntries } from "../../../util/objectEntries.ts";
 import { toComparisonForm } from "./toComparisonForm.ts";
 import { toErrorRecord } from "./toErrorRecord.ts";
 
-export function toSubqueries(
-  query: SearchQueryJson,
-  paramNames?: string[],
-): Subquery[] {
+/**
+ * From AR to internal query
+ * See also {@link toArQuery}
+ */
+export function toQuery(query: ArQuery, paramNames?: string[]): Subquery[] {
   return objectEntries(query).map((entry) => {
     return toSubquery(entry, paramNames);
   });
@@ -42,7 +43,7 @@ function toLogicalSubquery(
   paramNames?: string[],
 ): LogicalSubquery {
   const [operator, operands] = entry;
-  const forms = toSubqueries(operands, paramNames);
+  const forms = toQuery(operands, paramNames);
   return { type: "logical", operator, forms, error: "" };
 }
 

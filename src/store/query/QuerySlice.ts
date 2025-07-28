@@ -1,5 +1,5 @@
 import { Subquery } from "../../model/query/QueryModel.ts";
-import { SearchQueryJson } from "../../model/ArModel.ts";
+import { ArQuery } from "../../model/ArModel.ts";
 import { initWithQuery } from "./util/initWithQuery.ts";
 import { initWithTemplate } from "./util/initWithTemplate.ts";
 import { updateSubquery } from "./util/updateSubquery.ts";
@@ -21,8 +21,8 @@ export type QuerySlice = QueryState & {
   removeSubquery: (path: PropertyName[]) => void;
   updateSubquery: (update: SubqueryUpdate) => void;
 
-  initWithQuery: (query: SearchQueryJson) => void;
-  initWithTemplate: (query: SearchQueryJson, params: string[]) => void;
+  initWithQuery: (query: ArQuery) => void;
+  initWithTemplate: (query: ArQuery, params: string[]) => void;
 };
 
 export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {

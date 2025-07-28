@@ -8,7 +8,5 @@ export function toParamName(
 ): string {
   const key = isRangeQueryOperator(form.operator) ? form.operator : form.field;
   const cleanedKey = key.replaceAll(/[.]/g, "-").replaceAll(/[:]/g, "");
-  const result = `${path.join("-")}-${cleanedKey}`;
-  console.log(toParamName.name, { form, key, cleanedKey, result });
-  return result;
+  return `${path.join("-")}-${cleanedKey}`;
 }

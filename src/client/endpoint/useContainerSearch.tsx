@@ -1,55 +1,53 @@
-import {useOpenApiClient} from "../OpenApiClientProvider.tsx";
-import {keepPreviousData, useQuery} from "@tanstack/react-query";
-import {AnnoRepoOpenApiClient} from "../OpenApiClient.tsx";
-import {ArQuery, SearchQueryJson} from "../../model/ArModel.ts";
-import {toName} from "../../util/toName.ts";
-import {createQueryKey} from "../query/useGet.tsx";
-import {QR} from "../query/QR.tsx";
-import {GetPath} from "../query/GetPath.tsx";
+import { useOpenApiClient } from "../OpenApiClientProvider.tsx";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { AnnoRepoOpenApiClient } from "../OpenApiClient.tsx";
+import { ArQuery } from "../../model/ArModel.ts";
+import { toName } from "../../util/toName.ts";
+import { createQueryKey } from "../query/useGet.tsx";
+import { QR } from "../query/QR.tsx";
+import { GetPath } from "../query/GetPath.tsx";
 
 export type ContainerSearchArgs = {
-  containerName: string,
-  query?: SearchQueryJson,
-  pageNo: number
-}
+  containerName: string;
+  query?: ArQuery;
+  pageNo: number;
+};
 
 export function useContainerSearch(
-  args: ContainerSearchArgs
+  args: ContainerSearchArgs,
 ): Record<string, QR> {
-  const {containerName, query, pageNo} = args;
-  const client = useOpenApiClient()
+  const { containerName, query, pageNo } = args;
+  const client = useOpenApiClient();
 
   const queryKey = [containerName, query];
   const enabled = !!query && !!containerName;
   const search = useQuery({
     queryKey,
     queryFn: () => searchContainer(client, containerName, query!),
-    enabled
+    enabled,
   }) as QR<string>;
 
   const getSearchLocation: string | undefined = search.data;
-  const getSearchPath: GetPath = '/services/{containerName}/search/{searchId}';
+  const getSearchPath: GetPath = "/services/{containerName}/search/{searchId}";
   const getSearchParams = {
     params: {
       path: {
         containerName,
         // useQuery is enabled when location is not undefined:
-        searchId: getSearchLocation!
+        searchId: getSearchLocation!,
       },
-      query: {page: pageNo}
-    }
+      query: { page: pageNo },
+    },
   };
   const page = useQuery({
     queryKey: createQueryKey(getSearchPath, getSearchParams),
-    queryFn: async () => client.GET(
-      getSearchPath,
-      getSearchParams
-    ).then(({data}) => data),
+    queryFn: async () =>
+      client.GET(getSearchPath, getSearchParams).then(({ data }) => data),
     enabled: !!getSearchLocation,
     placeholderData: keepPreviousData,
   });
 
-  return {search, page};
+  return { search, page };
 }
 
 export async function searchContainer(
@@ -57,17 +55,13 @@ export async function searchContainer(
   containerName: string,
   query: ArQuery,
 ): Promise<string> {
-  return client.POST(
-    "/services/{containerName}/search",
-    {
+  return client
+    .POST("/services/{containerName}/search", {
       // openapi type says text but api wants json:
       body: query as unknown as string,
-      params: {path: {containerName}}
-    }
-  ).then(({response}) => {
-    return toName(
-      response.headers.get('Location')!
-    );
-  });
+      params: { path: { containerName } },
+    })
+    .then(({ response }) => {
+      return toName(response.headers.get("Location")!);
+    });
 }
-
