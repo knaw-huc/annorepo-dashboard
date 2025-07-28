@@ -4,17 +4,32 @@ import {
   Subquery,
 } from "../../../model/query/QueryModel.ts";
 import { validateQuery } from "./validateQuery.ts";
+import { pruneQuery } from "./pruneQuery.ts";
+import { hasError } from "./hasError.ts";
 
 /**
  * Check subquery does not invalidate query
  * Only validate when no error already present
  */
 export function validateSubquery(subquery: Subquery, query: Subquery[]) {
+  const withoutErrors = pruneQuery(query, (sq) => {
+    if (sq === subquery) {
+      // Keep current subquery:
+      return false;
+    }
+    if (isLogicalSubquery(sq)) {
+      return !!sq.error;
+    }
+    return hasError(sq.errors);
+  });
+
   if (isComparisonSubquery(subquery) && !subquery.errors.field) {
-    subquery.errors.field = validateQuery(query);
+    subquery.errors.field = "";
+    subquery.errors.field = validateQuery(withoutErrors);
   }
 
   if (isLogicalSubquery(subquery) && !subquery.error) {
-    subquery.error = validateQuery(query);
+    subquery.error = "";
+    subquery.error = validateQuery(withoutErrors);
   }
 }

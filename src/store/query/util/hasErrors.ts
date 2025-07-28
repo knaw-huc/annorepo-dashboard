@@ -4,11 +4,13 @@ import {
   Subquery,
 } from "../../../model/query/QueryModel.ts";
 
-export function hasErrors(subqueries: Subquery[]) {
+export function hasErrors(subqueries: Subquery[]): boolean {
   return subqueries.some((subquery) => {
     if (isLogicalSubquery(subquery)) {
-      console.log("TODO: handle LogicalSubquery");
-      return false;
+      if (subquery.error) {
+        return true;
+      }
+      return hasErrors(subquery.forms);
     }
     return hasError(subquery.errors);
   });
