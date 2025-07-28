@@ -5,11 +5,6 @@ import { LogicalOperator } from "../../../../model/query/operator/Operator.ts";
 import { useStore } from "../../../../store/useStore.ts";
 import { LogicalSubquery } from "../../../../model/query/QueryModel.ts";
 
-export const operatorLabels: Record<LogicalOperator, string> = {
-  [LogicalOperator.and]: ":AND",
-  [LogicalOperator.or]: ":OR",
-};
-
 export function AddLogicalSubqueryButton(props: {
   disabled?: boolean;
   operator: LogicalOperator;
@@ -37,7 +32,7 @@ export function AddLogicalSubqueryButton(props: {
       disabled={disabled}
     >
       <Add className="mr-2" />
-      Add <code>{operatorLabels[operator]}</code>
+      Add <code>{operator.toUpperCase()}</code>
     </Button>
   );
 }

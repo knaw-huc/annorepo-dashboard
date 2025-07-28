@@ -12,10 +12,12 @@ export function removeSubquery(
   // Remove empty slots:
   if (toRemove.length > 1) {
     const parent = getOrThrow(update, initial(toRemove));
-    remove(parent, (v) => v !== undefined);
+    remove(parent, (v) => v === undefined);
   } else {
-    remove(update, (v) => v !== undefined);
+    remove(update, (v) => v === undefined);
   }
+
+  console.debug(removeSubquery.name, { toRemove, prev, update });
 
   return {
     ...prev,

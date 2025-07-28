@@ -5,10 +5,10 @@ import { getOrThrow } from "./getOrThrow.ts";
 import { validateSubquery } from "./validateSubquery.ts";
 
 export function updateSubquery(
-  update: SubqueryUpdate,
+  toUpdate: SubqueryUpdate,
   prev: QueryState,
 ): QueryState {
-  const { path, param, form, errors } = update;
+  const { path, param, form, errors } = toUpdate;
 
   const prevSubquery = getOrThrow(prev.subqueries, path);
   const subqueryUpdate = { ...prevSubquery };
@@ -16,13 +16,15 @@ export function updateSubquery(
   subqueryUpdate.errors = errors ?? prevSubquery.errors;
   subqueryUpdate.param = param ?? prevSubquery.param;
 
-  const subqueriesUpdate = structuredClone(prev.subqueries);
-  set(subqueriesUpdate, path, subqueryUpdate);
+  const update = structuredClone(prev.subqueries);
+  set(update, path, subqueryUpdate);
 
-  validateSubquery(subqueryUpdate, subqueriesUpdate);
+  validateSubquery(subqueryUpdate, update);
+
+  console.debug(updateSubquery.name, { toUpdate, prev, update });
 
   return {
     ...prev,
-    subqueries: subqueriesUpdate,
+    subqueries: update,
   };
 }
