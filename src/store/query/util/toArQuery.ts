@@ -25,7 +25,11 @@ export function toArQuery(
   subqueries: Subquery[],
   asTemplate: boolean,
 ): ArQuery {
-  return mergeArEntries(subqueries.map((sq) => toArSubquery(sq, asTemplate)));
+  const result = mergeArEntries(
+    subqueries.map((sq) => toArSubquery(sq, asTemplate)),
+  );
+  console.debug(toArQuery.name, { subqueries, asTemplate, result });
+  return result;
 }
 
 function mergeArEntries(subqueries: ArSubqueryRecord[]): ArQuery {

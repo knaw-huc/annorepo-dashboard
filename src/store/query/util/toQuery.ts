@@ -20,9 +20,11 @@ import { toErrorRecord } from "./toErrorRecord.ts";
  * See also {@link toArQuery}
  */
 export function toQuery(query: ArQuery, paramNames?: string[]): Subquery[] {
-  return objectEntries(query).map((entry) => {
+  const result = objectEntries(query).map((entry) => {
     return toSubquery(entry, paramNames);
   });
+  console.debug(toQuery.name, { query, paramNames, result });
+  return result;
 }
 
 export function toSubquery(
