@@ -6,7 +6,7 @@ import {
   QueryValueType,
   queryValueTypes,
 } from "../../../model/query/value/QueryValueType.ts";
-import { queryOperatorValueType } from "../../../model/query/value/queryOperatorValueType.ts";
+import { comparisonOperatorValueType } from "../../../model/query/value/comparisonOperatorValueType.ts";
 import { findMapperByValueType } from "../../../model/query/value/util/findMapperByValueType.ts";
 import { SelectOption } from "../form/SelectOption.tsx";
 import { QueryValue } from "../../../model/query/value/QueryValue.ts";
@@ -84,7 +84,7 @@ export function QueryValueInput(props: {
       const updateMapper = findMapperByValue(update.value);
 
       const valueTypeUpdate = updateMapper.type;
-      const allowedTypes = queryOperatorValueType[subquery.form.operator];
+      const allowedTypes = comparisonOperatorValueType[subquery.form.operator];
       let valueUpdate;
       if (allowedTypes.includes(valueTypeUpdate)) {
         valueUpdate = update.value;
@@ -125,7 +125,7 @@ export function QueryValueInput(props: {
 
   const disabled = !isCall || (isCustom && param === false);
 
-  const allowedTypes = queryOperatorValueType[subquery.form.operator];
+  const allowedTypes = comparisonOperatorValueType[subquery.form.operator];
   const valueTypeOptions = queryValueTypes
     .filter((type) => allowedTypes.includes(type))
     .map((type) => ({ value: type, label: type }));

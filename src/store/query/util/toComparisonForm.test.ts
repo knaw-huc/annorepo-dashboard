@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { toComparisonForm } from "./toComparisonForm.ts";
 import { ComparisonForm } from "../../../model/query/QueryModel.ts";
 import { defaultQuery } from "../../../model/query/defaultQuery.ts";
-import { Operator } from "../../../model/query/operator/Operator.ts";
+import { ComparisonOperator } from "../../../model/query/operator/Operator.ts";
 import {
   ArExtendedEntry,
   ArRangeEntry,
@@ -23,7 +23,7 @@ describe(toComparisonForm.name, async () => {
 
   it("converts range query entry", async () => {
     const entry: ArRangeEntry = [
-      Operator.overlapsWithTextAnchorRange,
+      ComparisonOperator.overlapsWithTextAnchorRange,
       { source: "http://example.com", start: 1, end: 2 },
     ];
     const result: ComparisonForm = toComparisonForm(entry);
@@ -52,7 +52,10 @@ describe(toComparisonForm.name, async () => {
   });
 
   it("converts extended query entry", async () => {
-    const entry: ArExtendedEntry = ["field", { [Operator.equal]: "value" }];
+    const entry: ArExtendedEntry = [
+      "field",
+      { [ComparisonOperator.equal]: "value" },
+    ];
     const result: ComparisonForm = toComparisonForm(entry);
 
     expect(result).toEqual({

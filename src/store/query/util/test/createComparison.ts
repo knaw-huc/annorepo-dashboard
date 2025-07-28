@@ -1,9 +1,9 @@
-import { Operator } from "../../../../model/query/operator/Operator.ts";
+import { ComparisonOperator } from "../../../../model/query/operator/Operator.ts";
 import { ComparisonSubquery } from "../../../../model/query/QueryModel.ts";
 
 export function createComparison(
   field: string,
-  operator: Operator,
+  operator: ComparisonOperator,
   value: string,
 ): ComparisonSubquery {
   return {

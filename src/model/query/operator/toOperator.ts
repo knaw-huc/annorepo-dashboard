@@ -1,10 +1,11 @@
-import {Operator} from "./Operator.ts";
+import { ComparisonOperator } from "./Operator.ts";
 
-export const queryOperatorOrFnValues: string[] = Object.values(Operator)
+export const queryOperatorOrFnValues: string[] =
+  Object.values(ComparisonOperator);
 
-export function toOperator(value: string): Operator | null {
+export function toOperator(value: string): ComparisonOperator | null {
   if (!queryOperatorOrFnValues.includes(value)) {
-    return null
+    return null;
   }
-  return value as Operator;
+  return value as ComparisonOperator;
 }

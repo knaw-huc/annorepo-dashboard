@@ -1,7 +1,7 @@
 import { assert, describe, expect, it } from "vitest";
 import {
   LogicalOperator,
-  Operator,
+  ComparisonOperator,
 } from "../../../model/query/operator/Operator.ts";
 import {
   isComparisonSubquery,
@@ -12,7 +12,7 @@ import { createComparison } from "./test/createComparison.ts";
 import { createLogical } from "./test/createLogical.ts";
 
 describe(pruneQuery.name, async () => {
-  const eq = Operator.equal;
+  const eq = ComparisonOperator.equal;
 
   it("prunes by value", async () => {
     const result = pruneQuery(

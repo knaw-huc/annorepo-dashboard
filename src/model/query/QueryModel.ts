@@ -1,5 +1,5 @@
 import { QueryValue } from "./value/QueryValue.ts";
-import { LogicalOperator, Operator } from "./operator/Operator.ts";
+import { LogicalOperator, ComparisonOperator } from "./operator/Operator.ts";
 import { QueryValueType } from "./value/QueryValueType.ts";
 import { ErroneousValue, ErrorRecord } from "./ErrorRecord.ts";
 import { ParamValue } from "./ParamValue.ts";
@@ -47,7 +47,7 @@ export type LogicalForm = {
 
 export type ComparisonForm = {
   field: string;
-  operator: Operator;
+  operator: ComparisonOperator;
   value: QueryValue | ErroneousValue;
   valueType: QueryValueType;
 };

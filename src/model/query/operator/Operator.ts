@@ -1,7 +1,7 @@
 /**
  * See: https://github.com/knaw-huc/annorepo/blob/main/docs/api-usage.md#create-a-query--experimental
  */
-export enum Operator {
+export enum ComparisonOperator {
   // Query without operator:
   simpleQuery = "simpleQuery",
 

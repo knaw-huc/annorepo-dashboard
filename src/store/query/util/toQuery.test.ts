@@ -7,13 +7,13 @@ import {
 } from "../../../model/query/QueryModel.ts";
 import {
   LogicalOperator,
-  Operator,
+  ComparisonOperator,
 } from "../../../model/query/operator/Operator.ts";
 import { ArLogicalEntry } from "../../../model/ArModel.ts";
 import { toSubquery } from "./toQuery.ts";
 
 describe(toSubquery.name, async () => {
-  const eq = Operator.equal;
+  const eq = ComparisonOperator.equal;
   const or = LogicalOperator.or;
   const noComparisonErrors = {
     field: "",

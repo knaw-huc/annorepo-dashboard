@@ -2,7 +2,7 @@ import { RangeQueryOperator } from "./query/operator/RangeQueryOperator.ts";
 import {
   isLogicalOperator,
   LogicalOperator,
-  Operator,
+  ComparisonOperator,
 } from "./query/operator/Operator.ts";
 import { QueryValue } from "./query/value/QueryValue.ts";
 import { Any } from "./Any.ts";
@@ -87,7 +87,7 @@ export type ArSubqueryRecord = ArComparisonRecord | ArLogicalRecord;
 export type ArSimpleEntry = [ArField, string];
 export type ArSimpleSubquery = EntryToRecord<ArSimpleEntry>;
 
-export type ArExtendedValue = Partial<Record<Operator, QueryValue>>;
+export type ArExtendedValue = Partial<Record<ComparisonOperator, QueryValue>>;
 export type ArExtendedEntry = [ArField, ArExtendedValue];
 export type ArExtendedSubquery = EntryToRecord<ArExtendedEntry>;
 
@@ -125,5 +125,6 @@ export interface ArLogicalRecord {
 export function isArLogicalEntry(
   toTest: ArQueryEntry,
 ): toTest is ArLogicalEntry {
-  return isLogicalOperator(toTest[0]);
+  const [key] = toTest;
+  return isLogicalOperator(key);
 }

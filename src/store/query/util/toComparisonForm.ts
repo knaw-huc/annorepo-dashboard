@@ -8,7 +8,7 @@ import { isNumber, isPlainObject, isString } from "lodash";
 import { ComparisonForm } from "../../../model/query/QueryModel.ts";
 import { findMapperByOperator } from "../../../model/query/value/util/findMapperByOperator.ts";
 import { QueryValue } from "../../../model/query/value/QueryValue.ts";
-import { Operator } from "../../../model/query/operator/Operator.ts";
+import { ComparisonOperator } from "../../../model/query/operator/Operator.ts";
 import { isRangeQueryOperator } from "../../../model/query/operator/RangeQueryOperator.ts";
 import { isNonFnOperator } from "../../../model/query/operator/NonFnQueryOperator.ts";
 import { QueryValueType } from "../../../model/query/value/QueryValueType.ts";
@@ -25,14 +25,14 @@ export function toComparisonForm(
   const [queryKey, queryValue] = entry;
   let field: string;
   let value: QueryValue;
-  let operator: Operator;
+  let operator: ComparisonOperator;
   let valueType: QueryValueType;
 
   if (isRangeQueryOperator(queryKey)) {
     // Range function query:
 
     field = NO_FIELD;
-    operator = queryKey as Operator;
+    operator = queryKey as ComparisonOperator;
     if (findParam(queryValue, paramNames)) {
       const mapper = findMapperByOperator(operator);
       value = mapper.defaultValue;
@@ -47,9 +47,9 @@ export function toComparisonForm(
     // Simple query:
 
     field = queryKey;
-    operator = Operator.simpleQuery;
+    operator = ComparisonOperator.simpleQuery;
     if (findParam(queryValue, paramNames)) {
-      const mapper = findMapperByOperator(Operator.simpleQuery);
+      const mapper = findMapperByOperator(ComparisonOperator.simpleQuery);
       value = mapper.defaultValue;
       valueType = mapper.type;
     } else {

@@ -8,7 +8,7 @@ import { Remove } from "../icon/Remove.tsx";
 import { useStore } from "../../../store/useStore.ts";
 import { useValueSuggestions } from "./useValueSuggestions.tsx";
 import { toParamName } from "../../../store/query/util/toParamName.ts";
-import { Operator } from "../../../model/query/operator/Operator.ts";
+import { ComparisonOperator } from "../../../model/query/operator/Operator.ts";
 import { toOperator } from "../../../model/query/operator/toOperator.ts";
 import { alignFormWithOperator } from "./util/alignFormWithOperator.tsx";
 import { PropertyName } from "lodash";
@@ -32,8 +32,8 @@ export function ComparisonSubqueryEditor(props: ComparisonEditorProps) {
     ? fieldNames.filter((name) => name.includes(subquery.form.field))
     : fieldNames;
 
-  const operatorOptions = Object.values(Operator)
-    .filter((o) => o !== Operator.simpleQuery)
+  const operatorOptions = Object.values(ComparisonOperator)
+    .filter((o) => o !== ComparisonOperator.simpleQuery)
     .map((v) => ({ label: v, value: v }));
 
   const isExistingField = fieldNames.includes(subquery.form.field);
@@ -42,7 +42,7 @@ export function ComparisonSubqueryEditor(props: ComparisonEditorProps) {
   const field = isExistingField ? subquery.form.field : "";
   const valueSuggestions = useValueSuggestions({ containerName, field, value });
 
-  function handleSelectOperator(update: SelectOption<Operator>) {
+  function handleSelectOperator(update: SelectOption<ComparisonOperator>) {
     const operatorUpdate =
       toOperator(update.value) ?? orThrow(`Invalid operator: ${update.value}`);
 

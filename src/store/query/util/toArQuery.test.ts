@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   LogicalOperator,
-  Operator,
+  ComparisonOperator,
 } from "../../../model/query/operator/Operator.ts";
 import { toArQuery } from "./toArQuery.ts";
 import { createLogical } from "./test/createLogical.ts";
@@ -9,7 +9,7 @@ import { createComparison } from "./test/createComparison.ts";
 
 describe(toArQuery.name, async () => {
   const { or, and } = LogicalOperator;
-  const eq = Operator.equal;
+  const eq = ComparisonOperator.equal;
 
   it("converts :or", async () => {
     const f = createComparison("f", eq, "v");

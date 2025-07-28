@@ -13,7 +13,7 @@ import {
   Subquery,
 } from "../../../model/query/QueryModel.ts";
 import { toParamTag } from "./toParamTag.ts";
-import { Operator } from "../../../model/query/operator/Operator.ts";
+import { ComparisonOperator } from "../../../model/query/operator/Operator.ts";
 import { isRangeQueryOperator } from "../../../model/query/operator/RangeQueryOperator.ts";
 import { Any } from "../../../model/Any.ts";
 
@@ -79,7 +79,7 @@ function toArComparison(
 ): ArComparisonRecord {
   const { param, form } = subquery;
   const value = asTemplate && param !== false ? toParamTag(param) : form.value;
-  if (subquery.form.operator === Operator.simpleQuery) {
+  if (subquery.form.operator === ComparisonOperator.simpleQuery) {
     return { [form.field]: `${value}` };
   } else if (isRangeQueryOperator(form.operator)) {
     if (!isArRangeQueryValue(value)) {

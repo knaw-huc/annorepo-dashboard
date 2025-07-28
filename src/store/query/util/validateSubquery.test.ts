@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
   LogicalOperator,
-  Operator,
+  ComparisonOperator,
 } from "../../../model/query/operator/Operator.ts";
 import { validateSubquery } from "./validateSubquery.ts";
 import { LogicalSubquery } from "../../../model/query/QueryModel.ts";
@@ -10,7 +10,7 @@ import { createComparison } from "./test/createComparison.ts";
 
 describe(validateSubquery.name, () => {
   const { and, or } = LogicalOperator;
-  const { equal } = Operator;
+  const { equal } = ComparisonOperator;
   it("sets error on two adjacent :ors", () => {
     const toValidate: LogicalSubquery = {
       type: "logical",
