@@ -7,15 +7,15 @@ import {
  * Remove subqueries from query tree that match the predicate
  */
 export function pruneQuery(
-  subqueries: Subquery[],
+  query: Subquery[],
   predicate: (subquery: Subquery) => boolean,
 ): Subquery[] {
   const pruned: Subquery[] = [];
-  for (let i = 0; i < subqueries.length; i++) {
-    if (predicate(subqueries[i])) {
+  for (let i = 0; i < query.length; i++) {
+    if (predicate(query[i])) {
       // Prune when predicate matches
     } else {
-      const subquery = structuredClone(subqueries[i]);
+      const subquery = structuredClone(query[i]);
       pruned.push(subquery);
       if (isLogicalSubquery(subquery)) {
         const forms = [...subquery.forms];
