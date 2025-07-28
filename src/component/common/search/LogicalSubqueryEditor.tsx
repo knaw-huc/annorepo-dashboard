@@ -28,9 +28,6 @@ export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
     <div className="border border-slate-400 w-full p-2 my-2">
       <div>
         <p>{subquery.operator.toUpperCase()}</p>
-        <Button onClick={handleRemove}>
-          <Remove />
-        </Button>
 
         <AddComparisonSubqueryButton
           path={newSubqueryPath}
@@ -49,6 +46,9 @@ export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
           operator={LogicalOperator.or}
           className="ml-3"
         />
+        <Button onClick={handleRemove} secondary className="ml-3">
+          <Remove />
+        </Button>
       </div>
       {subquery.error && <Warning>{subquery.error}</Warning>}
       <div>

@@ -10,6 +10,7 @@ export function AddComparisonSubqueryButton(props: {
   disabled?: boolean;
   path: PropertyName[];
   isParam: boolean;
+  className?: string;
 }) {
   const { disabled, path, isParam } = props;
 
@@ -29,7 +30,7 @@ export function AddComparisonSubqueryButton(props: {
   return (
     <Button
       type="button"
-      className="h-full border-b-2"
+      className={`h-full border-b-2 ${props.className}`}
       onClick={addComparisonSubquery}
       secondary
       disabled={disabled}
