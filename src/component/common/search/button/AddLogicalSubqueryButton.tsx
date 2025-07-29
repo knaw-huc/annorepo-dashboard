@@ -19,7 +19,7 @@ export function AddLogicalSubqueryButton(props: {
       type: "logical",
       operator,
       forms: [],
-      error: "",
+      queryError: "",
     };
     addSubquery({ path, subquery });
   };

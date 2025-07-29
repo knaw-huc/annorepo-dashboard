@@ -4,10 +4,10 @@ import { CustomSubqueryEditor } from "../common/search/CustomSubqueryEditor.tsx"
 import { CustomQueryMetadataEditor } from "./CustomQueryMetadataEditor.tsx";
 import { useEffect, useState } from "react";
 import { isEmpty, PropertyName } from "lodash";
-import { toErrorRecord } from "../../store/query/util/toErrorRecord.ts";
+import { toErrorRecord } from "../../store/query/util/error/toErrorRecord.ts";
 import { CheckboxWithLabel } from "../common/form/CheckboxWithLabel.tsx";
 import { Help } from "../common/icon/Help.tsx";
-import { hasError } from "../../store/query/util/hasError.ts";
+import { hasError } from "../../store/query/util/error/hasError.ts";
 import { useStore } from "../../store/useStore.ts";
 import { toParamTag } from "../../store/query/util/toParamTag.ts";
 import { Tooltip } from "../common/Tooltip.tsx";

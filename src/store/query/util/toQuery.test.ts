@@ -33,12 +33,13 @@ describe(toSubquery.name, async () => {
         {
           type: "comparison",
           form: { field: "f", operator: eq, value: "v", valueType: "string" },
+          queryError: "",
           errors: noComparisonErrors,
           param: false,
         },
       ],
       operator: or,
-      error: "",
+      queryError: "",
     };
     expect(result).toEqual(expectedOrSubquery);
   });

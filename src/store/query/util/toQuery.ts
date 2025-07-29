@@ -13,7 +13,7 @@ import {
 } from "../../../model/query/QueryModel.ts";
 import { objectEntries } from "../../../util/objectEntries.ts";
 import { toComparisonForm } from "./toComparisonForm.ts";
-import { toErrorRecord } from "./toErrorRecord.ts";
+import { toErrorRecord } from "./error/toErrorRecord.ts";
 
 /**
  * From AR to internal query
@@ -46,7 +46,7 @@ function toLogicalSubquery(
 ): LogicalSubquery {
   const [operator, operands] = entry;
   const forms = toQuery(operands, paramNames);
-  return { type: "logical", operator, forms, error: "" };
+  return { type: "logical", operator, forms, queryError: "" };
 }
 
 function toComparisonSubquery(
@@ -54,10 +54,11 @@ function toComparisonSubquery(
   paramNames?: string[],
 ): ComparisonSubquery {
   const form = toComparisonForm(entry, paramNames);
+  const queryError = "";
   const errors = toErrorRecord(form);
   const foundParamName = paramNames?.find((paramName) =>
     JSON.stringify(entry).includes(paramName),
   );
   const param = foundParamName ? foundParamName : false;
-  return { type: "comparison", form, errors, param };
+  return { type: "comparison", form, errors, param, queryError };
 }

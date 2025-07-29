@@ -1,6 +1,7 @@
 import { QueryState } from "../QuerySlice.ts";
 import { initial, PropertyName, remove, unset } from "lodash";
 import { getOrThrow } from "./getOrThrow.ts";
+import { revalidateInvalidSubqueries } from "./error/revalidateInvalidSubqueries.ts";
 
 export function removeSubquery(
   toRemove: PropertyName[],
@@ -10,12 +11,10 @@ export function removeSubquery(
   unset(update, toRemove);
 
   // Remove empty slots:
-  if (toRemove.length > 1) {
-    const parent = getOrThrow(update, initial(toRemove));
-    remove(parent, (v) => v === undefined);
-  } else {
-    remove(update, (v) => v === undefined);
-  }
+  const parent = getOrThrow(update, initial(toRemove));
+  remove(parent, (v) => v === undefined);
+
+  revalidateInvalidSubqueries(update);
 
   console.debug(removeSubquery.name, { toRemove, prev, update });
 

@@ -90,7 +90,7 @@ export function ComparisonSubqueryEditor(props: ComparisonEditorProps) {
           <div className="flex-auto mr-2">
             <QueryFieldInput
               value={subquery.form.field}
-              errorLabel={subquery.errors.field}
+              errorLabel={subquery.errors.field || subquery.queryError}
               operator={subquery.form.operator}
               suggestions={fieldSuggestions.map(toOption)}
               onChange={handleChangeField}

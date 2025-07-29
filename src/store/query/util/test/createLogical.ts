@@ -11,7 +11,7 @@ export function createLogical(
   return {
     type: "logical",
     operator: or,
-    error: "",
+    queryError: "",
     forms,
   };
 }

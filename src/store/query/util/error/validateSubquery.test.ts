@@ -2,13 +2,13 @@ import { describe, expect, it } from "vitest";
 import {
   LogicalOperator,
   ComparisonOperator,
-} from "../../../model/query/operator/Operator.ts";
+} from "../../../../model/query/operator/Operator.ts";
 import { validateSubquery } from "./validateSubquery.ts";
-import { LogicalSubquery } from "../../../model/query/QueryModel.ts";
-import { createLogical } from "./test/createLogical.ts";
-import { createComparison } from "./test/createComparison.ts";
+import { LogicalSubquery } from "../../../../model/query/QueryModel.ts";
+import { createLogical } from "../test/createLogical.ts";
+import { createComparison } from "../test/createComparison.ts";
 
-import { formsPropPath } from "../formsPropPath.ts";
+import { formsPropPath } from "../../formsPropPath.ts";
 
 describe(validateSubquery.name, () => {
   const { and, or } = LogicalOperator;
@@ -18,13 +18,16 @@ describe(validateSubquery.name, () => {
       type: "logical",
       forms: [],
       operator: or,
-      error: "",
+      queryError: "",
     };
     validateSubquery(
       [1],
-      [{ type: "logical", forms: [], operator: or, error: "" }, toValidate],
+      [
+        { type: "logical", forms: [], operator: or, queryError: "" },
+        toValidate,
+      ],
     );
-    expect(toValidate.error).toBe("':or' already exists.");
+    expect(toValidate.queryError).toBe("':or' already exists.");
   });
 
   it("ignores already erroneous subquery", () => {
@@ -32,22 +35,22 @@ describe(validateSubquery.name, () => {
       type: "logical",
       forms: [],
       operator: and,
-      error: "",
+      queryError: "",
     };
     validateSubquery(
       [2],
       [
-        { type: "logical", forms: [], operator: or, error: "" },
+        { type: "logical", forms: [], operator: or, queryError: "" },
         {
           type: "logical",
           forms: [],
           operator: or,
-          error: "':or' already exists.",
+          queryError: "':or' already exists.",
         },
         andToValidate,
       ],
     );
-    expect(andToValidate.error).toBe("");
+    expect(andToValidate.queryError).toBe("");
   });
 
   it("invalidates second erroneous value ignoring first", () => {
@@ -55,23 +58,23 @@ describe(validateSubquery.name, () => {
       type: "logical",
       forms: [],
       operator: and,
-      error: "",
+      queryError: "",
     };
     validateSubquery(
       [3],
       [
-        { type: "logical", forms: [], operator: or, error: "" },
+        { type: "logical", forms: [], operator: or, queryError: "" },
         {
           type: "logical",
           forms: [],
           operator: or,
-          error: "':or' already exists.",
+          queryError: "':or' already exists.",
         },
-        { type: "logical", forms: [], operator: and, error: "" },
+        { type: "logical", forms: [], operator: and, queryError: "" },
         andToValidate,
       ],
     );
-    expect(andToValidate.error).toBe("':and' already exists.");
+    expect(andToValidate.queryError).toBe("':and' already exists.");
   });
 
   /**

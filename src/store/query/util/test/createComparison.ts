@@ -14,6 +14,7 @@ export function createComparison(
       value,
       valueType: "string",
     },
+    queryError: "",
     errors: {
       field: "",
       operator: "",

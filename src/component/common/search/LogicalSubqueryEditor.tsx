@@ -30,17 +30,17 @@ export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
         <AddComparisonSubqueryButton
           path={newSubqueryPath}
           isParam={false}
-          disabled={!!subquery.error}
+          disabled={!!subquery.queryError}
         />
         <AddLogicalSubqueryButton
           path={newSubqueryPath}
-          disabled={!!subquery.error}
+          disabled={!!subquery.queryError}
           operator={LogicalOperator.and}
           className="ml-3"
         />
         <AddLogicalSubqueryButton
           path={newSubqueryPath}
-          disabled={!!subquery.error}
+          disabled={!!subquery.queryError}
           operator={LogicalOperator.or}
           className="ml-3"
         />
@@ -48,7 +48,7 @@ export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
           <Remove />
         </Button>
       </div>
-      {subquery.error && <Warning>{subquery.error}</Warning>}
+      {subquery.queryError && <Warning>{subquery.queryError}</Warning>}
       <div>
         <SubqueriesEditor
           containerName={containerName}

@@ -13,7 +13,7 @@ import {
   useContainerSearch,
 } from "../../client/endpoint/useContainerSearch.tsx";
 import { SearchButton } from "../common/search/button/SearchButton.tsx";
-import { hasErrors } from "../../store/query/util/hasErrors.ts";
+import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { AddComparisonSubqueryButton } from "../common/search/button/AddComparisonSubqueryButton.tsx";
 import { defaultQuery } from "../../model/query/defaultQuery.ts";
 import { LogicalOperator } from "../../model/query/operator/Operator.ts";

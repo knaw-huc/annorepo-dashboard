@@ -13,7 +13,7 @@ export function isSubquery(toTest: Any): toTest is Subquery {
   );
 }
 
-export type ComparisonSubquery = {
+export type ComparisonSubquery = BaseSubquery & {
   type: "comparison";
   form: ComparisonForm;
 
@@ -33,12 +33,19 @@ export function isComparisonSubquery(
 ): toTest is ComparisonSubquery {
   return (toTest as ComparisonSubquery).type === "comparison";
 }
-
-export type LogicalSubquery = {
+export type BaseSubquery = {
+  /**
+   * Does subquery introduce error when validating
+   * it inside the context of the whole query?
+   * See {@link validateSubquery}
+   */
+  queryError: string;
+};
+export type LogicalSubquery = BaseSubquery & {
   type: "logical";
   operator: LogicalOperator;
   forms: Subquery[];
-  error: string;
+  queryError: string;
 };
 
 export function isLogicalSubquery(toTest: Subquery): toTest is LogicalSubquery {

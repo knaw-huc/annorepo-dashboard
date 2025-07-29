@@ -1,4 +1,4 @@
-  import { H1 } from "../common/H1.tsx";
+import { H1 } from "../common/H1.tsx";
 import { CustomQueryCallEditor } from "./CustomQueryCallEditor.tsx";
 import {
   CustomQueryCallArgs,
@@ -14,7 +14,7 @@ import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 import { toPageNo } from "../../util/toPageNo.ts";
 import { Hint } from "../common/Hint.tsx";
 import { Pipe } from "../common/Pipe.tsx";
-import { hasErrors } from "../../store/query/util/hasErrors.ts";
+import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { useStore } from "../../store/useStore.ts";
 import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { A } from "../common/A.tsx";
@@ -121,9 +121,7 @@ export function CustomQueryDetail(props: {
       {customQueryCall.isError && (
         <StatusMessage requests={[customQueryCall]} />
       )}
-      {containerName && <CustomQueryCallEditor
-        containerName={containerName}
-      />}
+      {containerName && <CustomQueryCallEditor containerName={containerName} />}
       <div className="max-w-[100vw] whitespace-pre-wrap">
         {customQueryCall.isSuccess && (
           <AnnotationPage

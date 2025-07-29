@@ -1,7 +1,8 @@
 import { QueryState } from "../QuerySlice.ts";
 import { SubqueryToAdd } from "../SubqueryToAdd.ts";
 import { set } from "lodash";
-import { validateSubquery } from "./validateSubquery.ts";
+import { validateSubquery } from "./error/validateSubquery.ts";
+import { revalidateInvalidSubqueries } from "./error/revalidateInvalidSubqueries.ts";
 
 export function addSubquery(
   toAdd: SubqueryToAdd,
@@ -12,6 +13,7 @@ export function addSubquery(
   set(update, path, subquery);
 
   validateSubquery(path, update);
+  revalidateInvalidSubqueries(update);
 
   console.debug(addSubquery.name, { toAdd, prev, update });
 

@@ -1,5 +1,5 @@
-import { Subquery } from "../../../model/query/QueryModel.ts";
-import { toArQuery } from "./toArQuery.ts";
+import { Subquery } from "../../../../model/query/QueryModel.ts";
+import { toArQuery } from "../toArQuery.ts";
 
 /**
  * Check if forms and params can be converted into query

@@ -19,11 +19,12 @@ export function AddComparisonSubqueryButton(props: {
   const addComparisonSubquery = () => {
     const newQueryEntry = Object.entries(defaultQuery)[0];
     const form = toComparisonForm(newQueryEntry);
+    const queryError = "";
     const errors = mapValues(form, () => "");
     const param = isParam ? toParamName(form, path) : false;
     addSubquery({
       path,
-      subquery: { type: "comparison", form, errors, param },
+      subquery: { type: "comparison", form, errors, param, queryError },
     });
   };
 

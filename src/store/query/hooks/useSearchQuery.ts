@@ -1,7 +1,7 @@
 import { toArQuery } from "../util/toArQuery.ts";
 import { useStore } from "../../useStore.ts";
 import { ArQuery } from "../../../model/ArModel.ts";
-import { hasErrors } from "../util/hasErrors.ts";
+import { hasErrors } from "../util/error/hasErrors.ts";
 
 export const useSearchQuery = (
   asTemplate: boolean = false,
