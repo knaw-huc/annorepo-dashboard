@@ -34,8 +34,8 @@ export function filterQuery(
         result.push({ subquery, path });
       }
       if (isLogicalSubquery(subquery)) {
-        const iPath = [...parent, i, formsPropPath];
-        result.push(...findWithParent(subquery.forms, predicate, iPath));
+        const withForms = [...path, formsPropPath];
+        result.push(...findWithParent(subquery.forms, predicate, withForms));
       }
     }
     return result;
