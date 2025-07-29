@@ -4,11 +4,11 @@ import {
   Subquery,
 } from "../../../model/query/QueryModel.ts";
 import { PropertyName } from "lodash";
-import { getSubqueryByType } from "./getSubqueryByType.ts";
+import { getTypedSubquery } from "./getTypedSubquery.ts";
 
 export function getLogicalSubquery(
   subqueries: Subquery[],
   path: PropertyName[],
 ): LogicalSubquery {
-  return getSubqueryByType(subqueries, path, isLogicalSubquery);
+  return getTypedSubquery(subqueries, path, isLogicalSubquery);
 }

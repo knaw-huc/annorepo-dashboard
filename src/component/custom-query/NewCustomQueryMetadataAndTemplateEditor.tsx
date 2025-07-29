@@ -26,7 +26,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
 }) {
   const { metadata, onMetadataError, onClearMetadataError } = props;
 
-  const { subqueries, updateSubquery } = useStore();
+  const { subqueries, updateComparisonSubquery } = useStore();
 
   const [metadataForm, setMetadataForm] =
     useState<CustomQueryMetadataForm>(metadata);
@@ -35,7 +35,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
   function handleParameterChange(path: PropertyName[], isParam: boolean) {
     const form = getOrThrow(subqueries, path).form;
     const update = isParam ? toParamTag(toParamName(form, path)) : false;
-    updateSubquery({ path, param: update });
+    updateComparisonSubquery({ path, param: update });
   }
 
   useEffect(() => {

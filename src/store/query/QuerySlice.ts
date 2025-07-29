@@ -2,7 +2,7 @@ import { Subquery } from "../../model/query/QueryModel.ts";
 import { ArQuery } from "../../model/ArModel.ts";
 import { initWithQuery } from "./util/initWithQuery.ts";
 import { initWithTemplate } from "./util/initWithTemplate.ts";
-import { updateSubquery } from "./util/updateSubquery.ts";
+import { updateComparisonSubquery } from "./util/updateComparisonSubquery.ts";
 import { SubqueryToUpdate } from "./SubqueryToUpdate.ts";
 import { addSubquery } from "./util/addSubquery.ts";
 import { removeSubquery } from "./util/removeSubquery.ts";
@@ -19,7 +19,7 @@ export type QuerySlice = QueryState & {
 
   addSubquery: (toAdd: SubqueryToAdd) => void;
   removeSubquery: (path: PropertyName[]) => void;
-  updateSubquery: (update: SubqueryToUpdate) => void;
+  updateComparisonSubquery: (update: SubqueryToUpdate) => void;
 
   initWithQuery: (query: ArQuery) => void;
   initWithTemplate: (query: ArQuery, params: string[]) => void;
@@ -32,7 +32,8 @@ export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {
     setQueryState: (update: QueryState) => set(() => ({ ...update })),
     addSubquery: (update) => set((prev) => addSubquery(update, prev)),
     removeSubquery: (toRemove) => set((prev) => removeSubquery(toRemove, prev)),
-    updateSubquery: (update) => set((prev) => updateSubquery(update, prev)),
+    updateComparisonSubquery: (update) =>
+      set((prev) => updateComparisonSubquery(update, prev)),
     initWithQuery: (query) => set(() => initWithQuery(query)),
     initWithTemplate: (query, params) =>
       set(() => initWithTemplate(query, params)),

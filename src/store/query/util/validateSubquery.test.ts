@@ -8,6 +8,8 @@ import { LogicalSubquery } from "../../../model/query/QueryModel.ts";
 import { createLogical } from "./test/createLogical.ts";
 import { createComparison } from "./test/createComparison.ts";
 
+import { formsPropPath } from "../formsPropPath.ts";
+
 describe(validateSubquery.name, () => {
   const { and, or } = LogicalOperator;
   const { equal } = ComparisonOperator;
@@ -18,10 +20,10 @@ describe(validateSubquery.name, () => {
       operator: or,
       error: "",
     };
-    validateSubquery(toValidate, [
-      { type: "logical", forms: [], operator: or, error: "" },
-      toValidate,
-    ]);
+    validateSubquery(
+      [1],
+      [{ type: "logical", forms: [], operator: or, error: "" }, toValidate],
+    );
     expect(toValidate.error).toBe("':or' already exists.");
   });
 
@@ -32,16 +34,19 @@ describe(validateSubquery.name, () => {
       operator: and,
       error: "",
     };
-    validateSubquery(andToValidate, [
-      { type: "logical", forms: [], operator: or, error: "" },
-      {
-        type: "logical",
-        forms: [],
-        operator: or,
-        error: "':or' already exists.",
-      },
-      andToValidate,
-    ]);
+    validateSubquery(
+      [2],
+      [
+        { type: "logical", forms: [], operator: or, error: "" },
+        {
+          type: "logical",
+          forms: [],
+          operator: or,
+          error: "':or' already exists.",
+        },
+        andToValidate,
+      ],
+    );
     expect(andToValidate.error).toBe("");
   });
 
@@ -52,17 +57,20 @@ describe(validateSubquery.name, () => {
       operator: and,
       error: "",
     };
-    validateSubquery(andToValidate, [
-      { type: "logical", forms: [], operator: or, error: "" },
-      {
-        type: "logical",
-        forms: [],
-        operator: or,
-        error: "':or' already exists.",
-      },
-      { type: "logical", forms: [], operator: and, error: "" },
-      andToValidate,
-    ]);
+    validateSubquery(
+      [3],
+      [
+        { type: "logical", forms: [], operator: or, error: "" },
+        {
+          type: "logical",
+          forms: [],
+          operator: or,
+          error: "':or' already exists.",
+        },
+        { type: "logical", forms: [], operator: and, error: "" },
+        andToValidate,
+      ],
+    );
     expect(andToValidate.error).toBe("':and' already exists.");
   });
 
@@ -73,12 +81,15 @@ describe(validateSubquery.name, () => {
   it("validates nested fields with same name", () => {
     const duplicateField = "field";
     const toValidate = createComparison(duplicateField, equal, "value");
-    validateSubquery(toValidate, [
-      createLogical(and, [
-        createComparison(duplicateField, equal, "value"),
-        toValidate,
-      ]),
-    ]);
+    validateSubquery(
+      [0, formsPropPath, 1],
+      [
+        createLogical(and, [
+          createComparison(duplicateField, equal, "value"),
+          toValidate,
+        ]),
+      ],
+    );
     expect(toValidate.errors.field).toBe("");
   });
 });

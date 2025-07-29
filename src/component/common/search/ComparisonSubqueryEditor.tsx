@@ -24,7 +24,7 @@ export type ComparisonEditorProps = {
 export function ComparisonSubqueryEditor(props: ComparisonEditorProps) {
   const { fieldNames, disabled, path, containerName } = props;
 
-  const { subqueries, removeSubquery, updateSubquery } = useStore();
+  const { subqueries, removeSubquery, updateComparisonSubquery } = useStore();
 
   const subquery = getComparisonSubquery(subqueries, path);
 
@@ -49,7 +49,7 @@ export function ComparisonSubqueryEditor(props: ComparisonEditorProps) {
     const formUpdate = alignFormWithOperator(subquery.form, operatorUpdate);
     console.log("handleSelectOperator", { update, formUpdate });
 
-    updateSubquery({
+    updateComparisonSubquery({
       path,
       form: formUpdate,
     });
@@ -71,7 +71,7 @@ export function ComparisonSubqueryEditor(props: ComparisonEditorProps) {
       errorUpdate.field = "";
     }
 
-    updateSubquery({
+    updateComparisonSubquery({
       path,
       form: formUpdate,
       errors: errorUpdate,

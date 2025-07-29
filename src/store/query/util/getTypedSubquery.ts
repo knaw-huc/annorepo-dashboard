@@ -2,7 +2,7 @@ import { Subquery } from "../../../model/query/QueryModel.ts";
 import { PropertyName } from "lodash";
 import { getOrThrow } from "./getOrThrow.ts";
 
-export function getSubqueryByType<T extends Subquery>(
+export function getTypedSubquery<T extends Subquery>(
   subqueries: Subquery[],
   path: PropertyName[],
   typeguard: (toTest: Subquery) => toTest is T,

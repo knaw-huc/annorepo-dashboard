@@ -26,7 +26,7 @@ export function QueryValueInput(props: {
 }) {
   const { path, isCall, isCustom, suggestions } = props;
 
-  const { subqueries, updateSubquery } = useStore();
+  const { subqueries, updateComparisonSubquery } = useStore();
 
   const subquery = getComparisonSubquery(subqueries, path);
   const param = subquery.param;
@@ -35,14 +35,14 @@ export function QueryValueInput(props: {
     try {
       const mapper = findMapperByValueType(subquery.form.valueType);
       const queryValueUpdate = mapper.toValue(inputValueUpdate);
-      updateSubquery({
+      updateComparisonSubquery({
         path,
         form: { ...subquery.form, value: queryValueUpdate },
         errors: { ...subquery.errors, value: "" },
       });
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
-      updateSubquery({
+      updateComparisonSubquery({
         path,
         // Use inout value when query value conversion failed:
         form: { ...subquery.form, value: inputValueUpdate },
@@ -55,7 +55,7 @@ export function QueryValueInput(props: {
     try {
       const newMapper = findMapperByValueType(typeUpdate);
       const queryValueUpdate = newMapper.toValue(inputValue);
-      updateSubquery({
+      updateComparisonSubquery({
         path,
         form: {
           ...subquery.form,
@@ -66,7 +66,7 @@ export function QueryValueInput(props: {
       });
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
-      updateSubquery({
+      updateComparisonSubquery({
         path,
         // Use inout value when query value conversion failed:
         form: {
@@ -95,7 +95,7 @@ export function QueryValueInput(props: {
         );
       }
 
-      updateSubquery({
+      updateComparisonSubquery({
         path,
         form: {
           ...subquery.form,
@@ -106,7 +106,7 @@ export function QueryValueInput(props: {
       });
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
-      updateSubquery({
+      updateComparisonSubquery({
         path,
         // Use inout value when query value conversion failed:
         form: { ...subquery.form, value: update.value },

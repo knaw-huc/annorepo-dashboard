@@ -1,16 +1,16 @@
 import { QueryState } from "../QuerySlice.ts";
 import { SubqueryToUpdate } from "../SubqueryToUpdate.ts";
 import { set } from "lodash";
-import { getOrThrow } from "./getOrThrow.ts";
 import { validateSubquery } from "./validateSubquery.ts";
+import { getComparisonSubquery } from "./getComparisonSubquery.ts";
 
-export function updateSubquery(
+export function updateComparisonSubquery(
   toUpdate: SubqueryToUpdate,
   prev: QueryState,
 ): QueryState {
   const { path, param, form, errors } = toUpdate;
 
-  const prevSubquery = getOrThrow(prev.subqueries, path);
+  const prevSubquery = getComparisonSubquery(prev.subqueries, path);
   const subqueryUpdate = { ...prevSubquery };
   subqueryUpdate.form = form ?? prevSubquery.form;
   subqueryUpdate.errors = errors ?? prevSubquery.errors;
@@ -19,9 +19,9 @@ export function updateSubquery(
   const update = structuredClone(prev.subqueries);
   set(update, path, subqueryUpdate);
 
-  validateSubquery(subqueryUpdate, update);
+  validateSubquery(path, update);
 
-  console.debug(updateSubquery.name, { toUpdate, prev, update });
+  console.debug(updateComparisonSubquery.name, { toUpdate, prev, update });
 
   return {
     ...prev,

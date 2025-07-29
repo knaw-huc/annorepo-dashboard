@@ -11,7 +11,7 @@ export function addSubquery(
   const update = structuredClone(prev.subqueries);
   set(update, path, subquery);
 
-  validateSubquery(subquery, update);
+  validateSubquery(path, update);
 
   console.debug(addSubquery.name, { toAdd, prev, update });
 

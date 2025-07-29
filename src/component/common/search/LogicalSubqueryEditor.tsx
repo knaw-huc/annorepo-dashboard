@@ -1,7 +1,6 @@
 import { ComparisonEditorProps } from "./ComparisonSubqueryEditor.tsx";
 import { useStore } from "../../../store/useStore.ts";
 import { getLogicalSubquery } from "../../../store/query/util/getLogicalSubquery.ts";
-import { LogicalSubquery } from "../../../model/query/QueryModel.ts";
 import { Button } from "../Button.tsx";
 import { Remove } from "../icon/Remove.tsx";
 import { Warning } from "../Warning.tsx";
@@ -10,8 +9,7 @@ import { SubqueriesEditor } from "./SubqueriesEditor.tsx";
 import { AddComparisonSubqueryButton } from "./button/AddComparisonSubqueryButton.tsx";
 import { AddLogicalSubqueryButton } from "./button/AddLogicalSubqueryButton.tsx";
 import { LogicalOperator } from "../../../model/query/operator/Operator.ts";
-
-export const formsPath: keyof LogicalSubquery = "forms";
+import { formsPropPath } from "../../../store/query/formsPropPath.ts";
 
 export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
   const { containerName, fieldNames, path } = props;
@@ -22,7 +20,7 @@ export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
     removeSubquery(path);
   };
 
-  const newSubqueryPath = [...path, formsPath, subquery.forms.length];
+  const newSubqueryPath = [...path, formsPropPath, subquery.forms.length];
 
   return (
     <div className="border border-slate-400 w-full p-2 my-2">
@@ -55,7 +53,7 @@ export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
         <SubqueriesEditor
           containerName={containerName}
           fieldNames={fieldNames}
-          path={[...path, formsPath]}
+          path={[...path, formsPropPath]}
         />
       </div>
     </div>

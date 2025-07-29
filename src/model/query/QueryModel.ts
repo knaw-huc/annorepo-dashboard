@@ -1,10 +1,17 @@
 import { QueryValue } from "./value/QueryValue.ts";
-import { LogicalOperator, ComparisonOperator } from "./operator/Operator.ts";
+import { ComparisonOperator, LogicalOperator } from "./operator/Operator.ts";
 import { QueryValueType } from "./value/QueryValueType.ts";
 import { ErroneousValue, ErrorRecord } from "./ErrorRecord.ts";
 import { ParamValue } from "./ParamValue.ts";
+import { Any } from "../Any.ts";
 
 export type Subquery = LogicalSubquery | ComparisonSubquery;
+export function isSubquery(toTest: Any): toTest is Subquery {
+  return (
+    (toTest as Subquery).type === "logical" ||
+    (toTest as Subquery).type === "comparison"
+  );
+}
 
 export type ComparisonSubquery = {
   type: "comparison";
