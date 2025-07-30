@@ -6,7 +6,6 @@ import { getSubquery } from "../getSubquery.ts";
 
 /**
  * Check subquery does not invalidate query
- * Only validate when no error already present
  */
 export function validateSubquery(path: PropertyName[], query: Subquery[]) {
   const subquery = getSubquery(query, path);

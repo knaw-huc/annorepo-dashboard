@@ -33,6 +33,7 @@ export function isComparisonSubquery(
 ): toTest is ComparisonSubquery {
   return (toTest as ComparisonSubquery).type === "comparison";
 }
+
 export type BaseSubquery = {
   /**
    * Does subquery introduce error when validating
@@ -41,6 +42,7 @@ export type BaseSubquery = {
    */
   queryError: string;
 };
+
 export type LogicalSubquery = BaseSubquery & {
   type: "logical";
   operator: LogicalOperator;
