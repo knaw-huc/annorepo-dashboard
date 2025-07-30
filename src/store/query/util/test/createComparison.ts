@@ -5,7 +5,7 @@ import { ParamValue } from "../../../../model/query/ParamValue.ts";
 export function createComparison(
   field: string,
   operator: ComparisonOperator,
-  value: string,
+  value: string | number,
   param?: ParamValue,
 ): ComparisonSubquery {
   return {

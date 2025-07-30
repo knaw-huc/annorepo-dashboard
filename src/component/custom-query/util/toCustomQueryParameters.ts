@@ -13,8 +13,7 @@ export function toCustomQueryParameters(
   for (let index = 0; index < subqueries.length; index++) {
     const subquery = subqueries[index];
     if (isLogicalSubquery(subquery)) {
-      // TODO
-      console.log("TODO: handle LogicalSubquery");
+      Object.assign(result, toCustomQueryParameters(subquery.forms));
       continue;
     }
     const parameter = subquery.param;
