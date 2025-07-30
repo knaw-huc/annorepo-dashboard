@@ -1,7 +1,7 @@
-import {createWithEqualityFn as create} from "zustand/traditional";
-import {createQuerySlice} from "./query/QuerySlice.ts";
-import {Store} from "./Store.ts";
-import {createSelectedAnnotationsSlice} from "./query/SelectedAnnotationsSlice.ts";
+import { createWithEqualityFn as create } from "zustand/traditional";
+import { createQuerySlice } from "./query/QuerySlice.ts";
+import { Store } from "./Store.ts";
+import { createSelectedAnnotationsSlice } from "./annotation/SelectedAnnotationsSlice.ts";
 
 export const useStore = create<Store>()((...a) => ({
   ...createQuerySlice(...a),
