@@ -1,19 +1,17 @@
 import { ArCustomQueryForm } from "../../model/ArModel.ts";
 import { H2 } from "../common/H2.tsx";
-import { CustomSubqueryEditor } from "../common/search/CustomSubqueryEditor.tsx";
 import { CustomQueryMetadataEditor } from "./CustomQueryMetadataEditor.tsx";
 import { useEffect, useState } from "react";
 import { isEmpty, PropertyName } from "lodash";
 import { toErrorRecord } from "../../store/query/util/error/toErrorRecord.ts";
-import { CheckboxWithLabel } from "../common/form/CheckboxWithLabel.tsx";
-import { Help } from "../common/icon/Help.tsx";
 import { hasError } from "../../store/query/util/error/hasError.ts";
 import { useStore } from "../../store/useStore.ts";
 import { toParamTag } from "../../store/query/util/toParamTag.ts";
-import { Tooltip } from "../common/Tooltip.tsx";
 import { toParamName } from "../../store/query/util/toParamName.ts";
 import { CustomQueryMetadataForm } from "./model/CustomQueryMetadataForm.ts";
 import { getOrThrow } from "../../store/query/util/getOrThrow.ts";
+
+import { CustomQueryTemplateEditor } from "./CustomQueryTemplateEditor.tsx";
 
 /**
  * Allow creating a new custom query
@@ -66,26 +64,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
         onChange={handleChangeMetadata}
       />
       <H2>Custom Query</H2>
-      {subqueries.map((_, i) => {
-        const path = [i];
-        const subquery = getOrThrow(subqueries, path);
-        return (
-          <div key={path.join()} className="flex items-center">
-            <CustomSubqueryEditor path={path} isCall={false} />
-            <div className="ml-4">
-              <CheckboxWithLabel
-                label={
-                  <Tooltip text="Search with a variable parameter, or use a fixed value">
-                    Parameter <Help />
-                  </Tooltip>
-                }
-                value={subquery.param !== false}
-                onChange={(update) => handleParameterChange(path, update)}
-              />
-            </div>
-          </div>
-        );
-      })}
+      <CustomQueryTemplateEditor onParameterChange={handleParameterChange} />
     </>
   );
 }

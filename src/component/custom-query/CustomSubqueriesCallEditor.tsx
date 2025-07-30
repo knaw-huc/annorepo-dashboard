@@ -1,19 +1,21 @@
 import {
-  ComparisonSubqueryEditorProps,
-  ComparisonSubqueryEditor,
-} from "./ComparisonSubqueryEditor.tsx";
-import { useStore } from "../../../store/useStore.ts";
+  CustomComparisonSubqueryEditor,
+  CustomComparisonSubqueryEditorProps,
+} from "../common/search/CustomComparisonSubqueryEditor.tsx";
+import { useStore } from "../../store/useStore.ts";
 import {
   isComparisonSubquery,
   isLogicalSubquery,
   Subquery,
-} from "../../../model/query/QueryModel.ts";
-import { getOrThrow } from "../../../store/query/util/getOrThrow.ts";
-import { LogicalSubqueryEditor } from "./LogicalSubqueryEditor.tsx";
-import { formsPropPath } from "../../../store/query/formsPropPath.ts";
+} from "../../model/query/QueryModel.ts";
+import { getOrThrow } from "../../store/query/util/getOrThrow.ts";
+import { LogicalSubqueryEditor } from "../common/search/LogicalSubqueryEditor.tsx";
+import { formsPropPath } from "../../store/query/formsPropPath.ts";
 
-export function SubqueriesEditor(props: ComparisonSubqueryEditorProps) {
-  const { containerName, fieldNames, path } = props;
+export function CustomSubqueriesCallEditor(
+  props: CustomComparisonSubqueryEditorProps,
+) {
+  const { containerName, path, isCall } = props;
   const { subqueries: all } = useStore();
   const subqueries: Subquery[] = getOrThrow(all, path);
 
@@ -27,23 +29,22 @@ export function SubqueriesEditor(props: ComparisonSubqueryEditorProps) {
             <LogicalSubqueryEditor
               key={i}
               containerName={containerName}
-              fieldNames={fieldNames}
               path={subqueryPath}
             >
-              <SubqueriesEditor
+              <CustomSubqueriesCallEditor
                 containerName={containerName}
-                fieldNames={fieldNames}
                 path={[...subqueryPath, formsPropPath]}
+                isCall={true}
               />
             </LogicalSubqueryEditor>
           );
         } else if (isComparisonSubquery(subquery)) {
           return (
-            <ComparisonSubqueryEditor
-              key={i}
+            <CustomComparisonSubqueryEditor
               containerName={containerName}
-              fieldNames={fieldNames}
+              key={subqueryPath.join("")}
               path={subqueryPath}
+              isCall={isCall}
             />
           );
         } else {

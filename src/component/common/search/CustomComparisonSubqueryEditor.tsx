@@ -5,16 +5,20 @@ import noop from "lodash/noop";
 import { useStore } from "../../../store/useStore.ts";
 import { useValueSuggestions } from "./useValueSuggestions.tsx";
 import { PropertyName } from "lodash";
-import { getOrThrow } from "../../../store/query/util/getOrThrow.ts";
+import { getComparisonSubquery } from "../../../store/query/util/getComparisonSubquery.ts";
 
-export function CustomSubqueryEditor(props: {
+export type CustomComparisonSubqueryEditorProps = {
   path: PropertyName[];
   isCall: boolean;
   containerName?: string;
-}) {
+};
+
+export function CustomComparisonSubqueryEditor(
+  props: CustomComparisonSubqueryEditorProps,
+) {
   const { path, isCall, containerName } = props;
   const { subqueries } = useStore();
-  const subquery = getOrThrow(subqueries, path);
+  const subquery = getComparisonSubquery(subqueries, path);
   const operatorValue = subquery.form.operator.valueOf();
 
   const valueSuggestions = useValueSuggestions({

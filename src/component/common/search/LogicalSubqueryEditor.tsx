@@ -1,20 +1,24 @@
-import { ComparisonEditorProps } from "./ComparisonSubqueryEditor.tsx";
 import { useStore } from "../../../store/useStore.ts";
 import { getLogicalSubquery } from "../../../store/query/util/getLogicalSubquery.ts";
 import { Button } from "../Button.tsx";
 import { Remove } from "../icon/Remove.tsx";
 import { Warning } from "../Warning.tsx";
 
-import { SubqueriesEditor } from "./SubqueriesEditor.tsx";
 import { AddComparisonSubqueryButton } from "./button/AddComparisonSubqueryButton.tsx";
 import { AddLogicalSubqueryButton } from "./button/AddLogicalSubqueryButton.tsx";
 import { LogicalOperator } from "../../../model/query/operator/Operator.ts";
 import { formsPropPath } from "../../../store/query/formsPropPath.ts";
+import { PropsWithChildren } from "react";
+import { PropertyName } from "lodash";
 
-export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
-  const { containerName, fieldNames, path } = props;
+export type WithPath = { path: PropertyName[] };
+
+export function LogicalSubqueryEditor<T extends WithPath>(
+  props: PropsWithChildren<T>,
+) {
+  const { path } = props;
   const { subqueries, removeSubquery } = useStore();
-  const subquery = getLogicalSubquery(subqueries, props.path);
+  const subquery = getLogicalSubquery(subqueries, path);
 
   const handleRemove = () => {
     removeSubquery(path);
@@ -50,11 +54,10 @@ export function LogicalSubqueryEditor(props: ComparisonEditorProps) {
       </div>
       {subquery.queryError && <Warning>{subquery.queryError}</Warning>}
       <div>
-        <SubqueriesEditor
-          containerName={containerName}
-          fieldNames={fieldNames}
-          path={[...path, formsPropPath]}
-        />
+        {
+          // Subqueries in forms property of logical subquery:
+          props.children
+        }
       </div>
     </div>
   );

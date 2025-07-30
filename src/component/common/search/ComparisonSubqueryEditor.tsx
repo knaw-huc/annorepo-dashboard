@@ -14,14 +14,14 @@ import { alignFormWithOperator } from "./util/alignFormWithOperator.tsx";
 import { PropertyName } from "lodash";
 import { getComparisonSubquery } from "../../../store/query/util/getComparisonSubquery.ts";
 
-export type ComparisonEditorProps = {
+export type ComparisonSubqueryEditorProps = {
   fieldNames: string[];
   path: PropertyName[];
   disabled?: boolean;
   containerName?: string;
 };
 
-export function ComparisonSubqueryEditor(props: ComparisonEditorProps) {
+export function ComparisonSubqueryEditor(props: ComparisonSubqueryEditorProps) {
   const { fieldNames, disabled, path, containerName } = props;
 
   const { subqueries, removeSubquery, updateComparisonSubquery } = useStore();

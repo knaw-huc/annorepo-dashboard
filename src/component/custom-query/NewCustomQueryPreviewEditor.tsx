@@ -20,6 +20,8 @@ import { Button } from "../common/Button.tsx";
 import { Store } from "../common/icon/Store.tsx";
 import { Next } from "../common/icon/Next.tsx";
 import { QR } from "../../client/query/QR.tsx";
+import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
+import { LogicalOperator } from "../../model/query/operator/Operator.ts";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string;
@@ -59,11 +61,11 @@ export function NewCustomQueryPreviewEditor(props: {
     setSubmitted({ query, pageNo, containerName });
   };
 
-  const searchDisabled: boolean =
-    !containerName ||
-    !!page.error ||
-    !subqueries.length ||
-    hasErrors(subqueries);
+  const hasSearchErrors = hasErrors(subqueries);
+  const isSearchDisabled =
+    !containerName || !!page.error || !subqueries.length || hasSearchErrors;
+
+  const newSubqueryPath = [subqueries.length];
 
   return (
     <>
@@ -72,7 +74,7 @@ export function NewCustomQueryPreviewEditor(props: {
           selected={containerName}
           onSelect={onSetContainerName}
         />
-        <SearchButton onClick={handleSubmit} disabled={searchDisabled} />
+        <SearchButton onClick={handleSubmit} disabled={isSearchDisabled} />
         {containerName && (
           <Button
             secondary
@@ -90,13 +92,25 @@ export function NewCustomQueryPreviewEditor(props: {
         <>
           <div className="mt-7">
             <QueryEditor containerName={containerName} />
-            <span className="inline-block">
+            <div className="mb-2">
               <AddComparisonSubqueryButton
-                path={[subqueries.length]}
-                isParam={true}
-                disabled={searchDisabled}
+                path={newSubqueryPath}
+                isParam={false}
+                disabled={hasSearchErrors}
               />
-            </span>
+              <AddLogicalSubqueryButton
+                path={newSubqueryPath}
+                disabled={hasSearchErrors}
+                operator={LogicalOperator.and}
+                className="ml-3"
+              />
+              <AddLogicalSubqueryButton
+                path={newSubqueryPath}
+                disabled={hasSearchErrors}
+                operator={LogicalOperator.or}
+                className="ml-3"
+              />
+            </div>
           </div>
 
           {page.data && (

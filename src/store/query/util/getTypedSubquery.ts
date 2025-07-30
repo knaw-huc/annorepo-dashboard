@@ -10,7 +10,7 @@ export function getTypedSubquery<T extends Subquery>(
   const found = getOrThrow(subqueries, path);
   if (!typeguard(found)) {
     throw new Error(
-      `Subquery did not match ${typeguard.name}: ${JSON.stringify(found)}`,
+      `Subquery at ${JSON.stringify(path)} did not match ${typeguard.name}: ${JSON.stringify(found)}`,
     );
   }
   return found;
