@@ -1,7 +1,7 @@
 import {
   CustomComparisonSubqueryEditor,
   CustomComparisonSubqueryEditorProps,
-} from "../common/search/CustomComparisonSubqueryEditor.tsx";
+} from "./CustomComparisonSubqueryEditor.tsx";
 import { useStore } from "../../store/useStore.ts";
 import {
   isComparisonSubquery,

@@ -1,11 +1,11 @@
-import { DropdownSelector } from "../form/DropdownSelector.tsx";
-import { QueryValueInput } from "./QueryValueInput.tsx";
-import { QueryFieldInput } from "./QueryFieldInput.tsx";
+import { DropdownSelector } from "../common/form/DropdownSelector.tsx";
+import { QueryValueInput } from "../common/search/QueryValueInput.tsx";
+import { QueryFieldInput } from "../common/search/QueryFieldInput.tsx";
 import noop from "lodash/noop";
-import { useStore } from "../../../store/useStore.ts";
-import { useValueSuggestions } from "./useValueSuggestions.tsx";
+import { useStore } from "../../store/useStore.ts";
+import { useValueSuggestions } from "../common/search/useValueSuggestions.tsx";
 import { PropertyName } from "lodash";
-import { getComparisonSubquery } from "../../../store/query/util/path/getComparisonSubquery.ts";
+import { getComparisonSubquery } from "../../store/query/util/path/getComparisonSubquery.ts";
 
 export type CustomComparisonSubqueryEditorProps = {
   path: PropertyName[];
