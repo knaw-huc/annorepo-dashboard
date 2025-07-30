@@ -1,22 +1,26 @@
-import {ArRangeQueryValue} from "../../ArModel.ts";
+import { ArRangeQueryValue } from "../../ArModel.ts";
 
-export const emptyValue = null
-export type EmptyValue = typeof emptyValue
+export const absentValue = null;
+export type AbsentValue = typeof absentValue;
 
 export type QueryValue =
   | string
   | number
   | string[]
   | ArRangeQueryValue
-  | EmptyValue // Absent value
+  /**
+   * Is a form field empty or absent?
+   * TODO: filter out absent values when searching
+   */
+  | AbsentValue;
 
 /**
- * Remove null values
+ * Remove absent values from json
  */
-export function emptyValueReplacer(_: any, value: any) {
-  return value === emptyValue ? undefined : value;
+export function absentValueReplacer(_: unknown, value: unknown) {
+  return value === absentValue ? undefined : value;
 }
 
-export function removeEmptyValues(form: object) {
-  return JSON.parse(JSON.stringify(form, emptyValueReplacer))
+export function removeAbsentValues(form: object): object {
+  return JSON.parse(JSON.stringify(form, absentValueReplacer));
 }
