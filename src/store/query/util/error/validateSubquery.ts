@@ -2,7 +2,7 @@ import { Subquery } from "../../../../model/query/QueryModel.ts";
 import { validateQuery } from "./validateQuery.ts";
 import { pruneQuery } from "../pruneQuery.ts";
 import { PropertyName } from "lodash";
-import { getSubquery } from "../getSubquery.ts";
+import { getSubquery } from "../path/getSubquery.ts";
 
 /**
  * Check subquery does not invalidate query

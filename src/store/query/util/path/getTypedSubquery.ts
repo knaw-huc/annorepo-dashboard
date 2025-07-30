@@ -1,4 +1,4 @@
-import { Subquery } from "../../../model/query/QueryModel.ts";
+import { Subquery } from "../../../../model/query/QueryModel.ts";
 import { PropertyName } from "lodash";
 import { getOrThrow } from "./getOrThrow.ts";
 

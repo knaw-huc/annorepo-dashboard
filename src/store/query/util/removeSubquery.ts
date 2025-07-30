@@ -1,6 +1,6 @@
 import { QueryState } from "../QuerySlice.ts";
 import { initial, PropertyName, remove, unset } from "lodash";
-import { getOrThrow } from "./getOrThrow.ts";
+import { getOrThrow } from "./path/getOrThrow.ts";
 import { revalidateInvalidSubqueries } from "./error/revalidateInvalidSubqueries.ts";
 
 export function removeSubquery(

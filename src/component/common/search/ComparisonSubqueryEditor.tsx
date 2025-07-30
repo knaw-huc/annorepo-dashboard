@@ -12,7 +12,7 @@ import { ComparisonOperator } from "../../../model/query/operator/Operator.ts";
 import { toOperator } from "../../../model/query/operator/toOperator.ts";
 import { alignFormWithOperator } from "./util/alignFormWithOperator.tsx";
 import { PropertyName } from "lodash";
-import { getComparisonSubquery } from "../../../store/query/util/getComparisonSubquery.ts";
+import { getComparisonSubquery } from "../../../store/query/util/path/getComparisonSubquery.ts";
 
 export type ComparisonSubqueryEditorProps = {
   fieldNames: string[];

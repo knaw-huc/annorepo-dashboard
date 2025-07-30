@@ -2,7 +2,7 @@ import { QueryState } from "../QuerySlice.ts";
 import { SubqueryToUpdate } from "../SubqueryToUpdate.ts";
 import { set } from "lodash";
 import { validateSubquery } from "./error/validateSubquery.ts";
-import { getComparisonSubquery } from "./getComparisonSubquery.ts";
+import { getComparisonSubquery } from "./path/getComparisonSubquery.ts";
 import { revalidateInvalidSubqueries } from "./error/revalidateInvalidSubqueries.ts";
 
 export function updateComparisonSubquery(

@@ -1,5 +1,5 @@
 import { get, PropertyName } from "lodash";
-import { orThrow } from "../../../util/orThrow.ts";
+import { orThrow } from "../../../../util/orThrow.ts";
 
 export function getOrThrow(source: object, path: PropertyName[]) {
   if (!path.length) {

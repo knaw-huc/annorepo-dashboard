@@ -1,5 +1,5 @@
 import { useStore } from "../../../store/useStore.ts";
-import { getLogicalSubquery } from "../../../store/query/util/getLogicalSubquery.ts";
+import { getLogicalSubquery } from "../../../store/query/util/path/getLogicalSubquery.ts";
 import { Button } from "../Button.tsx";
 import { Remove } from "../icon/Remove.tsx";
 import { Warning } from "../Warning.tsx";

@@ -2,7 +2,7 @@ import {
   isLogicalSubquery,
   LogicalSubquery,
   Subquery,
-} from "../../../model/query/QueryModel.ts";
+} from "../../../../model/query/QueryModel.ts";
 import { PropertyName } from "lodash";
 import { getTypedSubquery } from "./getTypedSubquery.ts";
 

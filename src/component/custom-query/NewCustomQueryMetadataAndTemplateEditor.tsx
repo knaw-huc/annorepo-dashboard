@@ -8,7 +8,7 @@ import { hasError } from "../../store/query/util/error/hasError.ts";
 import { useStore } from "../../store/useStore.ts";
 import { toParamName } from "../../store/query/util/toParamName.ts";
 import { CustomQueryMetadataForm } from "./model/CustomQueryMetadataForm.ts";
-import { getOrThrow } from "../../store/query/util/getOrThrow.ts";
+import { getOrThrow } from "../../store/query/util/path/getOrThrow.ts";
 
 import { CustomQueryTemplateEditor } from "./CustomQueryTemplateEditor.tsx";
 

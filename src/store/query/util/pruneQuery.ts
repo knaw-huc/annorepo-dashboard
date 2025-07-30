@@ -4,7 +4,7 @@ import {
 } from "../../../model/query/QueryModel.ts";
 
 /**
- * Remove subqueries from query tree that match the predicate
+ * Remove subqueries that match predicate from the query tree
  */
 export function pruneQuery(
   query: Subquery[],

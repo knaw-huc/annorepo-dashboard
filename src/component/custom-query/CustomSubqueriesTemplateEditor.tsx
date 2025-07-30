@@ -5,7 +5,7 @@ import {
   isLogicalSubquery,
   Subquery,
 } from "../../model/query/QueryModel.ts";
-import { getOrThrow } from "../../store/query/util/getOrThrow.ts";
+import { getOrThrow } from "../../store/query/util/path/getOrThrow.ts";
 import { LogicalSubqueryEditor } from "../common/search/LogicalSubqueryEditor.tsx";
 import { formsPropPath } from "../../store/query/formsPropPath.ts";
 import { CustomComparisonSubqueryEditor } from "../common/search/CustomComparisonSubqueryEditor.tsx";
