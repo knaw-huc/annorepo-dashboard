@@ -6,7 +6,7 @@ import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { QueryEditor } from "../common/search/QueryEditor.tsx";
 import { H1 } from "../common/H1.tsx";
-import { useSearchQuery } from "../../store/query/hooks/useSearchQuery.ts";
+import { useSearchQuery } from "../../store/query/hook/useSearchQuery.ts";
 import { useStore } from "../../store/useStore.ts";
 import {
   ContainerSearchArgs,

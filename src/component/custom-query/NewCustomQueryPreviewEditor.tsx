@@ -5,7 +5,7 @@ import { useGet } from "../../client/query/useGet.tsx";
 import { ArMyContainers } from "../../model/ArModel.ts";
 import { toPageNo } from "../../util/toPageNo.ts";
 import { getContainerNames } from "../../client/endpoint/getContainerNames.tsx";
-import { useSearchQuery } from "../../store/query/hooks/useSearchQuery.ts";
+import { useSearchQuery } from "../../store/query/hook/useSearchQuery.ts";
 import {
   ContainerSearchArgs,
   useContainerSearch,
