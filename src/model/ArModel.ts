@@ -114,7 +114,7 @@ export function isArRangeQueryValue(toTest: Any): toTest is ArRangeQueryValue {
   );
 }
 
-export type ArLogicalEntry = [LogicalOperator, ArSubqueryRecord];
+export type ArLogicalEntry = [LogicalOperator, ArSubqueryRecord[]];
 
 // Use interface to prevent circular dependency (TS2456)
 export interface ArLogicalRecord {

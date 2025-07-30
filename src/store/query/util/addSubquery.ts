@@ -15,8 +15,6 @@ export function addSubquery(
   validateSubquery(path, update);
   revalidateInvalidSubqueries(update);
 
-  console.debug(addSubquery.name, { toAdd, prev, update });
-
   return {
     ...prev,
     subqueries: update,

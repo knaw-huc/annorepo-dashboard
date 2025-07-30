@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import {
-  LogicalOperator,
   ComparisonOperator,
+  LogicalOperator,
 } from "../../../model/query/operator/Operator.ts";
 import { toArQuery } from "./toArQuery.ts";
 import { createLogical } from "./test/createLogical.ts";
@@ -36,6 +36,7 @@ describe(toArQuery.name, async () => {
       ":and": [{ f: { ":=": "v" } }, { f2: { ":=": "v2" } }],
     });
   });
+
   it("converts :and with two :ors", async () => {
     const result = toArQuery(
       [
@@ -62,5 +63,14 @@ describe(toArQuery.name, async () => {
         },
       ],
     });
+  });
+
+  it("creates a template with a parameter", async () => {
+    const asTemplate = true;
+    const result = toArQuery(
+      [createComparison("f", eq, "v", "0-v")],
+      asTemplate,
+    );
+    expect(result).toEqual({ f: { ":=": "<<0-v>>" } });
   });
 });

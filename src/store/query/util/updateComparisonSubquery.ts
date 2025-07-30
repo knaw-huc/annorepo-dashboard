@@ -23,8 +23,6 @@ export function updateComparisonSubquery(
   validateSubquery(path, update);
   revalidateInvalidSubqueries(update);
 
-  console.debug(updateComparisonSubquery.name, { toUpdate, prev, update });
-
   return {
     ...prev,
     subqueries: update,

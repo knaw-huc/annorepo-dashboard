@@ -16,8 +16,6 @@ export function removeSubquery(
 
   revalidateInvalidSubqueries(update);
 
-  console.debug(removeSubquery.name, { toRemove, prev, update });
-
   return {
     ...prev,
     subqueries: update,

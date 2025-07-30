@@ -6,7 +6,6 @@ import { isEmpty, PropertyName } from "lodash";
 import { toErrorRecord } from "../../store/query/util/error/toErrorRecord.ts";
 import { hasError } from "../../store/query/util/error/hasError.ts";
 import { useStore } from "../../store/useStore.ts";
-import { toParamTag } from "../../store/query/util/toParamTag.ts";
 import { toParamName } from "../../store/query/util/toParamName.ts";
 import { CustomQueryMetadataForm } from "./model/CustomQueryMetadataForm.ts";
 import { getOrThrow } from "../../store/query/util/getOrThrow.ts";
@@ -32,7 +31,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
 
   function handleParameterChange(path: PropertyName[], isParam: boolean) {
     const form = getOrThrow(subqueries, path).form;
-    const update = isParam ? toParamTag(toParamName(form, path)) : false;
+    const update = isParam ? toParamName(form, path) : false;
     updateComparisonSubquery({ path, param: update });
   }
 

@@ -1,9 +1,9 @@
 import {
   ArComparisonRecord,
   ArLogicalRecord,
+  ArQuery,
   ArSubqueryRecord,
   isArRangeQueryValue,
-  ArQuery,
 } from "../../../model/ArModel.ts";
 import { objectEntries } from "../../../util/objectEntries.ts";
 import {
@@ -25,11 +25,7 @@ export function toArQuery(
   subqueries: Subquery[],
   asTemplate: boolean,
 ): ArQuery {
-  const result = mergeArEntries(
-    subqueries.map((sq) => toArSubquery(sq, asTemplate)),
-  );
-  console.debug(toArQuery.name, { subqueries, asTemplate, result });
-  return result;
+  return mergeArEntries(subqueries.map((sq) => toArSubquery(sq, asTemplate)));
 }
 
 function mergeArEntries(subqueries: ArSubqueryRecord[]): ArQuery {
