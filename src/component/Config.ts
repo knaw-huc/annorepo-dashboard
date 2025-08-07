@@ -1,21 +1,22 @@
-import {AnnotationFieldType} from "./annotation/AnnotationFieldType.ts";
+import { AnnotationFieldType } from "./annotation/AnnotationFieldType.ts";
 
 export type FieldConfig = {
-  path: string,
-  label: string,
-  type: AnnotationFieldType
+  path: string;
+  label: string;
+  type: AnnotationFieldType;
 };
 
 export type Config = {
-  AR_HOST: string
+  AR_HOST: string;
+  AUTH_HOST: string;
   annotationPreview: {
-    paths: string[]
-    body: { paths: string[] }
-  },
+    paths: string[];
+    body: { paths: string[] };
+  };
   annotationEditor: {
     /**
      * Obligatory fields
      */
-    fields: FieldConfig[]
-  }
-}
+    fields: FieldConfig[];
+  };
+};

@@ -1,40 +1,54 @@
-import {PropsWithChildren, useContext, useEffect, useState} from "react";
-import {createOpenApiClient} from "../../client/OpenApiClient.tsx";
-import {OpenApiClientContext} from "../../client/OpenApiClientProvider.tsx";
-import {LoginForm} from "./LoginForm.tsx";
-import {useConfig} from "../ConfigProvider.tsx";
-import {ArAboutData} from "../../model/ArModel.ts";
+import { PropsWithChildren, useContext, useEffect, useState } from "react";
+import { createOpenApiClient } from "../../client/OpenApiClient.tsx";
+import { OpenApiClientContext } from "../../client/OpenApiClientProvider.tsx";
+import { useConfig } from "../ConfigProvider.tsx";
+import { Loading } from "../common/Loading.tsx";
+import { Warning } from "../common/Warning.tsx";
 
-export function Login(props: PropsWithChildren<{}>) {
+export function Login(props: PropsWithChildren) {
+  const config = useConfig();
+  const setClient = useContext(OpenApiClientContext).actions.setClient;
+  const [error, setError] = useState("");
+  const [isAuthenticated, setAuthenticated] = useState(false);
+  const [isLoading, setLoading] = useState(true);
 
-  const setClient = useContext(OpenApiClientContext).actions.setClient
-  const client = useContext(OpenApiClientContext).state.client
-  const config = useConfig()
-  const [isWithAUth, setWithAuth] = useState(false)
-  const createClient = (bearerToken: string) => {
-    setClient(createOpenApiClient(bearerToken, config.AR_HOST))
+  useEffect(() => {
+    const checkAuthentication = async () => {
+      try {
+        const response = await fetch(`${config.AUTH_HOST}/oidc/userinfo`);
+
+        if (response.ok) {
+          setAuthenticated(true);
+        } else if (response.status === 401) {
+          setAuthenticated(false);
+          setError("Unauthorized");
+        } else {
+          setError(`Unexpected status: ${response.status}`);
+        }
+      } catch (error) {
+        setError(error instanceof Error ? error.message : "Unknown error");
+        setAuthenticated(false);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    setClient(createOpenApiClient(config.AUTH_HOST, false));
+    checkAuthentication();
+  }, [config.AUTH_HOST, setClient]);
+
+  if (isLoading) {
+    return <Loading />;
+  } else if (error) {
+    return <Warning>{error}</Warning>;
+  } else if (isAuthenticated) {
+    return <>{props.children}</>;
+  } else {
+    return (
+      <div>
+        <p>Please log in to continue</p>
+        <a href={`${config.AUTH_HOST}/oidc/login`}>Log in</a>
+      </div>
+    );
   }
-
-  useEffect(() => {
-    fetch(`${config.AR_HOST}/about`).then(r => r.json().then(
-      (body: ArAboutData) => setWithAuth(body.withAuthentication))
-    )
-  }, []);
-
-  useEffect(() => {
-    if (import.meta.env.DEV) {
-      createClient('root')
-    } else if (!isWithAUth) {
-      createClient('root')
-    }
-  }, [isWithAUth]);
-
-  return <>
-    {client
-      ? props.children
-      : <LoginForm onSubmit={createClient}/>
-    }
-  </>
-
 }
-

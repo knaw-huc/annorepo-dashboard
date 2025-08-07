@@ -1,55 +1,62 @@
-import createClient, {FetchOptions, Middleware} from "openapi-fetch";
-import {paths} from "../openapi.ts";
-import {HttpMethod, PathsWithMethod} from "openapi-typescript-helpers";
-import {
-  decodeCustomQueryParameters
-} from "./util/decodeCustomQueryParameters.ts";
+import createClient, { FetchOptions, Middleware } from "openapi-fetch";
+import { paths } from "../openapi.ts";
+import { HttpMethod, PathsWithMethod } from "openapi-typescript-helpers";
+import { decodeCustomQueryParameters } from "./util/decodeCustomQueryParameters.ts";
 
 export function createOpenApiClient(
-  bearerToken: string,
-  baseUrl: string
+  baseUrl: string,
+
+  /**
+   * When using oidc, the auth server handles authentication headers
+   */
+  bearerToken: string | false,
 ) {
-
-  const addBearerTokenHeader: Middleware = {
-    async onRequest(params) {
-      params.request.headers.set('Authorization', `Bearer ${bearerToken}`)
-    }
-  }
-
   /**
    * Custom query parameters should not be encoded by openapi-fetch
    */
   const unencodeCustomQueryParameters: Middleware = {
     async onRequest(params) {
-      params.request = new Request(decodeCustomQueryParameters(params.request.url), params.request)
-    }
-  }
+      params.request = new Request(
+        decodeCustomQueryParameters(params.request.url),
+        params.request,
+      );
+    },
+  };
 
   const validateResponseStatus: Middleware = {
-    async onResponse({response}) {
+    async onResponse({ response }) {
       if (!response.ok) {
         const errorBody = await response.json();
-        throw new Error(`Error ${response.status}: ${errorBody.message ?? response.status}`)
+        throw new Error(
+          `Error ${response.status}: ${errorBody.message ?? response.status}`,
+        );
       }
-    }
+    },
+  };
+
+  const client = createClient<paths>({ baseUrl });
+  client.use(unencodeCustomQueryParameters, validateResponseStatus);
+
+  if (bearerToken !== false) {
+    const addBearerTokenHeader: Middleware = {
+      async onRequest(params) {
+        params.request.headers.set("Authorization", `Bearer ${bearerToken}`);
+      },
+    };
+    client.use(addBearerTokenHeader);
   }
 
-  let client = createClient<paths>({baseUrl});
-  client.use(
-    addBearerTokenHeader,
-    unencodeCustomQueryParameters,
-    validateResponseStatus
-  )
-  return client
+  return client;
 }
 
-export type AnnoRepoOpenApiClient = ReturnType<typeof createOpenApiClient>
+export type AnnoRepoOpenApiClient = ReturnType<typeof createOpenApiClient>;
 
 /**
  * Integrating tanstack query with openapi
  * Inspired by: https://github.com/ruanmartinelli/tanstack-query-openapi-demo/
  */
-export type Paths<M extends HttpMethod> = PathsWithMethod<paths, M>
-export type Params<M extends HttpMethod, P extends Paths<M>> = M extends keyof paths[P]
-  ? FetchOptions<paths[P][M]>
-  : never
+export type Paths<M extends HttpMethod> = PathsWithMethod<paths, M>;
+export type Params<
+  M extends HttpMethod,
+  P extends Paths<M>,
+> = M extends keyof paths[P] ? FetchOptions<paths[P][M]> : never;

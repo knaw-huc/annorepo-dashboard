@@ -6,29 +6,29 @@ _Note: Work in Progress_
 
 ## Development
 
+First time:
 
-First time: 
 ```shell
-cp public/webapp.config.json.example public/webapp.config.json 
-# and change AR_HOST
+cp public/webapp.config.json.example public/webapp.config.json
+# change AR_HOST, and possibly AUTH_HOST
 
 npm install
 ```
 
-Start: `
-npm start
-`
+Start: `npm start`
 
 ## TODO
 
 ## Requirements
 
-Users: 
- - annorepo admin
- - annorepo editor?
- - annorepo guest?
+Users:
+
+- annorepo admin
+- annorepo editor?
+- annorepo guest?
 
 Use cases:
+
 - Manage containers
   - Add container
   - Edit container: what does editing a container mean?
@@ -54,7 +54,7 @@ Use cases:
   - Note: what should be the scope of this dashboard?
 
 - Authenticate
-  - Login using ORCID? 
+  - Login using ORCID?
   - Edu-id? Reuse functionality from TT editor workflow?
 
 ## Workflow
@@ -88,6 +88,7 @@ Use cases:
 ## Tech setup
 
 ### Stack
+
 - Language: Typescript
 - Bundler: Vite
 - Components: React
@@ -98,6 +99,6 @@ Use cases:
 
 ### Packages (workspace)
 
-- `@annorepo/client`:    annorepo client using openapi + tanstack query
+- `@annorepo/client`: annorepo client using openapi + tanstack query
 - `@annorepo/component`: reusable react components with query provider, no routing
 - `@annorepo/dashboard`: full webapp with routing using components

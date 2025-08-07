@@ -1,5 +1,6 @@
 {
-  "AR_HOST": "/api",
+  "AR_HOST": "/api/annorepo",
+  "AUTH_HOST": "/api/auth"
   "annotationPreview": {
       "paths": [
         "creator",

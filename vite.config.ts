@@ -1,17 +1,17 @@
-import {defineConfig} from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
-import {TanStackRouterVite} from '@tanstack/router-plugin/vite'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import tanstackRouter from "@tanstack/router-plugin/vite";
 
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [
-    TanStackRouterVite({
-      target: 'react',
-      autoCodeSplitting: true
+    tanstackRouter({
+      target: "react",
+      autoCodeSplitting: true,
     }),
     react(),
-    tailwindcss()
+    tailwindcss(),
   ],
 
   /**
@@ -22,11 +22,11 @@ export default defineConfig({
       /**
        * To prevent CORS issues with local AR server:
        */
-      '/api': {
-        target: 'http://localhost:8080',
+      "/api": {
+        target: "http://localhost:8080",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ''),
-      }
-    }
-  }
-})
+        rewrite: (path) => path.replace(/^\/api/, ""),
+      },
+    },
+  },
+});
