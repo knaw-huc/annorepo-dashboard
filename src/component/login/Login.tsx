@@ -33,9 +33,9 @@ export function Login(props: PropsWithChildren) {
       }
     };
 
-    setClient(createOpenApiClient(config.AUTH_HOST, false));
+    setClient(createOpenApiClient(config.AR_HOST, false));
     checkAuthentication();
-  }, [config.AUTH_HOST, setClient]);
+  }, [config.AUTH_HOST, config.AR_HOST, setClient]);
 
   if (isLoading) {
     return <Loading />;
