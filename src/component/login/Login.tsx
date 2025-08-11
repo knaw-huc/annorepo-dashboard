@@ -21,8 +21,7 @@ export function Login(props: PropsWithChildren) {
           setAuthenticated(true);
           response.json().then((json) => console.log("authenticated", json));
         } else if (response.status === 401) {
-          setAuthenticated(false);
-          setError("Unauthorized");
+          window.location.href = `${config.AUTH_HOST}/oidc/login`;
         } else {
           setError(`Unexpected status: ${response.status}`);
         }
