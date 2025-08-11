@@ -15,27 +15,16 @@ export function Login(props: PropsWithChildren) {
   useEffect(() => {
     const checkAuthentication = async () => {
       try {
-        const response = await fetch(`${config.AUTH_HOST}/oidc/userinfo`, {
-          redirect: "manual",
-        });
+        const response = await fetch(`${config.AUTH_HOST}/oidc/status`);
 
-        if (response.status === 302) {
-          const redirectUrl = response.headers.get("location");
-          if (redirectUrl) {
-            // Manually redirect the browser window
-            window.location.href = redirectUrl;
-          } else {
-            setError("Redirect received but no Location header found.");
-            setAuthenticated(false);
-          }
-        } else if (response.ok) {
+        if (response.ok) {
           setAuthenticated(true);
+          response.json().then((json) => console.log("authenticated", json));
         } else if (response.status === 401) {
           setAuthenticated(false);
           setError("Unauthorized");
         } else {
           setError(`Unexpected status: ${response.status}`);
-          setAuthenticated(false);
         }
       } catch (error) {
         const msg = error instanceof Error ? error.message : "Unknown error";
