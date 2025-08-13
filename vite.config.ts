@@ -19,14 +19,13 @@ export default defineConfig({
    */
   server: {
     proxy: {
-      /**
-       * To prevent CORS issues with local AR server:
-       */
       "/api": {
-        target: "http://localhost:8080",
+        target: "http://localhost:5000",
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/api/, ""),
+        rewrite: (p) => p.replace(/^\/api/, ""),
       },
+      "/login": { target: "http://localhost:5000", changeOrigin: true },
+      "/auth": { target: "http://localhost:5000", changeOrigin: true },
     },
   },
 });
