@@ -37,7 +37,7 @@ async function main() {
   }
   const root = ReactDOM.createRoot(rootElement);
   root.render(
-    <>
+    <StrictMode>
       <ConfigProvider config={config}>
         <OpenApiClientProvider>
           <QueryClientProvider client={createQueryClient()}>
@@ -45,7 +45,7 @@ async function main() {
           </QueryClientProvider>
         </OpenApiClientProvider>
       </ConfigProvider>
-    </>,
+    </StrictMode>,
   );
 }
 
