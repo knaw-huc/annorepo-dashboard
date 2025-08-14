@@ -4,12 +4,14 @@ import { OpenApiClientContext } from "../../client/OpenApiClientProvider.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
 import { Loading } from "../common/Loading.tsx";
 import { Warning } from "../common/Warning.tsx";
+import { isAuthenticatedUser, UserStatus } from "../../model/User.tsx";
+import { useStore } from "../../store/useStore.ts";
 
 export function Login(props: PropsWithChildren) {
   const config = useConfig();
   const setClient = useContext(OpenApiClientContext).actions.setClient;
+  const { user, setUserState } = useStore();
   const [error, setError] = useState("");
-  const [isAuthenticated, setAuthenticated] = useState(false);
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -18,8 +20,8 @@ export function Login(props: PropsWithChildren) {
         const response = await fetch(`${config.AUTH_HOST}/oidc/status`);
 
         if (response.ok) {
-          setAuthenticated(true);
-          response.json().then((json) => console.log("authenticated", json));
+          const update: UserStatus = await response.json();
+          setUserState({ user: update });
         } else if (response.status === 401) {
           window.location.href = `${config.AUTH_HOST}/oidc/login`;
         } else {
@@ -28,7 +30,7 @@ export function Login(props: PropsWithChildren) {
       } catch (error) {
         const msg = error instanceof Error ? error.message : "Unknown error";
         setError(`Received error: ${msg}`);
-        setAuthenticated(false);
+        setUserState({ user: { authenticated: false } });
       } finally {
         setLoading(false);
       }
@@ -42,14 +44,9 @@ export function Login(props: PropsWithChildren) {
     return <Loading />;
   } else if (error) {
     return <Warning>{error}</Warning>;
-  } else if (isAuthenticated) {
+  } else if (isAuthenticatedUser(user)) {
     return <>{props.children}</>;
   } else {
-    return (
-      <div>
-        <p>Please log in to continue</p>
-        <a href={`${config.AUTH_HOST}/oidc/login`}>Log in</a>
-      </div>
-    );
+    return <p>Redirecting...</p>;
   }
 }
