@@ -4,7 +4,7 @@ import { OpenApiClientContext } from "../../client/OpenApiClientProvider.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
 import { Loading } from "../common/Loading.tsx";
 import { Warning } from "../common/Warning.tsx";
-import { isAuthenticatedUser, UserStatus } from "../../model/User.tsx";
+import { isAuthenticatedUser, UserStatus } from "../../model/User.ts";
 import { useStore } from "../../store/useStore.ts";
 
 export function Login(props: PropsWithChildren) {
