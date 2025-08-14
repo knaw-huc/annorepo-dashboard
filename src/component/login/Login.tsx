@@ -15,7 +15,7 @@ export function Login(props: PropsWithChildren) {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkAuthentication = async () => {
+    const fetchUserOrLogIn = async () => {
       try {
         const response = await fetch(`${config.AUTH_HOST}/oidc/status`);
 
@@ -37,7 +37,7 @@ export function Login(props: PropsWithChildren) {
     };
 
     setClient(createOpenApiClient(config.AR_HOST, false));
-    checkAuthentication();
+    fetchUserOrLogIn();
   }, [config.AUTH_HOST, config.AR_HOST, setClient]);
 
   if (isLoading) {
