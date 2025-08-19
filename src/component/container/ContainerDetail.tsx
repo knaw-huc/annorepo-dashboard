@@ -18,6 +18,8 @@ import { QR } from "../../client/query/QR.tsx";
 import { ArMyContainers } from "../../model/ArModel.ts";
 import { getRolesByName } from "./getRolesByName.ts";
 import { toName } from "../../util/toName.ts";
+import { UserRole } from "../../model/user/UserRole.tsx";
+import { canEdit } from "../../model/user/canEdit.ts";
 
 export type ContainerDetailProps = {
   name: string;
@@ -32,11 +34,12 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
   const container = useContainer(name);
   const [isInit, setInit] = useState(false);
+
   const myContainers = useGet("/my/containers") as QR<ArMyContainers>;
   const containerRole =
     myContainers.data && container.data
       ? getRolesByName(myContainers.data)[toName(container.data.id)]
-      : "UNKNOWN";
+      : UserRole.UNKNOWN;
 
   useEffect(() => {
     if (isInit || !container.data) {
@@ -64,10 +67,12 @@ export function ContainerDetail(props: ContainerDetailProps) {
       <ContainerAnnotationFields name={props.name} />
       <H2>Annotations</H2>
       <div className="mb-3">
-        <Button onClick={props.onClickCreateAnnotation} className="mr-2">
-          Add
-          <Add className="ml-1" />
-        </Button>
+        {canEdit(containerRole) && (
+          <Button onClick={props.onClickCreateAnnotation} className="mr-2">
+            Add
+            <Add className="ml-1" />
+          </Button>
+        )}
         <Button onClick={props.onClickSearchAnnotations}>
           Search
           <Search className="ml-1" />

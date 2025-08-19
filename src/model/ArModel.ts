@@ -6,7 +6,7 @@ import {
 } from "./query/operator/Operator.ts";
 import { QueryValue } from "./query/value/QueryValue.ts";
 import { Any } from "./Any.ts";
-import { UserRole } from "./UserRole.tsx";
+import { UserRole } from "./user/UserRole.tsx";
 
 export type ArAboutData = {
   appName: string;

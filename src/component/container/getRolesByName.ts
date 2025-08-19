@@ -1,5 +1,5 @@
 import { ArMyContainers } from "../../model/ArModel.ts";
-import { UserRole } from "../../model/UserRole.tsx";
+import { UserRole } from "../../model/user/UserRole.tsx";
 
 export function getRolesByName(
   containersByRole: ArMyContainers,

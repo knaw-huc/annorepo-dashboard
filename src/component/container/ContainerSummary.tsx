@@ -4,7 +4,7 @@ import { Badge } from "../common/Badge.tsx";
 import { Pipe } from "../common/Pipe.tsx";
 import { A } from "../common/A.tsx";
 import { External } from "../common/icon/External.tsx";
-import { UserRole } from "../../model/UserRole.tsx";
+import { UserRole } from "../../model/user/UserRole.tsx";
 
 export function ContainerSummary(props: {
   name: string;

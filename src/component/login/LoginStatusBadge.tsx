@@ -1,5 +1,5 @@
 import { useStore } from "../../store/useStore.ts";
-import { isAuthenticatedUser } from "../../model/User.ts";
+import { isAuthenticatedUser } from "../../model/user/User.ts";
 
 export function LoginStatusBadge() {
   const { user } = useStore();

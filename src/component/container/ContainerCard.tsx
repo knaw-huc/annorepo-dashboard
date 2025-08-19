@@ -6,7 +6,7 @@ import { toName } from "../../util/toName.ts";
 import { H5 } from "../common/H5.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { ContainerSummary } from "./ContainerSummary.tsx";
-import { UserRole } from "../../model/UserRole.tsx";
+import { UserRole } from "../../model/user/UserRole.tsx";
 
 export function ContainerCard(
   props: PropsWithChildren<{

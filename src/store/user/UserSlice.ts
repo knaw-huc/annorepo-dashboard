@@ -1,5 +1,5 @@
 import { SliceCreator } from "../query/SliceCreator.ts";
-import { UserStatus } from "../../model/User.ts";
+import { UserStatus } from "../../model/user/User.ts";
 
 export type UserState = {
   user: UserStatus;
