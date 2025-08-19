@@ -6,6 +6,7 @@ import {
 } from "./query/operator/Operator.ts";
 import { QueryValue } from "./query/value/QueryValue.ts";
 import { Any } from "./Any.ts";
+import { UserRole } from "./UserRole.tsx";
 
 export type ArAboutData = {
   appName: string;
@@ -17,7 +18,7 @@ export type ArAboutData = {
   mongoVersion: string;
 };
 
-export type ArMyContainers = Record<string, string[]>;
+export type ArMyContainers = Record<UserRole, string[]>;
 
 export type ArAnnotationPage = {
   id: string;
