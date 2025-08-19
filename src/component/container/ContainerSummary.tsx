@@ -25,11 +25,11 @@ export function ContainerSummary(props: {
 
   return (
     <p className={className}>
+      <span className="capitalize">{props.role.toLowerCase()} role</span>
+      <Pipe />
       <span>
         Annotations: <Badge>{container.data.total}</Badge>
       </span>
-      <Pipe />
-      <span className="capitalize">{props.role.toLowerCase()} role</span>
       <Pipe />
       <span>
         <A href={container.data.id}>
