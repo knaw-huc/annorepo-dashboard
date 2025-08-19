@@ -8,7 +8,7 @@ export function UserBadge() {
     <div className="absolute top-2 right-4 text-sm text-gray-600">
       {isAuthenticatedUser(user) ? (
         <>
-          Logged in as <strong>{user.name}</strong>
+          Logged in as <strong>{user.nickname}</strong>
         </>
       ) : (
         <>Not logged in</>

@@ -1,6 +1,6 @@
 export type User = {
   email: string;
-  name: string;
+  nickname: string;
 };
 export type UserStatus = AuthenticatedUser | UnauthenticatedUser;
 
