@@ -23,7 +23,9 @@ export function Login(props: PropsWithChildren) {
           const update: UserStatus = await response.json();
           setUserState({ user: update });
         } else if (response.status === 401) {
-          window.location.href = `${config.AUTH_HOST}/oidc/login`;
+          setTimeout(() => {
+            window.location.href = `${config.AUTH_HOST}/oidc/login`;
+          }, 500);
         } else {
           setError(`Unexpected status: ${response.status}`);
         }
