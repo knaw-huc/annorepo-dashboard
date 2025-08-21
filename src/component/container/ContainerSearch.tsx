@@ -19,6 +19,8 @@ import { defaultQuery } from "../../model/query/defaultQuery.ts";
 import { LogicalOperator } from "../../model/query/operator/Operator.ts";
 import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
 
+import { useContainerRole } from "./useContainerRole.tsx";
+
 export type ContainerSearchProps = {
   containerName: string;
   onClose: () => void;
@@ -32,7 +34,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const { initWithQuery, subqueries } = useStore();
   const [isInit, setInit] = useState(false);
   const query = useSearchQuery();
-
+  const role = useContainerRole({ idOrName: containerName });
   const [submitted, setSubmitted] = useState<ContainerSearchArgs>({
     containerName,
     query,
@@ -112,6 +114,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
           page={page.data}
           onChangePageNo={handleChangePage}
           canDelete
+          role={role}
         />
       ) : (
         <Loading />

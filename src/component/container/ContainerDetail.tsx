@@ -13,13 +13,8 @@ import { Search } from "../common/icon/Search.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 
 import { ContainerSummary } from "./ContainerSummary.tsx";
-import { useGet } from "../../client/query/useGet.tsx";
-import { QR } from "../../client/query/QR.tsx";
-import { ArMyContainers } from "../../model/ArModel.ts";
-import { getRolesByName } from "./getRolesByName.ts";
-import { toContainerName } from "../../util/toContainerName.ts";
-import { UserRole } from "../../model/user/UserRole.tsx";
 import { canEdit } from "../../model/user/canEdit.ts";
+import { useContainerRole } from "./useContainerRole.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -35,11 +30,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const container = useContainer(name);
   const [isInit, setInit] = useState(false);
 
-  const myContainers = useGet("/my/containers") as QR<ArMyContainers>;
-  const containerRole =
-    myContainers.data && container.data
-      ? getRolesByName(myContainers.data)[toContainerName(container.data.id)]
-      : UserRole.UNKNOWN;
+  const role = useContainerRole({ idOrName: name });
 
   useEffect(() => {
     if (isInit || !container.data) {
@@ -63,11 +54,11 @@ export function ContainerDetail(props: ContainerDetailProps) {
       <H1>
         {container.data.label} <Hint>container</Hint>
       </H1>
-      <ContainerSummary name={name} role={containerRole} className="mt-5" />
+      <ContainerSummary name={name} role={role} className="mt-5" />
       <ContainerAnnotationFields name={props.name} />
       <H2>Annotations</H2>
       <div className="mb-3">
-        {canEdit(containerRole) && (
+        {canEdit(role) && (
           <Button onClick={props.onClickCreateAnnotation} className="mr-2">
             Add
             <Add className="ml-1" />
@@ -85,6 +76,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
           containerName={name}
           pageNo={pageNo}
           onChangePageNo={handleChangePage}
+          role={role}
         />
       )}
     </div>
