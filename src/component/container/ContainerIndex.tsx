@@ -1,7 +1,7 @@
 import { H1 } from "../common/H1.tsx";
 import { useMyContainerDetails } from "../../client/endpoint/useMyContainerDetails.tsx";
 import { ContainerCard } from "./ContainerCard.tsx";
-import { toName } from "../../util/toName.ts";
+import { toContainerName } from "../../util/toContainerName.ts";
 import isNil from "lodash/isNil";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { Button } from "../common/Button.tsx";
@@ -20,7 +20,7 @@ export function ContainerIndex(props: { onClickCreateContainer: () => void }) {
   }
 
   const names: string[] = details
-    .map((c) => c.data && toName(c.data.id))
+    .map((c) => c.data && toContainerName(c.data.id))
     .filter((name) => !isNil(name));
 
   const rolesByContainerName = getRolesByName(myContainers.data);

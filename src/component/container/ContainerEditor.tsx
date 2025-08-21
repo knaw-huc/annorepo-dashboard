@@ -1,26 +1,26 @@
-import {InputWithLabel} from "../common/form/InputWithLabel.tsx";
-import {usePost} from "../../client/query/usePost.tsx";
-import {H1} from "../common/H1.tsx";
-import {Button} from "../common/Button.tsx";
-import {ArContainer} from "../../model/ArModel.ts";
-import {toName} from "../../util/toName.ts";
-import {useState} from "react";
+import { InputWithLabel } from "../common/form/InputWithLabel.tsx";
+import { usePost } from "../../client/query/usePost.tsx";
+import { H1 } from "../common/H1.tsx";
+import { Button } from "../common/Button.tsx";
+import { ArContainer } from "../../model/ArModel.ts";
+import { toContainerName } from "../../util/toContainerName.ts";
+import { useState } from "react";
 import cloneDeep from "lodash/cloneDeep";
-import {isString} from "lodash";
-import {useQueryClient} from "@tanstack/react-query";
-import {MR} from "../../client/query/MR.tsx";
+import { isString } from "lodash";
+import { useQueryClient } from "@tanstack/react-query";
+import { MR } from "../../client/query/MR.tsx";
 
 export function ContainerEditor(props: {
-  onClose: () => void
-  onCreate: (annotationName: string) => void
+  onClose: () => void;
+  onCreate: (annotationName: string) => void;
 }) {
-  const queryClient = useQueryClient()
+  const queryClient = useQueryClient();
 
-  const [slug, setSlug] = useState('')
-  const [form, setForm] = useState(cloneDeep(defaultForm))
-  const [error, setError] = useState<string>('')
+  const [slug, setSlug] = useState("");
+  const [form, setForm] = useState(cloneDeep(defaultForm));
+  const [error, setError] = useState<string>("");
 
-  const createContainer: MR<ArContainer> = usePost('/w3c')
+  const createContainer: MR<ArContainer> = usePost("/w3c");
 
   const handleSubmit = () => {
     if (error) {
@@ -29,105 +29,101 @@ export function ContainerEditor(props: {
     const mutationBody = {
       ...form,
       // openapi type says string but AR api expects json:
-      type: JSON.parse(form.type)
+      type: JSON.parse(form.type),
     } as unknown as string;
 
-    createContainer.mutate({
-      params: {
-        header: {Slug: slug}
+    createContainer.mutate(
+      {
+        params: {
+          header: { Slug: slug },
+        },
+        body: mutationBody,
       },
-      body: mutationBody,
-    }, {
-      onSuccess: async (data) => {
-        props.onCreate(toName(data.id));
-        await queryClient.invalidateQueries({queryKey: ['/my/containers']})
-        props.onCreate(toName(data.id));
-      }
-    })
-  }
+      {
+        onSuccess: async (data) => {
+          props.onCreate(toContainerName(data.id));
+          await queryClient.invalidateQueries({ queryKey: ["/my/containers"] });
+          props.onCreate(toContainerName(data.id));
+        },
+      },
+    );
+  };
 
-  function handleChangeFormType(
-    update: string
-  ) {
-    let parsed: any;
-    let errorUpdate = ''
+  function handleChangeFormType(update: string) {
+    let parsed: string[];
+    let errorUpdate = "";
     try {
       parsed = JSON.parse(update);
-      if (
-        !Array.isArray(parsed)
-        || !parsed.every(el => isString(el))
-      ) {
-        errorUpdate = 'Please enter an array of strings'
+      if (!Array.isArray(parsed) || !parsed.every((el) => isString(el))) {
+        errorUpdate = "Please enter an array of strings";
       }
-    } catch (e) {
-      errorUpdate = 'Please enter valid json'
+    } catch {
+      errorUpdate = "Please enter valid json";
     }
-    setError(errorUpdate)
-    setForm(prev => ({...prev, type: update}));
+    setError(errorUpdate);
+    setForm((prev) => ({ ...prev, type: update }));
   }
 
-  return <>
-    <form
-      onSubmit={handleSubmit}
-    >
-      <div>
-        <H1>Create container</H1>
-        <div className="grid grid-cols-2 gap-5">
-
-          <div>
-            <InputWithLabel
-              value={form.label}
-              label="Label"
-              onChange={label => setForm(prev => ({...prev, label}))}
-              className="mt-5"
-            />
-
-            <InputWithLabel
-              value={slug || ''}
-              label="Name"
-              onChange={slug => setSlug(slug)}
-              className="mt-5"
-            />
-            <div className="mt-5">
+  return (
+    <>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <H1>Create container</H1>
+          <div className="grid grid-cols-2 gap-5">
+            <div>
               <InputWithLabel
-                label="Type"
-                errorLabel={error}
-                value={form.type}
-                onChange={handleChangeFormType}
+                value={form.label}
+                label="Label"
+                onChange={(label) => setForm((prev) => ({ ...prev, label }))}
+                className="mt-5"
               />
-            </div>
-            <div className="mt-5">
-              <Button
-                disabled={!!error}
-                onClick={handleSubmit}
-                className="mr-5"
-              >
-                Create
-              </Button>
-              <Button onClick={props.onClose}>Close</Button>
+
+              <InputWithLabel
+                value={slug || ""}
+                label="Name"
+                onChange={(slug) => setSlug(slug)}
+                className="mt-5"
+              />
+              <div className="mt-5">
+                <InputWithLabel
+                  label="Type"
+                  errorLabel={error}
+                  value={form.type}
+                  onChange={handleChangeFormType}
+                />
+              </div>
+              <div className="mt-5">
+                <Button
+                  disabled={!!error}
+                  onClick={handleSubmit}
+                  className="mr-5"
+                >
+                  Create
+                </Button>
+                <Button onClick={props.onClose}>Close</Button>
+              </div>
             </div>
           </div>
-
         </div>
-      </div>
-    </form>
-  </>
+      </form>
+    </>
+  );
 }
 
 const defaultForm: ContainerPost = {
-  '@context': [
-    'http://www.w3.org/ns/anno.jsonld',
-    'http://www.w3.org/ns/ldp.jsonld'
+  "@context": [
+    "http://www.w3.org/ns/anno.jsonld",
+    "http://www.w3.org/ns/ldp.jsonld",
   ],
   type: '["Annotation", "SomethingElse"]',
-  label: '',
+  label: "",
   readOnlyForAnonymousUsers: true,
-}
+};
 
 type ContainerPost = Omit<
   ArContainer,
-  | 'id' | 'via' | 'last' | 'first' | 'total' | 'type'
+  "id" | "via" | "last" | "first" | "total" | "type"
 > & {
   // String needs to be converted in json array:
-  type: string
+  type: string;
 };

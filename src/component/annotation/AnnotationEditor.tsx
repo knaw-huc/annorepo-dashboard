@@ -4,7 +4,7 @@ import { usePost } from "../../client/query/usePost.tsx";
 import { H1 } from "../common/H1.tsx";
 import { Button } from "../common/Button.tsx";
 import { ArAnnotation } from "../../model/ArModel.ts";
-import { toName } from "../../util/toName.ts";
+import { toContainerName } from "../../util/toContainerName.ts";
 import { useState } from "react";
 import cloneDeep from "lodash/cloneDeep";
 import { Textarea } from "../common/form/Textarea.tsx";
@@ -97,7 +97,7 @@ export function AnnotationEditor(props: {
           await queryClient.invalidateQueries({
             predicate: (query) => invalidateBy(query, "containerName"),
           });
-          props.onCreate(toName(data.id));
+          props.onCreate(toContainerName(data.id));
         },
       },
     );

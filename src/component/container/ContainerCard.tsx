@@ -2,7 +2,7 @@ import { PropsWithChildren } from "react";
 import { Card } from "../common/Card.tsx";
 import { Link } from "@tanstack/react-router";
 import { useContainer } from "../../client/endpoint/useContainer.tsx";
-import { toName } from "../../util/toName.ts";
+import { toContainerName } from "../../util/toContainerName.ts";
 import { H5 } from "../common/H5.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { ContainerSummary } from "./ContainerSummary.tsx";
@@ -26,7 +26,7 @@ export function ContainerCard(
       header={
         <Link
           to="/container/$containerName"
-          params={{ containerName: toName(container.data.id) }}
+          params={{ containerName: toContainerName(container.data.id) }}
         >
           <H5>{container.data.label || ""}</H5>
         </Link>

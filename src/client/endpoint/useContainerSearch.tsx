@@ -2,7 +2,7 @@ import { useOpenApiClient } from "../OpenApiClientProvider.tsx";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { AnnoRepoOpenApiClient } from "../OpenApiClient.tsx";
 import { ArQuery } from "../../model/ArModel.ts";
-import { toName } from "../../util/toName.ts";
+import { toContainerName } from "../../util/toContainerName.ts";
 import { createQueryKey } from "../query/useGet.tsx";
 import { QR } from "../query/QR.tsx";
 import { GetPath } from "../query/GetPath.tsx";
@@ -62,6 +62,6 @@ export async function searchContainer(
       params: { path: { containerName } },
     })
     .then(({ response }) => {
-      return toName(response.headers.get("Location")!);
+      return toContainerName(response.headers.get("Location")!);
     });
 }

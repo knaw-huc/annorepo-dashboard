@@ -17,7 +17,7 @@ import { useGet } from "../../client/query/useGet.tsx";
 import { QR } from "../../client/query/QR.tsx";
 import { ArMyContainers } from "../../model/ArModel.ts";
 import { getRolesByName } from "./getRolesByName.ts";
-import { toName } from "../../util/toName.ts";
+import { toContainerName } from "../../util/toContainerName.ts";
 import { UserRole } from "../../model/user/UserRole.tsx";
 import { canEdit } from "../../model/user/canEdit.ts";
 
@@ -38,7 +38,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const myContainers = useGet("/my/containers") as QR<ArMyContainers>;
   const containerRole =
     myContainers.data && container.data
-      ? getRolesByName(myContainers.data)[toName(container.data.id)]
+      ? getRolesByName(myContainers.data)[toContainerName(container.data.id)]
       : UserRole.UNKNOWN;
 
   useEffect(() => {
