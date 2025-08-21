@@ -35,7 +35,7 @@ export function AnnotationCard(props: { id: string }) {
 
   const { selectedAnnotationIds, setSelectedAnnotationsState } = useStore();
 
-  const parsed = toAnnotationGroups(id) ?? orThrow("Could not parse id");
+  const parsed = toAnnotationGroups(id) ?? orThrow(`Could not parse ${id}`);
 
   const { containerName, annotationName } = parsed;
   const annotationRequest = useContainerAnnotation(

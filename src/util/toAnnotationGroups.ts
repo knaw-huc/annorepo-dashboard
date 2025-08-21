@@ -2,7 +2,7 @@ import { pick } from "lodash";
 import { toPath } from "./toPath";
 
 const annotationPathRegex =
-  /^\/.*\/w3c\/(?<containerName>[^/]+)\/(?<annotationName>.*)$/;
+  /^.*\/w3c\/(?<containerName>[^/]+)\/(?<annotationName>.*)$/;
 
 export type AnnotationIdGroups = {
   annotationName: string;

@@ -17,4 +17,12 @@ describe(toAnnotationGroups.name, async () => {
     expect(result.containerName).toBe("foo");
     expect(result.annotationName).toBe("bar");
   });
+
+  it("parses id directly at root", async () => {
+    const id = "http://localhost:8080/w3c/foo/bar";
+    const result = toAnnotationGroups(id);
+    assert(result, "is not undefined");
+    expect(result.containerName).toBe("foo");
+    expect(result.annotationName).toBe("bar");
+  });
 });
