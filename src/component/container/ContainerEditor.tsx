@@ -41,7 +41,6 @@ export function ContainerEditor(props: {
       },
       {
         onSuccess: async (data) => {
-          props.onCreate(toContainerName(data.id));
           await queryClient.invalidateQueries({ queryKey: ["/my/containers"] });
           props.onCreate(toContainerName(data.id));
         },
