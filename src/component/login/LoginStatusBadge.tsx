@@ -16,8 +16,8 @@ export function LoginStatusBadge() {
     <div className="absolute top-2 right-3 text-sm text-gray-600">
       {isAuthenticatedUser(user) ? (
         <>
-          Logged in as <strong>{user.nickname}</strong> (
-          <LinkButton onClick={handleLogout}>Log out</LinkButton>)
+          Logged in as <strong>{user.nickname}</strong> |{" "}
+          <LinkButton onClick={handleLogout}>Log out</LinkButton>
         </>
       ) : (
         <>Not logged in</>

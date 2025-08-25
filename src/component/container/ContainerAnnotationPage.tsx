@@ -3,6 +3,7 @@ import { useContainerPage } from "../../client/endpoint/useContainerPage.tsx";
 import { toPageNo } from "../../util/toPageNo.ts";
 import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 import { UserRole } from "../../model/user/UserRole.tsx";
+import { canEdit } from "../../model/user/canEdit.ts";
 
 export function ContainerAnnotationPage(
   props: PropsWithChildren<{
@@ -28,8 +29,7 @@ export function ContainerAnnotationPage(
       pageNo={pageNo}
       page={page}
       onChangePageNo={handlePageChange}
-      canDelete
-      role={role}
+      canEdit={canEdit(role)}
     />
   );
 }

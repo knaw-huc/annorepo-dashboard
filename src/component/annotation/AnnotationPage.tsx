@@ -3,18 +3,16 @@ import { PageNavigation } from "../common/PageNavigation.tsx";
 import { AnnotationCard } from "./AnnotationCard.tsx";
 import { SelectionStatus } from "./SelectionStatus.tsx";
 import { DeleteSelected } from "./DeleteSelected.tsx";
-import { UserRole } from "../../model/user/UserRole.tsx";
-import { canEdit } from "../../model/user/canEdit.ts";
 
 export function AnnotationPage(props: {
   pageNo: number;
   page: ArAnnotationPage;
   onChangePageNo: (page: string) => void;
   className?: string;
-  canDelete?: boolean;
-  role?: UserRole;
+  canSelect?: boolean;
+  canEdit?: boolean;
 }) {
-  const { page, pageNo, onChangePageNo, canDelete, role } = props;
+  const { page, pageNo, onChangePageNo, canEdit } = props;
 
   const { prev, next } = page;
 
@@ -34,14 +32,14 @@ export function AnnotationPage(props: {
           next={next}
           onChange={onChangePageNo}
         />
-        {canDelete && (
+        {canEdit && (
           <span className="ml-5">
             <SelectionStatus items={page.items} />
-            {canEdit(role || UserRole.UNKNOWN) && <DeleteSelected />}
+            <DeleteSelected />
           </span>
         )}
       </div>
-      <AnnotationGrid items={page.items} />
+      <AnnotationGrid items={page.items} canEdit={canEdit} />
       <div className="mt-3">
         <PageNavigation
           current={pageNo}
@@ -54,13 +52,16 @@ export function AnnotationPage(props: {
   );
 }
 
-export function AnnotationGrid(props: { items: ArAnnotation[] }) {
-  const { items } = props;
+export function AnnotationGrid(props: {
+  items: ArAnnotation[];
+  canEdit?: boolean;
+}) {
+  const { items, canEdit } = props;
 
   return (
     <div className="grid grid-cols-3 gap-5">
       {items.map((item) => (
-        <AnnotationCard key={item.id} id={item.id} />
+        <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
       ))}
     </div>
   );

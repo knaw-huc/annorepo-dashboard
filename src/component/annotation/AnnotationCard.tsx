@@ -27,11 +27,11 @@ import { orThrow } from "../../util/orThrow.ts";
 
 type PathValue = { path: string; value: string };
 
-export function AnnotationCard(props: { id: string }) {
+export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
   const queryClient = useQueryClient();
   const annotationPreview = useConfig().annotationPreview;
 
-  const { id } = props;
+  const { id, canSelect } = props;
 
   const { selectedAnnotationIds, setSelectedAnnotationsState } = useStore();
 
@@ -89,8 +89,6 @@ export function AnnotationCard(props: { id: string }) {
 
   const isSelected = selectedAnnotationIds.includes(id);
 
-  console.log("AnnotationCard", props.id, annotation);
-
   return (
     <Card
       header={
@@ -101,7 +99,7 @@ export function AnnotationCard(props: { id: string }) {
             {annotation.type}
           </H5>
           <div className="mt-2 flex items-center gap-x-3">
-            {
+            {canSelect && (
               <Checkbox
                 isSelected={isSelected}
                 onToggle={() => {
@@ -114,7 +112,7 @@ export function AnnotationCard(props: { id: string }) {
                 }}
                 className="hover:text-inherit hover:cursor-pointer text-sky-800"
               />
-            }
+            )}
             <span
               onClick={handleDelete}
               className="hover:text-inherit hover:cursor-pointer text-sky-800"

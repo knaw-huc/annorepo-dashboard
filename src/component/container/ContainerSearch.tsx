@@ -20,6 +20,7 @@ import { LogicalOperator } from "../../model/query/operator/Operator.ts";
 import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
 
 import { useContainerRole } from "./useContainerRole.tsx";
+import { canEdit } from "../../model/user/canEdit.ts";
 
 export type ContainerSearchProps = {
   containerName: string;
@@ -113,8 +114,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
           pageNo={pageNo}
           page={page.data}
           onChangePageNo={handleChangePage}
-          canDelete
-          role={role}
+          canEdit={canEdit(role)}
         />
       ) : (
         <Loading />

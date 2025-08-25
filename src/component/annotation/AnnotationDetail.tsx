@@ -1,7 +1,6 @@
 import { AnnotationCard } from "./AnnotationCard.tsx";
 
 export function AnnotationDetail(props: { id: string; onClose: () => void }) {
-  console.log("AnnotationDetail", props.id);
   return (
     <div>
       {/* Use grid to prevent overflow */}
