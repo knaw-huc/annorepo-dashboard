@@ -6,24 +6,28 @@ import { useConfig } from "../ConfigProvider.tsx";
 export function LoginStatusBadge() {
   const { user } = useStore();
 
-  const config = useConfig();
-
-  function handleLogout() {
-    window.location.href = `${config.AUTH_HOST}/oidc/logout`;
-  }
-
   return (
     <div className="absolute top-2 right-3 text-sm text-gray-600">
       {isAuthenticatedUser(user) ? (
         <>
-          Logged in as <strong>{user.nickname}</strong> |{" "}
-          <LinkButton onClick={handleLogout}>Log out</LinkButton>
+          Logged in as <strong>{user.nickname}</strong> | <LogoutButton />
         </>
       ) : (
         <>Not logged in</>
       )}
     </div>
   );
+}
+
+export function LogoutButton() {
+  const config = useConfig();
+
+  function handleLogout() {
+    const next = encodeURIComponent(window.location.origin + "/logout");
+    window.location.href = `${config.AUTH_HOST}/oidc/logout?next=${next}`;
+  }
+
+  return <LinkButton onClick={handleLogout}>Log out</LinkButton>;
 }
 
 export function LinkButton(

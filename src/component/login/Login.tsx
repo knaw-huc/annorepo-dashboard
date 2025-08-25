@@ -6,7 +6,7 @@ import { Loading } from "../common/Loading.tsx";
 import { Warning } from "../common/Warning.tsx";
 import { isAuthenticatedUser, UserStatus } from "../../model/user/User.ts";
 import { useStore } from "../../store/useStore.ts";
-import { LoggedOutPage } from "./LoggedOutPage.tsx";
+import { LogInPage } from "./LogInPage.tsx";
 
 export function Login(props: PropsWithChildren) {
   const config = useConfig();
@@ -48,6 +48,6 @@ export function Login(props: PropsWithChildren) {
   } else if (isAuthenticatedUser(user)) {
     return <>{props.children}</>;
   } else {
-    return <LoggedOutPage />;
+    return <LogInPage />;
   }
 }
