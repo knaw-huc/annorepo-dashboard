@@ -6,6 +6,7 @@ import { Loading } from "../common/Loading.tsx";
 import { Warning } from "../common/Warning.tsx";
 import { isAuthenticatedUser, UserStatus } from "../../model/user/User.ts";
 import { useStore } from "../../store/useStore.ts";
+import { LoggedOutPage } from "./LoggedOutPage.tsx";
 
 export function Login(props: PropsWithChildren) {
   const config = useConfig();
@@ -15,7 +16,7 @@ export function Login(props: PropsWithChildren) {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchUserOrLogIn = async () => {
+    const checkUserStatus = async () => {
       try {
         const response = await fetch(`${config.AUTH_HOST}/oidc/status`);
 
@@ -23,9 +24,7 @@ export function Login(props: PropsWithChildren) {
           const update: UserStatus = await response.json();
           setUserState({ user: update });
         } else if (response.status === 401) {
-          setTimeout(() => {
-            window.location.href = `${config.AUTH_HOST}/oidc/login`;
-          }, 500);
+          setUserState({ user: { authenticated: false } });
         } else {
           setError(`Unexpected status: ${response.status}`);
         }
@@ -39,7 +38,7 @@ export function Login(props: PropsWithChildren) {
     };
 
     setClient(createOpenApiClient(config.AR_HOST, false));
-    fetchUserOrLogIn();
+    checkUserStatus();
   }, [config.AUTH_HOST, config.AR_HOST, setClient]);
 
   if (isLoading) {
@@ -49,6 +48,6 @@ export function Login(props: PropsWithChildren) {
   } else if (isAuthenticatedUser(user)) {
     return <>{props.children}</>;
   } else {
-    return <p>Redirecting...</p>;
+    return <LoggedOutPage />;
   }
 }

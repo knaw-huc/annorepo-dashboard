@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as LogoutRouteImport } from './routes/logout'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CustomQueryIndexRouteImport } from './routes/custom-query/index'
 import { Route as ContainerIndexRouteImport } from './routes/container/index'
@@ -20,6 +21,11 @@ import { Route as ContainerContainerNameSearchRouteImport } from './routes/conta
 import { Route as ContainerContainerNameAnnotationEditorRouteImport } from './routes/container/$containerName/annotation/editor'
 import { Route as ContainerContainerNameAnnotationAnnotationNameRouteImport } from './routes/container/$containerName/annotation/$annotationName'
 
+const LogoutRoute = LogoutRouteImport.update({
+  id: '/logout',
+  path: '/logout',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -78,6 +84,7 @@ const ContainerContainerNameAnnotationAnnotationNameRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/logout': typeof LogoutRoute
   '/container/editor': typeof ContainerEditorRoute
   '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
   '/custom-query/editor': typeof CustomQueryEditorRoute
@@ -90,6 +97,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/logout': typeof LogoutRoute
   '/container/editor': typeof ContainerEditorRoute
   '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
   '/custom-query/editor': typeof CustomQueryEditorRoute
@@ -103,6 +111,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/logout': typeof LogoutRoute
   '/container/editor': typeof ContainerEditorRoute
   '/custom-query/$customQueryName': typeof CustomQueryCustomQueryNameRoute
   '/custom-query/editor': typeof CustomQueryEditorRoute
@@ -117,6 +126,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/logout'
     | '/container/editor'
     | '/custom-query/$customQueryName'
     | '/custom-query/editor'
@@ -129,6 +139,7 @@ export interface FileRouteTypes {
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
+    | '/logout'
     | '/container/editor'
     | '/custom-query/$customQueryName'
     | '/custom-query/editor'
@@ -141,6 +152,7 @@ export interface FileRouteTypes {
   id:
     | '__root__'
     | '/'
+    | '/logout'
     | '/container/editor'
     | '/custom-query/$customQueryName'
     | '/custom-query/editor'
@@ -154,6 +166,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  LogoutRoute: typeof LogoutRoute
   ContainerEditorRoute: typeof ContainerEditorRoute
   CustomQueryCustomQueryNameRoute: typeof CustomQueryCustomQueryNameRoute
   CustomQueryEditorRoute: typeof CustomQueryEditorRoute
@@ -167,6 +180,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/logout': {
+      id: '/logout'
+      path: '/logout'
+      fullPath: '/logout'
+      preLoaderRoute: typeof LogoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -242,6 +262,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  LogoutRoute: LogoutRoute,
   ContainerEditorRoute: ContainerEditorRoute,
   CustomQueryCustomQueryNameRoute: CustomQueryCustomQueryNameRoute,
   CustomQueryEditorRoute: CustomQueryEditorRoute,
