@@ -11,7 +11,7 @@ export function ContainerSummary(props: {
   className: string;
   role: UserRole;
 }) {
-  const { name } = props;
+  const { name, role } = props;
   const container = useContainer(name);
 
   let className = "mt-2 space-y-3";
@@ -25,7 +25,7 @@ export function ContainerSummary(props: {
 
   return (
     <p className={className}>
-      <span className="capitalize">{props.role.toLowerCase()} role</span>
+      <span className="capitalize">{role.toLowerCase()} role</span>
       <Pipe />
       <span>
         Annotations: <Badge>{container.data.total}</Badge>

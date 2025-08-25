@@ -10,7 +10,11 @@ export function useContainerRole(props: { idOrName: string }) {
   const name = toContainerName(props.idOrName);
   const container = useContainer(name);
   const myContainers = useGet("/my/containers") as QR<ArMyContainers>;
-  return myContainers.data && container.data
-    ? getRolesByName(myContainers.data)[toContainerName(container.data.id)]
-    : UserRole.UNKNOWN;
+  if (!myContainers?.data || !container?.data) {
+    return UserRole.UNKNOWN;
+  }
+  return (
+    getRolesByName(myContainers.data)[toContainerName(container.data.id)] ??
+    UserRole.UNKNOWN
+  );
 }
