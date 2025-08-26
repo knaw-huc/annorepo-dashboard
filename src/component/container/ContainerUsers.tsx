@@ -52,7 +52,7 @@ export function ContainerUsers(props: { containerName: string }) {
     setShowAddUserModal(true);
   }
 
-  function handleRemoveUser(userName: string) {
+  function handleClickRemoveUser(userName: string) {
     if (!window.confirm("Remove user from container?")) {
       return;
     }
@@ -92,9 +92,9 @@ export function ContainerUsers(props: { containerName: string }) {
             {u.userName} ({u.role.toLowerCase()})
             <span
               className="cursor-pointer ml-2 vertical-align-middle text-slate-400 hover:text-slate-900"
-              onClick={() => handleRemoveUser(u.userName)}
+              onClick={() => handleClickRemoveUser(u.userName)}
             >
-              <Close />
+              <Close className="align-top" />
             </span>
           </Badge>
         ))}
