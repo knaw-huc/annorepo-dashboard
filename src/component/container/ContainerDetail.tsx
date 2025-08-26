@@ -15,6 +15,8 @@ import { StatusMessage } from "../common/StatusMessage.tsx";
 import { ContainerSummary } from "./ContainerSummary.tsx";
 import { canEdit } from "../../model/user/canEdit.ts";
 import { useContainerRole } from "./useContainerRole.tsx";
+import { ContainerUsers } from "./ContainerUsers.tsx";
+import { isAdmin } from "../../model/user/isAdmin.ts";
 
 export type ContainerDetailProps = {
   name: string;
@@ -28,6 +30,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const { name } = props;
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
   const container = useContainer(name);
+
   const [isInit, setInit] = useState(false);
 
   const role = useContainerRole({ idOrName: name });
@@ -55,6 +58,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
         {container.data.label} <Hint>container</Hint>
       </H1>
       <ContainerSummary name={name} role={role} className="mt-5" />
+      {isAdmin(role) && <ContainerUsers name={name} />}
       <ContainerAnnotationFields name={props.name} />
       <H2>Annotations</H2>
       <div className="mb-3">

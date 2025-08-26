@@ -129,3 +129,8 @@ export function isArLogicalEntry(
   const [key] = toTest;
   return isLogicalOperator(key);
 }
+
+export type ArUser = {
+  userName: string;
+  role: UserRole;
+};
