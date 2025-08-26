@@ -1,1 +1,1116 @@
-{"openapi":"3.0.1","info":{"title":"AnnoRepo","contact":{"name":"AnnoRepo","url":"https://github.com/knaw-huc/annorepo"},"license":{"name":"Apache 2.0","url":"http://www.apache.org/licenses/"},"version":"0.7.4"},"externalDocs":{"description":"API Usage","url":"https://knaw-huc.github.io/annorepo/docs/api-usage.html"},"paths":{"/about":{"get":{"description":"Get some info about the server","operationId":"getAboutInfo","responses":{"default":{"description":"default response","content":{"application/json":{"schema":{"$ref":"#/components/schemas/AboutInfo"}}}}}}},"/admin/users":{"get":{"description":"Get username, api-key for all registered users","operationId":"getUsers","responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]},"post":{"description":"Add a user","operationId":"addUsers","requestBody":{"content":{"application/json":{"schema":{"type":"array","items":{"type":"object","additionalProperties":{"type":"string"}}}}},"required":true},"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/admin/users/{userName}":{"delete":{"description":"Delete the user with the given userName","operationId":"deleteUser","parameters":[{"name":"userName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/batch/{containerName}/annotations":{"post":{"description":"Upload annotations in batch to a given container","operationId":"postAnnotationsBatch","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"content":{"*/*":{"schema":{"type":"array","items":{"type":"object","additionalProperties":{"type":"object"}}}}}},"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"deprecated":true,"security":[{"BearerAuth":[]}]}},"/services/{containerName}/indexes":{"get":{"description":"List a container's indexes","operationId":"getContainerIndexes","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]},"post":{"description":"Add a multi-field index","operationId":"addContainerIndex","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"content":{"*/*":{"schema":{"type":"object","additionalProperties":{"type":"string"}}}}},"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/users":{"get":{"description":"Show the users with access to this container","operationId":"readContainerUsers","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]},"post":{"description":"Add users with given role to this container","operationId":"addContainerUsers","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"content":{"application/json":{"schema":{"type":"array","items":{"$ref":"#/components/schemas/ContainerUserEntry"}}}}},"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/search":{"post":{"description":"Find annotations in the given container matching the given query","operationId":"createSearch","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"content":{"application/json":{"schema":{"type":"string"}}}},"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/indexes/{indexId}":{"get":{"description":"Get an index definition","operationId":"getContainerIndexDefinition","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"indexId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]},"delete":{"description":"Delete a container index","operationId":"deleteContainerIndex","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"indexId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/users/{userName}":{"delete":{"description":"Remove the user with the given userName from this container","operationId":"deleteContainerUser","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"userName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/fields":{"get":{"description":"Get a list of the fields used in the annotations in a container","operationId":"getAnnotationFieldsForContainer","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/indexes/{indexId}/status":{"get":{"description":"Get an index status","operationId":"getContainerIndexStatus","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"indexId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/custom-query/{queryCall}/collection":{"get":{"description":"Get the AnnotationCollection of the given custom query","operationId":"getCustomQueryAnnotationCollection","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"queryCall","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/custom-query/{queryCall}":{"get":{"description":"Get the results of the given custom query","operationId":"getCustomQueryResultPage","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"queryCall","in":"path","required":true,"schema":{"type":"string"}},{"name":"page","in":"query","schema":{"type":"integer","format":"int32"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/distinct-values/{field}":{"get":{"description":"Get a list of the fields used in the annotations in a container","operationId":"getDistinctAnnotationFieldsValuesForContainer","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"field","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/metadata":{"get":{"description":"Get some container metadata","operationId":"getMetadataForContainer","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/search/{searchId}/mongo-explain-command":{"get":{"description":"Show the mongo explain command for the given query","operationId":"getMongoExplainForSearch","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"searchId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/search/{searchId}/info":{"get":{"description":"Get information about the given search","operationId":"getSearchInfo","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"searchId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/search/{searchId}":{"get":{"description":"Get the given search result page","operationId":"getSearchResultPage","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"searchId","in":"path","required":true,"schema":{"type":"string"}},{"name":"page","in":"query","schema":{"type":"integer","format":"int32"}},{"name":"User-Agent","in":"header","schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/annotations-batch":{"post":{"description":"Upload annotations in batch to a given container","operationId":"postAnnotationsBatch_1","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"content":{"*/*":{"schema":{"type":"array","items":{"type":"object","additionalProperties":{"type":"object"}}}}}},"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/services/{containerName}/settings/isReadOnlyForAnonymous":{"put":{"description":"Turn read-only access to this container for anonymous users on or off","operationId":"setAnonymousUserReadAccess","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"content":{"*/*":{"schema":{"type":"boolean"}}}},"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/global/custom-query":{"get":{"description":"List all custom queries","operationId":"getCustomQueries","responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]},"post":{"description":"Create a custom query","operationId":"createCustomQuery","requestBody":{"content":{"application/json":{"schema":{"$ref":"#/components/schemas/CustomQuerySpecs"}}}},"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/global/search":{"post":{"description":"Find annotations in accessible containers matching the given query","operationId":"createSearch_1","requestBody":{"content":{"application/json":{"schema":{"type":"string"}}}},"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/global/custom-query/{customQueryName}":{"get":{"description":"Read a custom query","operationId":"getCustomQuery","parameters":[{"name":"customQueryName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]},"delete":{"description":"Delete a custom query","operationId":"deleteCustomQuery","parameters":[{"name":"customQueryName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/global/custom-query/{customQueryCall}/expand":{"get":{"description":"Show custom query with parameters filled in","operationId":"getExpandedCustomQuery","parameters":[{"name":"customQueryCall","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/global/search/{searchId}":{"get":{"description":"Get the given global search result page","operationId":"getSearchResultPage_1","parameters":[{"name":"searchId","in":"path","required":true,"schema":{"type":"string"}},{"name":"page","in":"query","schema":{"type":"integer","format":"int32"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/global/search/{searchId}/status":{"get":{"description":"Get information about the given global search","operationId":"getSearchStatus","parameters":[{"name":"searchId","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/my/containers":{"get":{"description":"List all containers the authenticated user has access to, grouped by role","operationId":"getAccessibleContainers","responses":{"default":{"description":"default response","content":{"application/json":{}}}},"security":[{"BearerAuth":[]}]}},"/w3c/{containerName}":{"get":{"description":"Get an Annotation Container","operationId":"readContainer","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"page","in":"query","schema":{"type":"integer","format":"int32"}}],"responses":{"default":{"description":"default response","content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{}}}},"security":[{"BearerAuth":[]}]},"post":{"description":"Create an Annotation","operationId":"createAnnotation","parameters":[{"name":"slug","in":"header","schema":{"type":"string"}},{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{"schema":{"type":"string"}},"application/json":{"schema":{"type":"string"}}}},"responses":{"default":{"description":"default response","content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{}}}},"security":[{"BearerAuth":[]}]},"delete":{"description":"Delete an empty Annotation Container","operationId":"deleteContainer","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"force","in":"query","schema":{"type":"boolean"}}],"responses":{"default":{"description":"default response","content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{}}}},"security":[{"BearerAuth":[]}]}},"/w3c":{"post":{"description":"Create an Annotation Container","operationId":"createContainer","parameters":[{"name":"slug","in":"header","schema":{"type":"string"}}],"requestBody":{"content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{"schema":{"$ref":"#/components/schemas/ContainerSpecs"}},"application/json":{"schema":{"$ref":"#/components/schemas/ContainerSpecs"}}}},"responses":{"default":{"description":"default response","content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{}}}},"security":[{"BearerAuth":[]}]}},"/w3c/{containerName}/{annotationName}":{"get":{"description":"Get an Annotation","operationId":"readAnnotation","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"annotationName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{}}}},"security":[{"BearerAuth":[]}]},"put":{"description":"Update an existing Annotation","operationId":"updateAnnotation","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"annotationName","in":"path","required":true,"schema":{"type":"string"}}],"requestBody":{"content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{"schema":{"type":"string"}},"application/json":{"schema":{"type":"string"}}}},"responses":{"default":{"description":"default response","content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{}}}},"security":[{"BearerAuth":[]}]},"delete":{"description":"Delete an Annotation","operationId":"deleteAnnotation","parameters":[{"name":"containerName","in":"path","required":true,"schema":{"type":"string"}},{"name":"annotationName","in":"path","required":true,"schema":{"type":"string"}}],"responses":{"default":{"description":"default response","content":{"application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"":{}}}},"security":[{"BearerAuth":[]}]}}},"components":{"schemas":{"AboutInfo":{"required":["appName","baseURI","grpcHostName","grpcPort","mongoVersion","sourceCode","startedAt","version","withAuthentication"],"type":"object","properties":{"appName":{"type":"string"},"version":{"type":"string"},"startedAt":{"type":"string"},"baseURI":{"type":"string"},"withAuthentication":{"type":"boolean"},"sourceCode":{"type":"string"},"mongoVersion":{"type":"string"},"grpcHostName":{"type":"string"},"grpcPort":{"type":"integer","format":"int32"}}},"ContainerUserEntry":{"required":["role","userName"],"type":"object","properties":{"userName":{"type":"string"},"role":{"type":"string","enum":["GUEST","EDITOR","ADMIN","ROOT"]}}},"CustomQuerySpecs":{"required":["name","query"],"type":"object","properties":{"name":{"type":"string"},"query":{"type":"object","additionalProperties":{"type":"object"}},"label":{"type":"string"},"description":{"type":"string"},"public":{"type":"boolean"}}},"ContainerSpecs":{"required":["@context","label","readOnlyForAnonymousUsers","type"],"type":"object","properties":{"@context":{"type":"array","items":{"type":"string"}},"type":{"type":"array","items":{"type":"string"}},"label":{"type":"string"},"readOnlyForAnonymousUsers":{"type":"boolean"}}}},"securitySchemes":{"BearerAuth":{"type":"http","in":"header","scheme":"bearer"}}}}
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "AnnoRepo",
+    "contact": {
+      "name": "AnnoRepo",
+      "url": "https://github.com/knaw-huc/annorepo"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/"
+    },
+    "version": "0.8.0-SNAPSHOT"
+  },
+  "externalDocs": {
+    "description": "API Usage",
+    "url": "https://knaw-huc.github.io/annorepo/docs/api-usage.html"
+  },
+  "paths": {
+    "/about": {
+      "get": {
+        "description": "Get some info about the server",
+        "operationId": "getAboutInfo",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/AboutInfo" }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/users": {
+      "get": {
+        "description": "Get username, api-key for all registered users",
+        "operationId": "getUsers",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "post": {
+        "description": "Add a user",
+        "operationId": "addUsers",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": { "type": "string" }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/admin/users/{userName}": {
+      "delete": {
+        "description": "Delete the user with the given userName",
+        "operationId": "deleteUser",
+        "parameters": [
+          {
+            "name": "userName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/admin/groups": {
+      "get": {
+        "description": "Get the names of the groups with the ability to create containers",
+        "operationId": "getGroups",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/batch/{containerName}/annotations": {
+      "post": {
+        "description": "Upload annotations in batch to a given container",
+        "operationId": "postAnnotationsBatch",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "deprecated": true,
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/indexes": {
+      "get": {
+        "description": "List a container's indexes",
+        "operationId": "getContainerIndexes",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "post": {
+        "description": "Add a multi-field index",
+        "operationId": "addContainerIndex",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/users": {
+      "get": {
+        "description": "Show the users with access to this container",
+        "operationId": "readContainerUsers",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "post": {
+        "description": "Add users with given role to this container",
+        "operationId": "addContainerUsers",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": { "$ref": "#/components/schemas/ContainerUserEntry" }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/search": {
+      "post": {
+        "description": "Find annotations in the given container matching the given query",
+        "operationId": "createSearch",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "string" } } }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/indexes/{indexId}": {
+      "get": {
+        "description": "Get an index definition",
+        "operationId": "getContainerIndexDefinition",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "indexId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "delete": {
+        "description": "Delete a container index",
+        "operationId": "deleteContainerIndex",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "indexId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/users/{userName}": {
+      "delete": {
+        "description": "Remove the user with the given userName from this container",
+        "operationId": "deleteContainerUser",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "userName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/fields": {
+      "get": {
+        "description": "Get a list of the fields used in the annotations in a container",
+        "operationId": "getAnnotationFieldsForContainer",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/indexes/{indexId}/status": {
+      "get": {
+        "description": "Get an index status",
+        "operationId": "getContainerIndexStatus",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "indexId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/custom-query/{queryCall}/collection": {
+      "get": {
+        "description": "Get the AnnotationCollection of the given custom query",
+        "operationId": "getCustomQueryAnnotationCollection",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "queryCall",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/custom-query/{queryCall}": {
+      "get": {
+        "description": "Get the results of the given custom query",
+        "operationId": "getCustomQueryResultPage",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "queryCall",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/distinct-values/{field}": {
+      "get": {
+        "description": "Get a list of all the unique values for the given field in the annotations in a container",
+        "operationId": "getDistinctAnnotationFieldsValuesForContainer",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "field",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/metadata": {
+      "get": {
+        "description": "Get some container metadata",
+        "operationId": "getMetadataForContainer",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/search/{searchId}/mongo-explain-command": {
+      "get": {
+        "description": "Show the mongo explain command for the given query",
+        "operationId": "getMongoExplainForSearch",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "searchId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/search/{searchId}/info": {
+      "get": {
+        "description": "Get information about the given search",
+        "operationId": "getSearchInfo",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "searchId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/search/{searchId}": {
+      "get": {
+        "description": "Get the given search result page",
+        "operationId": "getSearchResultPage",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "searchId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "format": "int32" }
+          },
+          {
+            "name": "User-Agent",
+            "in": "header",
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/annotations-batch": {
+      "post": {
+        "description": "Upload annotations in batch to a given container",
+        "operationId": "postAnnotationsBatch_1",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "*/*": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "additionalProperties": { "type": "object" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/services/{containerName}/settings/isReadOnlyForAnonymous": {
+      "put": {
+        "description": "Turn read-only access to this container for anonymous users on or off",
+        "operationId": "setAnonymousUserReadAccess",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": { "*/*": { "schema": { "type": "boolean" } } }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/global/custom-query": {
+      "get": {
+        "description": "List all custom queries",
+        "operationId": "getCustomQueries",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "post": {
+        "description": "Create a custom query",
+        "operationId": "createCustomQuery",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/CustomQuerySpecs" }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/global/search": {
+      "post": {
+        "description": "Find annotations in accessible containers matching the given query",
+        "operationId": "createSearch_1",
+        "requestBody": {
+          "content": { "application/json": { "schema": { "type": "string" } } }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/global/custom-query/{customQueryName}": {
+      "get": {
+        "description": "Read a custom query",
+        "operationId": "getCustomQuery",
+        "parameters": [
+          {
+            "name": "customQueryName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "delete": {
+        "description": "Delete a custom query",
+        "operationId": "deleteCustomQuery",
+        "parameters": [
+          {
+            "name": "customQueryName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/global/custom-query/{customQueryCall}/expand": {
+      "get": {
+        "description": "Show custom query with parameters filled in",
+        "operationId": "getExpandedCustomQuery",
+        "parameters": [
+          {
+            "name": "customQueryCall",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/global/search/{searchId}": {
+      "get": {
+        "description": "Get the given global search result page",
+        "operationId": "getSearchResultPage_1",
+        "parameters": [
+          {
+            "name": "searchId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/global/search/{searchId}/status": {
+      "get": {
+        "description": "Get information about the given global search",
+        "operationId": "getSearchStatus",
+        "parameters": [
+          {
+            "name": "searchId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/my/containers": {
+      "get": {
+        "description": "List all containers the authenticated user has access to, grouped by role",
+        "operationId": "getAccessibleContainers",
+        "parameters": [
+          {
+            "name": "asLinks",
+            "in": "query",
+            "schema": { "$ref": "#/components/schemas/Flag" },
+            "example": { "asLinks": true }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/my/profile": {
+      "get": {
+        "description": "Show profile data about the authenticated user",
+        "operationId": "getUserProfile",
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": { "application/json": {} }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/w3c/{containerName}": {
+      "get": {
+        "description": "Get an Annotation Container",
+        "operationId": "readContainer",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": { "type": "integer", "format": "int32" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {}
+            }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "post": {
+        "description": "Create an Annotation",
+        "operationId": "createAnnotation",
+        "parameters": [
+          { "name": "slug", "in": "header", "schema": { "type": "string" } },
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {
+              "schema": { "type": "string" }
+            },
+            "application/json": { "schema": { "type": "string" } }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {}
+            }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "delete": {
+        "description": "Delete an empty Annotation Container",
+        "operationId": "deleteContainer",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          { "name": "force", "in": "query", "schema": { "type": "boolean" } }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {}
+            }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/w3c": {
+      "post": {
+        "description": "Create an Annotation Container",
+        "operationId": "createContainer",
+        "parameters": [
+          { "name": "slug", "in": "header", "schema": { "type": "string" } }
+        ],
+        "requestBody": {
+          "content": {
+            "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {
+              "schema": { "$ref": "#/components/schemas/ContainerSpecs" }
+            },
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ContainerSpecs" }
+            }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {}
+            }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    },
+    "/w3c/{containerName}/{annotationName}": {
+      "get": {
+        "description": "Get an Annotation",
+        "operationId": "readAnnotation",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "annotationName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {}
+            }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "put": {
+        "description": "Update an existing Annotation",
+        "operationId": "updateAnnotation",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "annotationName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {
+              "schema": { "type": "string" }
+            },
+            "application/json": { "schema": { "type": "string" } }
+          }
+        },
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {}
+            }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      },
+      "delete": {
+        "description": "Delete an Annotation",
+        "operationId": "deleteAnnotation",
+        "parameters": [
+          {
+            "name": "containerName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "annotationName",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "default": {
+            "description": "default response",
+            "content": {
+              "application/ld+json;profile=\"http://www.w3.org/ns/anno.jsonld\"": {}
+            }
+          }
+        },
+        "security": [{ "BearerAuth": [] }]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AboutInfo": {
+        "required": [
+          "appName",
+          "authentication",
+          "baseURI",
+          "grpcHostName",
+          "grpcPort",
+          "mongoVersion",
+          "sourceCode",
+          "startedAt",
+          "version",
+          "withAuthentication"
+        ],
+        "type": "object",
+        "properties": {
+          "appName": { "type": "string" },
+          "version": { "type": "string" },
+          "startedAt": { "type": "string" },
+          "baseURI": { "type": "string" },
+          "withAuthentication": { "type": "boolean" },
+          "sourceCode": { "type": "string" },
+          "mongoVersion": { "type": "string" },
+          "grpcHostName": { "type": "string" },
+          "grpcPort": { "type": "integer", "format": "int32" },
+          "authentication": {
+            "type": "object",
+            "additionalProperties": { "type": "object" }
+          }
+        }
+      },
+      "ContainerUserEntry": {
+        "required": ["role", "userName"],
+        "type": "object",
+        "properties": {
+          "userName": { "type": "string" },
+          "role": {
+            "type": "string",
+            "enum": ["GUEST", "EDITOR", "ADMIN", "ROOT"]
+          }
+        }
+      },
+      "CustomQuerySpecs": {
+        "required": ["name", "query"],
+        "type": "object",
+        "properties": {
+          "name": { "type": "string" },
+          "query": {
+            "type": "object",
+            "additionalProperties": { "type": "object" }
+          },
+          "label": { "type": "string" },
+          "description": { "type": "string" },
+          "public": { "type": "boolean" }
+        }
+      },
+      "Flag": {
+        "required": ["isPresent"],
+        "type": "object",
+        "properties": { "isPresent": { "type": "boolean" } }
+      },
+      "ContainerSpecs": {
+        "required": ["@context", "label", "readOnlyForAnonymousUsers", "type"],
+        "type": "object",
+        "properties": {
+          "@context": { "type": "array", "items": { "type": "string" } },
+          "type": { "type": "array", "items": { "type": "string" } },
+          "label": { "type": "string" },
+          "readOnlyForAnonymousUsers": { "type": "boolean" }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuth": { "type": "http", "in": "header", "scheme": "bearer" }
+    }
+  }
+}
