@@ -20,7 +20,7 @@ export function AddUserModal(props: {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">
       <div className="relative bg-white rounded-lg shadow-lg p-5 w-100">
-        <CloseButton onClose={props.onClose} />
+        <CloseButton onClick={props.onClose} />
         <H2>Add user</H2>
         <div className="flex flex-col p-3">
           <InputWithLabel

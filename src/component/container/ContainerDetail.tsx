@@ -58,7 +58,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
         {container.data.label} <Hint>container</Hint>
       </H1>
       <ContainerSummary name={name} role={role} className="mt-5" />
-      {isAdmin(role) && <ContainerUsers name={name} />}
+      {isAdmin(role) && <ContainerUsers containerName={name} />}
       <ContainerAnnotationFields name={props.name} />
       <H2>Annotations</H2>
       <div className="mb-3">

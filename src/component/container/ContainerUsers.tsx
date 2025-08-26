@@ -12,22 +12,27 @@ import { UserRole } from "../../model/user/UserRole.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { Warning } from "../common/Warning.tsx";
 import { AddUserModal } from "./AddUserModal.tsx";
+import { useDelete } from "../../client/query/useDelete.tsx";
+import { Close } from "../common/icon/Close.tsx";
 
-export function ContainerUsers(props: { name: string }) {
-  const { name } = props;
-  const containerUsers = useContainerUsers(name);
+export function ContainerUsers(props: { containerName: string }) {
+  const { containerName } = props;
+  const containerUsers = useContainerUsers(containerName);
   const [showAddUserModal, setShowAddUserModal] = useState(false);
   const [error, setError] = useState("");
   const queryClient = useQueryClient();
   const addUserToContainer: MR<ArUser> = usePost(
     "/services/{containerName}/users",
   );
+  const removeUserFromContainer = useDelete(
+    "/services/{containerName}/users/{userName}",
+  );
 
   const handleSubmitAddUser = (userName: string, role: UserRole) => {
     addUserToContainer.mutate(
       {
         params: {
-          path: { containerName: name },
+          path: { containerName },
         },
         body: [{ userName, role }] as unknown as string,
       },
@@ -43,12 +48,33 @@ export function ContainerUsers(props: { name: string }) {
     setShowAddUserModal(false);
   };
 
-  if (!containerUsers.isSuccess) {
-    return <StatusMessage requests={[containerUsers]} />;
-  }
-
   function handleAddUser() {
     setShowAddUserModal(true);
+  }
+
+  function handleRemoveUser(userName: string) {
+    if (!window.confirm("Remove user from container?")) {
+      return;
+    }
+    removeUserFromContainer.mutate(
+      {
+        params: {
+          path: { containerName, userName },
+        },
+      },
+      {
+        onSuccess: () =>
+          queryClient.invalidateQueries({
+            queryKey: ["/services/{containerName}/users"],
+          }),
+        onError: (e) =>
+          setError(`Could not add user to container: ${e.message}`),
+      },
+    );
+  }
+
+  if (!containerUsers.isSuccess) {
+    return <StatusMessage requests={[containerUsers]} />;
   }
 
   return (
@@ -62,12 +88,15 @@ export function ContainerUsers(props: { name: string }) {
 
       <div>
         {containerUsers.data.map((u) => (
-          // TODO:
-          // <span onClick={handleRemoveUser}>
           <Badge key={u.userName} className="mr-2 mt-3">
             {u.userName} ({u.role.toLowerCase()})
+            <span
+              className="cursor-pointer ml-2 vertical-align-middle text-slate-400 hover:text-slate-900"
+              onClick={() => handleRemoveUser(u.userName)}
+            >
+              <Close />
+            </span>
           </Badge>
-          // </span>
         ))}
       </div>
       {showAddUserModal && (

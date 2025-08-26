@@ -17,7 +17,7 @@ export function Warning(
   }
   return (
     <div className={className} role="alert">
-      {props.onClose && <CloseButton onClose={props.onClose} />}
+      {props.onClose && <CloseButton onClick={props.onClose} />}
       {props.children}
     </div>
   );
