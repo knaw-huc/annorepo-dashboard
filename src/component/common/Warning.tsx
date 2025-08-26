@@ -1,9 +1,11 @@
 import { PropsWithChildren } from "react";
 import { isEmpty } from "lodash";
+import { CloseButton } from "../container/CloseButton.tsx";
 
 export function Warning(
   props: PropsWithChildren<{
     className?: string;
+    onClose?: () => void;
   }>,
 ) {
   let className = "px-5 py-2 text-sm text-red-800 rounded-lg bg-red-50";
@@ -15,6 +17,7 @@ export function Warning(
   }
   return (
     <div className={className} role="alert">
+      {props.onClose && <CloseButton onClose={props.onClose} />}
       {props.children}
     </div>
   );
