@@ -9,7 +9,6 @@ export function Menu() {
       <li>
         <Link to="/custom-query">Custom Queries</Link>
       </li>
-      <li className="text-slate-500 line-through">Annotations</li>
     </ul>
   );
 }
