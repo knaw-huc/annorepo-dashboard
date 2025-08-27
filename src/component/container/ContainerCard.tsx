@@ -18,7 +18,7 @@ export function ContainerCard(
   const container = useContainer(name);
 
   if (!container.isSuccess) {
-    return <StatusMessage requests={[container]} />;
+    return <StatusMessage name="container" requests={[container]} />;
   }
 
   return (

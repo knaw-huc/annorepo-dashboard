@@ -74,7 +74,7 @@ export function ContainerUsers(props: { containerName: string }) {
   }
 
   if (!containerUsers.isSuccess) {
-    return <StatusMessage requests={[containerUsers]} />;
+    return <StatusMessage name="container users" requests={[containerUsers]} />;
   }
 
   return (

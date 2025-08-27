@@ -12,7 +12,7 @@ export function ContainerIndex(props: { onClickCreateContainer: () => void }) {
   const { myContainers, details } = useMyContainerDetails();
 
   if (!myContainers.isSuccess || !details.every((d) => d.isSuccess)) {
-    return <StatusMessage requests={details} />;
+    return <StatusMessage name="my containers" requests={details} />;
   }
 
   if (!details.length) {

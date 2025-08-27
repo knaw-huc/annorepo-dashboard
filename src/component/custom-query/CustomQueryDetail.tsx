@@ -71,7 +71,7 @@ export function CustomQueryDetail(props: {
   };
 
   if (!customQuery.data) {
-    return <StatusMessage requests={[customQuery]} />;
+    return <StatusMessage name="custom query" requests={[customQuery]} />;
   }
 
   const createdBy = customQuery.data.createdBy;
@@ -119,7 +119,7 @@ export function CustomQueryDetail(props: {
         </Button>
       </div>
       {customQueryCall.isError && (
-        <StatusMessage requests={[customQueryCall]} />
+        <StatusMessage name="custom query call" requests={[customQueryCall]} />
       )}
       {containerName && <CustomQueryCallEditor containerName={containerName} />}
       <div className="max-w-[100vw] whitespace-pre-wrap">

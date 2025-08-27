@@ -49,7 +49,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   };
 
   if (!container.isSuccess) {
-    return <StatusMessage requests={[container]} />;
+    return <StatusMessage name="container" requests={[container]} />;
   }
 
   return (
@@ -74,7 +74,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
         </Button>
       </div>
       {pageNo === NO_PAGE ? (
-        <Loading />
+        <Loading name="annotations" />
       ) : (
         <ContainerAnnotationPage
           containerName={name}

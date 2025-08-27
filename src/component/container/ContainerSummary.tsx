@@ -20,7 +20,7 @@ export function ContainerSummary(props: {
   }
 
   if (!container.isSuccess) {
-    return <StatusMessage requests={[container]} />;
+    return <StatusMessage name="container" requests={[container]} />;
   }
 
   return (

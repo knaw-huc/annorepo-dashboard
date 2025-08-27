@@ -77,7 +77,9 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const isSearchDisabled = !subqueries.length || hasSearchErrors;
 
   if (!container.isSuccess || !page.isSuccess) {
-    return <StatusMessage requests={[container, page]} />;
+    return (
+      <StatusMessage name="container and page" requests={[container, page]} />
+    );
   }
   const newSubqueryPath = [subqueries.length];
   return (
@@ -117,7 +119,7 @@ export function ContainerSearch(props: ContainerSearchProps) {
           canEdit={canEdit(role)}
         />
       ) : (
-        <Loading />
+        <Loading name="annotations" />
       )}
     </>
   );

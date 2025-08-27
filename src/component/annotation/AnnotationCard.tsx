@@ -71,7 +71,7 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
   }
 
   if (!annotation) {
-    return <StatusMessage requests={[annotationRequest]} />;
+    return <StatusMessage name="annotation" requests={[annotationRequest]} />;
   }
 
   const name = toContainerName(annotation.via || annotation.id);

@@ -7,6 +7,7 @@ import { Warning } from "../common/Warning.tsx";
 import { isAuthenticatedUser, UserStatus } from "../../model/user/User.ts";
 import { useStore } from "../../store/useStore.ts";
 import { LogInPage } from "./LogInPage.tsx";
+import { Page } from "../common/Page.tsx";
 
 export function Login(props: PropsWithChildren) {
   const config = useConfig();
@@ -42,9 +43,17 @@ export function Login(props: PropsWithChildren) {
   }, [config.AUTH_HOST, config.AR_HOST, setClient]);
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <Page>
+        <Loading name="login status" />
+      </Page>
+    );
   } else if (error) {
-    return <Warning>{error}</Warning>;
+    return (
+      <Page>
+        <Warning>{error}</Warning>
+      </Page>
+    );
   } else if (isAuthenticatedUser(user)) {
     return <>{props.children}</>;
   } else {
