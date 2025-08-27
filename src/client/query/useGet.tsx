@@ -11,7 +11,7 @@ import { paths } from "../../openapi.ts";
 import { PathsWithMethod } from "openapi-typescript-helpers";
 import { GetPath } from "./GetPath.tsx";
 import { Optional } from "../../util/Optional.ts";
-import { isString } from "lodash";
+import { isArray, isString } from "lodash";
 import { Any } from "../../model/Any.ts";
 
 export type GetParams<P extends Paths<"get">> = Params<"get", P> & {
@@ -48,12 +48,18 @@ export function createQueryKey<P extends GetPath>(
   return keys;
 }
 
-export function hashIncludes(query: Query, key: string) {
-  return query.queryHash.includes(key);
-}
-
-export function hashEquals(query: Query, keys: string[]) {
-  return keys.some((k) => query.queryHash.includes(k));
+export function queryKeyIncludes(query: Query, ...keys: string[]) {
+  return keys.some((k) => {
+    if (isString(query.queryKey)) {
+      return query.queryKey === k;
+    } else if (isArray(query.queryKey)) {
+      return query.queryKey.includes(k);
+    } else {
+      const message = "Query key of unknown type:";
+      console.error(message, query.queryKey);
+      throw new Error(message + " " + typeof query.queryKey);
+    }
+  });
 }
 
 export type PostPath = PathsWithMethod<paths, "post">;

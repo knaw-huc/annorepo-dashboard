@@ -5,7 +5,7 @@ import { NewCustomQueryPreviewEditor } from "./NewCustomQueryPreviewEditor.tsx";
 import { ArCustomQueryForm } from "../../model/ArModel.ts";
 import { usePost } from "../../client/query/usePost.tsx";
 import { useQueryClient } from "@tanstack/react-query";
-import { hashIncludes } from "../../client/query/useGet.tsx";
+import { queryKeyIncludes } from "../../client/query/useGet.tsx";
 import { Next } from "../common/icon/Next.tsx";
 import { Back } from "../common/icon/Back.tsx";
 import { NewCustomQueryMetadataAndTemplateEditor } from "./NewCustomQueryMetadataAndTemplateEditor.tsx";
@@ -59,7 +59,7 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
       {
         onSuccess: async () => {
           await queryClient.invalidateQueries({
-            predicate: (query) => hashIncludes(query, "custom-query"),
+            predicate: (query) => queryKeyIncludes(query, "custom-query"),
           });
           props.onClose();
         },

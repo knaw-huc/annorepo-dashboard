@@ -19,7 +19,7 @@ import { useDelete } from "../../client/query/useDelete.tsx";
 import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
 import { useContainerAnnotation } from "../../client/endpoint/useContainerAnnotation.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-import { hashIncludes } from "../../client/query/useGet.tsx";
+import { queryKeyIncludes } from "../../client/query/useGet.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { Checkbox } from "../common/Checkbox.tsx";
 import { useStore } from "../../store/useStore.ts";
@@ -63,7 +63,7 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
       {
         onSuccess: async () => {
           await queryClient.invalidateQueries({
-            predicate: (query) => hashIncludes(query, "containerName"),
+            predicate: (query) => queryKeyIncludes(query, "containerName"),
           });
         },
       },
