@@ -5,7 +5,7 @@ import { useDeleteMultiple } from "../../client/query/useDeleteMultiple.tsx";
 import { useContainerAnnotations } from "../../client/endpoint/useContainerAnnotations.tsx";
 import { useState } from "react";
 import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
-import { invalidateBy } from "../../client/query/useGet.tsx";
+import { hashIncludes } from "../../client/query/useGet.tsx";
 
 export function DeleteSelected() {
   const queryClient = useQueryClient();
@@ -59,7 +59,7 @@ export function DeleteSelected() {
     deleteAnnotation.mutate(params, {
       onSuccess: async () => {
         await queryClient.invalidateQueries({
-          predicate: (query) => invalidateBy(query, "containerName"),
+          predicate: (query) => hashIncludes(query, "containerName"),
         });
         setSelectedAnnotationsState({ selectedAnnotationIds: [] });
         setDeleting(false);

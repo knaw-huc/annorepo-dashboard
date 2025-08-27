@@ -2,12 +2,12 @@ import { useOpenApiClient } from "../OpenApiClientProvider.tsx";
 import { AnnoRepoOpenApiClient } from "../OpenApiClient.tsx";
 import { createQueryKey } from "../query/useGet.tsx";
 import { useQuery } from "@tanstack/react-query";
-import { ArContainer } from "../../model/ArModel.ts";
+import { ArContainer, ArContainerWithETag } from "../../model/ArModel.ts";
 import { QR } from "../query/QR.tsx";
 import { GetPath } from "../query/GetPath.tsx";
 import { orThrow } from "../../util/orThrow.ts";
 
-export function useContainer(name: string): QR<ArContainer> {
+export function useContainer(name: string): QR<ArContainerWithETag> {
   const client = useOpenApiClient();
   return useQuery(getContainer(client, name));
 }
@@ -18,8 +18,16 @@ export function getContainer(client: AnnoRepoOpenApiClient, name: string) {
   return {
     queryKey: createQueryKey(path, params),
     queryFn: async () =>
-      await client
-        .GET(path, params)
-        .then(({ data }) => data ?? orThrow("No container response")),
+      await client.GET(path, params).then(({ data, response }) => {
+        if (!data) {
+          throw new Error(`No container response for ${name}`);
+        }
+        return {
+          ...(data as ArContainer),
+          ETag:
+            (response as Response).headers.get("ETag") ??
+            orThrow("No ETag response"),
+        };
+      }),
   };
 }

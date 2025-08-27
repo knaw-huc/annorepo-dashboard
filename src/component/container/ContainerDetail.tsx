@@ -17,11 +17,17 @@ import { canEdit } from "../../model/user/canEdit.ts";
 import { useContainerRole } from "./useContainerRole.tsx";
 import { ContainerUsers } from "./ContainerUsers.tsx";
 import { isAdmin } from "../../model/user/isAdmin.ts";
+import { Remove } from "../common/icon/Remove.tsx";
+import { useDelete } from "../../client/query/useDelete.tsx";
+import { Warning } from "../common/Warning.tsx";
+import { useQueryClient } from "@tanstack/react-query";
+import { hashEquals } from "../../client/query/useGet.tsx";
 
 export type ContainerDetailProps = {
   name: string;
-  onClickCreateAnnotation: () => void;
-  onClickSearchAnnotations: () => void;
+  onClose: () => void;
+  onCreateAnnotation: () => void;
+  onSearchAnnotations: () => void;
 };
 
 const NO_PAGE = -1;
@@ -29,12 +35,13 @@ const NO_PAGE = -1;
 export function ContainerDetail(props: ContainerDetailProps) {
   const { name } = props;
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
-  const container = useContainer(name);
-
   const [isInit, setInit] = useState(false);
+  const [error, setError] = useState("");
 
+  const container = useContainer(name);
   const role = useContainerRole({ idOrName: name });
-
+  const removeContainer = useDelete("/w3c/{containerName}");
+  const queryClient = useQueryClient();
   useEffect(() => {
     if (isInit || !container.data) {
       return;
@@ -48,6 +55,37 @@ export function ContainerDetail(props: ContainerDetailProps) {
     setPageNo(update);
   };
 
+  const handleRemove = () => {
+    if (
+      !window.confirm(
+        "Delete container?\nPlease note that this will also delete all of its annotations.",
+      )
+    ) {
+      return;
+    }
+    if (!container.data) {
+      return;
+    }
+    removeContainer.mutate(
+      {
+        params: {
+          path: { containerName: name },
+          query: { force: true },
+        },
+        headers: { "If-Match": container.data.ETag },
+      },
+      {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({
+            predicate: (query) => hashEquals(query, ["/w3c", "/my/containers"]),
+          });
+          props.onClose();
+        },
+        onError: (e) => setError(`Could not remove container: ${e.message}`),
+      },
+    );
+  };
+
   if (!container.isSuccess) {
     return <StatusMessage name="container" requests={[container]} />;
   }
@@ -57,18 +95,25 @@ export function ContainerDetail(props: ContainerDetailProps) {
       <H1>
         {container.data.label} <Hint>container</Hint>
       </H1>
+      {error && <Warning onClose={() => setError("")}>{error}</Warning>}
+      {isAdmin(role) && (
+        <Button onClick={handleRemove} className="mr-2">
+          Delete
+          <Remove className="ml-1" />
+        </Button>
+      )}
       <ContainerSummary name={name} role={role} className="mt-5" />
       {isAdmin(role) && <ContainerUsers containerName={name} />}
       <ContainerAnnotationFields name={props.name} />
       <H2>Annotations</H2>
       <div className="mb-3">
         {canEdit(role) && (
-          <Button onClick={props.onClickCreateAnnotation} className="mr-2">
+          <Button onClick={props.onCreateAnnotation} className="mr-2">
             Add
             <Add className="ml-1" />
           </Button>
         )}
-        <Button onClick={props.onClickSearchAnnotations}>
+        <Button onClick={props.onSearchAnnotations}>
           Search
           <Search className="ml-1" />
         </Button>

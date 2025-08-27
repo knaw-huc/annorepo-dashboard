@@ -41,6 +41,9 @@ export type ArContainer = {
   last: string;
   readOnlyForAnonymousUsers: boolean;
 };
+export type ArContainerWithETag = ArContainer & {
+  ETag: string;
+};
 
 export type ArAnnotation<T extends object = object> = {
   "@context": "http://www.w3.org/ns/anno.jsonld";
