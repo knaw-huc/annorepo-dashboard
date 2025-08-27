@@ -20,6 +20,7 @@ export function Page(
             <p className="text-xl font-bold text-gray-900">
               <Link to="/">AnnoRepo Dashboard</Link>
             </p>
+            <p className="text-slate-500">Version {APP_VERSION}</p>
           </aside>
           <main className="flex-grow p-4 order-2 md:order-2 flex-initial">
             <BreadcrumbNav breadcrumbs={props.breadcrumbs || [<ToHome />]} />

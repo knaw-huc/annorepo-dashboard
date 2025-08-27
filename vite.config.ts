@@ -2,6 +2,7 @@ import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import tanstackRouter from "@tanstack/router-plugin/vite";
+import packageJson from "./package.json";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -13,6 +14,9 @@ export default defineConfig({
     react(),
     tailwindcss(),
   ],
+  define: {
+    APP_VERSION: JSON.stringify(packageJson.version),
+  },
 
   /**
    * Development server config:
