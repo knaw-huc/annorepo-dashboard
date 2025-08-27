@@ -53,11 +53,10 @@ export function queryKeyIncludes(query: Query, ...keys: string[]) {
     if (isString(query.queryKey)) {
       return query.queryKey === k;
     } else if (isArray(query.queryKey)) {
-      return query.queryKey.includes(k);
+      return query.queryKey.some((qk) => qk.includes(k));
     } else {
-      const message = "Query key of unknown type:";
-      console.error(message, query.queryKey);
-      throw new Error(message + " " + typeof query.queryKey);
+      console.error("Query key of unknown type:", query.queryKey);
+      return true;
     }
   });
 }
