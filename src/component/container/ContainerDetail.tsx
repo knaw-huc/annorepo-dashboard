@@ -21,7 +21,7 @@ import { Remove } from "../common/icon/Remove.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { Warning } from "../common/Warning.tsx";
 import { useQueryClient } from "@tanstack/react-query";
-import { hashIncludes } from "../../client/query/useGet.tsx";
+import { keyEquals } from "../../client/query/useGet.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -77,7 +77,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
       {
         onSuccess: async () => {
           await queryClient.invalidateQueries({
-            predicate: (query) => hashIncludes(query, "/w3c", "/my/containers"),
+            predicate: (query) => keyEquals(query, "/w3c", "/my/containers"),
           });
           props.onClose();
         },
