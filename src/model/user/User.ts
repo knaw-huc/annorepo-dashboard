@@ -7,9 +7,7 @@ export type UserStatus = AuthenticatedUser | UnauthenticatedUser;
 type AuthenticatedUser = User & {
   authenticated: true;
 };
-export function isAuthenticatedUser(
-  user: UserStatus,
-): user is AuthenticatedUser {
+export function isAuthenticated(user: UserStatus): user is AuthenticatedUser {
   return user.authenticated;
 }
 

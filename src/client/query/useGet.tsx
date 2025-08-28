@@ -12,7 +12,7 @@ import { PathsWithMethod } from "openapi-typescript-helpers";
 import { GetPath } from "./GetPath.tsx";
 import { Optional } from "../../util/Optional.ts";
 import { Any } from "../../model/Any.ts";
-import { isEqual, isString } from "lodash";
+import { isArray, isEqual } from "lodash";
 
 export type GetParams<P extends Paths<"get">> = Params<"get", P> & {
   query?: Optional<UseQueryOptions, "queryKey">;
@@ -48,22 +48,27 @@ export function createQueryKey<P extends GetPath>(
   return keys;
 }
 
+/**
+ * Check if some keys are included in the query hash
+ */
 export function hashIncludes(query: Query, ...keys: string[]) {
   const result = keys.some((k) => query.queryHash.includes(k));
-  console.log("hashIncludes", result, keys, query.queryHash);
+  console.debug("hashIncludes", result, keys, query.queryHash);
   return result;
 }
+
+/**
+ * Check if some keys are equal to the query keys
+ */
 export function keyEquals(query: Query, ...keys: string[]) {
+  if (!isArray(query.queryKey)) {
+    console.error("Expected array query key:", query.queryKey);
+    return true;
+  }
   const result = keys.some((k) => {
-    if (isString(query.queryKey)) {
-      return k === query.queryKey;
-    } else if (Array.isArray(query.queryKey)) {
-      return query.queryKey.some((qk) => isEqual(k, qk));
-    } else {
-      throw new Error("Unknown queryKey type: " + typeof query.queryKey);
-    }
+    return query.queryKey.some((qk) => isEqual(k, qk));
   });
-  console.log("keyEquals", result, keys, query.queryHash);
+  console.debug("keyEquals", result, keys, query.queryHash);
   return result;
 }
 

@@ -20,20 +20,26 @@ import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { A } from "../common/A.tsx";
 import { External } from "../common/icon/External.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
+import { Remove } from "../common/icon/Remove.tsx";
+import { isAuthenticated } from "../../model/user/User.ts";
+import { keyEquals } from "../../client/query/useGet.tsx";
+import { useDelete } from "../../client/query/useDelete.tsx";
+import { useQueryClient } from "@tanstack/react-query";
+import { Warning } from "../common/Warning.tsx";
 
 export function CustomQueryDetail(props: {
   name: string;
   onClose: () => void;
 }) {
   const { name: customQueryName } = props;
-  const config = useConfig();
-  const { subqueries, initWithTemplate } = useStore();
-
   const [containerName, setContainerName] = useState("");
   const [pageNo, setPageNo] = useState(0);
 
+  const config = useConfig();
+  const { subqueries, initWithTemplate, user } = useStore();
   const customQuery = useCustomQuery(customQueryName);
-
+  const queryClient = useQueryClient();
+  const [error, setError] = useState<string>();
   const [submitted, setSubmitted] = useState<CustomQueryCallArgs>({
     queryName: customQueryName,
     containerName,
@@ -41,6 +47,7 @@ export function CustomQueryDetail(props: {
     pageNo,
   });
   const customQueryCall = useCustomQueryCall(submitted);
+  const removeCustomQuery = useDelete("/global/custom-query/{customQueryName}");
 
   useEffect(() => {
     if (customQuery.data) {
@@ -66,9 +73,37 @@ export function CustomQueryDetail(props: {
     });
   }
 
+  const handleRemove = () => {
+    if (!window.confirm("Delete custom query?")) {
+      return;
+    }
+    if (!customQuery.data) {
+      return;
+    }
+    removeCustomQuery.mutate(
+      {
+        params: {
+          path: { customQueryName },
+        },
+      },
+      {
+        onSuccess: async () => {
+          await queryClient.invalidateQueries({
+            predicate: (query) => keyEquals(query, "/global/custom-query"),
+          });
+          props.onClose();
+        },
+        onError: (e) => setError(`Could not remove container: ${e.message}`),
+      },
+    );
+  };
+
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update));
   };
+
+  const canDelete =
+    isAuthenticated(user) && user.email === customQuery.data?.createdBy;
 
   if (!customQuery.data) {
     return <StatusMessage name="custom query" requests={[customQuery]} />;
@@ -80,7 +115,14 @@ export function CustomQueryDetail(props: {
       <H1>
         {customQueryName} <Hint>Custom query</Hint>
       </H1>
-      <p className="text-sm mb-3">
+      {canDelete && (
+        <Button onClick={handleRemove} className="mr-2">
+          Delete
+          <Remove className="ml-1" />
+        </Button>
+      )}
+      {error && <Warning onClose={() => setError("")}>{error}</Warning>}
+      <p className="text-sm mt-5 mb-3">
         {customQuery.data.public ? "Public" : "Private"}
         <Pipe />
         <span>Label: {customQuery.data.label}</span>

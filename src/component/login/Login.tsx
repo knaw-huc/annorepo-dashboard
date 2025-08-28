@@ -4,7 +4,7 @@ import { OpenApiClientContext } from "../../client/OpenApiClientProvider.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
 import { Loading } from "../common/Loading.tsx";
 import { Warning } from "../common/Warning.tsx";
-import { isAuthenticatedUser, UserStatus } from "../../model/user/User.ts";
+import { isAuthenticated, UserStatus } from "../../model/user/User.ts";
 import { useStore } from "../../store/useStore.ts";
 import { LogInPage } from "./LogInPage.tsx";
 import { Page } from "../common/Page.tsx";
@@ -54,7 +54,7 @@ export function Login(props: PropsWithChildren) {
         <Warning>{error}</Warning>
       </Page>
     );
-  } else if (isAuthenticatedUser(user)) {
+  } else if (isAuthenticated(user)) {
     return <>{props.children}</>;
   } else {
     return <LogInPage />;

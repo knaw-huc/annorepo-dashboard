@@ -1,5 +1,5 @@
 import { useStore } from "../../store/useStore.ts";
-import { isAuthenticatedUser } from "../../model/user/User.ts";
+import { isAuthenticated } from "../../model/user/User.ts";
 import { PropsWithChildren } from "react";
 import { useConfig } from "../ConfigProvider.tsx";
 
@@ -8,7 +8,7 @@ export function LoginStatusBadge() {
 
   return (
     <div className="absolute top-2 right-3 text-sm text-gray-600">
-      {isAuthenticatedUser(user) ? (
+      {isAuthenticated(user) ? (
         <>
           Logged in as <strong>{user.nickname}</strong> | <LogoutButton />
         </>
