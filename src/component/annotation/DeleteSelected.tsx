@@ -5,7 +5,7 @@ import { useDeleteMultiple } from "../../client/query/useDeleteMultiple.tsx";
 import { useContainerAnnotations } from "../../client/endpoint/useContainerAnnotations.tsx";
 import { useState } from "react";
 import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
-import { hashIncludes } from "../../client/query/useGet.tsx";
+import { getContainerQuery } from "../../client/endpoint/useContainer.tsx";
 
 export function DeleteSelected() {
   const queryClient = useQueryClient();
@@ -33,6 +33,7 @@ export function DeleteSelected() {
       .map((sa) => ({ id: sa.data!.annotation.id, ETag: sa.data!.ETag }));
 
     const params = [];
+    const containers = new Set<string>();
 
     for (let i = 0; i < selectedAnnotationIds.length; i++) {
       const id = selectedAnnotationIds[i];
@@ -42,6 +43,7 @@ export function DeleteSelected() {
         console.warn(`Can not delete ${id}: does not match path params`);
         continue;
       }
+      containers.add(pathParams.containerName);
 
       const ETag = idWithETag.find((i) => i.id === id)?.ETag;
       if (!ETag) {
@@ -58,9 +60,9 @@ export function DeleteSelected() {
 
     deleteAnnotation.mutate(params, {
       onSuccess: async () => {
-        await queryClient.invalidateQueries({
-          predicate: (query) => hashIncludes(query, "containerName"),
-        });
+        containers.forEach((c) =>
+          queryClient.invalidateQueries({ queryKey: getContainerQuery(c).key }),
+        );
         setSelectedAnnotationsState({ selectedAnnotationIds: [] });
         setDeleting(false);
       },
