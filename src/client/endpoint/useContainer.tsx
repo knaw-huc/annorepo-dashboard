@@ -12,11 +12,17 @@ export function useContainer(name: string): QR<ArContainerWithETag> {
   return useQuery(getContainer(client, name));
 }
 
-export function getContainer(client: AnnoRepoOpenApiClient, name: string) {
+export function getContainerQuery(containerName: string) {
   const path: GetPath = "/w3c/{containerName}";
-  const params = { params: { path: { containerName: name } } };
+  const params = { params: { path: { containerName } } };
+  const key = createQueryKey(path, params);
+  return { path, params, key };
+}
+
+export function getContainer(client: AnnoRepoOpenApiClient, name: string) {
+  const { path, params, key } = getContainerQuery(name);
   return {
-    queryKey: createQueryKey(path, params),
+    queryKey: key,
     queryFn: async () =>
       await client.GET(path, params).then(({ data, response }) => {
         if (!data) {
