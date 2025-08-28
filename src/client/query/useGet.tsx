@@ -11,8 +11,8 @@ import { paths } from "../../openapi.ts";
 import { PathsWithMethod } from "openapi-typescript-helpers";
 import { GetPath } from "./GetPath.tsx";
 import { Optional } from "../../util/Optional.ts";
-import { isArray, isString } from "lodash";
 import { Any } from "../../model/Any.ts";
+import { isEqual, isString } from "lodash";
 
 export type GetParams<P extends Paths<"get">> = Params<"get", P> & {
   query?: Optional<UseQueryOptions, "queryKey">;
@@ -36,29 +36,35 @@ export function useGet<P extends GetPath, RESULT>(
   }) as UseQueryResult<RESULT>;
 }
 
-export const allQueryKeys = new Set();
-Object.assign(window, { allQueryKeys });
+export const allQueryHashes = new Set();
+Object.assign(window, { allQueryHashes });
 
 export function createQueryKey<P extends GetPath>(
   path: P,
   params?: GetParams<P>,
 ): Any[] {
   const keys = [path, params?.params].filter((k) => !isNil(k));
-  keys.forEach((k) => allQueryKeys.add(isString(k) ? k : JSON.stringify(k)));
+  allQueryHashes.add(JSON.stringify(keys));
   return keys;
 }
 
-export function queryKeyIncludes(query: Query, ...keys: string[]) {
-  return keys.some((k) => {
+export function hashIncludes(query: Query, ...keys: string[]) {
+  const result = keys.some((k) => query.queryHash.includes(k));
+  console.log("hashIncludes", result, keys, query.queryHash);
+  return result;
+}
+export function keyEquals(query: Query, ...keys: string[]) {
+  const result = keys.some((k) => {
     if (isString(query.queryKey)) {
-      return query.queryKey === k;
-    } else if (isArray(query.queryKey)) {
-      return query.queryKey.some((qk) => qk.includes(k));
+      return k === query.queryKey;
+    } else if (Array.isArray(query.queryKey)) {
+      return query.queryKey.some((qk) => isEqual(k, qk));
     } else {
-      console.error("Query key of unknown type:", query.queryKey);
-      return true;
+      throw new Error("Unknown queryKey type: " + typeof query.queryKey);
     }
   });
+  console.log("keyEquals", result, keys, query.queryHash);
+  return result;
 }
 
 export type PostPath = PathsWithMethod<paths, "post">;

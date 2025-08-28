@@ -10,7 +10,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { Textarea } from "../common/form/Textarea.tsx";
 import { Warning } from "../common/Warning.tsx";
 import { useQueryClient } from "@tanstack/react-query";
-import { queryKeyIncludes } from "../../client/query/useGet.tsx";
+import { hashIncludes } from "../../client/query/useGet.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
 import { get, isString, set } from "lodash";
 import { useContainerFieldDistinctValues } from "../../client/endpoint/useContainerFieldDistinctValues.tsx";
@@ -95,7 +95,7 @@ export function AnnotationEditor(props: {
       {
         onSuccess: async (data) => {
           await queryClient.invalidateQueries({
-            predicate: (query) => queryKeyIncludes(query, "containerName"),
+            predicate: (query) => hashIncludes(query, "containerName"),
           });
           props.onCreate(toContainerName(data.id));
         },
