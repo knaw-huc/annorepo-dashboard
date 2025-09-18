@@ -8,19 +8,28 @@ import { isAuthenticated, UserStatus } from "../../model/user/User.ts";
 import { useStore } from "../../store/useStore.ts";
 import { LogInPage } from "./LogInPage.tsx";
 import { Page } from "../common/Page.tsx";
+import { ArAboutData } from "../../model/ArModel.ts";
+import { fetchValidated } from "./fetchValidated.tsx";
 
-export function Login(props: PropsWithChildren) {
+export function Auth(props: PropsWithChildren) {
   const config = useConfig();
   const setClient = useContext(OpenApiClientContext).actions.setClient;
-  const { user, setUserState } = useStore();
+  const { user, setUserState, selectedHost } = useStore();
   const [error, setError] = useState("");
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-    const checkUserStatus = async () => {
-      try {
-        const response = await fetch(`${config.AUTH_HOST}/oidc/status`);
+    const auth = async () => {
+      if (!selectedHost) {
+        return;
+      }
 
+      const aboutResponse = await fetchValidated(`${selectedHost}/about`);
+      const aboutJson: ArAboutData = await aboutResponse.json();
+      const withAuthentication = aboutJson.withAuthentication;
+
+      if (withAuthentication) {
+        const response = await fetch(`${config.AUTH_HOST}/oidc/status`);
         if (response.ok) {
           const update: UserStatus = await response.json();
           setUserState({ user: update });
@@ -29,18 +38,19 @@ export function Login(props: PropsWithChildren) {
         } else {
           setError(`Unexpected status: ${response.status}`);
         }
-      } catch (error) {
-        const msg = error instanceof Error ? error.message : "Unknown error";
-        setError(`Received error: ${msg}`);
-        setUserState({ user: { authenticated: false } });
-      } finally {
-        setLoading(false);
       }
+
+      setClient(createOpenApiClient(selectedHost, false));
+      setLoading(false);
     };
 
-    setClient(createOpenApiClient(config.AR_HOST, false));
-    checkUserStatus();
-  }, [config.AUTH_HOST, config.AR_HOST, setClient]);
+    auth().catch((error) => {
+      const msg = error instanceof Error ? error.message : "Unknown error";
+      setError(`Received error: ${msg}`);
+      setUserState({ user: { authenticated: false } });
+      setLoading(false);
+    });
+  }, [config.AUTH_HOST, selectedHost, setClient]);
 
   if (isLoading) {
     return (

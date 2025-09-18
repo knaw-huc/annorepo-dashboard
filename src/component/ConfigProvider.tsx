@@ -3,8 +3,8 @@ import { merge } from "lodash";
 import { Config } from "./Config.ts";
 
 const defaultConfig: Config = {
-  AR_HOST: "/api/annorepo",
-  AUTH_HOST: "/api/auth",
+  AR_HOSTS: {},
+  AUTH_HOST: "",
   annotationPreview: {
     paths: [],
     body: { paths: [] },

@@ -3,7 +3,7 @@ import { Menu } from "./Menu.tsx";
 import { Link } from "@tanstack/react-router";
 
 import { BreadcrumbNav, ToHome } from "./BreadcrumbNav.tsx";
-import { LoginStatusBadge } from "../login/LoginStatusBadge.tsx";
+import { LoginStatusBadge } from "../auth/LoginStatusBadge.tsx";
 
 export function Page(
   props: PropsWithChildren<{

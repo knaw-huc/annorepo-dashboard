@@ -6,9 +6,16 @@ export type FieldConfig = {
   type: AnnotationFieldType;
 };
 
+type HostQueryParam = string;
+type HostUrl = string;
+
 export type Config = {
-  AR_HOST: string;
+  /**
+   * Configure hosts
+   */
+  AR_HOSTS: Record<HostQueryParam, HostUrl>;
   AUTH_HOST: string;
+
   annotationPreview: {
     paths: string[];
     body: { paths: string[] };

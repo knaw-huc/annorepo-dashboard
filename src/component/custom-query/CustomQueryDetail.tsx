@@ -19,7 +19,6 @@ import { useStore } from "../../store/useStore.ts";
 import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { A } from "../common/A.tsx";
 import { External } from "../common/icon/External.tsx";
-import { useConfig } from "../ConfigProvider.tsx";
 import { Remove } from "../common/icon/Remove.tsx";
 import { isAuthenticated } from "../../model/user/User.ts";
 import { keyEquals } from "../../client/query/useGet.tsx";
@@ -35,8 +34,7 @@ export function CustomQueryDetail(props: {
   const [containerName, setContainerName] = useState("");
   const [pageNo, setPageNo] = useState(0);
 
-  const config = useConfig();
-  const { subqueries, initWithTemplate, user } = useStore();
+  const { selectedHost, subqueries, initWithTemplate, user } = useStore();
   const customQuery = useCustomQuery(customQueryName);
   const queryClient = useQueryClient();
   const [error, setError] = useState<string>();
@@ -138,7 +136,7 @@ export function CustomQueryDetail(props: {
         </span>
         <Pipe />
         <A
-          href={`${config.AR_HOST}/global/custom-query/${customQuery.data.name}`}
+          href={`${selectedHost}/global/custom-query/${customQuery.data.name}`}
           className="font-bold"
         >
           Source&nbsp;
