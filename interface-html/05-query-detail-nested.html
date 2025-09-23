@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <title>annorepo_dashboard</title>
+        <link href="css/style.css" rel="stylesheet">
+        <link rel="icon" type="image/x-icon" href="images/favicon.png">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    </head>
+    
+    <body>
+        <div class="flex flex-col xl:flex-row w-full min-h-screen">
+            <aside class="bg-stone-100 w-full xl:max-w-80 p-8 flex flex-row xl:flex-col gap-8 justify-between xl:justify-start">
+                <div class="order-2 xl:order-none">
+                    <img src="images/logo-knaw-humanities-cluster.png" alt="" class="h-16">
+                </div>
+                <div class="order-1 xl:order-none grow">
+                    <div class="font-bold text-2xl px-0 xl:py-8">Annorepo Dashboard</div>
+                    <nav>
+                        <ul class="flex flex-row xl:flex-col gap-4">
+                            <li><a href="01-containter-overview.html" class="text-anrep-green-800 no-underline">Containers</a>
+                            </li>
+                            <li><a href="03-query-overview.html" class="text-anrep-green-800 no-underline">Custom Queries</a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="hidden xl:flex flex-col gap-4 text-xs text-stone-500 border-t border-stone-200 pt-8">
+                    <div class="">AnnoRepo Version: <strong>0.7.8</strong>
+                    </div>
+                    <div class="">Running since
+                        <br>26/06/2025,
+                        <br>02:11:48</div>
+                    <div class="">Running at
+                        <br>https://annorepo.demo.netwerkdigitaalerfgoed.nl</div>
+                </div>
+            </aside>
+            <main class="w-full">
+                <div class="flex flex-col lg:flex-row">
+                    <div class="w-full p-8">
+                        <!-- column 1 -->
+                        <div class="w-full mx-auto max-w-5xl">
+                            <div class="flex justify-between text-sm text-neutral-500">
+                                <div class="flex gap-2  *:no-underline xl:my-10"> <a href="">Home</a>
+ <span class="text-neutral-300">/</span>
+ <a href="">Custom Query</a>
+
+                                    <span
+                                    class="text-neutral-300">/</span> <a href="">Create query</a>
+
+                                </div>
+                                <div class="flex gap-2 items-center"> <span>Logged in as <strong>Bas Doppen</strong></span>
+
+                                    <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800">Logout</button>
+                                </div>
+                            </div>
+                            <div class="flex justify-between w-full my-8 mx-auto max-w-5xl ">
+                                 <h1 class="text-2xl">Create query</h1>
+
+                            </div>
+                            <div class="flex justify-between items-center w-full">
+                                <div class="flex items-center gap-2 bg-anrep-green-100 p-2 rounded-sm ">
+                                    <img src="images/icon-container.png" class="h-4 w-4" alt="">
+                                    <select name="" id="" class="">
+                                        <option value="">Select a container</option>
+                                        <option value="">Amsterdam Time Machine</option>
+                                    </select>
+                                </div>
+                                <div class="">
+                                    <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
+                                    onclick="toggleVis(&#x27;annotationNew&#x27;, &#x27;hide&#x27;); toggleVis(&#x27;annotationFields&#x27;, &#x27;show&#x27;);">Save query</button>
+                                </div>
+                            </div>
+                            <div class="my-8">
+                                <div class="flex flex-col gap-6">
+                                    <!-- query form row -->
+                                    <div class="flex gap-4">
+                                        <div class="flex flex-col gap-1">
+                                            <label for="annotation_field" class="text-sm text-anrep-pink-600 italic">Annotation field</label>
+                                            <select name="annotation_field" id="annotation_field"
+                                            class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                <option value="">body.purpose</option>
+                                                <option value="">body.type</option>
+                                                <option value="">body.value</option>
+                                                <option value="">target</option>
+                                            </select>
+                                        </div>
+                                        <div class="flex flex-col gap-1">
+                                            <label for="operator" class="text-sm text-anrep-pink-600 italic">Operator</label>
+                                            <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
+                                                <option value="">:&#x3D;</option>
+                                                <option value="">:!&#x3D;</option>
+                                                <option value="">:&lt;</option>
+                                                <option value="">:&lt;&#x3D;</option>
+                                            </select>
+                                        </div>
+                                        <div class="flex flex-col gap-2">
+                                            <div class="flex">
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="value" class="text-sm text-anrep-pink-600 italic">Value</label>
+                                                    <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
+                                                    name="value" id="value">
+                                                </div>
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="type" class="text-sm text-anrep-pink-600 italic">Type</label>
+                                                    <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                        <option value="">string</option>
+                                                        <option value="">number</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="flex justify-between">
+                                                <div class="flex items-center gap-1 invisible">
+                                                    <input type="checkbox" name="" id="">
+                                                    <label for="" class="text-anrep-pink-800 text-xs italic">Make value editable</label>
+                                                </div>
+                                                <div class="">
+                                                    <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800">
+                                                        <option value="">Add</option>
+                                                        <option value="">Subquery</option>
+                                                        <option value="">AND</option>
+                                                        <option value="">ORR</option>
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="flex items-end">
+                                            <button class="p-2 cursor-pointer mb-8">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                class="w-5 h-5 fill-red-700">
+                                                    <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                                                    clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <!-- query form row END -->
+                                    <div class="bg-anrep-pink-100/50 p-4 rounded-xl flex flex-col gap-4">
+                                        <div class="w-full text-right">
+                                            <button class="">
+                                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                class="w-5 h-5 fill-anrep-pink-700">
+                                                    <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
+                                                    clip-rule="evenodd" />
+                                                </svg>
+                                            </button>
+                                        </div>
+                                        <!-- query form row -->
+                                        <div class="flex gap-4">
+                                            <div class="flex flex-col gap-1">
+                                                <label for="annotation_field" class="text-sm text-anrep-pink-600 italic">Annotation field</label>
+                                                <select name="annotation_field" id="annotation_field"
+                                                class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                    <option value="">body.purpose</option>
+                                                    <option value="">body.type</option>
+                                                    <option value="">body.value</option>
+                                                    <option value="">target</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex flex-col gap-1">
+                                                <label for="operator" class="text-sm text-anrep-pink-600 italic">Operator</label>
+                                                <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
+                                                    <option value="">:&#x3D;</option>
+                                                    <option value="">:!&#x3D;</option>
+                                                    <option value="">:&lt;</option>
+                                                    <option value="">:&lt;&#x3D;</option>
+                                                </select>
+                                            </div>
+                                            <div class="flex flex-col gap-2">
+                                                <div class="flex">
+                                                    <div class="flex flex-col gap-1">
+                                                        <label for="value" class="text-sm text-anrep-pink-600 italic">Value</label>
+                                                        <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
+                                                        name="value" id="value">
+                                                    </div>
+                                                    <div class="flex flex-col gap-1">
+                                                        <label for="type" class="text-sm text-anrep-pink-600 italic">Type</label>
+                                                        <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                            <option value="">string</option>
+                                                            <option value="">number</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="flex justify-between">
+                                                    <div class="flex items-center gap-1 invisible">
+                                                        <input type="checkbox" name="" id="">
+                                                        <label for="" class="text-anrep-pink-800 text-xs italic">Make value editable</label>
+                                                    </div>
+                                                    <div class="">
+                                                        <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800">
+                                                            <option value="">Add</option>
+                                                            <option value="">Subquery</option>
+                                                            <option value="">AND</option>
+                                                            <option value="">ORR</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-end">
+                                                <button class="p-2 cursor-pointer mb-8">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                    class="w-5 h-5 fill-red-700">
+                                                        <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                                                        clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <!-- query form row END -->
+                                        <div class="font-bold text-anrep-pink-700">AND</div>
+                                        <div class="bg-anrep-pink-100/50 p-4 rounded-xl flex flex-col gap-4">
+                                            <div class="w-full text-right">
+                                                <button class="">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                    class="w-5 h-5 fill-anrep-pink-700">
+                                                        <path fill-rule="evenodd" d="M12.53 16.28a.75.75 0 01-1.06 0l-7.5-7.5a.75.75 0 011.06-1.06L12 14.69l6.97-6.97a.75.75 0 111.06 1.06l-7.5 7.5z"
+                                                        clip-rule="evenodd" />
+                                                    </svg>
+                                                </button>
+                                            </div>
+                                            <!-- query form row -->
+                                            <div class="flex gap-4">
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="annotation_field" class="text-sm text-anrep-pink-600 italic">Annotation field</label>
+                                                    <select name="annotation_field" id="annotation_field"
+                                                    class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                        <option value="">body.purpose</option>
+                                                        <option value="">body.type</option>
+                                                        <option value="">body.value</option>
+                                                        <option value="">target</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="operator" class="text-sm text-anrep-pink-600 italic">Operator</label>
+                                                    <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
+                                                        <option value="">:&#x3D;</option>
+                                                        <option value="">:!&#x3D;</option>
+                                                        <option value="">:&lt;</option>
+                                                        <option value="">:&lt;&#x3D;</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col gap-2">
+                                                    <div class="flex">
+                                                        <div class="flex flex-col gap-1">
+                                                            <label for="value" class="text-sm text-anrep-pink-600 italic">Value</label>
+                                                            <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
+                                                            name="value" id="value">
+                                                        </div>
+                                                        <div class="flex flex-col gap-1">
+                                                            <label for="type" class="text-sm text-anrep-pink-600 italic">Type</label>
+                                                            <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                                <option value="">string</option>
+                                                                <option value="">number</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between">
+                                                        <div class="flex items-center gap-1 ">
+                                                            <input type="checkbox" name="" id="">
+                                                            <label for="" class="text-anrep-pink-800 text-xs italic">Make value editable</label>
+                                                        </div>
+                                                        <div class="">
+                                                            <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800">
+                                                                <option value="">Add</option>
+                                                                <option value="">Subquery</option>
+                                                                <option value="">AND</option>
+                                                                <option value="">ORR</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-end">
+                                                    <button class="p-2 cursor-pointer mb-8">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                        class="w-5 h-5 fill-red-700">
+                                                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                                                            clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- query form row END -->
+                                            <div class="font-bold text-anrep-pink-700">OR</div>
+                                            <!-- query form row -->
+                                            <div class="flex gap-4">
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="annotation_field" class="text-sm text-anrep-pink-600 italic">Annotation field</label>
+                                                    <select name="annotation_field" id="annotation_field"
+                                                    class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                        <option value="">body.purpose</option>
+                                                        <option value="">body.type</option>
+                                                        <option value="">body.value</option>
+                                                        <option value="">target</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="operator" class="text-sm text-anrep-pink-600 italic">Operator</label>
+                                                    <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
+                                                        <option value="">:&#x3D;</option>
+                                                        <option value="">:!&#x3D;</option>
+                                                        <option value="">:&lt;</option>
+                                                        <option value="">:&lt;&#x3D;</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col gap-2">
+                                                    <div class="flex">
+                                                        <div class="flex flex-col gap-1">
+                                                            <label for="value" class="text-sm text-anrep-pink-600 italic">Value</label>
+                                                            <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
+                                                            name="value" id="value">
+                                                        </div>
+                                                        <div class="flex flex-col gap-1">
+                                                            <label for="type" class="text-sm text-anrep-pink-600 italic">Type</label>
+                                                            <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                                <option value="">string</option>
+                                                                <option value="">number</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-between">
+                                                        <div class="flex items-center gap-1 invisible">
+                                                            <input type="checkbox" name="" id="">
+                                                            <label for="" class="text-anrep-pink-800 text-xs italic">Make value editable</label>
+                                                        </div>
+                                                        <div class="">
+                                                            <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800">
+                                                                <option value="">Add</option>
+                                                                <option value="">Subquery</option>
+                                                                <option value="">AND</option>
+                                                                <option value="">ORR</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-end">
+                                                    <button class="p-2 cursor-pointer mb-8">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                        class="w-5 h-5 fill-red-700">
+                                                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                                                            clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- query form row END -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="my-8">Results
+                                <div class="flex flex-col gap-3"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- column 2 -->
+                    <div class="w-full lg:max-w-96  h-full lg:min-h-screen flex flex-col gap-1 ">
+                        <div class="flex flex-col p-8 bg-anrep-pink-50 grow gap-4  w-full mt-40"
+                        id="annotationNew">
+                             <h2 class="text-xl mt-4 mb-4">Save this query</h2>
+
+                            <div class="flex flex-col gap-1">
+                                <label for="name" class="italic text-sm text-neutral-600">Name</label>
+                                <input type="text" id="name" class="rounded-sm border border-neutral-300 bg-white ">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label for="label" class="italic text-sm text-neutral-600">Label</label>
+                                <input type="text" id="label" class="rounded-sm border border-neutral-300 bg-white ">
+                            </div>
+                            <div class="flex flex-col gap-1">
+                                <label for="description" class="italic text-sm text-neutral-600">Description</label>
+                                <textarea id="description" class="rounded-sm border border-neutral-300 bg-white min-h-40"></textarea>
+                            </div>
+                            <div class="flex justify-between items-center ">
+                                <div class="">
+                                    <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
+                                    onclick="toggleVis(&#x27;annotationNew&#x27;, &#x27;hide&#x27;); toggleVis(&#x27;annotationFields&#x27;, &#x27;show&#x27;);">Save</button>
+                                </div>
+                                <div class="">
+                                    <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
+                                    onclick="toggleVis(&#x27;annotationNew&#x27;, &#x27;hide&#x27;); toggleVis(&#x27;annotationFields&#x27;, &#x27;show&#x27;);">Cancel</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <script src="js/toggleVis.js"></script>
+    </body>
+
+</html>
