@@ -15,12 +15,6 @@ import { fetchValidated } from "./fetchValidated.tsx";
 import { PleaseLogInPage } from "./PleaseLogInPage.tsx";
 import { createOpenApiClient } from "../../client/OpenApiClient.tsx";
 
-// TODO: set available auth methods
-// TODO: allow user to pick one
-// TODO: perform action accordingly
-// TODO: create client suitable for auth method
-// TODO: start anonymously, replace login screen with optional login modal
-
 export function Auth(props: PropsWithChildren) {
   const config = useConfig();
   const {
@@ -44,7 +38,6 @@ export function Auth(props: PropsWithChildren) {
     if (client) {
       return;
     }
-    console.log("createOpenApiClient, selectedHost:", selectedHost);
     setClient(createOpenApiClient(selectedHost));
   }, [selectedHost, client]);
 
@@ -70,7 +63,6 @@ export function Auth(props: PropsWithChildren) {
       );
       const isBearerTokenEnabled =
         withAuthentication && about.authentication.internal === "api-keys";
-      console.log("checkAbout", { about, isOidcEnabled, isBearerTokenEnabled });
       if (isOidcEnabled) {
         authMethodsUpdate.push("oidc");
         await getStatus();
@@ -87,28 +79,36 @@ export function Auth(props: PropsWithChildren) {
   }, [config.AUTH_HOST, selectedHost, setClient]);
 
   useEffect(() => {
-    console.log("user changed", user);
+    console.log("User changed:", user);
   }, [user]);
 
   useEffect(() => {
     if (user.authenticated) {
+      console.log("Change when setting to false? Was: ", isAuthenticating);
       setAuthState({ isAuthenticating: false });
     }
   }, [user.authenticated]);
 
   async function getStatus() {
-    const response = await fetch(`${config.AUTH_HOST.proxyUrl}/oidc/status`);
-    if (response.ok) {
-      const update: Omit<OidcUser, "method"> = await response.json();
-      setAuthState({
-        withAuthentication: true,
-        user: { method: "oidc", ...update },
-      });
-      setAuthState({ selectedAuthMethod: "oidc" });
-    } else if (response.status === 401) {
+    try {
+      const response = await fetch(`${config.AUTH_HOST.proxyUrl}/oidc/status`);
+      if (response.ok) {
+        const update: Omit<OidcUser, "method"> = await response.json();
+        setAuthState({
+          withAuthentication: true,
+          user: { method: "oidc", ...update },
+        });
+        setAuthState({ selectedAuthMethod: "oidc" });
+      } else if (response.status === 401) {
+        setAuthState({ user: { method: "anonymous", authenticated: false } });
+      } else {
+        setError(`Unexpected status: ${response.status}`);
+      }
+    } catch (error) {
+      const msg = error instanceof Error ? error.message : "Unknown error";
+      setError(`Status check resulted in error: ${msg}`);
       setAuthState({ user: { method: "anonymous", authenticated: false } });
-    } else {
-      setError(`Unexpected status: ${response.status}`);
+      setAuthState({ isAuthenticating: false });
     }
   }
 
@@ -121,19 +121,19 @@ export function Auth(props: PropsWithChildren) {
       return;
     }
     setAuthState({ isAuthenticating: true });
-
-    getStatus().catch((error) => {
-      const msg = error instanceof Error ? error.message : "Unknown error";
-      setError(`Received error: ${msg}`);
-      setAuthState({ user: { method: "anonymous", authenticated: false } });
-      setAuthState({ isAuthenticating: false });
-    });
+    getStatus();
   }, [selectedAuthMethod, isAuthenticating]);
 
   if (isLoadingAbout) {
     return (
       <Page>
         <Loading name="login status" />
+      </Page>
+    );
+  } else if (!client) {
+    return (
+      <Page>
+        <Loading name="client" />
       </Page>
     );
   } else if (error) {
@@ -146,12 +146,12 @@ export function Auth(props: PropsWithChildren) {
     return <PleaseLogInPage />;
   } else if (isAuthenticating && selectedAuthMethod === "token") {
     /**
-     * See {@link AuthStatusBadge}
+     * See {@link AuthStatus}
      */
     return <>{props.children}</>;
-  } else if (!selectedAuthMethod && authMethods && client) {
+  } else if (!selectedAuthMethod && authMethods) {
     /**
-     * See {@link AuthStatusBadge}
+     * See {@link AuthStatus}
      */
     return <>{props.children}</>;
   } else if (selectedAuthMethod === "anonymous") {
