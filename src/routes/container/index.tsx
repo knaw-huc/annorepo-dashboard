@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ContainerIndex, Page } from "../../component";
-import { Auth } from "../../component/auth/Auth.tsx";
+import { AuthGuard } from "../../component/auth/AuthGuard.tsx";
 import { ToContainers, ToHome } from "../../component/common/BreadcrumbNav.tsx";
 
 export const Route = createFileRoute("/container/")({
@@ -14,11 +14,11 @@ export const Route = createFileRoute("/container/")({
     }
 
     return (
-      <Auth>
+      <AuthGuard>
         <Page breadcrumbs={[<ToHome />, <ToContainers />]}>
           <ContainerIndex onClickCreateContainer={handleClickContainerForm} />
         </Page>
-      </Auth>
+      </AuthGuard>
     );
   },
 });

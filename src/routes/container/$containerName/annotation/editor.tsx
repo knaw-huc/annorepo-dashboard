@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Page } from "../../../../component";
-import { Auth } from "../../../../component/auth/Auth.tsx";
+import { AuthGuard } from "../../../../component/auth/AuthGuard.tsx";
 import { AnnotationEditor } from "../../../../component/annotation/AnnotationEditor.tsx";
 import {
   ToContainer,
@@ -33,7 +33,7 @@ function Component() {
   };
 
   return (
-    <Auth>
+    <AuthGuard>
       <Page
         breadcrumbs={[
           <ToHome />,
@@ -47,6 +47,6 @@ function Component() {
           onCreate={handleCreate}
         />
       </Page>
-    </Auth>
+    </AuthGuard>
   );
 }

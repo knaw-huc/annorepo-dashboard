@@ -15,7 +15,7 @@ import { fetchValidated } from "./fetchValidated.tsx";
 import { PleaseLogInPage } from "./PleaseLogInPage.tsx";
 import { createOpenApiClient } from "../../client/OpenApiClient.tsx";
 
-export function Auth(props: PropsWithChildren) {
+export function AuthGuard(props: PropsWithChildren) {
   const config = useConfig();
   const {
     state: { client },
@@ -81,13 +81,6 @@ export function Auth(props: PropsWithChildren) {
   useEffect(() => {
     console.log("User changed:", user);
   }, [user]);
-
-  useEffect(() => {
-    if (user.authenticated) {
-      console.log("Change when setting to false? Was: ", isAuthenticating);
-      setAuthState({ isAuthenticating: false });
-    }
-  }, [user.authenticated]);
 
   async function getStatus() {
     try {

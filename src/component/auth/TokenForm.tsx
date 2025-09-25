@@ -25,6 +25,7 @@ export function TokenForm() {
       return;
     }
     setAuthState({
+      isAuthenticating: false,
       user: { ...user, authenticated: true, method: "token", token },
     });
 
