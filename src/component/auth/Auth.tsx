@@ -41,7 +41,7 @@ export function Auth(props: PropsWithChildren) {
     if (client) {
       return;
     }
-    setClient(createOpenApiClient(selectedHost, false));
+    setClient(createOpenApiClient(selectedHost));
   }, [selectedHost, client]);
 
   useEffect(() => {
@@ -100,7 +100,6 @@ export function Auth(props: PropsWithChildren) {
         withAuthentication: true,
         user: { method: "oidc", ...update },
       });
-      setClient(createOpenApiClient(selectedHost, false));
       setSelectedAuthMethod("oidc");
     } else if (response.status === 401) {
       setUserState({ user: { method: "anonymous", authenticated: false } });
