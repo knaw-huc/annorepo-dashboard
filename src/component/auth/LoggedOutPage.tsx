@@ -1,5 +1,5 @@
-import { UnauthorizedPage } from "./UnauthorizedPage.tsx";
+import { LoginMessageCard } from "./LoginMessageCard.tsx";
 
 export function LoggedOutPage() {
-  return <UnauthorizedPage message="You are now logged out." />;
+  return <LoginMessageCard message="You are now logged out." />;
 }

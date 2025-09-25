@@ -20,7 +20,7 @@ import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { A } from "../common/A.tsx";
 import { External } from "../common/icon/External.tsx";
 import { Remove } from "../common/icon/Remove.tsx";
-import { isAuthenticated } from "../../model/user/User.ts";
+import { isOidcUser } from "../../model/user/User.ts";
 import { keyEquals } from "../../client/query/useGet.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { useQueryClient } from "@tanstack/react-query";
@@ -101,7 +101,7 @@ export function CustomQueryDetail(props: {
   };
 
   const canDelete =
-    isAuthenticated(user) && user.email === customQuery.data?.createdBy;
+    isOidcUser(user) && user.email === customQuery.data?.createdBy;
 
   if (!customQuery.data) {
     return <StatusMessage name="custom query" requests={[customQuery]} />;

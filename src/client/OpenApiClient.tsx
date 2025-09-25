@@ -9,7 +9,7 @@ export function createOpenApiClient(
   /**
    * When using oidc, the auth server handles authentication headers
    */
-  bearerToken: string | false,
+  tokenToken: string | false,
 ) {
   /**
    * Custom query parameters should not be encoded by openapi-fetch
@@ -37,13 +37,15 @@ export function createOpenApiClient(
   const client = createClient<paths>({ baseUrl });
   client.use(unencodeCustomQueryParameters, validateResponseStatus);
 
-  if (bearerToken !== false) {
-    const addBearerTokenHeader: Middleware = {
+  if (tokenToken !== false) {
+    const addTokenTokenHeader: Middleware = {
       async onRequest(params) {
-        params.request.headers.set("Authorization", `Bearer ${bearerToken}`);
+        console.log("Set token on request to", params.request.url);
+        params.request.headers.set("Authorization", `Token ${tokenToken}`);
       },
     };
-    client.use(addBearerTokenHeader);
+    console.log("add token middleware", tokenToken);
+    client.use(addTokenTokenHeader);
   }
 
   return client;

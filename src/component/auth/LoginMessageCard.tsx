@@ -1,6 +1,6 @@
 import { LoginButton } from "./LoginButton.tsx";
 
-export function UnauthorizedPage(props: { message: string }) {
+export function LoginMessageCard(props: { message: string }) {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="p-15 rounded shadow text-center">

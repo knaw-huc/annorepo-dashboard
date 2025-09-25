@@ -4,7 +4,7 @@ import { Config } from "./Config.ts";
 
 const defaultConfig: Config = {
   AR_HOSTS: {},
-  AUTH_HOST: "",
+  AUTH_HOST: { proxyUrl: "", providerUrl: "" },
   annotationPreview: {
     paths: [],
     body: { paths: [] },

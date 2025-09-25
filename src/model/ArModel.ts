@@ -14,6 +14,12 @@ export type ArAboutData = {
   startedAt: string;
   baseURI: string;
   withAuthentication: boolean;
+  authentication: {
+    internal: "api-keys";
+    oidc?: {
+      serverUrl: string;
+    }[];
+  };
   sourceCode: string;
   mongoVersion: string;
 };
@@ -98,6 +104,7 @@ export type ArExtendedSubquery = EntryToRecord<ArExtendedEntry>;
 export type ArRangeEntry = [RangeQueryOperator, ArRangeQueryValue];
 
 export type ArComparisonEntry = ArRangeEntry | ArExtendedEntry | ArSimpleEntry;
+
 export function isArComparisonEntry(
   toTest: ArQueryEntry,
 ): toTest is ArComparisonEntry {
@@ -109,6 +116,7 @@ export type ArComparisonRecord = EntryToRecord<ArComparisonEntry>;
 
 export const NO_FIELD = "n.a.";
 export type ArRangeQueryValue = { source: string; start: number; end: number };
+
 export function isArRangeQueryValue(toTest: Any): toTest is ArRangeQueryValue {
   return !!(
     toTest &&

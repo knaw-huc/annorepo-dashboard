@@ -14,7 +14,10 @@ export type Config = {
    * Configure hosts
    */
   AR_HOSTS: Record<HostQueryParam, HostUrl>;
-  AUTH_HOST: string;
+  AUTH_HOST: {
+    proxyUrl: string;
+    providerUrl: string;
+  };
 
   annotationPreview: {
     paths: string[];

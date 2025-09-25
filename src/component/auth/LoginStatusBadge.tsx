@@ -1,5 +1,9 @@
 import { useStore } from "../../store/useStore.ts";
-import { isAuthenticated } from "../../model/user/User.ts";
+import {
+  isAnonymousUser,
+  isOidcUser,
+  isTokenUser,
+} from "../../model/user/User.ts";
 import { PropsWithChildren } from "react";
 import { useConfig } from "../ConfigProvider.tsx";
 
@@ -8,13 +12,13 @@ export function LoginStatusBadge() {
 
   return (
     <div className="absolute top-2 right-3 text-sm text-gray-600">
-      {isAuthenticated(user) ? (
+      {isOidcUser(user) && (
         <>
           Logged in as <strong>{user.nickname}</strong> | <LogoutButton />
         </>
-      ) : (
-        <>Not logged in</>
       )}
+      {isTokenUser(user) && <>Using token</>}
+      {isAnonymousUser(user) && <>Not logged in</>}
     </div>
   );
 }
@@ -24,7 +28,7 @@ export function LogoutButton() {
 
   function handleLogout() {
     const next = encodeURIComponent(window.location.origin + "/logout");
-    window.location.href = `${config.AUTH_HOST}/oidc/logout?next=${next}`;
+    window.location.href = `${config.AUTH_HOST.proxyUrl}/oidc/logout?next=${next}`;
   }
 
   return <LinkButton onClick={handleLogout}>Log out</LinkButton>;
