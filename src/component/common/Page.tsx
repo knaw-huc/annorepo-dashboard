@@ -3,7 +3,7 @@ import { Menu } from "./Menu.tsx";
 import { Link } from "@tanstack/react-router";
 
 import { BreadcrumbNav, ToHome } from "./BreadcrumbNav.tsx";
-import { LoginStatusBadge } from "../auth/LoginStatusBadge.tsx";
+import { AuthStatus } from "../auth/AuthStatus.tsx";
 
 export function Page(
   props: PropsWithChildren<{
@@ -14,7 +14,7 @@ export function Page(
     <div className="flex flex-col min-h-screen">
       {/* Header */}
       <div>
-        <LoginStatusBadge />
+        <AuthStatus />
         <div className="flex flex-col md:flex-row">
           <aside className="w-full md:w-64 p-4 order-1 md:order-1 bg-gray-100 flex-none">
             <p className="text-xl font-bold text-gray-900">

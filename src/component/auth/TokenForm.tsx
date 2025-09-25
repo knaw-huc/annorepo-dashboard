@@ -5,13 +5,12 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Middleware } from "openapi-fetch";
 import { InputWithLabel } from "../common/form/InputWithLabel.tsx";
 import { Button } from "../common/Button.tsx";
-import { LinkButton } from "./LoginStatusBadge.tsx";
 
 export function TokenForm() {
-  const [isOpen, setOpen] = useState(false);
+  const { setAuthState, user } = useStore();
+
   const [token, setToken] = useState("");
   const [error, setError] = useState("");
-  const { setUserState, user } = useStore();
   const client = useOpenApiClient();
   const queryClient = useQueryClient();
 
@@ -22,10 +21,10 @@ export function TokenForm() {
       });
     } catch {
       setError("Invalid key");
-      setUserState({ user: { method: "anonymous", authenticated: false } });
+      setAuthState({ user: { method: "anonymous", authenticated: false } });
       return;
     }
-    setUserState({
+    setAuthState({
       user: { ...user, authenticated: true, method: "token", token },
     });
 
@@ -42,22 +41,16 @@ export function TokenForm() {
   }
 
   return (
-    <>
-      {!isOpen && (
-        <LinkButton onClick={() => setOpen(true)}>Add token</LinkButton>
-      )}
-      {isOpen && (
-        <>
-          <InputWithLabel
-            value={token}
-            label="Token"
-            onChange={setToken}
-            errorLabel={error}
-            type="password"
-          />
-          <Button onClick={handleSettingApiKey}>Set</Button>
-        </>
-      )}
-    </>
+    <div>
+      Token form
+      <InputWithLabel
+        value={token}
+        label="Token"
+        onChange={setToken}
+        errorLabel={error}
+        type="password"
+      />
+      <Button onClick={handleSettingApiKey}>Set</Button>
+    </div>
   );
 }

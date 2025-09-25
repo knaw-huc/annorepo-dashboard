@@ -1,8 +1,16 @@
 import { SliceCreator } from "../query/SliceCreator.ts";
-import { OidcUser, TokenUser, AnonymousUser } from "../../model/user/User.ts";
+import {
+  OidcUser,
+  TokenUser,
+  AnonymousUser,
+  AuthMethod,
+} from "../../model/user/User.ts";
 
-export type UserState = {
+export type AuthState = {
   withAuthentication: boolean;
+  authMethods: AuthMethod[];
+  selectedAuthMethod: AuthMethod | null;
+  isAuthenticating: boolean;
 } & (OidcUserState | TokenUserState | UnauthenticatedState);
 
 export type OidcUserState = {
@@ -19,19 +27,21 @@ export type UnauthenticatedState = {
   user: AnonymousUser;
 };
 
-export type UserSlice = UserState & {
-  setUserState: (update: Partial<UserState>) => void;
+export type AuthSlice = AuthState & {
+  setAuthState: (update: Partial<AuthState>) => void;
 };
 
-export const createUserSlice: SliceCreator<UserSlice> = (set) => {
+export const createUserSlice: SliceCreator<AuthSlice> = (set) => {
   return {
-    status: "loading",
     withAuthentication: false,
+    authMethods: [],
+    selectedAuthMethod: null,
+    isAuthenticating: false,
     user: {
       authenticated: false,
       method: "anonymous",
     },
-    setUserState: (update: Partial<UserState>) => {
+    setAuthState: (update: Partial<AuthState>) => {
       console.log("setUserState", update);
       set((prev) => ({ prev, ...update }));
     },

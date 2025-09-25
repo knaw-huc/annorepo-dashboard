@@ -1,0 +1,13 @@
+import { useConfig } from "../ConfigProvider.tsx";
+import { LinkButton } from "./LinkButton.tsx";
+
+export function LogoutButton() {
+  const config = useConfig();
+
+  function handleLogout() {
+    const next = encodeURIComponent(window.location.origin + "/logout");
+    window.location.href = `${config.AUTH_HOST.proxyUrl}/oidc/logout?next=${next}`;
+  }
+
+  return <LinkButton onClick={handleLogout}>Log out</LinkButton>;
+}

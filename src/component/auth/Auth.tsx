@@ -13,9 +13,7 @@ import { Page } from "../common/Page.tsx";
 import { ArAboutData } from "../../model/ArModel.ts";
 import { fetchValidated } from "./fetchValidated.tsx";
 import { PleaseLogInPage } from "./PleaseLogInPage.tsx";
-import { Button } from "../common/Button.tsx";
 import { createOpenApiClient } from "../../client/OpenApiClient.tsx";
-import { TokenForm } from "./TokenForm.tsx";
 
 // TODO: set available auth methods
 // TODO: allow user to pick one
@@ -29,18 +27,24 @@ export function Auth(props: PropsWithChildren) {
     state: { client },
     actions: { setClient },
   } = useContext(OpenApiClientContext);
-  const { user, setUserState, selectedHost } = useStore();
+
+  const {
+    user,
+    setAuthState,
+    selectedHost,
+    authMethods,
+    selectedAuthMethod,
+    isAuthenticating,
+  } = useStore();
 
   const [error, setError] = useState("");
   const [isLoadingAbout, setLoadingAbout] = useState(false);
-  const [authMethods, setAuthMethods] = useState<AuthMethod[]>();
-  const [selectedAuthMethod, setSelectedAuthMethod] = useState<AuthMethod>();
-  const [isAuthenticating, setAuthenticating] = useState(false);
 
   useEffect(() => {
     if (client) {
       return;
     }
+    console.log("createOpenApiClient, selectedHost:", selectedHost);
     setClient(createOpenApiClient(selectedHost));
   }, [selectedHost, client]);
 
@@ -55,7 +59,7 @@ export function Auth(props: PropsWithChildren) {
       const withAuthentication = about.withAuthentication;
       const authMethodsUpdate: AuthMethod[] = [];
       if (!withAuthentication) {
-        setUserState({
+        setAuthState({
           withAuthentication,
           user: { method: "anonymous", authenticated: false },
         });
@@ -73,10 +77,10 @@ export function Auth(props: PropsWithChildren) {
       }
       if (isBearerTokenEnabled) {
         authMethodsUpdate.push("token");
-        setUserState({ withAuthentication });
+        setAuthState({ withAuthentication });
       }
       setLoadingAbout(false);
-      setAuthMethods(authMethodsUpdate);
+      setAuthState({ authMethods: authMethodsUpdate });
     };
 
     checkAbout();
@@ -88,7 +92,7 @@ export function Auth(props: PropsWithChildren) {
 
   useEffect(() => {
     if (user.authenticated) {
-      setAuthenticating(false);
+      setAuthState({ isAuthenticating: false });
     }
   }, [user.authenticated]);
 
@@ -96,13 +100,13 @@ export function Auth(props: PropsWithChildren) {
     const response = await fetch(`${config.AUTH_HOST.proxyUrl}/oidc/status`);
     if (response.ok) {
       const update: Omit<OidcUser, "method"> = await response.json();
-      setUserState({
+      setAuthState({
         withAuthentication: true,
         user: { method: "oidc", ...update },
       });
-      setSelectedAuthMethod("oidc");
+      setAuthState({ selectedAuthMethod: "oidc" });
     } else if (response.status === 401) {
-      setUserState({ user: { method: "anonymous", authenticated: false } });
+      setAuthState({ user: { method: "anonymous", authenticated: false } });
     } else {
       setError(`Unexpected status: ${response.status}`);
     }
@@ -116,13 +120,13 @@ export function Auth(props: PropsWithChildren) {
     ) {
       return;
     }
-    setAuthenticating(true);
+    setAuthState({ isAuthenticating: true });
 
     getStatus().catch((error) => {
       const msg = error instanceof Error ? error.message : "Unknown error";
       setError(`Received error: ${msg}`);
-      setUserState({ user: { method: "anonymous", authenticated: false } });
-      setAuthenticating(false);
+      setAuthState({ user: { method: "anonymous", authenticated: false } });
+      setAuthState({ isAuthenticating: false });
     });
   }, [selectedAuthMethod, isAuthenticating]);
 
@@ -138,38 +142,18 @@ export function Auth(props: PropsWithChildren) {
         <Warning>{error}</Warning>
       </Page>
     );
-  } else if (!selectedAuthMethod && authMethods) {
-    return (
-      <div>
-        {authMethods.includes("oidc") && (
-          <Button
-            onClick={() => {
-              setAuthenticating(true);
-              setSelectedAuthMethod("oidc");
-            }}
-          >
-            Oidc
-          </Button>
-        )}
-        {authMethods.includes("token") && (
-          <Button
-            onClick={() => {
-              setAuthenticating(true);
-              setSelectedAuthMethod("token");
-            }}
-          >
-            Token
-          </Button>
-        )}
-        <Button onClick={() => setSelectedAuthMethod("anonymous")}>
-          Anonymous
-        </Button>
-      </div>
-    );
   } else if (isAuthenticating && selectedAuthMethod === "oidc") {
     return <PleaseLogInPage />;
   } else if (isAuthenticating && selectedAuthMethod === "token") {
-    return <TokenForm />;
+    /**
+     * See {@link AuthStatusBadge}
+     */
+    return <>{props.children}</>;
+  } else if (!selectedAuthMethod && authMethods && client) {
+    /**
+     * See {@link AuthStatusBadge}
+     */
+    return <>{props.children}</>;
   } else if (selectedAuthMethod === "anonymous") {
     return <>{props.children}</>;
   } else if (isAuthenticated(user)) {
