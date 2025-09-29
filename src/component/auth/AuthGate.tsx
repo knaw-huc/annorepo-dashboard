@@ -46,7 +46,7 @@ export function AuthGate(props: PropsWithChildren) {
   }, [selectedHost, client]);
 
   useEffect(() => {
-    if (!selectedHost || isLoadingAbout) {
+    if (!selectedHost || isLoadingAbout || isAuthenticated(user)) {
       return;
     }
     setLoadingAbout(true);
