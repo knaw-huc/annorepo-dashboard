@@ -4,7 +4,7 @@ import {
   ToCustomQueryIndex,
   ToHome,
 } from "../../component/common/BreadcrumbNav.tsx";
-import { AuthGuard } from "../../component/auth/AuthGuard.tsx";
+import { AuthGate } from "../../component/auth/AuthGate.tsx";
 import { Page } from "../../component";
 
 export const Route = createFileRoute("/custom-query/editor")({
@@ -18,11 +18,11 @@ export const Route = createFileRoute("/custom-query/editor")({
     };
 
     return (
-      <AuthGuard>
+      <AuthGate>
         <Page breadcrumbs={[<ToHome />, <ToCustomQueryIndex />]}>
           <NewCustomQueryEditor onClose={handleClose} />
         </Page>
-      </AuthGuard>
+      </AuthGate>
     );
   },
 });

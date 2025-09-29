@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 
 import { ContainerEditor } from "../../component/container/ContainerEditor.tsx";
-import { AuthGuard } from "../../component/auth/AuthGuard.tsx";
+import { AuthGate } from "../../component/auth/AuthGate.tsx";
 import { Page } from "../../component";
 import { ToContainers, ToHome } from "../../component/common/BreadcrumbNav.tsx";
 
@@ -26,10 +26,10 @@ function Component() {
   };
 
   return (
-    <AuthGuard>
+    <AuthGate>
       <Page breadcrumbs={[<ToHome />, <ToContainers />]}>
         <ContainerEditor onClose={handleClose} onCreate={handleCreate} />
       </Page>
-    </AuthGuard>
+    </AuthGate>
   );
 }

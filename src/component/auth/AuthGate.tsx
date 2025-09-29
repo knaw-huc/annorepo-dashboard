@@ -15,7 +15,10 @@ import { fetchValidated } from "./fetchValidated.tsx";
 import { PleaseLogInPage } from "./PleaseLogInPage.tsx";
 import { createOpenApiClient } from "../../client/OpenApiClient.tsx";
 
-export function AuthGuard(props: PropsWithChildren) {
+/**
+ * What to show based on auth state
+ */
+export function AuthGate(props: PropsWithChildren) {
   const config = useConfig();
   const {
     state: { client },

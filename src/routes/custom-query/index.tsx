@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Page } from "../../component";
 import { ToHome } from "../../component/common/BreadcrumbNav.tsx";
-import { AuthGuard } from "../../component/auth/AuthGuard.tsx";
+import { AuthGate } from "../../component/auth/AuthGate.tsx";
 import { CustomQueryIndex } from "../../component/custom-query/CustomQueryIndex.tsx";
 
 export const Route = createFileRoute("/custom-query/")({
@@ -22,7 +22,7 @@ export const Route = createFileRoute("/custom-query/")({
     }
 
     return (
-      <AuthGuard>
+      <AuthGate>
         <Page breadcrumbs={[<ToHome />]}>
           <CustomQueryIndex
             onClickOpenCustomQuery={handleClickOpenCustomQuery}
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/custom-query/")({
             onClickCreateCustomQuery={handleClickNewCustomQuery}
           />
         </Page>
-      </AuthGuard>
+      </AuthGate>
     );
   },
 });
