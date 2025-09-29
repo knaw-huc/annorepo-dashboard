@@ -88,10 +88,6 @@ export function AuthGate(props: PropsWithChildren) {
     checkAbout();
   }, [config.AUTH_HOST, selectedHost, setClient]);
 
-  useEffect(() => {
-    console.log("User changed:", user);
-  }, [user]);
-
   async function getStatus() {
     try {
       const response = await fetch(`${config.AUTH_HOST.proxyUrl}/oidc/status`);

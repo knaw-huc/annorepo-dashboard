@@ -23,6 +23,5 @@ export function toCustomQueryParameters(
     const mapper = findMapperByValueType(subquery.form.valueType);
     result[parameter] = mapper.toParamValue(subquery.form.value);
   }
-  console.log("toCustomQueryParameters", { subqueries, result });
   return result;
 }

@@ -173,7 +173,6 @@ export function AnnotationEditor(props: {
                       setForm((prev) => {
                         const next = { ...prev };
                         const mapped = mapper.toValue(update);
-                        console.log("handleChange", { update, mapped });
                         set(next, configField.path, mapped);
                         return next;
                       })
@@ -184,9 +183,7 @@ export function AnnotationEditor(props: {
                         const next = { ...prev };
                         const updateMapper = findMapperByValue(update.value);
                         set(next, configField.path, update.value);
-                        const type = updateMapper.type;
-                        console.log("handleChange", { update, type });
-                        next.type = type;
+                        next.type = updateMapper.type;
                         return next;
                       })
                     }

@@ -42,7 +42,6 @@ export const createUserSlice: SliceCreator<AuthSlice> = (set) => {
       method: "anonymous",
     },
     setAuthState: (update: Partial<AuthState>) => {
-      console.log("setUserState", update);
       set((prev) => ({ prev, ...update }));
     },
   };

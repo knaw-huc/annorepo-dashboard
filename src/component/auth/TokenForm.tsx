@@ -34,7 +34,6 @@ export function TokenForm() {
         params.request.headers.set("Authorization", `Bearer ${token}`);
       },
     };
-    console.log("addTokenTokenHeader", token);
     client.use(addTokenTokenHeader);
     await queryClient.invalidateQueries({
       predicate: () => true,
