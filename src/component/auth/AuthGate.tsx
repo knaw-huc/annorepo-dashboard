@@ -14,6 +14,7 @@ import { ArAboutData } from "../../model/ArModel.ts";
 import { fetchValidated } from "./fetchValidated.tsx";
 import { PleaseLogInPage } from "./PleaseLogInPage.tsx";
 import { createOpenApiClient } from "../../client/OpenApiClient.tsx";
+import { toErrorMessage } from "../common/toErrorMessage.ts";
 
 /**
  * What to show based on auth state
@@ -50,8 +51,14 @@ export function AuthGate(props: PropsWithChildren) {
     }
     setLoadingAbout(true);
     const checkAbout = async () => {
-      const aboutResponse = await fetchValidated(`${selectedHost}/about`);
-      const about: ArAboutData = await aboutResponse.json();
+      let about: ArAboutData;
+      try {
+        const aboutResponse = await fetchValidated(`${selectedHost}/about`);
+        about = await aboutResponse.json();
+      } catch (error) {
+        setError(`Could not get /about: ${toErrorMessage(error)}`);
+        return;
+      }
       const withAuthentication = about.withAuthentication;
       const authMethodsUpdate: AuthMethod[] = [];
       if (!withAuthentication) {
@@ -120,7 +127,13 @@ export function AuthGate(props: PropsWithChildren) {
     getStatus();
   }, [selectedAuthMethod, isAuthenticating]);
 
-  if (isLoadingAbout) {
+  if (error) {
+    return (
+      <Page>
+        <Warning>{error}</Warning>
+      </Page>
+    );
+  } else if (isLoadingAbout) {
     return (
       <Page>
         <Loading name="login status" />
@@ -130,12 +143,6 @@ export function AuthGate(props: PropsWithChildren) {
     return (
       <Page>
         <Loading name="client" />
-      </Page>
-    );
-  } else if (error) {
-    return (
-      <Page>
-        <Warning>{error}</Warning>
       </Page>
     );
   } else if (isAuthenticating && selectedAuthMethod === "oidc") {
