@@ -20,7 +20,7 @@ import { toErrorMessage } from "../common/toErrorMessage.ts";
  * What to show based on auth state
  */
 export function AuthGate(props: PropsWithChildren) {
-  const config = useConfig();
+  const { AR_HOSTS, AUTH_HOST } = useConfig();
   const {
     state: { client },
     actions: { setClient },
@@ -39,10 +39,13 @@ export function AuthGate(props: PropsWithChildren) {
   const [isLoadingAbout, setLoadingAbout] = useState(false);
 
   useEffect(() => {
+    console.log("Using host", selectedHost);
     if (client) {
       return;
     }
-    setClient(createOpenApiClient(selectedHost));
+    const hostPath = AR_HOSTS[selectedHost];
+    console.log("Creating host", hostPath);
+    setClient(createOpenApiClient(hostPath));
   }, [selectedHost, client]);
 
   useEffect(() => {
@@ -53,7 +56,9 @@ export function AuthGate(props: PropsWithChildren) {
     const checkAbout = async () => {
       let about: ArAboutData;
       try {
-        const aboutResponse = await fetchValidated(`${selectedHost}/about`);
+        const aboutResponse = await fetchValidated(
+          `${AR_HOSTS[selectedHost]}/about`,
+        );
         about = await aboutResponse.json();
       } catch (error) {
         setError(`Could not get /about: ${toErrorMessage(error)}`);
@@ -69,7 +74,7 @@ export function AuthGate(props: PropsWithChildren) {
         return;
       }
       const isOidcEnabled = about.authentication.oidc?.some(
-        (s) => s.serverUrl === config.AUTH_HOST.providerUrl,
+        (s) => s.serverUrl === AUTH_HOST.providerUrl,
       );
       const isBearerTokenEnabled =
         withAuthentication && about.authentication.internal === "api-keys";
@@ -86,11 +91,11 @@ export function AuthGate(props: PropsWithChildren) {
     };
 
     checkAbout();
-  }, [config.AUTH_HOST, selectedHost, setClient]);
+  }, [AUTH_HOST, selectedHost, setClient]);
 
   async function getStatus() {
     try {
-      const response = await fetch(`${config.AUTH_HOST.proxyUrl}/oidc/status`);
+      const response = await fetch(`${AUTH_HOST.proxyUrl}/oidc/status`);
       if (response.ok) {
         const update: Omit<OidcUser, "method"> = await response.json();
         setAuthState({

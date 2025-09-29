@@ -6,14 +6,15 @@ export type FieldConfig = {
   type: AnnotationFieldType;
 };
 
-type HostQueryParam = string;
-type HostUrl = string;
+export type HostQueryParam = string;
+export type HostUrl = string;
+export type HostOptions = Record<HostQueryParam, HostUrl>;
 
 export type Config = {
   /**
    * Configure hosts
    */
-  AR_HOSTS: Record<HostQueryParam, HostUrl>;
+  AR_HOSTS: HostOptions;
   AUTH_HOST: {
     proxyUrl: string;
     providerUrl: string;

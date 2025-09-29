@@ -1,7 +1,8 @@
 import { SliceCreator } from "../query/SliceCreator.ts";
+import { HostQueryParam } from "../../component/Config.ts";
 
 export type HostState = {
-  selectedHost: string;
+  selectedHost: HostQueryParam;
 };
 
 export type HostSlice = HostState & {

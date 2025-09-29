@@ -29,7 +29,6 @@ export function createOpenApiClient(baseUrl: string) {
 
   const client = createClient<paths>({ baseUrl });
   client.use(unencodeCustomQueryParameters, validateResponseStatus);
-
   return client;
 }
 
