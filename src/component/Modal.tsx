@@ -14,7 +14,7 @@ export function Modal(
       <div className="relative bg-white rounded-lg p-6 max-w-md mx-4">
         <div>
           <CloseButton onClick={props.onClose} />
-          {props.children}
+          <div className="mt-2">{props.children}</div>
         </div>
       </div>
     </div>
