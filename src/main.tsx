@@ -11,7 +11,7 @@ import { ConfigProvider } from "./component/ConfigProvider.tsx";
 import { orThrow } from "./util/orThrow.ts";
 import { Config } from "./component/Config.ts";
 import { StrictMode } from "react";
-import { HostStateParam } from "./HostStateParam.tsx";
+import { HostParam } from "./component/host/HostParam.tsx";
 
 // Generate routes from ./src/routes/
 const router = createRouter({ routeTree });
@@ -42,9 +42,9 @@ async function main() {
       <ConfigProvider config={config}>
         <OpenApiClientProvider>
           <QueryClientProvider client={createQueryClient()}>
-            <HostStateParam>
+            <HostParam>
               <RouterProvider router={router} />
-            </HostStateParam>
+            </HostParam>
           </QueryClientProvider>
         </OpenApiClientProvider>
       </ConfigProvider>

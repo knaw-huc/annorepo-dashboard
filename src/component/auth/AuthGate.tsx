@@ -39,12 +39,15 @@ export function AuthGate(props: PropsWithChildren) {
   const [isLoadingAbout, setLoadingAbout] = useState(false);
 
   useEffect(() => {
-    console.log("Using host", selectedHost);
     if (client) {
       return;
     }
     const hostPath = AR_HOSTS[selectedHost];
-    console.log("Creating host", hostPath);
+    console.log("Selected host:", { selectedHost });
+    if (!hostPath) {
+      return;
+    }
+    console.log("Creating host with path:", hostPath);
     setClient(createOpenApiClient(hostPath));
   }, [selectedHost, client]);
 

@@ -7,7 +7,7 @@ import { StatusMessage } from "./common/StatusMessage.tsx";
 import { useAbout } from "../client/endpoint/useAbout.tsx";
 import { Button } from "./common/Button.tsx";
 import { useState } from "react";
-import { SelectAnnorepoHostModal } from "./SelectAnnorepoHostModal.tsx";
+import { SelectHostModal } from "./host/SelectHostModal.tsx";
 import { List } from "./common/icon/List.tsx";
 
 export function AnnoRepoDetail() {
@@ -25,9 +25,7 @@ export function AnnoRepoDetail() {
             Select AnnoRepo Host <List className="ml-1" />
           </Button>
           {isRepoModalOpen && (
-            <SelectAnnorepoHostModal
-              onClose={() => setIsRepoModalOpen(false)}
-            />
+            <SelectHostModal onClose={() => setIsRepoModalOpen(false)} />
           )}
           <div className="grid grid-cols-5 gap-5">
             <Card

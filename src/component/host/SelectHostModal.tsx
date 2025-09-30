@@ -1,29 +1,31 @@
-import { useConfig } from "./ConfigProvider.tsx";
-import { useStore } from "../store/useStore.ts";
-import { Modal } from "./Modal.tsx";
-import { H1 } from "./common/H1.tsx";
+import { useConfig } from "../ConfigProvider.tsx";
+import { useStore } from "../../store/useStore.ts";
+import { Modal } from "../Modal.tsx";
+import { H1 } from "../common/H1.tsx";
+import { setHostParam } from "./util/setHostParam.ts";
+import { entries } from "lodash";
 
-export function SelectAnnorepoHostModal(props: { onClose: () => void }) {
+export function SelectHostModal(props: { onClose: () => void }) {
   const { AR_HOSTS } = useConfig();
-  const { setHostState, selectedHost } = useStore();
-  const handleSelect = (hostKey: string) => {
-    setHostState({ selectedHost: hostKey });
-    props.onClose();
-  };
+  const { selectedHost } = useStore();
 
   return (
     <Modal onClose={props.onClose}>
       <H1>Select AnnoRepo Host</H1>
 
       <div className="space-y-2">
-        {Object.entries(AR_HOSTS).map(([key, url]) => {
+        {entries(AR_HOSTS).map(([key, url]) => {
           const isSelected = key === selectedHost;
           const cleanUrl = url.replace(/^https?:\/\//, "");
 
           return (
             <div
               key={key}
-              onClick={() => !isSelected && handleSelect(key)}
+              onClick={() => {
+                if (!selectedHost) {
+                  setHostParam(key);
+                }
+              }}
               className={`
                 p-3 rounded-lg border-2 transition-all cursor-pointer
                 ${
