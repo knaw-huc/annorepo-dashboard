@@ -15,7 +15,6 @@ RUN npm run build
 
 FROM nginx:stable-alpine-slim
 COPY --from=build /src/dist /usr/share/nginx/html
-COPY docker/webapp.config.json /usr/share/nginx/html
 COPY docker/nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80

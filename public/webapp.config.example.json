@@ -1,0 +1,29 @@
+{
+  "AR_HOSTS": {
+    "my-annorepo": "/api/annorepo"
+  },
+  "AUTH_HOST": {
+    "proxyUrl": "//TODO: make optional",
+    "providerUrl": "//TODO: make optional"
+  },
+  "annotationPreview": {
+    "paths": [],
+    "body": {
+      "paths": ["type"]
+    }
+  },
+  "annotationEditor": {
+    "fields": [
+      {
+        "path": "generated",
+        "label": "Generated",
+        "type": "dateTime"
+      },
+      {
+        "path": "body.type",
+        "label": "Body type",
+        "type": "string"
+      }
+    ]
+  }
+}
