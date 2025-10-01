@@ -29,7 +29,6 @@ export default defineConfig({
         rewrite: (p) => p.replace(/^\/api/, ""),
       },
       "/login": { target: "http://localhost:5000", changeOrigin: true },
-      "/auth": { target: "http://localhost:5000", changeOrigin: true },
     },
   },
 });
