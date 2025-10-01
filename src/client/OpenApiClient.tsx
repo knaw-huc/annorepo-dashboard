@@ -3,14 +3,7 @@ import { paths } from "../openapi.ts";
 import { HttpMethod, PathsWithMethod } from "openapi-typescript-helpers";
 import { decodeCustomQueryParameters } from "./util/decodeCustomQueryParameters.ts";
 
-export function createOpenApiClient(
-  baseUrl: string,
-
-  /**
-   * When using oidc, the auth server handles authentication headers
-   */
-  bearerToken: string | false,
-) {
+export function createOpenApiClient(baseUrl: string) {
   /**
    * Custom query parameters should not be encoded by openapi-fetch
    */
@@ -36,16 +29,6 @@ export function createOpenApiClient(
 
   const client = createClient<paths>({ baseUrl });
   client.use(unencodeCustomQueryParameters, validateResponseStatus);
-
-  if (bearerToken !== false) {
-    const addBearerTokenHeader: Middleware = {
-      async onRequest(params) {
-        params.request.headers.set("Authorization", `Bearer ${bearerToken}`);
-      },
-    };
-    client.use(addBearerTokenHeader);
-  }
-
   return client;
 }
 

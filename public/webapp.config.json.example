@@ -1,21 +1,26 @@
 {
-  "AR_HOST": "/api/annorepo",
-  "AUTH_HOST": "/api/auth"
+  "AR_HOSTS": {
+    "my-annorepo": "/api/annorepo",
+  },
+  "AUTH_HOST": {
+    "loginUrl": "/api/auth",
+    "providerUrl": "http://host.docker.internal:4011"
+  },
   "annotationPreview": {
-      "paths": [
-        "creator",
-        "created",
-        "generator",
-        "generated",
-        "modified",
-        "type"
-      ],
+    "paths": [
+      "creator",
+      "created",
+      "generator",
+      "generated",
+      "modified",
+      "type"
+    ],
       "body": {"paths": ["type"]}
-    },
-    "annotationEditor": {
+  },
+  "annotationEditor": {
       "lifecycle": [
         {"path": "creator", "label": "Creator", "type": "text"},
         {"path": "generated", "label": "Generated", "type": "dateTime"}
-      ]
-    }
+    ]
+  }
 }

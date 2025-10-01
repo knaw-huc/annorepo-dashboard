@@ -47,7 +47,6 @@ export function ComparisonSubqueryEditor(props: ComparisonSubqueryEditorProps) {
       toOperator(update.value) ?? orThrow(`Invalid operator: ${update.value}`);
 
     const formUpdate = alignFormWithOperator(subquery.form, operatorUpdate);
-    console.log("handleSelectOperator", { update, formUpdate });
 
     updateComparisonSubquery({
       path,

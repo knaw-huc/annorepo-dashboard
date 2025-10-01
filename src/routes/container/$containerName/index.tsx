@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { ContainerDetail, Page } from "../../../component";
-import { Login } from "../../../component/login/Login.tsx";
+import { AuthGate } from "../../../component/auth/AuthGate.tsx";
 import {
   ToContainers,
   ToHome,
@@ -35,7 +35,7 @@ function Component() {
   }
 
   return (
-    <Login>
+    <AuthGate>
       <Page breadcrumbs={[<ToHome />, <ToContainers />]}>
         <ContainerDetail
           name={containerName}
@@ -44,6 +44,6 @@ function Component() {
           onSearchAnnotations={handleClickSearchAnnotations}
         />
       </Page>
-    </Login>
+    </AuthGate>
   );
 }

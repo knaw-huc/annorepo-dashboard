@@ -5,9 +5,14 @@ import { A } from "./common/A.tsx";
 import { External } from "./common/icon/External.tsx";
 import { StatusMessage } from "./common/StatusMessage.tsx";
 import { useAbout } from "../client/endpoint/useAbout.tsx";
+import { Button } from "./common/Button.tsx";
+import { useState } from "react";
+import { SelectHostModal } from "./host/SelectHostModal.tsx";
+import { List } from "./common/icon/List.tsx";
 
 export function AnnoRepoDetail() {
   const about = useAbout();
+  const [isRepoModalOpen, setIsRepoModalOpen] = useState(false);
   if (!about.isSuccess) {
     return <StatusMessage name="about" requests={[about]} />;
   }
@@ -16,6 +21,12 @@ export function AnnoRepoDetail() {
       {about ? (
         <>
           <H1>{about.data.appName}</H1>
+          <Button onClick={() => setIsRepoModalOpen(true)} className="mt-2">
+            Select AnnoRepo Host <List className="ml-1" />
+          </Button>
+          {isRepoModalOpen && (
+            <SelectHostModal onClose={() => setIsRepoModalOpen(false)} />
+          )}
           <div className="grid grid-cols-5 gap-5">
             <Card
               header={

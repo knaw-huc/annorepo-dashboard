@@ -11,6 +11,7 @@ import { ConfigProvider } from "./component/ConfigProvider.tsx";
 import { orThrow } from "./util/orThrow.ts";
 import { Config } from "./component/Config.ts";
 import { StrictMode } from "react";
+import { HostParam } from "./component/host/HostParam.tsx";
 
 // Generate routes from ./src/routes/
 const router = createRouter({ routeTree });
@@ -26,7 +27,6 @@ main();
 
 async function main() {
   const config: Config = await requestConfig();
-
   const rootElement = document.getElementById("root");
   if (!rootElement) {
     console.error("No root element found");
@@ -42,7 +42,9 @@ async function main() {
       <ConfigProvider config={config}>
         <OpenApiClientProvider>
           <QueryClientProvider client={createQueryClient()}>
-            <RouterProvider router={router} />
+            <HostParam>
+              <RouterProvider router={router} />
+            </HostParam>
           </QueryClientProvider>
         </OpenApiClientProvider>
       </ConfigProvider>
