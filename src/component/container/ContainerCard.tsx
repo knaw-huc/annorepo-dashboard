@@ -1,11 +1,8 @@
 import { PropsWithChildren } from "react";
-import { Card } from "../common/Card.tsx";
 import { Link } from "@tanstack/react-router";
 import { useContainer } from "../../client/endpoint/useContainer.tsx";
 import { toContainerName } from "../../util/toContainerName.ts";
-import { H5 } from "../common/H5.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-import { ContainerSummary } from "./ContainerSummary.tsx";
 import { UserRole } from "../../model/user/UserRole.tsx";
 
 export function ContainerCard(
@@ -22,17 +19,27 @@ export function ContainerCard(
   }
 
   return (
-    <Card
-      header={
-        <Link
-          to="/container/$containerName"
-          params={{ containerName: toContainerName(container.data.id) }}
-        >
-          <H5>{container.data.label || ""}</H5>
-        </Link>
-      }
+    <Link
+      to="/container/$containerName"
+      params={{ containerName: toContainerName(container.data.id) }}
+      className="rounded no-underline border border-white hover:border-anrep-green-200 transition"
     >
-      <ContainerSummary name={name} role={props.role} className="mb-3" />
-    </Card>
+      <div className="bg-anrep-green-100 p-4 rounded-t">
+        <div className="flex justify-between">
+          <h2 className="text-anrep-green-900">{container.data.label || ""}</h2>
+          <div>
+            <img src="/images/icon-container.png" className="h-4 w-4" alt="" />
+          </div>
+        </div>
+        <div className="text-anrep-green-700 text-sm">{name}</div>
+      </div>
+      <div className="bg-anrep-blue-50 flex justify-between p-4 rounded-b text-anrep-blue-700">
+        <div>Annotations</div>
+        <div className="flex gap-1 items-center">
+          {container.data.total}
+          <img src="/images/icon-annotation.png" className="h-4 w-4" alt="" />
+        </div>
+      </div>
+    </Link>
   );
 }
