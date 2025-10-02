@@ -150,10 +150,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
 
       {/*TODO: Fix column*/}
       <div className="w-full lg:max-w-96 h-full lg:min-h-screen flex flex-col gap-1">
-        <div className="flex flex-col p-8 bg-stone-50 grow mt-40">
-          <h2 className="text-xl mt-4 mb-4">Annotation fields</h2>
-          <ContainerAnnotationFields name={name} />
-        </div>
+        <ContainerAnnotationFields name={name} />
       </div>
     </div>
   );

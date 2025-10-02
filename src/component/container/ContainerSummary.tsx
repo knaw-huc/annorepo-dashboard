@@ -2,7 +2,6 @@ import { useContainer } from "../../client/endpoint/useContainer.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { Pipe } from "../common/Pipe.tsx";
 import { UserRole } from "../../model/user/UserRole.tsx";
-import { startCase } from "lodash";
 
 export function ContainerSummary(props: {
   name: string;
@@ -23,7 +22,7 @@ export function ContainerSummary(props: {
     <div className={className}>
       <span>{name}</span>
       <Pipe />
-      <span>{startCase(`${role.toLowerCase()} role`)}</span>
+      <span>{role.toLowerCase()} role</span>
     </div>
   );
 }
