@@ -1,5 +1,8 @@
 import { PropsWithChildren, useContext, useEffect, useState } from "react";
-import { OpenApiClientContext } from "../../client/OpenApiClientProvider.tsx";
+import {
+  useHasOpenApiClient,
+  OpenApiClientContext,
+} from "../../client/OpenApiClientProvider.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
 import { Loading } from "../common/Loading.tsx";
 import { Warning } from "../common/Warning.tsx";
@@ -22,9 +25,9 @@ import { toErrorMessage } from "../common/toErrorMessage.ts";
 export function AuthGate(props: PropsWithChildren) {
   const { AR_HOSTS, AUTH_HOST } = useConfig();
   const {
-    state: { client },
     actions: { setClient },
   } = useContext(OpenApiClientContext);
+  const hasClient = useHasOpenApiClient();
 
   const {
     user,
@@ -39,7 +42,7 @@ export function AuthGate(props: PropsWithChildren) {
   const [isLoadingAbout, setLoadingAbout] = useState(false);
 
   useEffect(() => {
-    if (client) {
+    if (hasClient) {
       return;
     }
     const hostPath = AR_HOSTS[selectedHost];
@@ -49,7 +52,7 @@ export function AuthGate(props: PropsWithChildren) {
     }
     console.log("Creating host with path:", hostPath);
     setClient(createOpenApiClient(hostPath));
-  }, [selectedHost, client]);
+  }, [selectedHost, hasClient]);
 
   useEffect(() => {
     if (!selectedHost || isLoadingAbout || isAuthenticated(user)) {
@@ -143,7 +146,7 @@ export function AuthGate(props: PropsWithChildren) {
         <Loading name="login status" />
       </Page>
     );
-  } else if (!client) {
+  } else if (!hasClient) {
     return (
       <Page>
         <Loading name="client" />
