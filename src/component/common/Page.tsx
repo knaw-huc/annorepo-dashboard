@@ -1,6 +1,5 @@
 import { PropsWithChildren, ReactNode } from "react";
 import { Menu } from "./Menu.tsx";
-import { Link } from "@tanstack/react-router";
 
 import { BreadcrumbNav, ToHome } from "./BreadcrumbNav.tsx";
 import { AuthStatus } from "../auth/AuthStatus.tsx";
@@ -26,7 +25,7 @@ export function Page(
         </div>
         <div className="order-1 xl:order-none grow">
           <div className="font-bold text-2xl px-0 xl:py-8">
-            <Link to="/">Annorepo Dashboard</Link>
+            Annorepo Dashboard
           </div>
           <Menu />
         </div>
