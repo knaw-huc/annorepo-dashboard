@@ -4,6 +4,8 @@ import { useContainer } from "../../client/endpoint/useContainer.tsx";
 import { toContainerName } from "../../util/toContainerName.ts";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { UserRole } from "../../model/user/UserRole.tsx";
+import { ContainerSummary } from "./ContainerSummary.tsx";
+import { useContainerRole } from "./useContainerRole.tsx";
 
 export function ContainerCard(
   props: PropsWithChildren<{
@@ -13,6 +15,7 @@ export function ContainerCard(
 ) {
   const { name } = props;
   const container = useContainer(name);
+  const role = useContainerRole({ idOrName: name });
 
   if (!container.isSuccess) {
     return <StatusMessage name="container" requests={[container]} />;
@@ -31,7 +34,11 @@ export function ContainerCard(
             <img src="/images/icon-container.png" className="h-4 w-4" alt="" />
           </div>
         </div>
-        <div className="text-anrep-green-700 text-sm">{name}</div>
+        <ContainerSummary
+          name={name}
+          role={role}
+          color="text-anrep-green-700"
+        />
       </div>
       <div className="bg-anrep-blue-50 flex justify-between p-4 rounded-b text-anrep-blue-700">
         <div>Annotations</div>

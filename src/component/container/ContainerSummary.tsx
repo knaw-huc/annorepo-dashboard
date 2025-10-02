@@ -1,42 +1,29 @@
 import { useContainer } from "../../client/endpoint/useContainer.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-import { Badge } from "../common/Badge.tsx";
 import { Pipe } from "../common/Pipe.tsx";
-import { A } from "../common/A.tsx";
-import { External } from "../common/icon/External.tsx";
 import { UserRole } from "../../model/user/UserRole.tsx";
+import { startCase } from "lodash";
 
 export function ContainerSummary(props: {
   name: string;
-  className: string;
+  color?: string;
   role: UserRole;
 }) {
   const { name, role } = props;
   const container = useContainer(name);
 
-  let className = "mt-2 space-y-3";
-  if (props.className) {
-    className += ` ${props.className}`;
-  }
+  let className = "text-sm ";
+  className += " " + (props.color ?? "text-neutral-500");
 
   if (!container.isSuccess) {
     return <StatusMessage name="container" requests={[container]} />;
   }
 
   return (
-    <p className={className}>
-      <span className="capitalize">{role.toLowerCase()} role</span>
+    <div className={className}>
+      <span>{name}</span>
       <Pipe />
-      <span>
-        Annotations: <Badge>{container.data.total}</Badge>
-      </span>
-      <Pipe />
-      <span>
-        <A href={container.data.id}>
-          Source
-          <External className="ml-1" />
-        </A>
-      </span>
-    </p>
+      <span>{startCase(`${role.toLowerCase()} role`)}</span>
+    </div>
   );
 }

@@ -29,3 +29,7 @@ Start: `npm start`
 
 - Keep left bottom about info in screen when page is higher than screen
 - Style Login-, Token- and SelectHostModal
+- Fix columns: move login to 2nd, move annotation fields to 3rd
+- Add warning style to container remove button
+- Move z-index of container icon below modal
+- Add

@@ -1,27 +1,18 @@
-import { H1 } from "../common/H1.tsx";
-import { Hint } from "../common/Hint.tsx";
 import { Loading } from "../common/Loading.tsx";
 import { useContainer } from "../../client/endpoint/useContainer.tsx";
 import { ContainerAnnotationPage } from "./ContainerAnnotationPage.tsx";
 import { ContainerAnnotationFields } from "./ContainerAnnotationFields.tsx";
-import { Button } from "../common/Button.tsx";
 import { useEffect, useState } from "react";
 import { toPageNo } from "../../util/toPageNo.ts";
-import { H2 } from "../common/H2.tsx";
-import { Add } from "../common/icon/Add.tsx";
-import { Search } from "../common/icon/Search.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-
-import { ContainerSummary } from "./ContainerSummary.tsx";
 import { canEdit } from "../../model/user/canEdit.ts";
 import { useContainerRole } from "./useContainerRole.tsx";
-import { ContainerUsers } from "./ContainerUsers.tsx";
-import { isAdmin } from "../../model/user/isAdmin.ts";
-import { Remove } from "../common/icon/Remove.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { Warning } from "../common/Warning.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { keyEquals } from "../../client/query/useGet.tsx";
+import { NeutralButton } from "../auth/NeutralButton.tsx";
+import { ContainerSummary } from "./ContainerSummary.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -42,6 +33,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const role = useContainerRole({ idOrName: name });
   const removeContainer = useDelete("/w3c/{containerName}");
   const queryClient = useQueryClient();
+
   useEffect(() => {
     if (isInit || !container.data) {
       return;
@@ -91,43 +83,78 @@ export function ContainerDetail(props: ContainerDetailProps) {
   }
 
   return (
-    <div>
-      <H1>
-        {container.data.label} <Hint>container</Hint>
-      </H1>
-      {error && <Warning onClose={() => setError("")}>{error}</Warning>}
-      {isAdmin(role) && (
-        <Button onClick={handleRemove} className="mr-2">
-          Delete
-          <Remove className="ml-1" />
-        </Button>
-      )}
-      <ContainerSummary name={name} role={role} className="mt-5" />
-      {isAdmin(role) && <ContainerUsers containerName={name} />}
-      <ContainerAnnotationFields name={props.name} />
-      <H2>Annotations</H2>
-      <div className="mb-3">
-        {canEdit(role) && (
-          <Button onClick={props.onCreateAnnotation} className="mr-2">
-            Add
-            <Add className="ml-1" />
-          </Button>
-        )}
-        <Button onClick={props.onSearchAnnotations}>
-          Search
-          <Search className="ml-1" />
-        </Button>
+    <div className="flex flex-col lg:flex-row">
+      <div className="w-full p-8">
+        <div className="w-full mx-auto max-w-5xl">
+          <div className="flex justify-between w-full my-8 mx-auto max-w-5xl">
+            <div>
+              <h1 className="text-2xl">
+                <img
+                  src="/images/icon-container.png"
+                  className="h-5 w-5 -translate-y-4"
+                  alt=""
+                />{" "}
+                {container.data.label}
+              </h1>
+              <ContainerSummary name={name} role={role} />
+            </div>
+            <div>
+              <NeutralButton
+                onClick={() => window.open(container.data.id, "_blank")}
+              >
+                View source
+              </NeutralButton>
+              <NeutralButton onClick={handleRemove} className="ml-2">
+                Remove
+              </NeutralButton>
+            </div>
+          </div>
+
+          {error && <Warning onClose={() => setError("")}>{error}</Warning>}
+
+          <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 gap-4">
+            <h2 className="text-xl">Annotations</h2>
+            <div className="flex gap-4 items-center justify-between">
+              {canEdit(role) && (
+                <button
+                  className="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
+                  onClick={props.onCreateAnnotation}
+                >
+                  Add annotation
+                </button>
+              )}
+              <div>
+                <input
+                  type="text"
+                  className="border border-neutral-200 p-1 rounded-sm placeholder:italic text-sm max-w-32"
+                  placeholder="Filter"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-3">
+            {pageNo === NO_PAGE ? (
+              <Loading name="annotations" />
+            ) : (
+              <ContainerAnnotationPage
+                containerName={name}
+                pageNo={pageNo}
+                onChangePageNo={handleChangePage}
+                role={role}
+              />
+            )}
+          </div>
+        </div>
       </div>
-      {pageNo === NO_PAGE ? (
-        <Loading name="annotations" />
-      ) : (
-        <ContainerAnnotationPage
-          containerName={name}
-          pageNo={pageNo}
-          onChangePageNo={handleChangePage}
-          role={role}
-        />
-      )}
+
+      {/*TODO: Fix column*/}
+      <div className="w-full lg:max-w-96 h-full lg:min-h-screen flex flex-col gap-1">
+        <div className="flex flex-col p-8 bg-stone-50 grow mt-40">
+          <h2 className="text-xl mt-4 mb-4">Annotation fields</h2>
+          <ContainerAnnotationFields name={name} />
+        </div>
+      </div>
     </div>
   );
 }
