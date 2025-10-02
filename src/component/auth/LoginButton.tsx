@@ -1,7 +1,7 @@
 import { useConfig } from "../ConfigProvider.tsx";
 import { Button } from "../common/Button.tsx";
 
-import { LinkButton } from "./LinkButton.tsx";
+import { NeutralButton } from "./NeutralButton.tsx";
 
 export function LoginButton(props: { asLink?: boolean }) {
   const config = useConfig();
@@ -11,7 +11,7 @@ export function LoginButton(props: { asLink?: boolean }) {
   }
 
   if (props.asLink) {
-    return <LinkButton onClick={handleLogin}>Login</LinkButton>;
+    return <NeutralButton onClick={handleLogin}>Login</NeutralButton>;
   }
   return <Button onClick={handleLogin}>Login</Button>;
 }

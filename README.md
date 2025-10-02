@@ -28,4 +28,4 @@ Start: `npm start`
 ## TODO Integrating-interface-html
 
 - Keep left bottom about info in screen when page is higher than screen
--
+- Style Login-, Token- and SelectHostModal
