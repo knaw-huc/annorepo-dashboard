@@ -59,7 +59,7 @@ export function AnnotationGrid(props: {
   const { items, canEdit } = props;
 
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-3 mt-3">
       {items.map((item) => (
         <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
       ))}

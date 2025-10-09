@@ -1,7 +1,6 @@
 import { useContainerUsers } from "../../client/endpoint/useContainerUsers.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { H2 } from "../common/H2.tsx";
-import { Badge } from "../common/Badge.tsx";
 import { Button } from "../common/Button.tsx";
 import { Add } from "../common/icon/Add.tsx";
 import { useState } from "react";
@@ -14,6 +13,7 @@ import { Warning } from "../common/Warning.tsx";
 import { AddUserModal } from "./AddUserModal.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { Close } from "../common/icon/Close.tsx";
+import { Badge } from "../annotation/Badge.tsx";
 
 export function ContainerUsers(props: { containerName: string }) {
   const { containerName } = props;
@@ -88,15 +88,17 @@ export function ContainerUsers(props: { containerName: string }) {
 
       <div>
         {containerUsers.data.map((u) => (
-          <Badge key={u.userName} className="mr-2 mt-3">
-            {u.userName} ({u.role.toLowerCase()})
-            <span
-              className="cursor-pointer ml-2 vertical-align-middle text-slate-400 hover:text-slate-900"
-              onClick={() => handleClickRemoveUser(u.userName)}
-            >
-              <Close className="align-top" />
-            </span>
-          </Badge>
+          <Badge
+            key={u.userName}
+            label={
+              <>
+                {u.userName} ({u.role.toLowerCase()})
+                <span onClick={() => handleClickRemoveUser(u.userName)}>
+                  <Close className="align-top" />
+                </span>
+              </>
+            }
+          />
         ))}
       </div>
       {showAddUserModal && (

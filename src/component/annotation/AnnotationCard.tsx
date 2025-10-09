@@ -12,7 +12,6 @@ import { useState } from "react";
 import { Down } from "../common/icon/Down.tsx";
 import { Next } from "../common/icon/Next.tsx";
 import { get, isObject } from "lodash";
-import { Badge } from "../common/Badge.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
 import { Remove } from "../common/icon/Remove.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
@@ -24,6 +23,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Checkbox } from "../common/Checkbox.tsx";
 import { useStore } from "../../store/useStore.ts";
 import { orThrow } from "../../util/orThrow.ts";
+import { Badge } from "./Badge.tsx";
 
 type PathValue = { path: string; value: string };
 
@@ -99,27 +99,8 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
             <Pipe />
             {annotation.type}
           </H5>
-          <div className="mt-2 flex items-center gap-x-3">
-            {canSelect && (
-              <Checkbox
-                isSelected={isSelected}
-                onToggle={() => {
-                  const update = isSelected
-                    ? selectedAnnotationIds.filter((sa) => sa !== id)
-                    : [...selectedAnnotationIds, id];
-                  setSelectedAnnotationsState({
-                    selectedAnnotationIds: update,
-                  });
-                }}
-                className="hover:text-inherit hover:cursor-pointer text-sky-800"
-              />
-            )}
-            <span
-              onClick={handleDelete}
-              className="hover:text-inherit hover:cursor-pointer text-sky-800"
-            >
-              <Remove />
-            </span>
+          <div className="p-4">
+            <img src="/images/icon-annotation.png" className="h-4 w-4" alt="" />
           </div>
         </div>
       }
@@ -141,30 +122,28 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
         </>
       }
     >
-      <p className="-ml-1 mt-3">
-        <>
-          {previewProps
-            .filter((p) => p.value)
-            .map((p, i) => (
-              <Badge className="mr-2" key={i}>
-                {p.path.replace(".", " ")}: &nbsp;
-                <strong>
-                  {isObject(p.value) ? JSON.stringify(p.value) : p.value}
-                </strong>
-              </Badge>
-            ))}
-          {bodyPreviewProps
-            .filter((p) => p.value)
-            .map((p, i) => (
-              <Badge className="mr-2" key={i}>
-                body {p.path.replace(".", " ")}: &nbsp;
-                <strong>
-                  {isObject(p.value) ? JSON.stringify(p.value) : p.value}
-                </strong>
-              </Badge>
-            ))}
-        </>
-      </p>
+      <div className="flex flex-wrap gap-4">
+        {previewProps
+          .filter((p) => p.value)
+          .map((p, i) => (
+            <Badge
+              key={i}
+              label={p.path.replace(".", " ")}
+              value={isObject(p.value) ? JSON.stringify(p.value) : p.value}
+            />
+          ))}
+        {bodyPreviewProps
+          .filter((p) => p.value)
+          .map((p, i) => (
+            <Badge
+              key={i}
+              label={p.path.replace(".", " ")}
+              value={
+                typeof p.value === "object" ? JSON.stringify(p.value) : p.value
+              }
+            />
+          ))}
+      </div>
       <Hr size="sm" />
       <H6
         className="cursor-pointer select-none"
@@ -183,6 +162,28 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
       {isTargetOpen && annotation.target && !isUrl(annotation.target) && (
         <ReactJsonView src={annotation.target as object} name={null} />
       )}
+      <div>
+        {canSelect && (
+          <Checkbox
+            isSelected={isSelected}
+            onToggle={() => {
+              const update = isSelected
+                ? selectedAnnotationIds.filter((sa) => sa !== id)
+                : [...selectedAnnotationIds, id];
+              setSelectedAnnotationsState({
+                selectedAnnotationIds: update,
+              });
+            }}
+            className="hover:text-inherit hover:cursor-pointer text-sky-800"
+          />
+        )}
+        <span
+          onClick={handleDelete}
+          className="hover:text-inherit hover:cursor-pointer text-sky-800"
+        >
+          <Remove />
+        </span>
+      </div>
     </Card>
   );
 }

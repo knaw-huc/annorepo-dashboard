@@ -25,7 +25,7 @@ npm install
 
 Start: `npm start`
 
-## TODO Integrating-interface-html
+## TODO Integrating interface-html
 
 - Keep left bottom about info in screen when page is higher than screen
 - Style Login-, Token- and SelectHostModal
@@ -34,3 +34,4 @@ Start: `npm start`
 - Move z-index of container icon below modal
 - Style container role
 - Select multiple annotations, delete all
+- Pagination
