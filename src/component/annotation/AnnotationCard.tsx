@@ -102,11 +102,6 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
       }
       footer={
         <div className="flex gap-4">
-          <AnnotationButton
-            onClick={() => window.open(annotation.id, "_blank")}
-          >
-            View source <External className="ml-1" />
-          </AnnotationButton>
           <AnnotationButton onClick={() => setBodyOpen((prev) => !prev)}>
             View body
           </AnnotationButton>
@@ -118,6 +113,11 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
             }
           >
             View target <External className="ml-1" />
+          </AnnotationButton>
+          <AnnotationButton
+            onClick={() => window.open(annotation.id, "_blank")}
+          >
+            View source <External className="ml-1" />
           </AnnotationButton>
           <AnnotationButton onClick={handleDelete}>Remove</AnnotationButton>
         </div>
@@ -145,9 +145,15 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
             />
           ))}
       </div>
-      {isBodyOpen && <ReactJsonView src={annotation.body} name={null} />}
+      {isBodyOpen && (
+        <div className="mt-4">
+          <ReactJsonView src={annotation.body} name={null} />
+        </div>
+      )}
       {isTargetOpen && annotation.target && !isUrl(annotation.target) && (
-        <ReactJsonView src={annotation.target as object} name={null} />
+        <div className="mt-4">
+          <ReactJsonView src={annotation.target as object} name={null} />
+        </div>
       )}
       <div>
         {canSelect && (
