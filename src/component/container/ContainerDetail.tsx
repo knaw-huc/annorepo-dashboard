@@ -90,70 +90,66 @@ export function ContainerDetail(props: ContainerDetailProps) {
   }
 
   return (
-    <div className="flex flex-col lg:flex-row">
-      <div className="w-full p-8">
-        <div className="w-full mx-auto max-w-5xl">
-          <div className="flex justify-between w-full my-8 mx-auto max-w-5xl">
-            <div>
-              <h1 className="text-2xl">
-                <img
-                  src="/images/icon-container.png"
-                  className="h-5 w-5 -translate-y-4"
-                  alt=""
-                />{" "}
-                {container.data.label}
-              </h1>
-              <ContainerSummary name={name} role={role} />
-            </div>
-            <div>
-              <NeutralButton
-                onClick={() => window.open(container.data.id, "_blank")}
-              >
-                View source
-              </NeutralButton>
-              <NeutralButton onClick={handleRemove} className="ml-2">
-                Remove
-              </NeutralButton>
-            </div>
-          </div>
+    <>
+      <div className="flex justify-between w-full my-8 mx-auto max-w-5xl">
+        <div>
+          <h1 className="text-2xl">
+            <img
+              src="/images/icon-container.png"
+              className="h-5 w-5 -translate-y-4"
+              alt=""
+            />{" "}
+            {container.data.label}
+          </h1>
+          <ContainerSummary name={name} role={role} />
+        </div>
+        <div>
+          <NeutralButton
+            onClick={() => window.open(container.data.id, "_blank")}
+          >
+            View source
+          </NeutralButton>
+          <NeutralButton onClick={handleRemove} className="ml-2">
+            Remove
+          </NeutralButton>
+        </div>
+      </div>
 
-          {error && <Warning onClose={() => setError("")}>{error}</Warning>}
+      {error && <Warning onClose={() => setError("")}>{error}</Warning>}
 
-          <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 gap-4">
-            <h2 className="text-xl">Annotations</h2>
-            <div className="flex gap-4 items-center justify-between">
-              {canEdit(role) && (
-                <button
-                  className="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
-                  onClick={props.onCreateAnnotation}
-                >
-                  Add annotation
-                </button>
-              )}
-              <div>
-                <input
-                  type="text"
-                  className="border border-neutral-200 p-1 rounded-sm placeholder:italic text-sm max-w-32"
-                  placeholder="Filter"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            {pageNo === NO_PAGE ? (
-              <Loading name="annotations" />
-            ) : (
-              <ContainerAnnotationPage
-                containerName={name}
-                pageNo={pageNo}
-                onChangePageNo={handleChangePage}
-                role={role}
-              />
-            )}
+      <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 gap-4">
+        <h2 className="text-xl">Annotations</h2>
+        <div className="flex gap-4 items-center justify-between">
+          {canEdit(role) && (
+            <button
+              className="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
+              onClick={props.onCreateAnnotation}
+            >
+              Add annotation
+            </button>
+          )}
+          <div>
+            <input
+              type="text"
+              className="border border-neutral-200 p-1 rounded-sm placeholder:italic text-sm max-w-32"
+              placeholder="Filter"
+            />
           </div>
         </div>
       </div>
-    </div>
+
+      <div className="flex flex-col gap-3">
+        {pageNo === NO_PAGE ? (
+          <Loading name="annotations" />
+        ) : (
+          <ContainerAnnotationPage
+            containerName={name}
+            pageNo={pageNo}
+            onChangePageNo={handleChangePage}
+            role={role}
+          />
+        )}
+      </div>
+    </>
   );
 }

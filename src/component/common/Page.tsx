@@ -36,10 +36,10 @@ export function Page(
           {hasClient && <AboutStatus />}
         </aside>
         <main className="w-full">
-          <div className="flex">
+          <div className="flex flex-col lg:flex-row">
             <div className="w-full p-8">
               <div
-                className={`w-full mx-auto ${secondColumn ? "max-w-5xl" : "w-full mx-auto max-w-7xl"}`}
+                className={`w-full mx-auto ${secondColumn ? "max-w-5xl" : "max-w-7xl"}`}
               >
                 <div className="flex justify-between text-sm text-neutral-500">
                   <BreadcrumbNav
