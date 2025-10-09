@@ -20,7 +20,7 @@ export function AuthStatusBadge(props: { openLogin: () => void }) {
           <LogoutButton />
         </>
       )}
-      {isTokenUser(user) && <span>Using token</span>}
+      {isTokenUser(user) && <span>Logged in using token</span>}
       {isAnonymousUser(user) && (
         <>
           Not logged in

@@ -36,7 +36,7 @@ export function Page(
           {hasClient && <AboutStatus />}
         </aside>
         <main className="w-full">
-          <div className="flex flex-col lg:flex-row">
+          <div className="flex">
             <div className="w-full p-8">
               <div
                 className={`w-full mx-auto ${secondColumn ? "max-w-5xl" : "max-w-7xl"}`}
@@ -52,9 +52,11 @@ export function Page(
                 {props.children}
               </div>
             </div>
-            <div className="w-full lg:max-w-96  h-full lg:min-h-screen flex flex-col gap-1">
-              {secondColumn}
-            </div>
+            {secondColumn && (
+              <div className="w-full lg:max-w-96  h-full lg:min-h-screen flex flex-col gap-1">
+                {secondColumn}
+              </div>
+            )}
           </div>
         </main>
       </div>
