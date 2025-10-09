@@ -12,10 +12,8 @@ export function Modal(
       style={{ background: "rgba(0, 0, 0, 0.5)" }}
     >
       <div className="relative bg-white rounded-lg p-6 max-w-md mx-4">
-        <div>
-          <CloseButton onClick={props.onClose} />
-          <div className="mt-2">{props.children}</div>
-        </div>
+        <CloseButton onClick={props.onClose} />
+        <div className="mt-2">{props.children}</div>
       </div>
     </div>
   );

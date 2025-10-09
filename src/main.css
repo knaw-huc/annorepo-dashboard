@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -1826,10 +1828,9 @@
     grid-template-columns: auto auto 50px;
   }
   .grid-cols-\[minmax\(1rem\,auto\)_repeat\(9\,minmax\(fr\,50px\)\)_minmax\(1rem\,auto\)\] {
-    grid-template-columns: minmax(1rem, auto) repeat(
-        9,
-        minmax(fr, 50px)
-      ) minmax(1rem, auto);
+    grid-template-columns:
+      minmax(1rem, auto) repeat(9, minmax(fr, 50px))
+      minmax(1rem, auto);
   }
   .grid-cols-subgrid {
     grid-template-columns: subgrid;

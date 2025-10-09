@@ -6,13 +6,16 @@ export function NeutralButton(
     className?: string;
   }>,
 ) {
+  let className =
+    "text-neutral-800 hover:bg-neutral-50 hover:border-neutral-400 border-neutral-200 bg-neutral-100";
+  if (props.className) {
+    className += ` ${props.className}`;
+  }
+
   return (
-    <button
-      onClick={props.onClick}
-      className="text-neutral-800 hover:bg-neutral-50 hover:border-neutral-400 border-neutral-200 bg-neutral-100"
-    >
+    <Button onClick={props.onClick} className={className}>
       {props.children}
-    </button>
+    </Button>
   );
 }
 
