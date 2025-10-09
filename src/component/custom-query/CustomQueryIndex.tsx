@@ -1,6 +1,6 @@
 import { H1 } from "../common/H1.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { Add } from "../common/icon/Add.tsx";
 import { useGet } from "../../client/query/useGet.tsx";
 import { ArCustomQueryResult } from "../../model/ArModel.ts";
@@ -22,10 +22,13 @@ export function CustomQueryIndex(props: {
   return (
     <div>
       <H1>Custom queries</H1>
-      <Button onClick={props.onClickCreateCustomQuery} className="mt-2">
+      <DeprecatedButton
+        onClick={props.onClickCreateCustomQuery}
+        className="mt-2"
+      >
         Add
         <Add className="ml-1" />
-      </Button>
+      </DeprecatedButton>
       <div className="grid grid-cols-3 gap-5">
         {customQueries.data.map((query, i) => (
           <CustomQueryCard

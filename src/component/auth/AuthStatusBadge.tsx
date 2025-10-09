@@ -4,7 +4,7 @@ import {
   isOidcUser,
   isTokenUser,
 } from "../../model/user/User.ts";
-import { NeutralButton } from "./NeutralButton.tsx";
+import { NeutralButton } from "../common/Button.tsx";
 import { LogoutButton } from "./LogoutButton.tsx";
 
 export function AuthStatusBadge(props: { openLogin: () => void }) {

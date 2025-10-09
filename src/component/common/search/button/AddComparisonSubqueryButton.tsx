@@ -1,4 +1,4 @@
-import { Button } from "../../Button.tsx";
+import { DeprecatedButton } from "../../DeprecatedButton.tsx";
 import { Add } from "../../icon/Add.tsx";
 import { defaultQuery } from "../../../../model/query/defaultQuery.ts";
 import { toComparisonForm } from "../../../../store/query/util/toComparisonForm.ts";
@@ -29,7 +29,7 @@ export function AddComparisonSubqueryButton(props: {
   };
 
   return (
-    <Button
+    <DeprecatedButton
       type="button"
       className={`h-full border-b-2 ${props.className}`}
       onClick={addComparisonSubquery}
@@ -38,6 +38,6 @@ export function AddComparisonSubqueryButton(props: {
     >
       <Add className="mr-2" />
       Add subquery
-    </Button>
+    </DeprecatedButton>
   );
 }

@@ -1,4 +1,4 @@
-import { Button } from "../../Button.tsx";
+import { DeprecatedButton } from "../../DeprecatedButton.tsx";
 import { Add } from "../../icon/Add.tsx";
 import { PropertyName } from "lodash";
 import { LogicalOperator } from "../../../../model/query/operator/Operator.ts";
@@ -25,7 +25,7 @@ export function AddLogicalSubqueryButton(props: {
   };
 
   return (
-    <Button
+    <DeprecatedButton
       type="button"
       className={`h-full border-b-2 ${props.className}`}
       onClick={addOrSubquery}
@@ -34,6 +34,6 @@ export function AddLogicalSubqueryButton(props: {
     >
       <Add className="mr-2" />
       Add <code>{operator.toUpperCase()}</code>
-    </Button>
+    </DeprecatedButton>
   );
 }

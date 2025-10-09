@@ -1,6 +1,6 @@
 import { useStore } from "../../../store/useStore.ts";
 import { getLogicalSubquery } from "../../../store/query/util/path/getLogicalSubquery.ts";
-import { Button } from "../Button.tsx";
+import { DeprecatedButton } from "../DeprecatedButton.tsx";
 import { Remove } from "../icon/Remove.tsx";
 import { Warning } from "../Warning.tsx";
 
@@ -48,9 +48,9 @@ export function LogicalSubqueryEditor<T extends WithPath>(
           operator={LogicalOperator.or}
           className="ml-3"
         />
-        <Button onClick={handleRemove} secondary className="ml-3">
+        <DeprecatedButton onClick={handleRemove} secondary className="ml-3">
           <Remove />
-        </Button>
+        </DeprecatedButton>
       </div>
       {subquery.queryError && <Warning>{subquery.queryError}</Warning>}
       <div>

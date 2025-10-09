@@ -1,7 +1,7 @@
 import { useContainerUsers } from "../../client/endpoint/useContainerUsers.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { H2 } from "../common/H2.tsx";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { Add } from "../common/icon/Add.tsx";
 import { useState } from "react";
 import { MR } from "../../client/query/MR.tsx";
@@ -81,10 +81,10 @@ export function ContainerUsers(props: { containerName: string }) {
     <div>
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
       <H2>Users</H2>
-      <Button onClick={handleAddUser} className="mr-2">
+      <DeprecatedButton onClick={handleAddUser} className="mr-2">
         Add
         <Add className="ml-1" />
-      </Button>
+      </DeprecatedButton>
 
       <div>
         {containerUsers.data.map((u) => (

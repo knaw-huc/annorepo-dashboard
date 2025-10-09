@@ -11,7 +11,7 @@ import { useDelete } from "../../client/query/useDelete.tsx";
 import { Warning } from "../common/Warning.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { keyEquals } from "../../client/query/useGet.tsx";
-import { NeutralButton } from "../auth/NeutralButton.tsx";
+import { NeutralButton } from "../common/Button.tsx";
 import { ContainerSummary } from "./ContainerSummary.tsx";
 import { usePageLayout } from "../common/PageLayoutContext.tsx";
 

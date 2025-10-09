@@ -3,7 +3,7 @@ import { orThrow } from "../../../util/orThrow.ts";
 import { SelectOption, toOption } from "../form/SelectOption.tsx";
 import { QueryValueInput } from "./QueryValueInput.tsx";
 import { QueryFieldInput } from "./QueryFieldInput.tsx";
-import { Button } from "../Button.tsx";
+import { DeprecatedButton } from "../DeprecatedButton.tsx";
 import { Remove } from "../icon/Remove.tsx";
 import { useStore } from "../../../store/useStore.ts";
 import { useValueSuggestions } from "./useValueSuggestions.tsx";
@@ -115,14 +115,14 @@ export function ComparisonSubqueryEditor(props: ComparisonSubqueryEditorProps) {
 
           {!disabled && (
             <div className="flex-none">
-              <Button
+              <DeprecatedButton
                 type="button"
                 className="pl-3 h-full"
                 onClick={handleRemoveSubQuery}
                 secondary
               >
                 <Remove className="ml-1" />
-              </Button>
+              </DeprecatedButton>
             </div>
           )}
         </div>

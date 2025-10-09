@@ -8,7 +8,7 @@ import {
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { useEffect, useState } from "react";
 import { toCustomQueryParameters } from "./util/toCustomQueryParameters.ts";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { Next } from "../common/icon/Next.tsx";
 import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 import { toPageNo } from "../../util/toPageNo.ts";
@@ -114,10 +114,10 @@ export function CustomQueryDetail(props: {
         {customQueryName} <Hint>Custom query</Hint>
       </H1>
       {canDelete && (
-        <Button onClick={handleRemove} className="mr-2">
+        <DeprecatedButton onClick={handleRemove} className="mr-2">
           Delete
           <Remove className="ml-1" />
-        </Button>
+        </DeprecatedButton>
       )}
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
       <p className="text-sm mt-5 mb-3">
@@ -149,14 +149,14 @@ export function CustomQueryDetail(props: {
           selected={containerName}
           onSelect={setContainerName}
         />
-        <Button
+        <DeprecatedButton
           onClick={handleSearch}
           className="pl-5"
           disabled={hasErrors(subqueries) || !containerName}
         >
           Search
           <Next className="ml-2" />
-        </Button>
+        </DeprecatedButton>
       </div>
       {customQueryCall.isError && (
         <StatusMessage name="custom query call" requests={[customQueryCall]} />

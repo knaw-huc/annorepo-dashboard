@@ -1,4 +1,4 @@
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { useStore } from "../../store/useStore.ts";
 import { useDeleteMultiple } from "../../client/query/useDeleteMultiple.tsx";
@@ -73,7 +73,7 @@ export function DeleteSelected() {
   }
 
   return (
-    <Button
+    <DeprecatedButton
       secondary
       className="ml-2"
       disabled={!selectedAnnotations.length}
@@ -85,7 +85,7 @@ export function DeleteSelected() {
       ) : (
         ""
       )}
-    </Button>
+    </DeprecatedButton>
   );
 }
 

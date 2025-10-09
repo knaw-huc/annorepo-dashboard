@@ -1,6 +1,6 @@
 import { useStore } from "../../store/useStore.ts";
 import { Modal } from "../Modal.tsx";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 
 export function LoginModal(props: { onClose: () => void }) {
   const { authMethods, setAuthState } = useStore();
@@ -8,7 +8,7 @@ export function LoginModal(props: { onClose: () => void }) {
     <Modal onClose={props.onClose}>
       <div>
         {authMethods.includes("oidc") && (
-          <Button
+          <DeprecatedButton
             onClick={() => {
               setAuthState({
                 isAuthenticating: true,
@@ -18,10 +18,10 @@ export function LoginModal(props: { onClose: () => void }) {
             }}
           >
             Oidc
-          </Button>
+          </DeprecatedButton>
         )}
         {authMethods.includes("token") && (
-          <Button
+          <DeprecatedButton
             className="ml-5"
             onClick={() => {
               setAuthState({
@@ -32,9 +32,9 @@ export function LoginModal(props: { onClose: () => void }) {
             }}
           >
             Token
-          </Button>
+          </DeprecatedButton>
         )}
-        <Button
+        <DeprecatedButton
           className="ml-5"
           onClick={() => {
             setAuthState({ selectedAuthMethod: "anonymous" });
@@ -42,7 +42,7 @@ export function LoginModal(props: { onClose: () => void }) {
           }}
         >
           Cancel
-        </Button>
+        </DeprecatedButton>
       </div>
     </Modal>
   );

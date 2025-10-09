@@ -4,7 +4,7 @@ import { CloseButton } from "./CloseButton.tsx";
 import { H2 } from "../common/H2.tsx";
 import { InputWithLabel } from "../common/form/InputWithLabel.tsx";
 import { DropdownSelector } from "../common/form/DropdownSelector.tsx";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 
 export function AddUserModal(props: {
   onClose: () => void;
@@ -33,13 +33,13 @@ export function AddUserModal(props: {
             options={roleOptions}
             onSelect={(update) => setRole(update.value)}
           />
-          <Button
+          <DeprecatedButton
             onClick={() => props.onAdd(userName, role)}
             className="mt-3"
             disabled={!userName}
           >
             Add to container
-          </Button>
+          </DeprecatedButton>
         </div>
       </div>
     </div>

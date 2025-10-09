@@ -16,7 +16,7 @@ import { useStore } from "../../store/useStore.ts";
 import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { AddComparisonSubqueryButton } from "../common/search/button/AddComparisonSubqueryButton.tsx";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { Store } from "../common/icon/Store.tsx";
 import { Next } from "../common/icon/Next.tsx";
 import { QR } from "../../client/query/QR.tsx";
@@ -76,7 +76,7 @@ export function NewCustomQueryPreviewEditor(props: {
         />
         <SearchButton onClick={handleSubmit} disabled={isSearchDisabled} />
         {containerName && (
-          <Button
+          <DeprecatedButton
             secondary
             className="ml-3"
             onClick={props.onSave}
@@ -84,7 +84,7 @@ export function NewCustomQueryPreviewEditor(props: {
           >
             <Store className="mr-2" />
             Store as custom query <Next className="mr-2" />
-          </Button>
+          </DeprecatedButton>
         )}
       </div>
 

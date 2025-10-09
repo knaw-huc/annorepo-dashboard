@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { H1 } from "../common/H1.tsx";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { NewCustomQueryPreviewEditor } from "./NewCustomQueryPreviewEditor.tsx";
 import { ArCustomQueryForm } from "../../model/ArModel.ts";
 import { usePost } from "../../client/query/usePost.tsx";
@@ -83,14 +83,14 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
       )}
       <div className="">
         {mode === "create-custom-query" && (
-          <Button
+          <DeprecatedButton
             onClick={() => setMode("create-global-query")}
             secondary
             className="pr-5"
           >
             <Back className="mr-2" />
             Edit query
-          </Button>
+          </DeprecatedButton>
         )}
       </div>
       {mode === "create-global-query" && (
@@ -110,14 +110,14 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
             onMetadataError={() => setMetadataError(true)}
             onClearMetadataError={() => setMetadataError(false)}
           />
-          <Button
+          <DeprecatedButton
             onClick={handleSubmitSave}
             className="ml-3 pl-5"
             disabled={hasMetadataError}
           >
             Save
             <Next className="ml-2" />
-          </Button>
+          </DeprecatedButton>
         </>
       )}
     </>

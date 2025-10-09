@@ -5,7 +5,7 @@ import { A } from "./common/A.tsx";
 import { External } from "./common/icon/External.tsx";
 import { StatusMessage } from "./common/StatusMessage.tsx";
 import { useAbout } from "../client/endpoint/useAbout.tsx";
-import { Button } from "./common/Button.tsx";
+import { DeprecatedButton } from "./common/DeprecatedButton.tsx";
 import { useState } from "react";
 import { SelectHostModal } from "./host/SelectHostModal.tsx";
 import { List } from "./common/icon/List.tsx";
@@ -21,9 +21,12 @@ export function AnnoRepoDetail() {
       {about ? (
         <>
           <H1>{about.data.appName}</H1>
-          <Button onClick={() => setIsRepoModalOpen(true)} className="mt-2">
+          <DeprecatedButton
+            onClick={() => setIsRepoModalOpen(true)}
+            className="mt-2"
+          >
             Select AnnoRepo Host <List className="ml-1" />
-          </Button>
+          </DeprecatedButton>
           {isRepoModalOpen && (
             <SelectHostModal onClose={() => setIsRepoModalOpen(false)} />
           )}

@@ -4,7 +4,7 @@ import { toContainerName } from "../../util/toContainerName.ts";
 import isNil from "lodash/isNil";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { getRolesByName } from "./getRolesByName.ts";
-import { NeutralButton } from "../auth/NeutralButton.tsx";
+import { NeutralButton } from "../common/Button.tsx";
 
 export function ContainerIndex(props: { onClickCreateContainer: () => void }) {
   const { myContainers, details } = useMyContainerDetails();

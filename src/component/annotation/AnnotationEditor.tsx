@@ -2,7 +2,7 @@ import { InputWithLabel } from "../common/form/InputWithLabel.tsx";
 import noop from "lodash/noop";
 import { usePost } from "../../client/query/usePost.tsx";
 import { H1 } from "../common/H1.tsx";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { ArAnnotation } from "../../model/ArModel.ts";
 import { toContainerName } from "../../util/toContainerName.ts";
 import { useState } from "react";
@@ -195,15 +195,17 @@ export function AnnotationEditor(props: {
               })}
 
               <div className="mt-5">
-                <Button
+                <DeprecatedButton
                   disabled={!!bodyError}
                   onClick={handleSubmit}
                   className="mr-5"
                 >
                   Create
-                </Button>
+                </DeprecatedButton>
 
-                <Button onClick={props.onClose}>Close</Button>
+                <DeprecatedButton onClick={props.onClose}>
+                  Close
+                </DeprecatedButton>
               </div>
             </div>
 

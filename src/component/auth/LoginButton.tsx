@@ -1,7 +1,7 @@
 import { useConfig } from "../ConfigProvider.tsx";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 
-import { NeutralButton } from "./NeutralButton.tsx";
+import { NeutralButton } from "../common/Button.tsx";
 
 export function LoginButton(props: { asLink?: boolean }) {
   const config = useConfig();
@@ -13,5 +13,5 @@ export function LoginButton(props: { asLink?: boolean }) {
   if (props.asLink) {
     return <NeutralButton onClick={handleLogin}>Login</NeutralButton>;
   }
-  return <Button onClick={handleLogin}>Login</Button>;
+  return <DeprecatedButton onClick={handleLogin}>Login</DeprecatedButton>;
 }

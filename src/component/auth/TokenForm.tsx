@@ -4,7 +4,7 @@ import { useOpenApiClient } from "../../client/OpenApiClientProvider.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { Middleware } from "openapi-fetch";
 import { InputWithLabel } from "../common/form/InputWithLabel.tsx";
-import { Button } from "../common/Button.tsx";
+import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 
 export function TokenForm() {
   const { setAuthState, user } = useStore();
@@ -50,7 +50,7 @@ export function TokenForm() {
         errorLabel={error}
         type="password"
       />
-      <Button onClick={handleSettingApiKey}>Set</Button>
+      <DeprecatedButton onClick={handleSettingApiKey}>Set</DeprecatedButton>
     </div>
   );
 }
