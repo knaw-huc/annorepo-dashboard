@@ -38,11 +38,13 @@ function Component() {
     <AuthGate>
       <Page breadcrumbs={[<ToHome />, <ToContainers />]}>
         <ContainerDetail
+          key="column1"
           name={containerName}
           onClose={handleClose}
           onCreateAnnotation={handleClickAnnotationEditor}
           onSearchAnnotations={handleClickSearchAnnotations}
         />
+        ,
       </Page>
     </AuthGate>
   );

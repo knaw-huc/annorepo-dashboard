@@ -13,6 +13,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { keyEquals } from "../../client/query/useGet.tsx";
 import { NeutralButton } from "../auth/NeutralButton.tsx";
 import { ContainerSummary } from "./ContainerSummary.tsx";
+import { usePageLayout } from "../common/PageLayoutContext.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -33,6 +34,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const role = useContainerRole({ idOrName: name });
   const removeContainer = useDelete("/w3c/{containerName}");
   const queryClient = useQueryClient();
+  const { setSecondColumn } = usePageLayout();
 
   useEffect(() => {
     if (isInit || !container.data) {
@@ -42,6 +44,11 @@ export function ContainerDetail(props: ContainerDetailProps) {
     const containerPageId = container.data.first.id;
     setPageNo(toPageNo(containerPageId));
   }, [container, setInit]);
+
+  useEffect(() => {
+    setSecondColumn(<ContainerAnnotationFields name={name} />);
+    return () => setSecondColumn(null);
+  }, [name, setSecondColumn]);
 
   const handleChangePage = (update: number) => {
     setPageNo(update);
@@ -146,11 +153,6 @@ export function ContainerDetail(props: ContainerDetailProps) {
             )}
           </div>
         </div>
-      </div>
-
-      {/*TODO: Fix column*/}
-      <div className="w-full lg:max-w-96 h-full lg:min-h-screen flex flex-col gap-1">
-        <ContainerAnnotationFields name={name} />
       </div>
     </div>
   );
