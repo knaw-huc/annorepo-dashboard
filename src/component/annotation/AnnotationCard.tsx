@@ -91,8 +91,9 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
 
   return (
     <Card
+      className="bg-anrep-blue-50 text-anrep-blue-800"
       header={
-        <div className="flex items-start justify-between">
+        <div className="flex justify-between items-center border-b border-anrep-blue-100">
           <H5>
             {name}
             <Pipe />

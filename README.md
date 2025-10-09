@@ -33,3 +33,4 @@ Start: `npm start`
 - Add warning style to container remove button
 - Move z-index of container icon below modal
 - Style container role
+- Select multiple annotations, delete all

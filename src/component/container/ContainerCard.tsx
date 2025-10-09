@@ -1,9 +1,9 @@
 import { PropsWithChildren } from "react";
 import { Link } from "@tanstack/react-router";
 import { useContainer } from "../../client/endpoint/useContainer.tsx";
-import { toContainerName } from "../../util/toContainerName.ts";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { UserRole } from "../../model/user/UserRole.tsx";
+import { toContainerName } from "../../util/toContainerName.ts";
 import { ContainerSummary } from "./ContainerSummary.tsx";
 import { useContainerRole } from "./useContainerRole.tsx";
 

@@ -36,11 +36,9 @@ export function Page(
           <div className="w-full p-8">
             <div className="w-full mx-auto max-w-7xl">
               <div className="flex justify-between text-sm text-neutral-500">
-                <div className="flex gap-2 *:no-underline xl:my-10">
-                  <BreadcrumbNav
-                    breadcrumbs={props.breadcrumbs || [<ToHome />]}
-                  />
-                </div>
+                <BreadcrumbNav
+                  breadcrumbs={props.breadcrumbs || [<ToHome />]}
+                />
                 <div className="flex gap-2 items-center">
                   {hasClient && <AuthStatus />}
                 </div>
