@@ -16,7 +16,7 @@ export function Card(
       {props.header && <div>{props.header}</div>}
       <div className="px-4 py-2">{props.children}</div>
       {props.footer && (
-        <div className="border-t-2 border-neutral-100 px-6 py-3 text-surface/75">
+        <div className="border-t-2 border-neutral-100 px-4 py-3 text-surface/75">
           {props.footer}
         </div>
       )}
