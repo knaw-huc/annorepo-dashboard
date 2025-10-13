@@ -22,9 +22,11 @@ export function Menu() {
             to="/custom-query"
           >
             Custom Queries{" "}
-            <Tooltip text="Please login">
-              <Lock />
-            </Tooltip>
+            {!isAuthenticated(user) && (
+              <Tooltip text="Please login">
+                <Lock />
+              </Tooltip>
+            )}
           </Link>
         </li>
       </ul>

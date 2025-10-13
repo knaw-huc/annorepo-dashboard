@@ -1,5 +1,6 @@
 import { useConfig } from "../ConfigProvider.tsx";
-import { NeutralButton } from "../common/Button.tsx";
+
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function LogoutButton() {
   const config = useConfig();

@@ -1,6 +1,6 @@
-import { NeutralButton } from "./Button.tsx";
 import { SelectHostModal } from "../host/SelectHostModal.tsx";
 import { useState } from "react";
+import { NeutralButton } from "./NeutralButton.tsx";
 
 export function ChangeHost() {
   const [isRepoModalOpen, setIsRepoModalOpen] = useState(false);
