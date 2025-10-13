@@ -35,3 +35,5 @@ Start: `npm start`
 - Style container role
 - Select multiple annotations, delete all
 - Pagination
+- Style select-annorepo-host modal, reposition select-annorepo-host button
+-
