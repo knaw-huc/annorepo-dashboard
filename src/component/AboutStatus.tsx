@@ -1,12 +1,8 @@
 import { useAbout } from "../client/endpoint/useAbout.tsx";
 import { Loading } from "./common/Loading.tsx";
-import { SelectHostModal } from "./host/SelectHostModal.tsx";
-import { NeutralButton } from "./common/Button.tsx";
-import { useState } from "react";
 
 export function AboutStatus() {
   const about = useAbout();
-  const [isRepoModalOpen, setIsRepoModalOpen] = useState(false);
   if (!about.data) {
     return <Loading name="about" />;
   }
@@ -27,12 +23,6 @@ export function AboutStatus() {
         <br />
         {about.data.baseURI}
       </div>
-      <NeutralButton onClick={() => setIsRepoModalOpen(true)} className="mt-4">
-        Change AnnoRepo Host
-      </NeutralButton>
-      {isRepoModalOpen && (
-        <SelectHostModal onClose={() => setIsRepoModalOpen(false)} />
-      )}
     </div>
   );
 }

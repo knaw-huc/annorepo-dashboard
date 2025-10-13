@@ -6,6 +6,7 @@ import { AuthStatus } from "../auth/AuthStatus.tsx";
 import { useHasOpenApiClient } from "../../client/OpenApiClientProvider.tsx";
 import { PageLayoutContext } from "./PageLayoutContext.tsx";
 import { AboutStatus } from "../AboutStatus.tsx";
+import { ChangeHost } from "./ChangeHost.tsx";
 
 export function Page(
   props: PropsWithChildren<{
@@ -33,6 +34,7 @@ export function Page(
             <Menu />
           </div>
           {hasClient && <AboutStatus />}
+          <ChangeHost />
         </aside>
         <main className="w-full">
           <div className="flex">

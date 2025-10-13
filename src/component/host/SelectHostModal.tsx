@@ -22,7 +22,7 @@ export function SelectHostModal(props: { onClose: () => void }) {
             <div
               key={key}
               onClick={() => {
-                if (!selectedHost) {
+                if (!isSelected) {
                   setHostParam(key);
                 }
               }}
