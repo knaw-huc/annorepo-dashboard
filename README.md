@@ -36,4 +36,4 @@ Start: `npm start`
 - Select multiple annotations, delete all
 - Pagination
 - Style select-annorepo-host modal, reposition select-annorepo-host button
--
+- Style tooltips

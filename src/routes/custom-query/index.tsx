@@ -22,7 +22,7 @@ export const Route = createFileRoute("/custom-query/")({
     }
 
     return (
-      <AuthGate>
+      <AuthGate needsAuth={true}>
         <Page breadcrumbs={[<ToHome />]}>
           <CustomQueryIndex
             onClickOpenCustomQuery={handleClickOpenCustomQuery}

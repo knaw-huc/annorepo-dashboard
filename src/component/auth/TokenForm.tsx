@@ -42,7 +42,6 @@ export function TokenForm() {
 
   return (
     <div>
-      Token form
       <InputWithLabel
         value={token}
         label="Token"

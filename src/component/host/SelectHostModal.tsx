@@ -2,8 +2,9 @@ import { useConfig } from "../ConfigProvider.tsx";
 import { useStore } from "../../store/useStore.ts";
 import { Modal } from "../Modal.tsx";
 import { H1 } from "../common/H1.tsx";
-import { setHostParam } from "./util/setHostParam.ts";
 import { entries } from "lodash";
+import { setParam } from "./util/setParam.ts";
+import { HOST } from "../common/UrlParam.ts";
 
 export function SelectHostModal(props: { onClose: () => void }) {
   const { AR_HOSTS } = useConfig();
@@ -23,7 +24,7 @@ export function SelectHostModal(props: { onClose: () => void }) {
               key={key}
               onClick={() => {
                 if (!isSelected) {
-                  setHostParam(key);
+                  setParam(HOST, key);
                 }
               }}
               className={`

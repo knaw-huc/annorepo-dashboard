@@ -3,7 +3,8 @@ import { useStore } from "../../store/useStore.ts";
 import { useConfig } from "../ConfigProvider.tsx";
 import { keys } from "lodash";
 import { orThrow } from "../../util/orThrow.ts";
-import { getHostParam } from "./util/getHostParam.ts";
+import { getParam } from "./util/getParam.ts";
+import { HOST } from "../common/UrlParam.ts";
 
 export function HostParam(props: PropsWithChildren<object>) {
   const { selectedHost, setHostState } = useStore();
@@ -13,7 +14,7 @@ export function HostParam(props: PropsWithChildren<object>) {
     if (selectedHost) {
       return;
     }
-    const hostKeyFromUrl = getHostParam();
+    const hostKeyFromUrl = getParam(HOST);
     const hosts = keys(AR_HOSTS);
     const selectedHostKey = hostKeyFromUrl ?? hosts[0] ?? orThrow("No hosts");
     console.log("useEffect", {

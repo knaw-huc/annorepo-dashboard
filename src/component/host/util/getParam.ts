@@ -1,8 +1,8 @@
-import { HOST_PARAM_KEY } from "./HOST_PARAM_KEY.ts";
+import { UrlParam } from "../../common/UrlParam.ts";
 
-export function getHostParam(): string | undefined {
+export function getParam(param: UrlParam): string | undefined {
   const params = new URLSearchParams(window.location.search);
-  const encoded = params.get(HOST_PARAM_KEY);
+  const encoded = params.get(param);
   if (encoded) {
     try {
       return decodeURIComponent(encoded);
