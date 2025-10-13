@@ -11,7 +11,7 @@ export function Modal(
       className="fixed inset-0 flex items-center justify-center"
       style={{ background: "rgba(0, 0, 0, 0.5)" }}
     >
-      <div className="relative bg-white rounded-lg p-6 max-w-md mx-4">
+      <div className="relative bg-white rounded-lg p-6 max-w mx-4">
         <div>
           <CloseButton onClick={props.onClose} />
           <div className="mt-2">{props.children}</div>

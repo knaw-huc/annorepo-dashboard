@@ -15,11 +15,17 @@ import { fetchValidated } from "./fetchValidated.tsx";
 import { PleaseLogInPage } from "./PleaseLogInPage.tsx";
 import { createOpenApiClient } from "../../client/OpenApiClient.tsx";
 import { toErrorMessage } from "../common/toErrorMessage.ts";
+import { Navigate } from "@tanstack/react-router";
+import { NEXT } from "../common/UrlParam.ts";
 
 /**
  * What to show based on auth state
  */
-export function AuthGate(props: PropsWithChildren) {
+export function AuthGate(
+  props: PropsWithChildren<{
+    needsAuth?: boolean;
+  }>,
+) {
   const { AR_HOSTS, AUTH_HOST } = useConfig();
   const {
     state: { client },
@@ -55,6 +61,7 @@ export function AuthGate(props: PropsWithChildren) {
     if (!selectedHost || isLoadingAbout || isAuthenticated(user)) {
       return;
     }
+
     setLoadingAbout(true);
     const checkAbout = async () => {
       let about: ArAboutData;
@@ -156,6 +163,11 @@ export function AuthGate(props: PropsWithChildren) {
      * See {@link AuthStatus}
      */
     return <>{props.children}</>;
+  } else if (
+    props.needsAuth &&
+    (!selectedAuthMethod || selectedAuthMethod === "anonymous")
+  ) {
+    return <Navigate to="/logout" search={{ [NEXT]: location.pathname }} />;
   } else if (!selectedAuthMethod && authMethods) {
     /**
      * See {@link AuthStatus}
