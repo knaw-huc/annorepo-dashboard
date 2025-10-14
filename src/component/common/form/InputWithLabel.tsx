@@ -1,3 +1,5 @@
+import { Label } from "./Label.tsx";
+
 export function InputWithLabel(props: {
   value: string;
   label: string;
@@ -18,28 +20,19 @@ export function InputWithLabel(props: {
     className += ` ${props.className}`;
   }
 
-  let labelClassname = "text-sm italic";
-  if (props.errorLabel) {
-    labelClassname += " text-red-400";
-  } else {
-    labelClassname += " text-anrep-pink-600";
-  }
-
   let inputClassname =
     "rounded bg-white border border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40";
   if (props.disabled) {
     inputClassname += `  cursor-not-allowed text-slate-500`;
   }
 
-  const label = props.errorLabel
-    ? `${props.label} error: ${props.errorLabel}`
-    : props.label;
-
   return (
     <div className={className}>
-      <label htmlFor="floating_filled" className={labelClassname}>
-        {label}
-      </label>
+      <Label
+        text={props.label}
+        error={props.errorLabel}
+        htmlFor="floating_filled"
+      />
       <input
         disabled={!!props.disabled}
         type={props.type ?? "text"}

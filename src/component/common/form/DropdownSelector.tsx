@@ -1,9 +1,9 @@
-import { Down } from "../icon/Down";
-import { ReactNode, useState } from "react";
-import { DropdownItem } from "./DropdownItem.tsx";
+import { ChangeEvent, ReactNode, useEffect, useRef } from "react";
 import { SelectOption } from "./SelectOption.tsx";
+import { Label } from "./Label.tsx";
+import { orThrow } from "../../../util/orThrow.ts";
 
-export function DropdownSelector<T>(props: {
+export function DropdownSelector<T extends string>(props: {
   placeholder?: ReactNode;
   selectedValue?: string;
   options: SelectOption<T>[];
@@ -11,58 +11,70 @@ export function DropdownSelector<T>(props: {
   className?: string;
   disabled?: boolean;
 }) {
+  const prevProps = useRef(props);
+  useEffect(() => {
+    const prev = prevProps.current;
+    if (prev.selectedValue !== props.selectedValue) {
+      // console.log('selectedValue changed:' + props.selectedValue);
+    }
+    if (prev.options !== props.options) {
+      console.log("options reference changed");
+    }
+    if (!isEqual(prev.options, props.options)) {
+      console.log("options CONTENT changed");
+      const diff = deepArrayDiff(prev.options, props.options);
+      console.log("-->", diff);
+    }
+    if (prev.onSelect !== props.onSelect) {
+      console.log("onSelect reference changed");
+    }
+    prevProps.current = props;
+  });
+
   const options = props.options.filter((o) => o.value !== props.selectedValue);
 
-  const [isOpen, setOpen] = useState(false);
   let className = "relative inline-block text-left";
   if (props.className) {
     className += ` ${props.className}`;
   }
-  let optionsClassName =
-    "absolute right-0 z-20 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
-  if (!isOpen) {
-    optionsClassName += " hidden";
-  }
 
-  function handleSelect(option: SelectOption<T>) {
-    setOpen(false);
-    props.onSelect(option);
+  function handleSelect(e: ChangeEvent<HTMLSelectElement>) {
+    const eValue = e.target.value;
+    const selected =
+      options.find((o) => o.value === eValue) ??
+      orThrow("No option with value " + eValue);
+    props.onSelect(selected);
   }
 
   let buttonClassname =
     "flex items-center gap-2 bg-anrep-green-100 p-2 rounded-sm";
-  buttonClassname += isOpen ? " border-slate-600" : " border-slate-400";
   buttonClassname += props.disabled
     ? " cursor-not-allowed  text-gray-400"
     : " hover:bg-gray-50 text-gray-900";
 
+  const selected = options.find(
+    (option) => option.value === props.selectedValue,
+  );
+
   return (
     <div className={className}>
-      <button
+      <Label
+        text={props.placeholder || "Select below"}
+        htmlFor="floating_filled"
+      />
+      <select
+        id="floating_filled"
         disabled={props.disabled}
-        onClick={() => setOpen(!isOpen)}
-        type="button"
         className={buttonClassname}
-        onBlur={() => setTimeout(() => setOpen(false), 200)}
+        value={selected?.value}
+        onChange={handleSelect}
       >
-        {props.options.find((o) => o.value === props.selectedValue)?.label ||
-          props.placeholder ||
-          "Select below"}
-        <Down className="text-slate-400 ml-2" />
-      </button>
-      {!!options.length && (
-        <ul className={optionsClassName}>
-          <div className="py-1" role="none">
-            {options.map((option) => (
-              <DropdownItem
-                key={`${option.value}`}
-                label={option.label}
-                onClick={() => handleSelect(option)}
-              />
-            ))}
-          </div>
-        </ul>
-      )}
+        {options.map((option) => (
+          <option key={`${option.value}`} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
     </div>
   );
 }
