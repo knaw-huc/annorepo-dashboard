@@ -1,6 +1,6 @@
 import { debounce, DebouncedFunc } from "lodash";
 import { useRef } from "react";
-import { AnyFn } from "../model/Any";
+import { AnyFn } from "../model/Any.ts";
 
 export function useDebouncedCall<T extends AnyFn>(
   callback: T,

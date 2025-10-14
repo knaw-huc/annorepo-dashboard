@@ -19,7 +19,7 @@ import { QR } from "../../client/query/QR.tsx";
 import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
 import { LogicalOperator } from "../../model/query/operator/Operator.ts";
 import { NeutralButton } from "../common/NeutralButton.tsx";
-import { useDebouncedCall } from "../useDebouncedCall.tsx";
+import { useDebouncedCall } from "../../util/useDebouncedCall.tsx";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string;

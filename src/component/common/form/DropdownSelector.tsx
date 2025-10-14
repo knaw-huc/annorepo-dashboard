@@ -2,6 +2,9 @@ import { ChangeEvent, ReactNode, useEffect, useRef } from "react";
 import { SelectOption } from "./SelectOption.tsx";
 import { Label } from "./Label.tsx";
 import { orThrow } from "../../../util/orThrow.ts";
+import { isEqual } from "lodash";
+import * as _ from "lodash";
+import { Any } from "../../../model/Any.ts";
 
 export function DropdownSelector<T extends string>(props: {
   placeholder?: ReactNode;
@@ -77,4 +80,12 @@ export function DropdownSelector<T extends string>(props: {
       </select>
     </div>
   );
+}
+
+function deepArrayDiff(arr1: Any, arr2: Any) {
+  return {
+    added: _.differenceWith(arr2, arr1, _.isEqual),
+    removed: _.differenceWith(arr1, arr2, _.isEqual),
+    common: _.intersectionWith(arr1, arr2, _.isEqual),
+  };
 }

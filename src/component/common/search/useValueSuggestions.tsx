@@ -1,4 +1,4 @@
-import { useDebounceValue } from "../../useDebounceValue.tsx";
+import { useDebounceValue } from "../../../util/useDebounceValue.tsx";
 import { useContainerFieldDistinctValues } from "../../../client/endpoint/useContainerFieldDistinctValues.tsx";
 import { filterSuggestions } from "../form/util/filterSuggestions.tsx";
 import { QueryValue } from "../../../model/query/value/QueryValue.ts";
