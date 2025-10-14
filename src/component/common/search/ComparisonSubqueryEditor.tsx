@@ -98,6 +98,7 @@ export function ComparisonSubqueryEditor(props: ComparisonSubqueryEditorProps) {
           </div>
           <div className="flex-none mr-2">
             <DropdownSelector
+              label="Operator"
               selectedValue={subquery.form.operator.valueOf()}
               options={operatorOptions}
               onSelect={handleSelectOperator}

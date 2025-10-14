@@ -15,7 +15,7 @@ export function ContainerDropdown(props: {
 
   return (
     <DropdownSelector
-      placeholder={
+      label={
         <>
           <img src="/images/icon-container.png" className="h-4 w-4" alt="" />
           Select container
