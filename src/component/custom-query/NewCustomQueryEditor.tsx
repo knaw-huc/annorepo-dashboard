@@ -77,7 +77,9 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
 
   return (
     <>
-      <H1>{title}</H1>
+      <div className="flex justify-between w-full my-8 mx-auto">
+        <H1>{title}</H1>
+      </div>
       {createCustomQuery.isError && (
         <Warning>{createCustomQuery.error.message}</Warning>
       )}
