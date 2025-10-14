@@ -13,21 +13,20 @@ export function InputWithLabel(props: {
 
   type?: "text" | "password";
 }) {
-  let className = "relative";
+  let className = "flex flex-col gap-1";
   if (props.className) {
     className += ` ${props.className}`;
   }
 
-  let labelClassname =
-    "absolute text-sm duration-300 transform -translate-y-4 text-xs top-5 z-10 origin-[0] start-2.5";
+  let labelClassname = "text-sm italic";
   if (props.errorLabel) {
-    labelClassname += " text-red-500";
+    labelClassname += " text-red-400";
   } else {
-    labelClassname += " text-gray-500";
+    labelClassname += " text-anrep-pink-600";
   }
 
   let inputClassname =
-    "block rounded-md px-2 pb-1 pt-5 w-full text-sm bg-gray-50 border-0 border-b-2 border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-slate-600 peer";
+    "rounded bg-white border border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40";
   if (props.disabled) {
     inputClassname += `  cursor-not-allowed text-slate-500`;
   }
@@ -38,6 +37,9 @@ export function InputWithLabel(props: {
 
   return (
     <div className={className}>
+      <label htmlFor="floating_filled" className={labelClassname}>
+        {label}
+      </label>
       <input
         disabled={!!props.disabled}
         type={props.type ?? "text"}
@@ -49,9 +51,6 @@ export function InputWithLabel(props: {
         onChange={(e) => props.onChange(e.target.value)}
         autoComplete={props.autoComplete ?? "on"}
       />
-      <label htmlFor="floating_filled" className={labelClassname}>
-        {label}
-      </label>
     </div>
   );
 }

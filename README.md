@@ -38,4 +38,4 @@ Start: `npm start`
 - Style select-annorepo-host modal, reposition select-annorepo-host button
 - Style tooltips
 - Align column width of custom query labels in cards
--
+- Style input field errors

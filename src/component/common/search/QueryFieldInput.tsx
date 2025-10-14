@@ -22,7 +22,7 @@ export function QueryFieldInput(props: {
       suggestions={suggestions}
       onInputChange={onChange}
       onSelect={(o) => onChange(o.value)}
-      label="Field"
+      label="Annotation field"
       errorLabel={errorLabel}
       disabled={disabled}
     />
