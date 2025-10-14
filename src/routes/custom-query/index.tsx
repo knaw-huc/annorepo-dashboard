@@ -26,7 +26,6 @@ export const Route = createFileRoute("/custom-query/")({
         <Page breadcrumbs={[<ToHome />]}>
           <CustomQueryIndex
             onClickOpenCustomQuery={handleClickOpenCustomQuery}
-            // TODO:
             onClickCreateCustomQuery={handleClickNewCustomQuery}
           />
         </Page>
