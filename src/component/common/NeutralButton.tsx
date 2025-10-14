@@ -5,6 +5,7 @@ export function NeutralButton(
   props: PropsWithChildren<{
     onClick: () => void;
     className?: string;
+    disabled?: boolean;
   }>,
 ) {
   let className =
@@ -14,7 +15,11 @@ export function NeutralButton(
   }
 
   return (
-    <Button onClick={props.onClick} className={className}>
+    <Button
+      onClick={props.onClick}
+      className={className}
+      disabled={props.disabled}
+    >
       {props.children}
     </Button>
   );

@@ -15,13 +15,11 @@ import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { useStore } from "../../store/useStore.ts";
 import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { AddComparisonSubqueryButton } from "../common/search/button/AddComparisonSubqueryButton.tsx";
-import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
-import { Store } from "../common/icon/Store.tsx";
-import { Next } from "../common/icon/Next.tsx";
 import { QR } from "../../client/query/QR.tsx";
 import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
 import { LogicalOperator } from "../../model/query/operator/Operator.ts";
 import { debounce } from "lodash";
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string;
@@ -73,21 +71,19 @@ export function NewCustomQueryPreviewEditor(props: {
 
   return (
     <>
-      <div>
+      <div className="flex justify-between items-center w-full">
         <ContainerDropdown
           selected={containerName}
           onSelect={onSetContainerName}
         />
         {containerName && (
-          <DeprecatedButton
-            secondary
+          <NeutralButton
             className="ml-3"
             onClick={props.onSave}
-            disabled={!containerName || hasErrors(subqueries)}
+            disabled={true}
           >
-            <Store className="mr-2" />
-            Store as custom query <Next className="mr-2" />
-          </DeprecatedButton>
+            Store query
+          </NeutralButton>
         )}
       </div>
 
