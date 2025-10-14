@@ -18,8 +18,8 @@ import { AddComparisonSubqueryButton } from "../common/search/button/AddComparis
 import { QR } from "../../client/query/QR.tsx";
 import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
 import { LogicalOperator } from "../../model/query/operator/Operator.ts";
-import { debounce } from "lodash";
 import { NeutralButton } from "../common/NeutralButton.tsx";
+import { useDebouncedCall } from "../useDebouncedCall.tsx";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string;
@@ -52,16 +52,16 @@ export function NewCustomQueryPreviewEditor(props: {
     }
   }, [isInit, containerNames, query]);
 
-  useEffect(() => {
-    const searchDebounced = debounce(() => {
-      if (isSearchDisabled && !isInit) {
-        return;
-      }
-      setSubmitted({ query, pageNo, containerName });
-    }, 250);
+  const handleSearch = useDebouncedCall(() => {
+    if (isSearchDisabled || !isInit) {
+      return;
+    }
+    setSubmitted({ query, pageNo, containerName });
+  });
 
-    searchDebounced();
-  }, [isInit, isSearchDisabled, query, pageNo, containerName]);
+  useEffect(() => {
+    handleSearch();
+  }, [isInit, isSearchDisabled, query, pageNo, containerName, handleSearch]);
 
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update));
