@@ -13,7 +13,6 @@ import {
 
 import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { useStore } from "../../store/useStore.ts";
-import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { AddComparisonSubqueryButton } from "../common/search/button/AddComparisonSubqueryButton.tsx";
 import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
@@ -22,6 +21,7 @@ import { Next } from "../common/icon/Next.tsx";
 import { QR } from "../../client/query/QR.tsx";
 import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
 import { LogicalOperator } from "../../model/query/operator/Operator.ts";
+import { debounce } from "lodash";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string;
@@ -43,6 +43,10 @@ export function NewCustomQueryPreviewEditor(props: {
   const { page } = useContainerSearch(submitted);
   const { subqueries } = useStore();
 
+  const hasSearchErrors = hasErrors(subqueries);
+  const isSearchDisabled =
+    !containerName || !!page.error || !subqueries.length || hasSearchErrors;
+
   useEffect(() => {
     if (!isInit && containerNames.length && query) {
       setInit(true);
@@ -50,20 +54,20 @@ export function NewCustomQueryPreviewEditor(props: {
     }
   }, [isInit, containerNames, query]);
 
+  useEffect(() => {
+    const searchDebounced = debounce(() => {
+      if (isSearchDisabled && !isInit) {
+        return;
+      }
+      setSubmitted({ query, pageNo, containerName });
+    }, 250);
+
+    searchDebounced();
+  }, [isInit, isSearchDisabled, query, pageNo, containerName]);
+
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update));
   };
-
-  const handleSubmit = () => {
-    if (hasErrors(subqueries)) {
-      return;
-    }
-    setSubmitted({ query, pageNo, containerName });
-  };
-
-  const hasSearchErrors = hasErrors(subqueries);
-  const isSearchDisabled =
-    !containerName || !!page.error || !subqueries.length || hasSearchErrors;
 
   const newSubqueryPath = [subqueries.length];
 
@@ -74,7 +78,6 @@ export function NewCustomQueryPreviewEditor(props: {
           selected={containerName}
           onSelect={onSetContainerName}
         />
-        <SearchButton onClick={handleSubmit} disabled={isSearchDisabled} />
         {containerName && (
           <DeprecatedButton
             secondary
