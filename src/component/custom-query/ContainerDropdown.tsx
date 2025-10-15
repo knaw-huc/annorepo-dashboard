@@ -14,18 +14,16 @@ export function ContainerDropdown(props: {
   const containerNames = getContainerNames(myContainers.data);
 
   return (
-    <DropdownSelector
-      selectClassName="bg-anrep-green-100"
-      label={
-        <>
-          <img src="/images/icon-container.png" className="h-4 w-4" alt="" />
-          Select container
-        </>
-      }
-      className="mr-3"
-      selectedValue={selected}
-      options={containerNames.map((key) => ({ label: key, value: key }))}
-      onSelect={(option) => onSelect(option.value)}
-    />
+    <div className="flex items-center gap-2 bg-anrep-green-100 p-1 pl-4 rounded-sm ">
+      <img className="h-4 w-4" src="/images/icon-container.png" alt="" />
+      <DropdownSelector
+        selectClassName="bg-anrep-green-100"
+        placeholder="Select a container..."
+        className="mr-3"
+        selectedValue={selected}
+        options={containerNames.map((key) => ({ label: key, value: key }))}
+        onSelect={(option) => onSelect(option.value)}
+      />
+    </div>
   );
 }

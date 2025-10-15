@@ -8,6 +8,7 @@ import { styleGroup } from "./styleGroup.tsx";
 export function DropdownSelector<T extends string>(props: {
   label?: ReactNode;
   selectedValue?: string;
+  placeholder?: string;
   options: SelectOption<T>[];
   onSelect: (option: SelectOption<T>) => void;
   className?: string;
@@ -48,9 +49,12 @@ export function DropdownSelector<T extends string>(props: {
         id={selectId}
         disabled={props.disabled}
         className={selectClassname}
-        value={selected?.value}
+        value={selected?.value ?? ""}
         onChange={handleSelect}
       >
+        <option value="" disabled>
+          {props.placeholder ?? "Please select..."}
+        </option>
         {options.map((option) => (
           <option key={`${option.value}`} value={option.value}>
             {option.label}
