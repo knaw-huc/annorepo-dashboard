@@ -6,11 +6,12 @@ import { GroupPosition } from "./GroupPosition.tsx";
 import { styleGroup } from "./styleGroup.tsx";
 
 export function DropdownSelector<T extends string>(props: {
+  options: SelectOption<T>[];
+  onSelect: (option: SelectOption<T>) => void;
+
   label?: ReactNode;
   selectedValue?: string;
   placeholder?: string;
-  options: SelectOption<T>[];
-  onSelect: (option: SelectOption<T>) => void;
   className?: string;
   disabled?: boolean;
   selectClassName?: string;

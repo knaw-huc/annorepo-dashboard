@@ -12,9 +12,25 @@ export function AddLogicalSubqueryButton(props: {
   className?: string;
 }) {
   const { disabled, path, operator } = props;
+  const addOrSubquery = useAddLogicalSubquery();
+  return (
+    <DeprecatedButton
+      type="button"
+      className={`h-full border-b-2 ${props.className}`}
+      onClick={() => addOrSubquery(path, operator)}
+      secondary
+      disabled={disabled}
+    >
+      <Add className="mr-2" />
+      Add <code>{operator.toUpperCase()}</code>
+    </DeprecatedButton>
+  );
+}
+
+export function useAddLogicalSubquery() {
   const { addSubquery } = useStore();
 
-  const addOrSubquery = () => {
+  return (path: PropertyName[], operator: LogicalOperator) => {
     const subquery: LogicalSubquery = {
       type: "logical",
       operator,
@@ -23,17 +39,4 @@ export function AddLogicalSubqueryButton(props: {
     };
     addSubquery({ path, subquery });
   };
-
-  return (
-    <DeprecatedButton
-      type="button"
-      className={`h-full border-b-2 ${props.className}`}
-      onClick={addOrSubquery}
-      secondary
-      disabled={disabled}
-    >
-      <Add className="mr-2" />
-      Add <code>{operator.toUpperCase()}</code>
-    </DeprecatedButton>
-  );
 }

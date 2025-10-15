@@ -14,9 +14,26 @@ export function AddComparisonSubqueryButton(props: {
 }) {
   const { disabled, path, isParam } = props;
 
+  const addComparisonSubquery = useAddComparisonSubquery();
+
+  return (
+    <DeprecatedButton
+      type="button"
+      className={`h-full border-b-2 ${props.className}`}
+      onClick={() => addComparisonSubquery(path, isParam)}
+      secondary
+      disabled={disabled}
+    >
+      <Add className="mr-2" />
+      Add subquery
+    </DeprecatedButton>
+  );
+}
+
+export function useAddComparisonSubquery() {
   const { addSubquery } = useStore();
 
-  const addComparisonSubquery = () => {
+  return (path: PropertyName[], isParam: boolean) => {
     const newQueryEntry = Object.entries(defaultQuery)[0];
     const form = toComparisonForm(newQueryEntry);
     const queryError = "";
@@ -27,17 +44,4 @@ export function AddComparisonSubqueryButton(props: {
       subquery: { type: "comparison", form, errors, param, queryError },
     });
   };
-
-  return (
-    <DeprecatedButton
-      type="button"
-      className={`h-full border-b-2 ${props.className}`}
-      onClick={addComparisonSubquery}
-      secondary
-      disabled={disabled}
-    >
-      <Add className="mr-2" />
-      Add subquery
-    </DeprecatedButton>
-  );
 }

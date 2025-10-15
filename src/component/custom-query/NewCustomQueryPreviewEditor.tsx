@@ -14,12 +14,10 @@ import {
 import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { useStore } from "../../store/useStore.ts";
 import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
-import { AddComparisonSubqueryButton } from "../common/search/button/AddComparisonSubqueryButton.tsx";
 import { QR } from "../../client/query/QR.tsx";
-import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
-import { LogicalOperator } from "../../model/query/operator/Operator.ts";
 import { NeutralButton } from "../common/NeutralButton.tsx";
 import { useDebouncedCall } from "../../util/useDebouncedCall.tsx";
+import { AddSubqueryDropdownMenu } from "./AddSubqueryDropdownMenu.tsx";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string;
@@ -66,7 +64,6 @@ export function NewCustomQueryPreviewEditor(props: {
   const handleChangePage = (update: string) => {
     setPageNo(toPageNo(update));
   };
-
   const newSubqueryPath = [subqueries.length];
 
   return (
@@ -92,23 +89,7 @@ export function NewCustomQueryPreviewEditor(props: {
           <div className="mt-7">
             <QueryEditor containerName={containerName} />
             <div className="mb-2">
-              <AddComparisonSubqueryButton
-                path={newSubqueryPath}
-                isParam={false}
-                disabled={hasSearchErrors}
-              />
-              <AddLogicalSubqueryButton
-                path={newSubqueryPath}
-                disabled={hasSearchErrors}
-                operator={LogicalOperator.and}
-                className="ml-3"
-              />
-              <AddLogicalSubqueryButton
-                path={newSubqueryPath}
-                disabled={hasSearchErrors}
-                operator={LogicalOperator.or}
-                className="ml-3"
-              />
+              <AddSubqueryDropdownMenu path={newSubqueryPath} />
             </div>
           </div>
 
