@@ -5,7 +5,11 @@ import { SelectOption } from "../common/form/SelectOption.tsx";
 import { LogicalOperator } from "../../model/query/operator/Operator.ts";
 import { DropdownSelector } from "../common/form/DropdownSelector.tsx";
 
-export function AddSubqueryDropdownMenu({ path }: { path: PropertyName[] }) {
+export function AddSubqueryDropdownMenu(props: {
+  disabled?: boolean;
+  path: PropertyName[];
+}) {
+  const { path, disabled } = props;
   const addComparisonSubquery = useAddComparisonSubquery();
   const addLogicalSubquery = useAddLogicalSubquery();
 
@@ -17,8 +21,9 @@ export function AddSubqueryDropdownMenu({ path }: { path: PropertyName[] }) {
 
   return (
     <DropdownSelector
+      disabled={disabled}
       placeholder="Add"
-      selectClassName="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800"
+      selectClassName="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800"
       options={options}
       onSelect={(o) => {
         if (o.value === "subquery") {

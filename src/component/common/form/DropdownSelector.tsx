@@ -38,7 +38,7 @@ export function DropdownSelector<T extends string>(props: {
   }
   selectClassname += props.disabled
     ? " cursor-not-allowed text-gray-400"
-    : " text-gray-900";
+    : " cursor-pointer text-gray-900";
   selectClassname += ` ${styleGroup(props.groupAt)}`;
 
   const selected = options.find((o) => o.value === props.selectedValue);

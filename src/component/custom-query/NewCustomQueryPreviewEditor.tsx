@@ -89,7 +89,10 @@ export function NewCustomQueryPreviewEditor(props: {
           <div className="mt-7">
             <QueryEditor containerName={containerName} />
             <div className="mb-2">
-              <AddSubqueryDropdownMenu path={newSubqueryPath} />
+              <AddSubqueryDropdownMenu
+                path={newSubqueryPath}
+                disabled={hasSearchErrors}
+              />
             </div>
           </div>
 
