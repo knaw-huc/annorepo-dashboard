@@ -3,13 +3,10 @@ import { getLogicalSubquery } from "../../../store/query/util/path/getLogicalSub
 import { DeprecatedButton } from "../DeprecatedButton.tsx";
 import { Remove } from "../icon/Remove.tsx";
 import { Warning } from "../Warning.tsx";
-
-import { AddComparisonSubqueryButton } from "./button/AddComparisonSubqueryButton.tsx";
-import { AddLogicalSubqueryButton } from "./button/AddLogicalSubqueryButton.tsx";
-import { LogicalOperator } from "../../../model/query/operator/Operator.ts";
 import { formsPropPath } from "../../../store/query/formsPropPath.ts";
 import { PropsWithChildren } from "react";
 import { PropertyName } from "lodash";
+import { AddSubqueryDropdownMenu } from "../../custom-query/AddSubqueryDropdownMenu.tsx";
 
 export type WithPath = { path: PropertyName[] };
 
@@ -30,23 +27,9 @@ export function LogicalSubqueryEditor<T extends WithPath>(
     <div className="border border-slate-400 w-full p-2 my-2">
       <div>
         <p>{subquery.operator.toUpperCase()}</p>
-
-        <AddComparisonSubqueryButton
-          path={newSubqueryPath}
-          isParam={false}
-          disabled={!!subquery.queryError}
-        />
-        <AddLogicalSubqueryButton
+        <AddSubqueryDropdownMenu
           path={newSubqueryPath}
           disabled={!!subquery.queryError}
-          operator={LogicalOperator.and}
-          className="ml-3"
-        />
-        <AddLogicalSubqueryButton
-          path={newSubqueryPath}
-          disabled={!!subquery.queryError}
-          operator={LogicalOperator.or}
-          className="ml-3"
         />
         <DeprecatedButton onClick={handleRemove} secondary className="ml-3">
           <Remove />
