@@ -24,9 +24,11 @@ export function LogicalSubqueryEditor<T extends WithPath>(
   const newSubqueryPath = [...path, formsPropPath, subquery.forms.length];
 
   return (
-    <div className="border border-slate-400 w-full p-2 my-2">
+    <div className="bg-anrep-pink-100/50 p-4 rounded-xl flex flex-col gap-4">
       <div>
-        <p>{subquery.operator.toUpperCase()}</p>
+        <div className="font-bold text-anrep-pink-700">
+          {subquery.operator.toUpperCase().replace(":", "")}
+        </div>
         <AddSubqueryDropdownMenu
           path={newSubqueryPath}
           disabled={!!subquery.queryError}
