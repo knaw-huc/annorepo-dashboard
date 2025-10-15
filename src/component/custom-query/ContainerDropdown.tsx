@@ -15,6 +15,7 @@ export function ContainerDropdown(props: {
 
   return (
     <DropdownSelector
+      selectClassName="bg-anrep-green-100"
       label={
         <>
           <img src="/images/icon-container.png" className="h-4 w-4" alt="" />

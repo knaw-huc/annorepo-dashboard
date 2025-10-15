@@ -10,6 +10,7 @@ export function DropdownSelector<T extends string>(props: {
   onSelect: (option: SelectOption<T>) => void;
   className?: string;
   disabled?: boolean;
+  selectClassName?: string;
 }) {
   const { options } = props;
   const selectId = useId();
@@ -26,21 +27,22 @@ export function DropdownSelector<T extends string>(props: {
     props.onSelect(selected);
   }
 
-  let buttonClassname =
-    "flex items-center gap-2 bg-anrep-green-100 p-2 rounded-sm";
-  buttonClassname += props.disabled
-    ? " cursor-not-allowed  text-gray-400"
-    : " hover:bg-gray-50 text-gray-900";
-
+  let selectClassname = "flex items-center gap-2 p-2 rounded-sm";
+  if (props.selectClassName) {
+    selectClassname += ` ${props.selectClassName}`;
+  }
+  selectClassname += props.disabled
+    ? " cursor-not-allowed text-gray-400"
+    : " text-gray-900";
   const selected = options.find((o) => o.value === props.selectedValue);
 
   return (
     <div className={className}>
-      <Label text={props.label || "Select below"} htmlFor={selectId} />
+      {props.label && <Label text={props.label} htmlFor={selectId} />}
       <select
         id={selectId}
         disabled={props.disabled}
-        className={buttonClassname}
+        className={selectClassname}
         value={selected?.value}
         onChange={handleSelect}
       >
