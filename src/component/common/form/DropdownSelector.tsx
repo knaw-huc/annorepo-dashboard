@@ -2,6 +2,8 @@ import { ChangeEvent, ReactNode, useId } from "react";
 import { SelectOption } from "./SelectOption.tsx";
 import { Label } from "./Label.tsx";
 import { orThrow } from "../../../util/orThrow.ts";
+import { GroupPosition } from "./GroupPosition.tsx";
+import { styleGroup } from "./styleGroup.tsx";
 
 export function DropdownSelector<T extends string>(props: {
   label?: ReactNode;
@@ -11,6 +13,7 @@ export function DropdownSelector<T extends string>(props: {
   className?: string;
   disabled?: boolean;
   selectClassName?: string;
+  groupAt?: GroupPosition;
 }) {
   const { options } = props;
   const selectId = useId();
@@ -27,13 +30,15 @@ export function DropdownSelector<T extends string>(props: {
     props.onSelect(selected);
   }
 
-  let selectClassname = "flex items-center gap-2 p-2 rounded-sm";
+  let selectClassname = "flex items-center gap-2 p-2 h-8 py-1 border";
   if (props.selectClassName) {
     selectClassname += ` ${props.selectClassName}`;
   }
   selectClassname += props.disabled
     ? " cursor-not-allowed text-gray-400"
     : " text-gray-900";
+  selectClassname += ` ${styleGroup(props.groupAt)}`;
+
   const selected = options.find((o) => o.value === props.selectedValue);
 
   return (

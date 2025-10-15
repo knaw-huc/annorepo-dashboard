@@ -1,4 +1,6 @@
 import { Label } from "./Label.tsx";
+import { GroupPosition } from "./GroupPosition.tsx";
+import { styleGroup } from "./styleGroup.tsx";
 
 export function InputWithLabel(props: {
   value: string;
@@ -14,6 +16,7 @@ export function InputWithLabel(props: {
   autoComplete?: "on" | "off";
 
   type?: "text" | "password";
+  groupAt?: GroupPosition;
 }) {
   let className = "flex flex-col gap-1";
   if (props.className) {
@@ -21,10 +24,11 @@ export function InputWithLabel(props: {
   }
 
   let inputClassname =
-    "rounded bg-white border border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40";
+    "bg-white border border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40";
   if (props.disabled) {
     inputClassname += `  cursor-not-allowed text-slate-500`;
   }
+  inputClassname += ` ${styleGroup(props.groupAt)}`;
 
   return (
     <div className={className}>
