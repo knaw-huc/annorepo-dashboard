@@ -11,6 +11,7 @@ import { CustomQueryMetadataForm } from "./model/CustomQueryMetadataForm.ts";
 import { getOrThrow } from "../../store/query/util/path/getOrThrow.ts";
 
 import { CustomQueryTemplateEditor } from "./CustomQueryTemplateEditor.tsx";
+import { usePageLayout } from "../common/PageLayoutContext.tsx";
 
 /**
  * Allow creating a new custom query
@@ -52,17 +53,25 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
       props.onChangeMetadata(update);
     }
   };
+  const { setSecondColumn } = usePageLayout();
+  useEffect(() => {
+    setSecondColumn(
+      <div className="flex flex-col p-8 bg-anrep-pink-50 grow gap-4  w-full mt-40">
+        <H2>Save query</H2>
+        <CustomQueryMetadataEditor
+          form={metadataForm}
+          errors={metadataErrors}
+          onError={setMetadataErrors}
+          onChange={handleChangeMetadata}
+        />
+      </div>,
+    );
+    return () => setSecondColumn(null);
+  }, []);
 
   return (
     <>
-      <H2>Metadata</H2>
-      <CustomQueryMetadataEditor
-        form={metadataForm}
-        errors={metadataErrors}
-        onError={setMetadataErrors}
-        onChange={handleChangeMetadata}
-      />
-      <H2>Custom Query</H2>
+      <H2>Create Custom Query</H2>
       <CustomQueryTemplateEditor onParameterChange={handleParameterChange} />
     </>
   );

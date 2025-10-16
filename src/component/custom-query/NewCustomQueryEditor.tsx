@@ -70,15 +70,10 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
     );
   };
 
-  const title =
-    mode === "create-global-query"
-      ? "Create custom query"
-      : "Store custom query";
-
   return (
     <>
       <div className="flex justify-between w-full my-8 mx-auto">
-        <H1>{title}</H1>
+        <H1>Create custom query</H1>
       </div>
       {createCustomQuery.isError && (
         <Warning>{createCustomQuery.error.message}</Warning>
