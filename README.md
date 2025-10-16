@@ -39,3 +39,4 @@ Start: `npm start`
 - Style tooltips
 - Align column width of custom query labels in cards
 - Style input field errors
+- Discuss implementation of filter box instead of search button
