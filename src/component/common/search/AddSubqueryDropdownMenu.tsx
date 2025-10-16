@@ -1,9 +1,9 @@
 import { PropertyName } from "lodash";
-import { useAddComparisonSubquery } from "../common/search/button/AddComparisonSubqueryButton.tsx";
-import { useAddLogicalSubquery } from "../common/search/button/AddLogicalSubqueryButton.tsx";
-import { SelectOption } from "../common/form/SelectOption.tsx";
-import { LogicalOperator } from "../../model/query/operator/Operator.ts";
-import { DropdownSelector } from "../common/form/DropdownSelector.tsx";
+import { useAddComparisonSubquery } from "./button/AddComparisonSubqueryButton.tsx";
+import { useAddLogicalSubquery } from "./button/AddLogicalSubqueryButton.tsx";
+import { SelectOption } from "../form/SelectOption.tsx";
+import { LogicalOperator } from "../../../model/query/operator/Operator.ts";
+import { DropdownSelector } from "../form/DropdownSelector.tsx";
 
 export function AddSubqueryDropdownMenu(props: {
   disabled?: boolean;

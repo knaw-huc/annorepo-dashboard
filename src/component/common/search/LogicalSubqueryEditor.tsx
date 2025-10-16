@@ -6,7 +6,7 @@ import { Warning } from "../Warning.tsx";
 import { formsPropPath } from "../../../store/query/formsPropPath.ts";
 import { PropsWithChildren } from "react";
 import { PropertyName } from "lodash";
-import { AddSubqueryDropdownMenu } from "../../custom-query/AddSubqueryDropdownMenu.tsx";
+import { AddSubqueryDropdownMenu } from "./AddSubqueryDropdownMenu.tsx";
 
 export type WithPath = { path: PropertyName[] };
 

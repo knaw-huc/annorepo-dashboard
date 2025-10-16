@@ -17,7 +17,7 @@ import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { QR } from "../../client/query/QR.tsx";
 import { NeutralButton } from "../common/NeutralButton.tsx";
 import { useDebouncedCall } from "../../util/useDebouncedCall.tsx";
-import { AddSubqueryDropdownMenu } from "./AddSubqueryDropdownMenu.tsx";
+import { AddSubqueryDropdownMenu } from "../common/search/AddSubqueryDropdownMenu.tsx";
 
 export function NewCustomQueryPreviewEditor(props: {
   containerName: string;

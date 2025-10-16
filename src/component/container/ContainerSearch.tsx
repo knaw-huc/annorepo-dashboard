@@ -14,13 +14,11 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
-import { AddComparisonSubqueryButton } from "../common/search/button/AddComparisonSubqueryButton.tsx";
 import { defaultQuery } from "../../model/query/defaultQuery.ts";
-import { LogicalOperator } from "../../model/query/operator/Operator.ts";
-import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
 
 import { useContainerRole } from "./useContainerRole.tsx";
 import { canEdit } from "../../model/user/canEdit.ts";
+import { AddSubqueryDropdownMenu } from "../common/search/AddSubqueryDropdownMenu.tsx";
 
 export type ContainerSearchProps = {
   containerName: string;
@@ -87,22 +85,9 @@ export function ContainerSearch(props: ContainerSearchProps) {
       <H1>Search annotations</H1>
       <QueryEditor containerName={containerName} />
       <div className="mb-2">
-        <AddComparisonSubqueryButton
-          path={newSubqueryPath}
-          isParam={false}
-          disabled={hasSearchErrors}
-        />
-        <AddLogicalSubqueryButton
+        <AddSubqueryDropdownMenu
           path={newSubqueryPath}
           disabled={hasSearchErrors}
-          operator={LogicalOperator.and}
-          className="ml-3"
-        />
-        <AddLogicalSubqueryButton
-          path={newSubqueryPath}
-          disabled={hasSearchErrors}
-          operator={LogicalOperator.or}
-          className="ml-3"
         />
         <span className="ml-3">
           <SearchButton
