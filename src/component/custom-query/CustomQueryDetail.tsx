@@ -9,12 +9,10 @@ import { StatusMessage } from "../common/StatusMessage.tsx";
 import { useEffect, useState } from "react";
 import { toCustomQueryParameters } from "./util/toCustomQueryParameters.ts";
 import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
-import { Next } from "../common/icon/Next.tsx";
 import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 import { toPageNo } from "../../util/toPageNo.ts";
 import { Hint } from "../common/Hint.tsx";
 import { Pipe } from "../common/Pipe.tsx";
-import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { useStore } from "../../store/useStore.ts";
 import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { A } from "../common/A.tsx";
@@ -25,6 +23,8 @@ import { keyEquals } from "../../client/query/useGet.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { Warning } from "../common/Warning.tsx";
+import { isEqual } from "lodash";
+import { useDebouncedCall } from "../../util/useDebouncedCall.tsx";
 
 export function CustomQueryDetail(props: {
   name: string;
@@ -55,7 +55,7 @@ export function CustomQueryDetail(props: {
     }
   }, [customQuery.data]);
 
-  function handleSearch() {
+  const searchDebounced = useDebouncedCall(() => {
     if (!customQuery.data) {
       return;
     }
@@ -63,13 +63,24 @@ export function CustomQueryDetail(props: {
       return;
     }
     const parameters = toCustomQueryParameters(subqueries);
-    setSubmitted({
+    const toSubmit = {
       queryName: customQueryName,
       containerName,
       parameters,
       pageNo,
-    });
-  }
+    };
+    if (!toSubmit) {
+      return;
+    }
+    if (isEqual(toSubmit, submitted)) {
+      return;
+    }
+    setSubmitted(toSubmit);
+  });
+
+  useEffect(() => {
+    searchDebounced();
+  }, [containerName, containerName, subqueries, pageNo]);
 
   const handleRemove = () => {
     if (!window.confirm("Delete custom query?")) {
@@ -139,24 +150,16 @@ export function CustomQueryDetail(props: {
           href={`${selectedHost}/global/custom-query/${customQuery.data.name}`}
           className="font-bold"
         >
-          Source&nbsp;
+          View source
           <External className="ml-1" />
         </A>
       </p>
       <p className="mb-5">{customQuery.data.description}</p>
-      <div className="mb-2">
+      <div className="flex justify-between items-center w-full">
         <ContainerDropdown
           selected={containerName}
           onSelect={setContainerName}
         />
-        <DeprecatedButton
-          onClick={handleSearch}
-          className="pl-5"
-          disabled={hasErrors(subqueries) || !containerName}
-        >
-          Search
-          <Next className="ml-2" />
-        </DeprecatedButton>
       </div>
       {customQueryCall.isError && (
         <StatusMessage name="custom query call" requests={[customQueryCall]} />
