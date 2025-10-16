@@ -77,9 +77,9 @@ export function NewCustomQueryPreviewEditor(props: {
           <NeutralButton
             className="ml-3"
             onClick={props.onSave}
-            disabled={isSearchDisabled}
+            disabled={hasSearchErrors}
           >
-            Save query
+            Store query
           </NeutralButton>
         )}
       </div>

@@ -12,6 +12,7 @@ import { getOrThrow } from "../../store/query/util/path/getOrThrow.ts";
 
 import { CustomQueryTemplateEditor } from "./CustomQueryTemplateEditor.tsx";
 import { usePageLayout } from "../common/PageLayoutContext.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 /**
  * Allow creating a new custom query
@@ -19,10 +20,11 @@ import { usePageLayout } from "../common/PageLayoutContext.tsx";
 export function NewCustomQueryMetadataAndTemplateEditor(props: {
   metadata: Omit<ArCustomQueryForm, "query">;
   onChangeMetadata: (query: Omit<ArCustomQueryForm, "query">) => void;
-  onMetadataError: () => void;
-  onClearMetadataError: () => void;
+  handleSubmitSave: () => void;
+  handleCancel: () => void;
 }) {
-  const { metadata, onMetadataError, onClearMetadataError } = props;
+  const { metadata } = props;
+  const [hasMetadataError, setMetadataError] = useState<boolean>();
 
   const { subqueries, updateComparisonSubquery } = useStore();
 
@@ -37,11 +39,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
   }
 
   useEffect(() => {
-    if (hasError(metadataErrors)) {
-      onMetadataError();
-    } else {
-      onClearMetadataError();
-    }
+    setMetadataError(hasError(metadataErrors));
   }, [metadataErrors]);
 
   const handleChangeMetadata = (update: CustomQueryMetadataForm) => {
@@ -64,6 +62,26 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
           onError={setMetadataErrors}
           onChange={handleChangeMetadata}
         />
+        <div className="flex justify-between items-center ">
+          <div>
+            <NeutralButton
+              onClick={props.handleSubmitSave}
+              className=""
+              disabled={hasMetadataError}
+            >
+              Save
+            </NeutralButton>
+          </div>
+          <div>
+            <NeutralButton
+              onClick={props.handleCancel}
+              className="ml-3 pl-5"
+              disabled={hasMetadataError}
+            >
+              Cancel
+            </NeutralButton>
+          </div>
+        </div>
       </div>,
     );
     return () => setSecondColumn(null);
@@ -71,7 +89,6 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
 
   return (
     <>
-      <H2>Create Custom Query</H2>
       <CustomQueryTemplateEditor onParameterChange={handleParameterChange} />
     </>
   );

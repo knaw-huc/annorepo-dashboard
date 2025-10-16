@@ -1,13 +1,10 @@
 import { useEffect, useState } from "react";
 import { H1 } from "../common/H1.tsx";
-import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { NewCustomQueryPreviewEditor } from "./NewCustomQueryPreviewEditor.tsx";
 import { ArCustomQueryForm } from "../../model/ArModel.ts";
 import { usePost } from "../../client/query/usePost.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { keyEquals } from "../../client/query/useGet.tsx";
-import { Next } from "../common/icon/Next.tsx";
-import { Back } from "../common/icon/Back.tsx";
 import { NewCustomQueryMetadataAndTemplateEditor } from "./NewCustomQueryMetadataAndTemplateEditor.tsx";
 import { Warning } from "../common/Warning.tsx";
 import { useSearchQuery } from "../../store/query/hook/useSearchQuery.ts";
@@ -18,6 +15,8 @@ import {
   defaultTemplate,
 } from "../../model/query/defaultQuery.ts";
 import { defaultCustomQueryMetadata } from "./defaultCustomQueryMetadata.ts";
+import { ContainerDropdown } from "./ContainerDropdown.tsx";
+import noop from "lodash/noop";
 
 export type CustomQueryMode = "create-global-query" | "create-custom-query";
 
@@ -32,7 +31,6 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
   const [queryMetadata, setQueryMetadata] = useState(
     defaultCustomQueryMetadata,
   );
-  const [hasMetadataError, setMetadataError] = useState<boolean>();
 
   const [containerName, setContainerName] = useState("");
 
@@ -78,18 +76,7 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
       {createCustomQuery.isError && (
         <Warning>{createCustomQuery.error.message}</Warning>
       )}
-      <div className="">
-        {mode === "create-custom-query" && (
-          <DeprecatedButton
-            onClick={() => setMode("create-global-query")}
-            secondary
-            className="pr-5"
-          >
-            <Back className="mr-2" />
-            Edit query
-          </DeprecatedButton>
-        )}
-      </div>
+
       {mode === "create-global-query" && (
         <>
           <NewCustomQueryPreviewEditor
@@ -101,20 +88,22 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
       )}
       {mode === "create-custom-query" && (
         <>
+          <div className="flex justify-between w-full my-8 mx-auto">
+            <ContainerDropdown
+              selected={containerName}
+              disabled={true}
+              onSelect={noop}
+            />
+          </div>
           <NewCustomQueryMetadataAndTemplateEditor
             metadata={queryMetadata}
-            onChangeMetadata={setQueryMetadata}
-            onMetadataError={() => setMetadataError(true)}
-            onClearMetadataError={() => setMetadataError(false)}
+            onChangeMetadata={(m) => {
+              console.log(NewCustomQueryEditor.name, "onChangeMetadata", m);
+              setQueryMetadata(m);
+            }}
+            handleSubmitSave={handleSubmitSave}
+            handleCancel={() => setMode("create-global-query")}
           />
-          <DeprecatedButton
-            onClick={handleSubmitSave}
-            className="ml-3 pl-5"
-            disabled={hasMetadataError}
-          >
-            Save
-            <Next className="ml-2" />
-          </DeprecatedButton>
         </>
       )}
     </>

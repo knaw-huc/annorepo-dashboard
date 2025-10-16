@@ -6,6 +6,7 @@ import { QR } from "../../client/query/QR.tsx";
 
 export function ContainerDropdown(props: {
   selected: string;
+  disabled?: boolean;
   onSelect: (containerName: string) => void;
 }) {
   const { selected, onSelect } = props;
@@ -23,6 +24,7 @@ export function ContainerDropdown(props: {
         selectedValue={selected}
         options={containerNames.map((key) => ({ label: key, value: key }))}
         onSelect={(option) => onSelect(option.value)}
+        disabled={props.disabled}
       />
     </div>
   );
