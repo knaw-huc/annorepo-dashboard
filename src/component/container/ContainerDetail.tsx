@@ -129,11 +129,9 @@ export function ContainerDetail(props: ContainerDetailProps) {
             </button>
           )}
           <div>
-            <input
-              type="text"
-              className="border border-neutral-200 p-1 rounded-sm placeholder:italic text-sm max-w-32"
-              placeholder="Filter"
-            />
+            <NeutralButton onClick={props.onSearchAnnotations}>
+              Search
+            </NeutralButton>
           </div>
         </div>
       </div>

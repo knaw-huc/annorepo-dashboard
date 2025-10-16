@@ -86,7 +86,7 @@ export function NewCustomQueryPreviewEditor(props: {
 
       {containerName && (
         <>
-          <div className="mt-7">
+          <div className="my-8">
             <QueryEditor containerName={containerName} />
             <div className="mb-2">
               <AddSubqueryDropdownMenu
