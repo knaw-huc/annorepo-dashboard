@@ -9,9 +9,6 @@ import { getOrThrow } from "../../store/query/util/path/getOrThrow.ts";
 import { LogicalSubqueryEditor } from "../common/search/LogicalSubqueryEditor.tsx";
 import { formsPropPath } from "../../store/query/formsPropPath.ts";
 import { CustomComparisonSubqueryEditor } from "./CustomComparisonSubqueryEditor.tsx";
-import { CheckboxWithLabel } from "../common/form/CheckboxWithLabel.tsx";
-import { Tooltip } from "../common/Tooltip.tsx";
-import { Help } from "../common/icon/Help.tsx";
 
 export function CustomSubqueriesTemplateEditor(props: {
   path: PropertyName[];
@@ -40,25 +37,10 @@ export function CustomSubqueriesTemplateEditor(props: {
           );
         } else if (isComparisonSubquery(subquery)) {
           return (
-            <div key={subqueryPath.join()} className="flex items-center">
-              <CustomComparisonSubqueryEditor
-                path={subqueryPath}
-                isCall={false}
-              />
-              <div className="ml-4">
-                <CheckboxWithLabel
-                  label={
-                    <Tooltip text="Search with a variable parameter, or use a fixed value">
-                      Parameter <Help />
-                    </Tooltip>
-                  }
-                  value={subquery.param !== false}
-                  onChange={(update) =>
-                    props.onParameterChange(subqueryPath, update)
-                  }
-                />
-              </div>
-            </div>
+            <CustomComparisonSubqueryEditor
+              path={subqueryPath}
+              isCall={false}
+            />
           );
         } else {
           throw new Error(`Unexpected subquery: ${JSON.stringify(subquery)}`);
