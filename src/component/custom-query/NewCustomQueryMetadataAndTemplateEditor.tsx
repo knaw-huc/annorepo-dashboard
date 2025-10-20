@@ -2,7 +2,7 @@ import { ArCustomQueryForm } from "../../model/ArModel.ts";
 import { H2 } from "../common/H2.tsx";
 import { CustomQueryMetadataEditor } from "./CustomQueryMetadataEditor.tsx";
 import { useEffect, useState } from "react";
-import { isEmpty, PropertyName } from "lodash";
+import { isEmpty, PropertyName, values } from "lodash";
 import { toErrorRecord } from "../../store/query/util/error/toErrorRecord.ts";
 import { hasError } from "../../store/query/util/error/hasError.ts";
 import { useStore } from "../../store/useStore.ts";
@@ -23,14 +23,12 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
   handleSubmitSave: () => void;
   handleCancel: () => void;
 }) {
-  const { metadata } = props;
-  const [hasMetadataError, setMetadataError] = useState<boolean>();
+  const { metadata, onChangeMetadata } = props;
 
   const { subqueries, updateComparisonSubquery } = useStore();
-
-  const [metadataForm, setMetadataForm] =
-    useState<CustomQueryMetadataForm>(metadata);
+  const [metadataForm, setMetadataForm] = useState(metadata);
   const [metadataErrors, setMetadataErrors] = useState(toErrorRecord(metadata));
+  const [hasMetadataError, setMetadataError] = useState<boolean>();
 
   function handleParameterChange(path: PropertyName[], isParam: boolean) {
     const form = getOrThrow(subqueries, path).form;
@@ -44,13 +42,12 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
 
   const handleChangeMetadata = (update: CustomQueryMetadataForm) => {
     setMetadataForm(update);
-    const hasErrors = Object.values(metadataErrors).some(
-      (field) => !isEmpty(field),
-    );
+    const hasErrors = values(metadataErrors).some((field) => !isEmpty(field));
     if (!hasErrors) {
-      props.onChangeMetadata(update);
+      onChangeMetadata(update);
     }
   };
+
   const { setSecondColumn } = usePageLayout();
   useEffect(() => {
     setSecondColumn(
@@ -66,7 +63,6 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
           <div>
             <NeutralButton
               onClick={props.handleSubmitSave}
-              className=""
               disabled={hasMetadataError}
             >
               Save
@@ -85,7 +81,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
       </div>,
     );
     return () => setSecondColumn(null);
-  }, []);
+  }, [metadataForm, metadataErrors]);
 
   return (
     <>

@@ -48,7 +48,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   useEffect(() => {
     setSecondColumn(<ContainerAnnotationFields name={name} />);
     return () => setSecondColumn(null);
-  }, [name, setSecondColumn]);
+  }, [name]);
 
   const handleChangePage = (update: number) => {
     setPageNo(update);
