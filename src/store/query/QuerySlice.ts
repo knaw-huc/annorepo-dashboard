@@ -29,18 +29,19 @@ export const createQuerySlice: SliceCreator<QuerySlice> = (set) => {
   return {
     subqueries: [],
 
-    setQueryState: (update: QueryState) => set(() => ({ ...update })),
-    addSubquery: (update) => set((prev) => addSubquery(update, prev)),
+    setQueryState: (update: QueryState) => logSet(() => ({ ...update })),
+    addSubquery: (update) => logSet((prev) => addSubquery(update, prev)),
     removeSubquery: (toRemove) => set((prev) => removeSubquery(toRemove, prev)),
     updateComparisonSubquery: (update) =>
       set((prev) => updateComparisonSubquery(update, prev)),
-    initWithQuery: (query) => set(() => initWithQuery(query)),
+    initWithQuery: (query) => logSet(() => initWithQuery(query)),
     initWithTemplate: (query, params) =>
-      set(() => initWithTemplate(query, params)),
+      logSet(() => initWithTemplate(query, params)),
   };
 
-  // @ts-expect-error: for debug purpose
-  // eslint-disable-next-line
+  /**
+   * @ts-expect-error use when debugging
+   */
   function logSet(mutator: (state: QueryState) => QueryState) {
     set((prev) => {
       const next = mutator(prev);

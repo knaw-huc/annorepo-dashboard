@@ -10,10 +10,7 @@ import { Warning } from "../common/Warning.tsx";
 import { useSearchQuery } from "../../store/query/hook/useSearchQuery.ts";
 import { useStore } from "../../store/useStore.ts";
 import { MR } from "../../client/query/MR.tsx";
-import {
-  defaultParams,
-  defaultTemplate,
-} from "../../model/query/defaultQuery.ts";
+import { defaultTemplate } from "../../model/query/defaultQuery.ts";
 import { defaultCustomQueryMetadata } from "./defaultCustomQueryMetadata.ts";
 import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import noop from "lodash/noop";
@@ -35,7 +32,7 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
   const [containerName, setContainerName] = useState("");
 
   useEffect(() => {
-    initWithTemplate(defaultTemplate, defaultParams);
+    initWithTemplate(defaultTemplate, ["field"]);
   }, []);
 
   const createCustomQuery: MR<ArCustomQueryForm> = usePost(
@@ -97,10 +94,7 @@ export function NewCustomQueryEditor(props: { onClose: () => void }) {
           </div>
           <NewCustomQueryMetadataAndTemplateEditor
             metadata={queryMetadata}
-            onChangeMetadata={(m) => {
-              console.log(NewCustomQueryEditor.name, "onChangeMetadata", m);
-              setQueryMetadata(m);
-            }}
+            onChangeMetadata={(m) => setQueryMetadata(m)}
             handleSubmitSave={handleSubmitSave}
             handleCancel={() => setMode("create-global-query")}
           />
