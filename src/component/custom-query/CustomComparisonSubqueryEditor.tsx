@@ -28,39 +28,35 @@ export function CustomComparisonSubqueryEditor(
   });
 
   return (
-    <div className="flex gap-4">
-      <fieldset>
-        <div className="flex mb-3 mt-2">
-          <div className="flex-auto mr-2">
-            <QueryFieldInput
-              value={subquery.form.field}
-              operator={subquery.form.operator}
-              // Disabled and cannot be changed:
-              onChange={noop}
-              suggestions={[]}
-              disabled={true}
-            />
-          </div>
-          <div className="flex-none mr-2">
-            <DropdownSelector
-              label="Operator"
-              selectedValue={operatorValue}
-              selectClassName="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20"
-              options={[{ label: operatorValue, value: operatorValue }]}
-              onSelect={noop}
-              disabled={true}
-            />
-          </div>
-          <div className="flex-auto mr-2">
-            <QueryValueInput
-              suggestions={valueSuggestions}
-              path={path}
-              isCustom={true}
-              isCall={isCall}
-            />
-          </div>
-        </div>
-      </fieldset>
-    </div>
+    <fieldset className="flex flex-auto gap-4">
+      <div className="flex-auto mr-2">
+        <QueryFieldInput
+          value={subquery.form.field}
+          operator={subquery.form.operator}
+          // Disabled and cannot be changed:
+          onChange={noop}
+          suggestions={[]}
+          disabled={true}
+        />
+      </div>
+      <div className="flex-none mr-2">
+        <DropdownSelector
+          label="Operator"
+          selectedValue={operatorValue}
+          selectClassName="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20"
+          options={[{ label: operatorValue, value: operatorValue }]}
+          onSelect={noop}
+          disabled={true}
+        />
+      </div>
+      <div className="flex-auto mr-2">
+        <QueryValueInput
+          suggestions={valueSuggestions}
+          path={path}
+          isCustom={true}
+          isCall={isCall}
+        />
+      </div>
+    </fieldset>
   );
 }
