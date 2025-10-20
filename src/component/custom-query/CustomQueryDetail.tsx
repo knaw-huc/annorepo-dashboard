@@ -8,16 +8,13 @@ import {
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { useEffect, useState } from "react";
 import { toCustomQueryParameters } from "./util/toCustomQueryParameters.ts";
-import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 import { toPageNo } from "../../util/toPageNo.ts";
-import { Hint } from "../common/Hint.tsx";
 import { Pipe } from "../common/Pipe.tsx";
 import { useStore } from "../../store/useStore.ts";
 import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { A } from "../common/A.tsx";
 import { External } from "../common/icon/External.tsx";
-import { Remove } from "../common/icon/Remove.tsx";
 import { isOidcUser } from "../../model/user/User.ts";
 import { keyEquals } from "../../client/query/useGet.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
@@ -25,6 +22,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Warning } from "../common/Warning.tsx";
 import { isEqual } from "lodash";
 import { useDebouncedCall } from "../../util/useDebouncedCall.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function CustomQueryDetail(props: {
   name: string;
@@ -121,17 +119,16 @@ export function CustomQueryDetail(props: {
   const createdBy = customQuery.data.createdBy;
   return (
     <>
-      <H1>
-        {customQueryName} <Hint>Custom query</Hint>
-      </H1>
-      {canDelete && (
-        <DeprecatedButton onClick={handleRemove} className="mr-2">
-          Delete
-          <Remove className="ml-1" />
-        </DeprecatedButton>
-      )}
+      <div className="flex justify-between w-full my-8 mx-auto max-w-7xl">
+        <H1>{customQueryName}</H1>
+        {canDelete && (
+          <NeutralButton onClick={handleRemove} className="mr-2">
+            Delete
+          </NeutralButton>
+        )}
+      </div>
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
-      <p className="text-sm mt-5 mb-3">
+      <p className="mt-5 mb-3">
         {customQuery.data.public ? "Public" : "Private"}
         <Pipe />
         <span>Label: {customQuery.data.label}</span>
@@ -148,7 +145,7 @@ export function CustomQueryDetail(props: {
         <Pipe />
         <A
           href={`${selectedHost}/global/custom-query/${customQuery.data.name}`}
-          className="font-bold"
+          className="font-bold no-underline"
         >
           View source
           <External className="ml-1" />
@@ -161,13 +158,21 @@ export function CustomQueryDetail(props: {
           onSelect={setContainerName}
         />
       </div>
-      {customQueryCall.isError && (
-        <StatusMessage name="custom query call" requests={[customQueryCall]} />
-      )}
-      {containerName && <CustomQueryCallEditor containerName={containerName} />}
+      <div className="mt-4">
+        {customQueryCall.isError && (
+          <StatusMessage
+            name="custom query call"
+            requests={[customQueryCall]}
+          />
+        )}
+        {containerName && (
+          <CustomQueryCallEditor containerName={containerName} />
+        )}
+      </div>
       <div className="max-w-[100vw] whitespace-pre-wrap">
         {customQueryCall.isSuccess && (
           <AnnotationPage
+            className="mt-4"
             pageNo={pageNo}
             page={customQueryCall.data}
             onChangePageNo={handleChangePage}
