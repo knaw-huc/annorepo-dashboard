@@ -4,7 +4,7 @@ import { Fragment, PropsWithChildren, ReactNode } from "react";
 
 export function BreadcrumbNav(props: { breadcrumbs: ReactNode[] }) {
   return (
-    <div className="flex gap-2 *:no-underline xl:my-10">
+    <div className="flex gap-2 *:no-underline">
       {props.breadcrumbs.map((breadcrumb, i) => {
         const isLast = i === props.breadcrumbs.length - 1;
         return (

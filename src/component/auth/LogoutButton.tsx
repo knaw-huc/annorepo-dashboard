@@ -10,5 +10,9 @@ export function LogoutButton() {
     window.location.href = `${config.AUTH_HOST.proxyUrl}/oidc/logout?next=${next}`;
   }
 
-  return <NeutralButton onClick={handleLogout}>Log out</NeutralButton>;
+  return (
+    <NeutralButton className="ml-3" onClick={handleLogout}>
+      Log out
+    </NeutralButton>
+  );
 }

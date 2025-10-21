@@ -26,7 +26,9 @@ export function AuthStatusBadge(props: { openLogin: () => void }) {
           Not logged in
           {!!authMethods.length && (
             <>
-              <NeutralButton onClick={props.openLogin}>Login</NeutralButton>
+              <NeutralButton className="p-0" onClick={props.openLogin}>
+                Login
+              </NeutralButton>
             </>
           )}
         </>

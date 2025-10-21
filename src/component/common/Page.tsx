@@ -19,6 +19,7 @@ export function Page(
   return (
     <PageLayoutContext.Provider value={{ setSecondColumn }}>
       <div className="flex flex-col xl:flex-row w-full min-h-screen">
+        {/* Left menu */}
         <aside className="bg-stone-100 w-full xl:max-w-80 p-8 flex flex-row xl:flex-col gap-8 justify-between xl:justify-start">
           <div className="order-2 xl:order-none">
             <img
@@ -36,25 +37,36 @@ export function Page(
           {hasClient && <AboutStatus />}
           <ChangeHost />
         </aside>
+
         <main className="w-full">
-          <div className="flex">
-            <div className="w-full p-8">
-              <div
-                className={`w-full mx-auto ${secondColumn ? "max-w-5xl" : "max-w-7xl"}`}
-              >
-                <div className="flex justify-between text-sm text-neutral-500">
+          {/* Top menu */}
+          <div className="flex text-sm text-neutral-500  xl:my-10">
+            <div className="MAIN-menu-column w-full">
+              <div className="flex justify-between">
+                <div className="w-full mx-auto max-w-4xl">
                   <BreadcrumbNav
                     breadcrumbs={props.breadcrumbs || [<ToHome />]}
                   />
-                  <div className="flex gap-2 items-center">
-                    {hasClient && <AuthStatus />}
-                  </div>
                 </div>
+              </div>
+            </div>
+
+            <div className="SECOND-column w-full lg:max-w-96  flex flex-col gap-1">
+              <div className="px-8">{hasClient && <AuthStatus />}</div>
+            </div>
+          </div>
+
+          {/* Body */}
+          <div className="flex">
+            <div className="MAIN-column w-full p-8">
+              <div
+                className={`w-full mx-auto ${secondColumn ? "max-w-4xl" : "max-w-7xl"}`}
+              >
                 {props.children}
               </div>
             </div>
             {secondColumn && (
-              <div className="w-full lg:max-w-96  h-full lg:min-h-screen flex flex-col gap-1">
+              <div className="SECOND-column w-full lg:max-w-96  h-full lg:min-h-screen flex flex-col gap-1">
                 {secondColumn}
               </div>
             )}
