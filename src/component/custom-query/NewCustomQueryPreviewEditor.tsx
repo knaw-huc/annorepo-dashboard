@@ -86,7 +86,7 @@ export function NewCustomQueryPreviewEditor(props: {
 
       {containerName && (
         <>
-          <div className="my-8">
+          <div className="flex flex-col gap-4 my-8">
             <QueryEditor containerName={containerName} />
             <div className="my-4">
               <AddSubqueryDropdownMenu

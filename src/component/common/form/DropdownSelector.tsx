@@ -15,7 +15,6 @@ export function DropdownSelector<T extends string>(props: {
   className?: string;
   disabled?: boolean;
   selectClassName?: string;
-  optionClassName?: string;
   groupAt?: GroupPosition;
 }) {
   const { options } = props;
@@ -58,11 +57,7 @@ export function DropdownSelector<T extends string>(props: {
           {props.placeholder ?? "Please select..."}
         </option>
         {options.map((option) => (
-          <option
-            key={`${option.value}`}
-            // className={props.optionClassName}
-            value={option.value}
-          >
+          <option key={`${option.value}`} value={option.value}>
             {option.label}
           </option>
         ))}

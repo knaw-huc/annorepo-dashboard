@@ -82,9 +82,12 @@ export function ComparisonSubqueryEditor(props: ComparisonSubqueryEditorProps) {
   }
 
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="comparison-subquery-editor"
+    >
       <fieldset disabled={disabled}>
-        <div className="flex mb-3 mt-2">
+        <div className="flex">
           <div className="flex-auto mr-2">
             <QueryFieldInput
               value={subquery.form.field}

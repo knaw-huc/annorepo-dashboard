@@ -1,5 +1,6 @@
 import { useContainerFields } from "../../../client/endpoint/useContainerFields.tsx";
 import { SubqueriesEditor } from "./SubqueriesEditor.tsx";
+import { LogicalOperator } from "../../../model/query/operator/Operator.ts";
 
 export function QueryEditor(props: { containerName: string }) {
   const { containerName } = props;
@@ -9,6 +10,7 @@ export function QueryEditor(props: { containerName: string }) {
 
   return (
     <SubqueriesEditor
+      parentOperator={LogicalOperator.and}
       containerName={containerName}
       fieldNames={fieldNames}
       path={[]}

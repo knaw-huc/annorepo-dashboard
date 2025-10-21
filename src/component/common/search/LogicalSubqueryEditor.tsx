@@ -24,11 +24,13 @@ export function LogicalSubqueryEditor<T extends WithPath>(
   const newSubqueryPath = [...path, formsPropPath, subquery.forms.length];
   return (
     <div className="bg-anrep-pink-100/50 p-4 rounded-xl flex flex-col gap-4">
-      <div>
-        <div className="font-bold text-anrep-pink-700">
-          {subquery.operator.toUpperCase().replace(":", "")}
+      {subquery.forms.length < 2 && (
+        <div>
+          {/*<h2 className="font-bold text-anrep-pink-700">*/}
+          {/*  New comparison subqueries can be added to this logical AND*/}
+          {/*</h2>*/}
         </div>
-      </div>
+      )}
       {subquery.queryError && <Warning>{subquery.queryError}</Warning>}
       <>
         {
