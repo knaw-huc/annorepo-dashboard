@@ -4,11 +4,10 @@ import { Warning } from "../Warning.tsx";
 import { formsPropPath } from "../../../store/query/formsPropPath.ts";
 import { PropsWithChildren } from "react";
 import { PropertyName } from "lodash";
-import { NeutralButton } from "../NeutralButton.tsx";
-import { Cross } from "../icon/Cross.tsx";
 import { LogicalOperatorTitle } from "./LogicalOperatorTitle.tsx";
 import { AddSubqueryButtonMenu } from "./AddSubqueryButtonMenu.tsx";
 import { AddSubqueryDropdownMenu } from "./AddSubqueryDropdownMenu.tsx";
+import { RemoveCross } from "./RemoveCross.tsx";
 
 export type WithPath = { path: PropertyName[] };
 
@@ -40,33 +39,21 @@ export function LogicalSubqueryEditor<T extends WithPath>(
         <LogicalOperatorTitle operator={subquery.operator} />
       )}
       {!subquery.forms.length && (
-        <div className="flex">
+        <div className="flex justify-between">
           <AddSubqueryButtonMenu
             path={newSubqueryPath}
             disabled={!!subquery.queryError}
           />
-          <NeutralButton
-            className="ml-2 p-2 cursor-pointer"
-            onClick={handleRemove}
-            borderColor="border-anrep-pink-200"
-          >
-            <Cross />
-          </NeutralButton>
+          <RemoveCross onClick={handleRemove} />
         </div>
       )}
       {!!subquery.forms.length && (
-        <div className="flex">
+        <div className="flex justify-between">
           <AddSubqueryDropdownMenu
             path={newSubqueryPath}
             disabled={!!subquery.queryError}
           />
-          <NeutralButton
-            className="ml-2 p-2 cursor-pointer"
-            onClick={handleRemove}
-            borderColor="border-anrep-pink-200"
-          >
-            <Cross />
-          </NeutralButton>
+          <RemoveCross onClick={handleRemove} />
         </div>
       )}
     </div>
