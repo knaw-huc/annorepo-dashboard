@@ -26,7 +26,7 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="hidden xl:flex flex-col gap-4 text-xs text-stone-500 border-t border-stone-200 pt-8">
+                <div class="hidden xl:flex flex-col gap-4 text-xs text-stone-600 border-t border-stone-200 pt-8">
                     <div class="">AnnoRepo Version: <strong>0.7.8</strong>
                     </div>
                     <div class="">Running since
@@ -60,12 +60,19 @@
 
                             </div>
                             <div class="flex justify-between items-center w-full">
-                                <div class="flex items-center gap-2 bg-anrep-green-100 p-2 rounded-sm ">
-                                    <img src="images/icon-container.png" class="h-4 w-4" alt="">
-                                    <select name="" id="" class="">
-                                        <option value="">Select a container</option>
-                                        <option value="">Amsterdam Time Machine</option>
-                                    </select>
+                                <div class="flex justify-start gap-4 items-center">
+                                    <div class="">
+                                        <div class="flex items-center gap-2 bg-anrep-green-100 p-2 rounded-sm ">
+                                            <img src="images/icon-container.png" class="h-4 w-4" alt="">
+                                            <select name="" id="" class="">
+                                                <option value="">Select a container</option>
+                                                <option value="">Amsterdam Time Machine</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="">
+                                        <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800">Search</button>
+                                    </div>
                                 </div>
                                 <div class="">
                                     <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
@@ -77,7 +84,7 @@
                                     <!-- query form row -->
                                     <div class="flex gap-4">
                                         <div class="flex flex-col gap-1">
-                                            <label for="annotation_field" class="text-sm text-anrep-pink-600 italic">Annotation field</label>
+                                            <label for="annotation_field" class="text-sm text-anrep-pink-700 italic">Annotation field</label>
                                             <select name="annotation_field" id="annotation_field"
                                             class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
                                                 <option value="">body.purpose</option>
@@ -87,7 +94,7 @@
                                             </select>
                                         </div>
                                         <div class="flex flex-col gap-1">
-                                            <label for="operator" class="text-sm text-anrep-pink-600 italic">Operator</label>
+                                            <label for="operator" class="text-sm text-anrep-pink-700 italic">Operator</label>
                                             <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
                                                 <option value="">:&#x3D;</option>
                                                 <option value="">:!&#x3D;</option>
@@ -98,26 +105,22 @@
                                         <div class="flex flex-col gap-2">
                                             <div class="flex">
                                                 <div class="flex flex-col gap-1">
-                                                    <label for="value" class="text-sm text-anrep-pink-600 italic">Value</label>
+                                                    <label for="value" class="text-sm text-anrep-pink-700 italic">Value</label>
                                                     <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
                                                     name="value" id="value">
                                                 </div>
                                                 <div class="flex flex-col gap-1">
-                                                    <label for="type" class="text-sm text-anrep-pink-600 italic">Type</label>
+                                                    <label for="type" class="text-sm text-anrep-pink-700 italic">Type</label>
                                                     <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
                                                         <option value="">string</option>
                                                         <option value="">number</option>
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="flex justify-between">
-                                                <div class="flex items-center gap-1 invisible">
-                                                    <input type="checkbox" name="" id="">
-                                                    <label for="" class="text-anrep-pink-800 text-xs italic">Make value editable</label>
-                                                </div>
-                                                <div class="">
-                                                    <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800">
-                                                        <option value="">Add</option>
+                                            <div class="flex justify-end">
+                                                <div class="flex">
+                                                    <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3  cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800 text-xl w-16">
+                                                        <option value="" class="text-3xl">+</option>
                                                         <option value="">Subquery</option>
                                                         <option value="">AND</option>
                                                         <option value="">ORR</option>
@@ -149,7 +152,7 @@
                                         <!-- query form row -->
                                         <div class="flex gap-4">
                                             <div class="flex flex-col gap-1">
-                                                <label for="annotation_field" class="text-sm text-anrep-pink-600 italic">Annotation field</label>
+                                                <label for="annotation_field" class="text-sm text-anrep-pink-700 italic">Annotation field</label>
                                                 <select name="annotation_field" id="annotation_field"
                                                 class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
                                                     <option value="">body.purpose</option>
@@ -159,7 +162,7 @@
                                                 </select>
                                             </div>
                                             <div class="flex flex-col gap-1">
-                                                <label for="operator" class="text-sm text-anrep-pink-600 italic">Operator</label>
+                                                <label for="operator" class="text-sm text-anrep-pink-700 italic">Operator</label>
                                                 <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
                                                     <option value="">:&#x3D;</option>
                                                     <option value="">:!&#x3D;</option>
@@ -170,26 +173,22 @@
                                             <div class="flex flex-col gap-2">
                                                 <div class="flex">
                                                     <div class="flex flex-col gap-1">
-                                                        <label for="value" class="text-sm text-anrep-pink-600 italic">Value</label>
+                                                        <label for="value" class="text-sm text-anrep-pink-700 italic">Value</label>
                                                         <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
                                                         name="value" id="value">
                                                     </div>
                                                     <div class="flex flex-col gap-1">
-                                                        <label for="type" class="text-sm text-anrep-pink-600 italic">Type</label>
+                                                        <label for="type" class="text-sm text-anrep-pink-700 italic">Type</label>
                                                         <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
                                                             <option value="">string</option>
                                                             <option value="">number</option>
                                                         </select>
                                                     </div>
                                                 </div>
-                                                <div class="flex justify-between">
-                                                    <div class="flex items-center gap-1 invisible">
-                                                        <input type="checkbox" name="" id="">
-                                                        <label for="" class="text-anrep-pink-800 text-xs italic">Make value editable</label>
-                                                    </div>
-                                                    <div class="">
-                                                        <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800">
-                                                            <option value="">Add</option>
+                                                <div class="flex justify-end">
+                                                    <div class="flex">
+                                                        <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3  cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800 text-xl w-16">
+                                                            <option value="" class="text-3xl">+</option>
                                                             <option value="">Subquery</option>
                                                             <option value="">AND</option>
                                                             <option value="">ORR</option>
@@ -222,7 +221,7 @@
                                             <!-- query form row -->
                                             <div class="flex gap-4">
                                                 <div class="flex flex-col gap-1">
-                                                    <label for="annotation_field" class="text-sm text-anrep-pink-600 italic">Annotation field</label>
+                                                    <label for="annotation_field" class="text-sm text-anrep-pink-700 italic">Annotation field</label>
                                                     <select name="annotation_field" id="annotation_field"
                                                     class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
                                                         <option value="">body.purpose</option>
@@ -232,7 +231,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="flex flex-col gap-1">
-                                                    <label for="operator" class="text-sm text-anrep-pink-600 italic">Operator</label>
+                                                    <label for="operator" class="text-sm text-anrep-pink-700 italic">Operator</label>
                                                     <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
                                                         <option value="">:&#x3D;</option>
                                                         <option value="">:!&#x3D;</option>
@@ -243,26 +242,138 @@
                                                 <div class="flex flex-col gap-2">
                                                     <div class="flex">
                                                         <div class="flex flex-col gap-1">
-                                                            <label for="value" class="text-sm text-anrep-pink-600 italic">Value</label>
+                                                            <label for="value" class="text-sm text-anrep-pink-700 italic">Value</label>
                                                             <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
                                                             name="value" id="value">
                                                         </div>
                                                         <div class="flex flex-col gap-1">
-                                                            <label for="type" class="text-sm text-anrep-pink-600 italic">Type</label>
+                                                            <label for="type" class="text-sm text-anrep-pink-700 italic">Type</label>
                                                             <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
                                                                 <option value="">string</option>
                                                                 <option value="">number</option>
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="flex justify-between">
-                                                        <div class="flex items-center gap-1 ">
-                                                            <input type="checkbox" name="" id="">
-                                                            <label for="" class="text-anrep-pink-800 text-xs italic">Make value editable</label>
+                                                    <div class="flex justify-end">
+                                                        <div class="hidden">
+                                                            <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3  cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800 text-xl w-16">
+                                                                <option value="" class="text-3xl">+</option>
+                                                                <option value="">Subquery</option>
+                                                                <option value="">AND</option>
+                                                                <option value="">ORR</option>
+                                                            </select>
                                                         </div>
-                                                        <div class="">
-                                                            <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800">
-                                                                <option value="">Add</option>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-end">
+                                                    <button class="p-2 cursor-pointer mb-8">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                        class="w-5 h-5 fill-red-700">
+                                                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                                                            clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- query form row END -->
+                                            <!-- query form row -->
+                                            <div class="flex gap-4">
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="annotation_field" class="text-sm text-anrep-pink-700 italic">Annotation field</label>
+                                                    <select name="annotation_field" id="annotation_field"
+                                                    class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                        <option value="">body.purpose</option>
+                                                        <option value="">body.type</option>
+                                                        <option value="">body.value</option>
+                                                        <option value="">target</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="operator" class="text-sm text-anrep-pink-700 italic">Operator</label>
+                                                    <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
+                                                        <option value="">:&#x3D;</option>
+                                                        <option value="">:!&#x3D;</option>
+                                                        <option value="">:&lt;</option>
+                                                        <option value="">:&lt;&#x3D;</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col gap-2">
+                                                    <div class="flex">
+                                                        <div class="flex flex-col gap-1">
+                                                            <label for="value" class="text-sm text-anrep-pink-700 italic">Value</label>
+                                                            <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
+                                                            name="value" id="value">
+                                                        </div>
+                                                        <div class="flex flex-col gap-1">
+                                                            <label for="type" class="text-sm text-anrep-pink-700 italic">Type</label>
+                                                            <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                                <option value="">string</option>
+                                                                <option value="">number</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-end">
+                                                        <div class="hidden">
+                                                            <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3  cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800 text-xl w-16">
+                                                                <option value="" class="text-3xl">+</option>
+                                                                <option value="">Subquery</option>
+                                                                <option value="">AND</option>
+                                                                <option value="">ORR</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="flex items-end">
+                                                    <button class="p-2 cursor-pointer mb-8">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                                                        class="w-5 h-5 fill-red-700">
+                                                            <path fill-rule="evenodd" d="M5.47 5.47a.75.75 0 011.06 0L12 10.94l5.47-5.47a.75.75 0 111.06 1.06L13.06 12l5.47 5.47a.75.75 0 11-1.06 1.06L12 13.06l-5.47 5.47a.75.75 0 01-1.06-1.06L10.94 12 5.47 6.53a.75.75 0 010-1.06z"
+                                                            clip-rule="evenodd" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            </div>
+                                            <!-- query form row END -->
+                                            <!-- query form row -->
+                                            <div class="flex gap-4">
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="annotation_field" class="text-sm text-anrep-pink-700 italic">Annotation field</label>
+                                                    <select name="annotation_field" id="annotation_field"
+                                                    class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                        <option value="">body.purpose</option>
+                                                        <option value="">body.type</option>
+                                                        <option value="">body.value</option>
+                                                        <option value="">target</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col gap-1">
+                                                    <label for="operator" class="text-sm text-anrep-pink-700 italic">Operator</label>
+                                                    <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
+                                                        <option value="">:&#x3D;</option>
+                                                        <option value="">:!&#x3D;</option>
+                                                        <option value="">:&lt;</option>
+                                                        <option value="">:&lt;&#x3D;</option>
+                                                    </select>
+                                                </div>
+                                                <div class="flex flex-col gap-2">
+                                                    <div class="flex">
+                                                        <div class="flex flex-col gap-1">
+                                                            <label for="value" class="text-sm text-anrep-pink-700 italic">Value</label>
+                                                            <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
+                                                            name="value" id="value">
+                                                        </div>
+                                                        <div class="flex flex-col gap-1">
+                                                            <label for="type" class="text-sm text-anrep-pink-700 italic">Type</label>
+                                                            <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
+                                                                <option value="">string</option>
+                                                                <option value="">number</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex justify-end">
+                                                        <div class="flex">
+                                                            <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3  cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800 text-xl w-16">
+                                                                <option value="" class="text-3xl">+</option>
                                                                 <option value="">Subquery</option>
                                                                 <option value="">AND</option>
                                                                 <option value="">ORR</option>
@@ -285,7 +396,7 @@
                                             <!-- query form row -->
                                             <div class="flex gap-4">
                                                 <div class="flex flex-col gap-1">
-                                                    <label for="annotation_field" class="text-sm text-anrep-pink-600 italic">Annotation field</label>
+                                                    <label for="annotation_field" class="text-sm text-anrep-pink-700 italic">Annotation field</label>
                                                     <select name="annotation_field" id="annotation_field"
                                                     class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
                                                         <option value="">body.purpose</option>
@@ -295,7 +406,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="flex flex-col gap-1">
-                                                    <label for="operator" class="text-sm text-anrep-pink-600 italic">Operator</label>
+                                                    <label for="operator" class="text-sm text-anrep-pink-700 italic">Operator</label>
                                                     <select name="operator" id="operator" class="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20">
                                                         <option value="">:&#x3D;</option>
                                                         <option value="">:!&#x3D;</option>
@@ -306,26 +417,22 @@
                                                 <div class="flex flex-col gap-2">
                                                     <div class="flex">
                                                         <div class="flex flex-col gap-1">
-                                                            <label for="value" class="text-sm text-anrep-pink-600 italic">Value</label>
+                                                            <label for="value" class="text-sm text-anrep-pink-700 italic">Value</label>
                                                             <input type="text" class="rounded-l bg-white border border-r-0 border-anrep-pink-300 px-2 py-1 text-sm h-8 min-w-40"
                                                             name="value" id="value">
                                                         </div>
                                                         <div class="flex flex-col gap-1">
-                                                            <label for="type" class="text-sm text-anrep-pink-600 italic">Type</label>
+                                                            <label for="type" class="text-sm text-anrep-pink-700 italic">Type</label>
                                                             <select name="type" id="type" class="rounded-r bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  ">
                                                                 <option value="">string</option>
                                                                 <option value="">number</option>
                                                             </select>
                                                         </div>
                                                     </div>
-                                                    <div class="flex justify-between">
-                                                        <div class="flex items-center gap-1 invisible">
-                                                            <input type="checkbox" name="" id="">
-                                                            <label for="" class="text-anrep-pink-800 text-xs italic">Make value editable</label>
-                                                        </div>
-                                                        <div class="">
-                                                            <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800">
-                                                                <option value="">Add</option>
+                                                    <div class="flex justify-end">
+                                                        <div class="flex">
+                                                            <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3  cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800 text-xl w-16">
+                                                                <option value="" class="text-3xl">+</option>
                                                                 <option value="">Subquery</option>
                                                                 <option value="">AND</option>
                                                                 <option value="">ORR</option>
@@ -345,10 +452,28 @@
                                             </div>
                                             <!-- query form row END -->
                                         </div>
+                                        <div class="flex justify-start">
+                                            <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3  cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800 text-xl w-16">
+                                                <option value="" class="text-3xl">+</option>
+                                                <option value="">Subquery</option>
+                                                <option value="">AND</option>
+                                                <option value="">ORR</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="flex justify-start">
+                                        <select name="" id="" class="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3  cursor-pointer hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800 text-xl w-16">
+                                            <option value="" class="text-3xl">+</option>
+                                            <option value="">Subquery</option>
+                                            <option value="">AND</option>
+                                            <option value="">ORR</option>
+                                        </select>
                                     </div>
                                 </div>
                             </div>
-                            <div class="my-8">Results
+                            <div class="my-8">
+                                 <h2 class="mb-4">Results</h2>
+
                                 <div class="flex flex-col gap-3"> <a href="02-containter-detail.html" class="bg-anrep-blue-50 w-full text-anrep-blue-800 rounded no-underline">
                                 
                                     <div class="flex justify-between items-center border-b border-anrep-blue-100">

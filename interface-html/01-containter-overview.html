@@ -26,7 +26,7 @@
                         </ul>
                     </nav>
                 </div>
-                <div class="hidden xl:flex flex-col gap-4 text-xs text-stone-500 border-t border-stone-200 pt-8">
+                <div class="hidden xl:flex flex-col gap-4 text-xs text-stone-600 border-t border-stone-200 pt-8">
                     <div class="">AnnoRepo Version: <strong>0.7.8</strong>
                     </div>
                     <div class="">Running since
@@ -65,12 +65,12 @@
                                         <h2 class="text-anrep-green-900">Amsterdam Time Machine</h2>
                                         <div class=""><img src="images/icon-container.png" class="h-4 w-4" alt="" ></div>
                                     </div>
-                                    <div class="text-anrep-green-700 text-sm">AMS-tm</div>
+                                    <div class="text-anrep-green-800 text-sm">AMS-tm</div>
                                 </div>
                                 <div class="bg-anrep-blue-50 flex justify-between p-4 rounded-b text-anrep-blue-700">
                                     <div class="">Annotations</div>
                                     <div class="flex gap-1 items-center">
-                                        4
+                                        10
                                         <img src="images/icon-annotation.png" class="h-4 w-4" alt="" >
                                     </div>
                                 </div>
@@ -81,12 +81,12 @@
                                         <h2 class="text-anrep-green-900">Amsterdam Time Machine 2</h2>
                                         <div class=""><img src="images/icon-container.png" class="h-4 w-4" alt="" ></div>
                                     </div>
-                                    <div class="text-anrep-green-700 text-sm">AMS-tm-2</div>
+                                    <div class="text-anrep-green-800 text-sm">AMS-tm-2</div>
                                 </div>
                                 <div class="bg-anrep-blue-50 flex justify-between p-4 rounded-b text-anrep-blue-700">
                                     <div class="">Annotations</div>
                                     <div class="flex gap-1 items-center">
-                                        6
+                                        30
                                         <img src="images/icon-annotation.png" class="h-4 w-4" alt="" >
                                     </div>
                                 </div>
@@ -97,12 +97,12 @@
                                         <h2 class="text-anrep-green-900">Amsterdam Time Machine</h2>
                                         <div class=""><img src="images/icon-container.png" class="h-4 w-4" alt="" ></div>
                                     </div>
-                                    <div class="text-anrep-green-700 text-sm">AMS-tm</div>
+                                    <div class="text-anrep-green-800 text-sm">AMS-tm</div>
                                 </div>
                                 <div class="bg-anrep-blue-50 flex justify-between p-4 rounded-b text-anrep-blue-700">
                                     <div class="">Annotations</div>
                                     <div class="flex gap-1 items-center">
-                                        19
+                                        27
                                         <img src="images/icon-annotation.png" class="h-4 w-4" alt="" >
                                     </div>
                                 </div>
@@ -113,12 +113,12 @@
                                         <h2 class="text-anrep-green-900">Amsterdam Time Machine 2</h2>
                                         <div class=""><img src="images/icon-container.png" class="h-4 w-4" alt="" ></div>
                                     </div>
-                                    <div class="text-anrep-green-700 text-sm">AMS-tm-2</div>
+                                    <div class="text-anrep-green-800 text-sm">AMS-tm-2</div>
                                 </div>
                                 <div class="bg-anrep-blue-50 flex justify-between p-4 rounded-b text-anrep-blue-700">
                                     <div class="">Annotations</div>
                                     <div class="flex gap-1 items-center">
-                                        13
+                                        20
                                         <img src="images/icon-annotation.png" class="h-4 w-4" alt="" >
                                     </div>
                                 </div>
@@ -128,6 +128,32 @@
                     </div>
                 </div>
             </main>
+        </div>
+        <div class="hidden absolute top-0 bottom-0 left-0 right-0 bg-anrep-blue-900/80 flex-col justify-center">
+            <dialog class="flex flex-col w-full max-w-xl min-h-60 p-6 rounded mx-auto gap-8">
+                <div class="flex justify-between items-center">
+                    <div class="">
+                        <h2>Login</h2>
+                    </div>
+                    <div class="">
+                        <button class="bg-anrep-pink-100 rounded p-2">&#10006;</button>
+                    </div>
+                </div>
+                <div class="flex gap-6 *:w-1/3 text-anrep-pink-600 *:cursor-pointer">
+                    <button class="grow bg-anrep-pink-100 rounded p-4 flex flex-col">
+                        <div class="font-bold text-anrep-pink-900">With OIDC</div>
+                        <div class="text-sm">You need a .. account to login with OIDC</div>
+                    </button>
+                    <button class="grow bg-anrep-pink-100 rounded p-4  flex flex-col">
+                        <div class="font-bold text-anrep-pink-900">With a token</div>
+                        <div class="text-sm">You need a .. to login with a token</div>
+                    </button>
+                    <button class="grow bg-anrep-pink-100 rounded p-4  flex flex-col">
+                        <div class="font-bold text-anrep-pink-900">As a guest</div>
+                        <div class="text-sm">You need an account but some features are not available.</div>
+                    </button>
+                </div>
+            </dialog>
         </div>
     </body>
 
