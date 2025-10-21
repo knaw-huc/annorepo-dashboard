@@ -1,4 +1,4 @@
-import { useDebounceValue } from "../../../util/useDebounceValue.tsx";
+import { useDebouncedValue } from "../../../util/useDebouncedValue.tsx";
 import { useContainerFieldDistinctValues } from "../../../client/endpoint/useContainerFieldDistinctValues.tsx";
 import { filterSuggestions } from "../form/util/filterSuggestions.tsx";
 import { QueryValue } from "../../../model/query/value/QueryValue.ts";
@@ -10,7 +10,7 @@ export function useValueSuggestions<T = QueryValue>(props: {
   value: T;
 }): SelectOption<T>[] {
   const { field, value, containerName } = props;
-  const fieldDebounced = useDebounceValue(field);
+  const fieldDebounced = useDebouncedValue(field);
   const distinctValues = useContainerFieldDistinctValues(
     containerName ?? "",
     fieldDebounced,
