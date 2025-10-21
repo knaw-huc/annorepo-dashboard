@@ -1,6 +1,6 @@
 import { LogicalOperator } from "../../../model/query/operator/Operator.ts";
 
-const operatorToLabel: Record<LogicalOperator, string> = {
+export const operatorToLabel: Record<LogicalOperator, string> = {
   [LogicalOperator.and]: "AND",
   [LogicalOperator.or]: "OR",
 };
