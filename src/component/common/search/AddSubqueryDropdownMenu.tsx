@@ -22,9 +22,10 @@ export function AddSubqueryDropdownMenu(props: {
   return (
     <DropdownSelector
       disabled={disabled}
-      placeholder="Add"
-      selectClassName="bg-neutral-100 rounded-full border border-anrep-pink-200 px-3 py-1 text-sm hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800"
+      placeholder="+"
+      selectClassName="bg-neutral-100 rounded-full border-anrep-pink-200 px-3 hover:bg-neutral-50 hover:border-anrep-pink-300 transition text-neutral-800 text-xl w-16"
       options={options}
+      optionClassName="text-3xl"
       onSelect={(o) => {
         if (o.value === "subquery") {
           addComparisonSubquery(path, true);

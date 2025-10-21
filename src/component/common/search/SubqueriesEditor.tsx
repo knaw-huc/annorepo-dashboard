@@ -18,7 +18,7 @@ export function SubqueriesEditor(props: ComparisonSubqueryEditorProps) {
   const subqueries: Subquery[] = getOrThrow(all, path);
 
   return (
-    <div>
+    <>
       {subqueries.map((_, i) => {
         const subqueryPath = [...path, i];
         const subquery = subqueries[i];
@@ -50,6 +50,6 @@ export function SubqueriesEditor(props: ComparisonSubqueryEditorProps) {
           throw new Error(`Unexpected subquery: ${JSON.stringify(subquery)}`);
         }
       })}
-    </div>
+    </>
   );
 }
