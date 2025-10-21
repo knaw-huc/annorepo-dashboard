@@ -18,6 +18,9 @@ export function LogicalSubqueryEditor<T extends WithPath>(
   const subquery = getLogicalSubquery(subqueries, path);
 
   const handleRemove = () => {
+    if (!window.confirm("Remove subquery?")) {
+      return;
+    }
     removeSubquery(path);
   };
 
