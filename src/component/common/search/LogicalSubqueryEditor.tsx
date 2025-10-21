@@ -36,7 +36,7 @@ export function LogicalSubqueryEditor<T extends WithPath>(
           props.children
         }
       </>
-      <div className="flex mt-4">
+      <div className="flex">
         <AddSubqueryDropdownMenu
           path={newSubqueryPath}
           disabled={!!subquery.queryError}

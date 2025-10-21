@@ -16,10 +16,10 @@ import { hashIncludes } from "../../client/query/useGet.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { Checkbox } from "../common/Checkbox.tsx";
 import { useStore } from "../../store/useStore.ts";
-import { orThrow } from "../../util/orThrow.ts";
 import { Badge } from "./Badge.tsx";
 
 import { AnnotationButton } from "./AnnotationButton.tsx";
+import { orThrow } from "../../util/orThrow.ts";
 
 type PathValue = { path: string; value: string };
 

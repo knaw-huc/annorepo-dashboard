@@ -3,6 +3,8 @@ import { PageNavigation } from "../common/PageNavigation.tsx";
 import { AnnotationCard } from "./AnnotationCard.tsx";
 import { SelectionStatus } from "./SelectionStatus.tsx";
 import { DeleteSelected } from "./DeleteSelected.tsx";
+import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
+import { Warning } from "../common/Warning.tsx";
 
 export function AnnotationPage(props: {
   pageNo: number;
@@ -60,9 +62,20 @@ export function AnnotationGrid(props: {
 
   return (
     <div className="flex flex-col gap-3 mt-3">
-      {items.map((item) => (
-        <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
-      ))}
+      {items.map((item) => {
+        const id = item.id;
+        const parsed = toAnnotationGroups(id);
+        if (!parsed) {
+          return (
+            <Warning level="info">
+              Failed to display annotation, could not parse id: {id}
+            </Warning>
+          );
+        }
+        return (
+          <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
+        );
+      })}
     </div>
   );
 }

@@ -53,7 +53,6 @@ function Component() {
           onCreateAnnotation={handleClickAnnotationEditor}
           onSearchAnnotations={handleClickSearchAnnotations}
         />
-        ,
       </Page>
     </AuthGate>
   );
