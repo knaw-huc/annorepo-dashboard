@@ -12,7 +12,7 @@ export function ContainerAnnotationFields(props: { name: string }) {
   const fieldEntries = Object.entries(containerFields);
 
   return (
-    <div className="flex flex-col p-8 bg-stone-50 grow mt-40">
+    <div className="flex flex-col p-8 bg-stone-50 grow">
       <h2 className="text-xl mt-4 mb-4">Annotation fields</h2>
       {fieldEntries.sort(countDesc).map(([field, count], i) => (
         <div

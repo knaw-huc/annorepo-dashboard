@@ -51,7 +51,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
   const { setSecondColumn } = usePageLayout();
   useEffect(() => {
     setSecondColumn(
-      <div className="flex flex-col p-8 bg-anrep-pink-50 grow gap-4  w-full mt-40">
+      <div className="flex flex-col p-8 bg-anrep-pink-50 grow gap-4  w-full">
         <H2>Save query</H2>
         <CustomQueryMetadataEditor
           form={metadataForm}
