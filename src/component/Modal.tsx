@@ -1,4 +1,5 @@
 import { PropsWithChildren, useCallback, useEffect } from "react";
+import { createPortal } from "react-dom";
 
 export function Modal(
   props: PropsWithChildren<{
@@ -18,12 +19,14 @@ export function Modal(
   useEffect(() => {
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [onClose]);
+  }, [handleEscape]);
 
-  return (
+  // Move to root stacking context, allowing its z-index to cover all
+  return createPortal(
     <div
       className="z-30 fixed inset-0 flex items-center justify-center"
       style={{ background: "rgba(0, 0, 0, 0.5)" }}
+      onClick={props.onClose}
     >
       <div className="relative bg-white rounded-lg p-6 max-w mx-4">
         <div className="text-[initial] text-base flex flex-col w-full max-w-xl p-6 rounded mx-auto gap-8">
@@ -40,7 +43,8 @@ export function Modal(
           {props.children}
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
 

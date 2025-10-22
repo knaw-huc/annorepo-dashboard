@@ -20,7 +20,7 @@ export function Page(
     <PageLayoutContext.Provider value={{ setSecondColumn }}>
       <div className="flex flex-col xl:flex-row w-full min-h-screen">
         {/* Left menu */}
-        <aside className="bg-stone-100 w-full xl:max-w-80 p-8 flex flex-row xl:flex-col gap-8 justify-between xl:justify-start">
+        <aside className="bg-stone-100 w-full xl:max-w-80 p-8 flex flex-row xl:flex-col gap-8 justify-between xl:justify-start xl:sticky xl:top-0 xl:h-screen">
           <div className="order-2 xl:order-none">
             <img
               src="/images/logo-knaw-humanities-cluster.png"
