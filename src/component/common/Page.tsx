@@ -41,7 +41,7 @@ export function Page(
         <main className="w-full">
           {/* Top menu */}
           <div className="flex text-sm text-neutral-500  xl:my-10">
-            <div className="MAIN-menu-column w-full p-8">
+            <div className="w-full p-8">
               <div className="flex justify-between">
                 <div className="w-full mx-auto max-w-7xl">
                   <div className="flex justify-between text-sm text-neutral-500">
@@ -57,7 +57,7 @@ export function Page(
 
           {/* Body */}
           <div className="flex">
-            <div className="MAIN-column w-full p-8">
+            <div className="w-full p-8">
               <div
                 className={`w-full mx-auto ${secondColumn ? "max-w-4xl" : "max-w-7xl"}`}
               >
@@ -65,7 +65,7 @@ export function Page(
               </div>
             </div>
             {secondColumn && (
-              <div className="SECOND-column w-full lg:max-w-96  h-full lg:min-h-screen flex flex-col gap-1">
+              <div className="w-full lg:max-w-96  h-full lg:min-h-screen flex flex-col gap-1">
                 {secondColumn}
               </div>
             )}
