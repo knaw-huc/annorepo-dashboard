@@ -18,6 +18,7 @@ import { defaultQuery } from "../../model/query/defaultQuery.ts";
 import { useContainerRole } from "./useContainerRole.tsx";
 import { canEdit } from "../../model/user/canEdit.ts";
 import { AddSubqueryDropdownMenu } from "../common/search/AddSubqueryDropdownMenu.tsx";
+import { QR } from "../../client/query/QR.tsx";
 
 export type ContainerSearchProps = {
   containerName: string;
@@ -80,11 +81,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
     handleSubmitSearch();
   }, [containerName, query, pageNo]);
 
-  if (!container.isSuccess || !page.isSuccess) {
-    return (
-      <StatusMessage name="container and page" requests={[container, page]} />
-    );
-  }
   const newSubqueryPath = [subqueries.length];
   return (
     <>
@@ -93,12 +89,16 @@ export function ContainerSearch(props: ContainerSearchProps) {
         <QueryEditor containerName={containerName} />
       </div>
       <div className="mt-4 flex">
-        <AddSubqueryDropdownMenu
-          path={newSubqueryPath}
-          disabled={hasSearchErrors}
-        />
+        {container.data ? (
+          <AddSubqueryDropdownMenu
+            path={newSubqueryPath}
+            disabled={hasSearchErrors}
+          />
+        ) : (
+          <StatusMessage name="container" requests={[container]} />
+        )}
       </div>
-      {page ? (
+      {page.isSuccess ? (
         <AnnotationPage
           pageNo={pageNo}
           page={page.data}
@@ -106,8 +106,22 @@ export function ContainerSearch(props: ContainerSearchProps) {
           canEdit={canEdit(role)}
         />
       ) : (
-        <Loading name="annotations" />
+        <div className="mt-8">
+          <SearchStatusMessage request={page} />
+        </div>
       )}
     </>
   );
+}
+
+export function SearchStatusMessage(props: { request: QR }) {
+  const { request } = props;
+  if (request.isError) {
+    // Annorepo returns 500 without details:
+    return "No results: Annorepo could not process query";
+  }
+  if (!request.data) {
+    return <Loading name={"results"} />;
+  }
+  return null;
 }

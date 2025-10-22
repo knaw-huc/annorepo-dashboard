@@ -9,7 +9,7 @@ export function Warning(
     level?: "warning" | "info";
   }>,
 ) {
-  let className = "px-5 py-2 text-sm ";
+  let className = "my-4 px-5 py-2 text-sm ";
   if (props.className) {
     className += ` ${props.className}`;
   }

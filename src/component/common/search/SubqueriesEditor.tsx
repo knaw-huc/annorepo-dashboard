@@ -13,6 +13,7 @@ import { LogicalSubqueryEditor } from "./LogicalSubqueryEditor.tsx";
 import { formsPropPath } from "../../../store/query/formsPropPath.ts";
 import { LogicalOperatorTitle } from "./LogicalOperatorTitle.tsx";
 import { LogicalOperator } from "../../../model/query/operator/Operator.ts";
+import { Fragment } from "react";
 
 export function SubqueriesEditor(
   props: ComparisonSubqueryEditorProps & { parentOperator: LogicalOperator },
@@ -58,10 +59,10 @@ export function SubqueriesEditor(
     <>
       {subqueries.map((e: Subquery, i: number) => {
         return (
-          <>
+          <Fragment key={i}>
             {i > 0 && <LogicalOperatorTitle operator={props.parentOperator} />}
             {renderSubquery(e, i)}
-          </>
+          </Fragment>
         );
       })}
     </>
