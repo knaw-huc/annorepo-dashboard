@@ -27,7 +27,8 @@ export function SelectHostModal(props: { onClose: () => void }) {
                   setParam(HOST, key);
                 }
               }}
-              className={`w-full ${isSelected ? "border border-2 border-anrep-pink-200" : ""}`}
+              className="w-full"
+              disabled={isSelected}
             />
           );
         })}

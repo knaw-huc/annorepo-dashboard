@@ -67,14 +67,23 @@ export function SquareTextHintButton(props: {
   onClick: () => void;
 
   className?: string;
+  disabled?: boolean;
 }) {
-  let className =
-    "grow bg-anrep-pink-100 rounded p-4 flex flex-col cursor-pointer";
+  let className = "grow rounded p-4 flex flex-col";
   if (props.className) {
     className += ` ${props.className}`;
   }
+  if (props.disabled) {
+    className += " cursor-not-allowed bg-anrep-pink-50";
+  } else {
+    className += " cursor-pointer bg-anrep-pink-100 ";
+  }
   return (
-    <button className={className} onClick={props.onClick}>
+    <button
+      className={className}
+      onClick={props.onClick}
+      disabled={props.disabled}
+    >
       <div className="font-bold text-anrep-pink-900">{props.title}</div>
       <div className="text-sm">{props.hint}</div>
     </button>
