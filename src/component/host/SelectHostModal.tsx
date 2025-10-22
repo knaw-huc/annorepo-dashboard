@@ -1,7 +1,6 @@
 import { useConfig } from "../ConfigProvider.tsx";
 import { useStore } from "../../store/useStore.ts";
 import { Modal } from "../Modal.tsx";
-import { H1 } from "../common/H1.tsx";
 import { entries } from "lodash";
 import { setParam } from "./util/setParam.ts";
 import { HOST } from "../common/UrlParam.ts";
@@ -11,9 +10,7 @@ export function SelectHostModal(props: { onClose: () => void }) {
   const { selectedHost } = useStore();
 
   return (
-    <Modal onClose={props.onClose}>
-      <H1>Select AnnoRepo Host</H1>
-
+    <Modal title="Select AnnoRepo Host" onClose={props.onClose}>
       <div className="space-y-2">
         {entries(AR_HOSTS).map(([key, url]) => {
           const isSelected = key === selectedHost;
