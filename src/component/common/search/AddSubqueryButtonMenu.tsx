@@ -12,25 +12,27 @@ export function AddSubqueryButtonMenu(props: {
   const { path, disabled } = props;
   const addComparisonSubquery = useAddComparisonSubquery();
   const addLogicalSubquery = useAddLogicalSubquery();
+  const buttonColors =
+    "border-anrep-pink-200 hover:border-neutral-400 bg-neutral-100";
 
   return (
     <div className="flex gap-2">
       <NeutralButton
-        borderColor="border-anrep-pink-200"
+        colors={buttonColors}
         disabled={disabled}
         onClick={() => addComparisonSubquery(path, true)}
       >
         Create comparison
       </NeutralButton>
       <NeutralButton
-        borderColor="border-anrep-pink-200"
+        colors={buttonColors}
         disabled={disabled}
         onClick={() => addLogicalSubquery(path, LogicalOperator.and)}
       >
         Create {operatorToLabel[LogicalOperator.and]}
       </NeutralButton>
       <NeutralButton
-        borderColor="border-anrep-pink-200"
+        colors={buttonColors}
         disabled={disabled}
         onClick={() => addLogicalSubquery(path, LogicalOperator.or)}
       >

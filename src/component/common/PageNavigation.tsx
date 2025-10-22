@@ -1,6 +1,6 @@
-import { DeprecatedButton } from "./DeprecatedButton.tsx";
 import { Back } from "./icon/Back.tsx";
 import { Next } from "./icon/Next.tsx";
+import { NeutralButton } from "./NeutralButton.tsx";
 
 export function PageNavigation(props: {
   prev?: string;
@@ -16,23 +16,13 @@ export function PageNavigation(props: {
 
   return (
     <span className={className}>
-      <DeprecatedButton
-        disabled={!prev}
-        onClick={() => onChange(prev!)}
-        className="mr-2"
-      >
+      <NeutralButton disabled={!prev} onClick={() => onChange(prev!)}>
         <Back />
-      </DeprecatedButton>
-      <span className="inline-block justify-center rounded-md px-3 py-1.5 text-sm/6 font-semibold ring-1 p-2 ring-slate-400 border-b-1 border-slate-600">
-        {props.current}
-      </span>
-      <DeprecatedButton
-        disabled={!next}
-        onClick={() => onChange(next!)}
-        className="ml-2"
-      >
+      </NeutralButton>
+      <span className="mx-4">{props.current + 1}</span>
+      <NeutralButton disabled={!next} onClick={() => onChange(next!)}>
         <Next />
-      </DeprecatedButton>
+      </NeutralButton>
     </span>
   );
 }

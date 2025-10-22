@@ -28,12 +28,6 @@ export function AnnotationPage(props: {
   return (
     <div className={props.className || ""}>
       <div className="flex">
-        <PageNavigation
-          current={pageNo}
-          prev={prev}
-          next={next}
-          onChange={onChangePageNo}
-        />
         {canEdit && (
           <span className="ml-5">
             <SelectionStatus items={page.items} />
@@ -42,7 +36,7 @@ export function AnnotationPage(props: {
         )}
       </div>
       <AnnotationGrid items={page.items} canEdit={canEdit} />
-      <div className="mt-3">
+      <div className="flex items-center justify-center mt-10">
         <PageNavigation
           current={pageNo}
           prev={prev}
