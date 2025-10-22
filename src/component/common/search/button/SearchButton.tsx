@@ -6,7 +6,11 @@ export function SearchButton(props: {
   disabled?: boolean;
 }) {
   return (
-    <NeutralButton disabled={props.disabled === true} onClick={props.onClick}>
+    <NeutralButton
+      className=""
+      disabled={props.disabled === true}
+      onClick={props.onClick}
+    >
       Search
       <Next className="ml-1" />
     </NeutralButton>

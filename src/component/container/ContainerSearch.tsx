@@ -12,7 +12,6 @@ import {
   ContainerSearchArgs,
   useContainerSearch,
 } from "../../client/endpoint/useContainerSearch.tsx";
-import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { defaultQuery } from "../../model/query/defaultQuery.ts";
 
@@ -64,6 +63,9 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setPageNo(toPageNo(update));
   };
 
+  const hasSearchErrors = !!search.error || hasErrors(subqueries);
+  const isSearchDisabled = !subqueries.length || hasSearchErrors;
+
   function handleSubmitSearch() {
     if (hasErrors(subqueries)) {
       return;
@@ -71,8 +73,12 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setSubmitted({ containerName, query, pageNo });
   }
 
-  const hasSearchErrors = !!search.error || hasErrors(subqueries);
-  const isSearchDisabled = !subqueries.length || hasSearchErrors;
+  useEffect(() => {
+    if (isSearchDisabled) {
+      return;
+    }
+    handleSubmitSearch();
+  }, [containerName, query, pageNo]);
 
   if (!container.isSuccess || !page.isSuccess) {
     return (
@@ -83,18 +89,14 @@ export function ContainerSearch(props: ContainerSearchProps) {
   return (
     <>
       <H1>Search annotations</H1>
-      <QueryEditor containerName={containerName} />
-      <div className="mb-2">
+      <div className="flex flex-col gap-4 my-8">
+        <QueryEditor containerName={containerName} />
+      </div>
+      <div className="mt-4 flex">
         <AddSubqueryDropdownMenu
           path={newSubqueryPath}
           disabled={hasSearchErrors}
         />
-        <span className="ml-3">
-          <SearchButton
-            onClick={handleSubmitSearch}
-            disabled={isSearchDisabled}
-          />
-        </span>
       </div>
       {page ? (
         <AnnotationPage
