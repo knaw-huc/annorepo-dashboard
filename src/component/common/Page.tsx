@@ -41,18 +41,17 @@ export function Page(
         <main className="w-full">
           {/* Top menu */}
           <div className="flex text-sm text-neutral-500  xl:my-10">
-            <div className="MAIN-menu-column w-full">
+            <div className="MAIN-menu-column w-full p-8">
               <div className="flex justify-between">
-                <div className="w-full mx-auto max-w-4xl">
-                  <BreadcrumbNav
-                    breadcrumbs={props.breadcrumbs || [<ToHome />]}
-                  />
+                <div className="w-full mx-auto max-w-7xl">
+                  <div className="flex justify-between text-sm text-neutral-500">
+                    <BreadcrumbNav
+                      breadcrumbs={props.breadcrumbs || [<ToHome />]}
+                    />
+                    <div className="">{hasClient && <AuthStatus />}</div>
+                  </div>
                 </div>
               </div>
-            </div>
-
-            <div className="SECOND-column w-full lg:max-w-96  flex flex-col gap-1">
-              <div className="px-8">{hasClient && <AuthStatus />}</div>
             </div>
           </div>
 
