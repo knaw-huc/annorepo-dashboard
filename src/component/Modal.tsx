@@ -1,4 +1,4 @@
-import { PropsWithChildren } from "react";
+import { PropsWithChildren, useCallback, useEffect } from "react";
 
 export function Modal(
   props: PropsWithChildren<{
@@ -6,6 +6,20 @@ export function Modal(
     onClose: () => void;
   }>,
 ) {
+  const { onClose } = props;
+
+  const handleEscape = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    },
+    [onClose],
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscape);
+    return () => document.removeEventListener("keydown", handleEscape);
+  }, [onClose]);
+
   return (
     <div
       className="fixed inset-0 flex items-center justify-center"
@@ -54,11 +68,13 @@ export function SquareTextHintButton(props: {
 
   className?: string;
 }) {
+  let className =
+    "grow bg-anrep-pink-100 rounded p-4 flex flex-col cursor-pointer";
+  if (props.className) {
+    className += ` ${props.className}`;
+  }
   return (
-    <button
-      className="grow bg-anrep-pink-100 rounded p-4 flex flex-col cursor-pointer"
-      onClick={props.onClick}
-    >
+    <button className={className} onClick={props.onClick}>
       <div className="font-bold text-anrep-pink-900">{props.title}</div>
       <div className="text-sm">{props.hint}</div>
     </button>

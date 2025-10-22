@@ -1,6 +1,6 @@
 import { useConfig } from "../ConfigProvider.tsx";
 import { useStore } from "../../store/useStore.ts";
-import { Modal } from "../Modal.tsx";
+import { Modal, SquareTextHintButton } from "../Modal.tsx";
 import { entries } from "lodash";
 import { setParam } from "./util/setParam.ts";
 import { HOST } from "../common/UrlParam.ts";
@@ -15,48 +15,20 @@ export function SelectHostModal(props: { onClose: () => void }) {
         {entries(AR_HOSTS).map(([key, url]) => {
           const isSelected = key === selectedHost;
           const cleanUrl = url.replace(/^https?:\/\//, "");
+          const title = isSelected ? `${key} (Current)` : key;
 
           return (
-            <div
+            <SquareTextHintButton
               key={key}
+              title={title}
+              hint={cleanUrl}
               onClick={() => {
                 if (!isSelected) {
                   setParam(HOST, key);
                 }
               }}
-              className={`
-                p-3 rounded-lg border-2 transition-all cursor-pointer
-                ${
-                  isSelected
-                    ? "border-slate-500 bg-slate-50 cursor-default"
-                    : "border-gray-200 hover:border-gray-400 hover:bg-gray-50"
-                }
-              `}
-            >
-              <div className="flex items-start justify-between">
-                <div className="flex items-start space-x-3">
-                  <div
-                    className={`
-                    w-4 h-4 rounded-full border-2 flex items-center justify-center mt-1
-                    ${isSelected ? "border-slate-500" : "border-gray-400"}
-                  `}
-                  >
-                    {isSelected && (
-                      <div className="w-2 h-2 rounded-full bg-slate-500"></div>
-                    )}
-                  </div>
-                  <div>
-                    <div className="font-medium text-gray-900">{key}</div>
-                    <div className="text-sm text-gray-600">{cleanUrl}</div>
-                  </div>
-                </div>
-                {isSelected && (
-                  <span className="text-sm font-medium text-slate-600">
-                    Current
-                  </span>
-                )}
-              </div>
-            </div>
+              className={`w-full ${isSelected ? "border border-2 border-anrep-pink-200" : ""}`}
+            />
           );
         })}
       </div>

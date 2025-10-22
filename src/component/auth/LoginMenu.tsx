@@ -11,7 +11,7 @@ export function LoginMenu(props: { onClose: () => void }) {
         {authMethods.includes("oidc") && (
           <SquareTextHintButton
             title="With OIDC"
-            hint="Login with your institutional account"
+            hint="Login with your institutional account."
             onClick={() => {
               window.location.href = `${config.AUTH_HOST.proxyUrl}/oidc/login`;
             }}
@@ -20,7 +20,7 @@ export function LoginMenu(props: { onClose: () => void }) {
         {authMethods.includes("token") && (
           <SquareTextHintButton
             title="With a token"
-            hint="Login with your bearer access token"
+            hint="Login with your bearer access token."
             className="ml-5"
             onClick={() => {
               setAuthState({
@@ -33,7 +33,7 @@ export function LoginMenu(props: { onClose: () => void }) {
         )}
         <SquareTextHintButton
           title="As a guest"
-          hint="Continue as a guest. Some features are not available"
+          hint="Continue as guest. Some features are not available."
           className="ml-5"
           onClick={() => {
             setAuthState({ selectedAuthMethod: "anonymous" });
