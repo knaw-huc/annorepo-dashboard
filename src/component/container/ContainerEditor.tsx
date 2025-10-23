@@ -1,7 +1,6 @@
 import { InputWithLabel } from "../common/form/InputWithLabel.tsx";
 import { usePost } from "../../client/query/usePost.tsx";
 import { H1 } from "../common/H1.tsx";
-import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
 import { ArContainer } from "../../model/ArModel.ts";
 import { toContainerName } from "../../util/toContainerName.ts";
 import { useState } from "react";
@@ -9,6 +8,7 @@ import cloneDeep from "lodash/cloneDeep";
 import { isString } from "lodash";
 import { useQueryClient } from "@tanstack/react-query";
 import { MR } from "../../client/query/MR.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function ContainerEditor(props: {
   onClose: () => void;
@@ -92,16 +92,14 @@ export function ContainerEditor(props: {
                 />
               </div>
               <div className="mt-5">
-                <DeprecatedButton
+                <NeutralButton
                   disabled={!!error}
                   onClick={handleSubmit}
                   className="mr-5"
                 >
                   Create
-                </DeprecatedButton>
-                <DeprecatedButton onClick={props.onClose}>
-                  Close
-                </DeprecatedButton>
+                </NeutralButton>
+                <NeutralButton onClick={props.onClose}>Close</NeutralButton>
               </div>
             </div>
           </div>
