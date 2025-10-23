@@ -1,8 +1,6 @@
 import { useContainerUsers } from "../../client/endpoint/useContainerUsers.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { H2 } from "../common/H2.tsx";
-import { DeprecatedButton } from "../common/DeprecatedButton.tsx";
-import { Add } from "../common/icon/Add.tsx";
 import { useState } from "react";
 import { MR } from "../../client/query/MR.tsx";
 import { ArUser } from "../../model/ArModel.ts";
@@ -14,6 +12,7 @@ import { AddUserModal } from "./AddUserModal.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { Close } from "../common/icon/Close.tsx";
 import { Badge } from "../annotation/Badge.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function ContainerUsers(props: { containerName: string }) {
   const { containerName } = props;
@@ -80,11 +79,14 @@ export function ContainerUsers(props: { containerName: string }) {
   return (
     <div>
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
-      <H2>Users</H2>
-      <DeprecatedButton onClick={handleAddUser} className="mr-2">
-        Add
-        <Add className="ml-1" />
-      </DeprecatedButton>
+      <div className="flex justify-between">
+        <H2>Users</H2>
+        <div>
+          <NeutralButton onClick={handleAddUser} className="mr-2">
+            Add
+          </NeutralButton>
+        </div>
+      </div>
 
       <div>
         {containerUsers.data.map((u) => (

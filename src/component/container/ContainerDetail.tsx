@@ -14,6 +14,8 @@ import { keyEquals } from "../../client/query/useGet.tsx";
 import { ContainerSummary } from "./ContainerSummary.tsx";
 import { usePageLayout } from "../common/PageLayoutContext.tsx";
 import { NeutralButton } from "../common/NeutralButton.tsx";
+import { ContainerUsers } from "./ContainerUsers.tsx";
+import { H2 } from "../common/H2.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -116,9 +118,9 @@ export function ContainerDetail(props: ContainerDetailProps) {
       </div>
 
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
-
-      <div className="flex flex-col lg:flex-row justify-between lg:items-center mb-4 gap-4">
-        <h2 className="text-xl">Annotations</h2>
+      <ContainerUsers containerName={name} />
+      <div className="flex flex-col lg:flex-row justify-between lg:items-center my-4 gap-4">
+        <H2>Annotations</H2>
         <div className="flex gap-4 items-center justify-between">
           {canEdit(role) && (
             <button

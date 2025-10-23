@@ -41,3 +41,4 @@ Start: `npm start`
 - Style input field errors
 - Discuss implementation of filter box instead of search button
 - Style annotation selection checkboxes + select all checkbox + delete button
+- What to do with many buttons on container detail page?

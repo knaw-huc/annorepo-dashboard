@@ -29,7 +29,7 @@ export function AnnotationPage(props: {
     <div className={props.className || ""}>
       <div className="flex">
         {canEdit && (
-          <span className="ml-4 flex gap-2 items-center">
+          <span className="flex gap-2">
             <SelectionStatus items={page.items} />
             <DeleteSelected />
           </span>
