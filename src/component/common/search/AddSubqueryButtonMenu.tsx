@@ -13,7 +13,7 @@ export function AddSubqueryButtonMenu(props: {
   const addComparisonSubquery = useAddComparisonSubquery();
   const addLogicalSubquery = useAddLogicalSubquery();
   const buttonColors =
-    "border-anrep-pink-200 hover:border-neutral-400 bg-neutral-100";
+    "border-anrep-pink-200 hover:border-neutral-400 bg-neutral-100 text-neutral-800";
 
   return (
     <div className="flex gap-2">

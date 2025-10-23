@@ -9,16 +9,16 @@ export function NeutralButton(
     colors?: string;
   }>,
 ) {
-  let className = "text-neutral-800 hover:bg-neutral-50  ";
+  let className = " hover:bg-neutral-50  ";
   if (props.className) {
     className += ` ${props.className}`;
   }
   if (props.disabled) {
-    className += ` border-neutral-100 bg-neutral-50`;
+    className += ` border-neutral-100 bg-neutral-50 text-neutral-500`;
   } else if (props.colors) {
     className += ` ${props.colors}`;
   } else {
-    className += ` border-neutral-200 hover:border-neutral-400 bg-neutral-100`;
+    className += ` border-neutral-200 hover:border-neutral-400 bg-neutral-100 text-neutral-800`;
   }
 
   return (

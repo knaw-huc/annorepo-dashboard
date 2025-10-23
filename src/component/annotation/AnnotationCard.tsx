@@ -1,6 +1,5 @@
 import { Card } from "../common/Card.tsx";
 import { toContainerName } from "../../util/toContainerName.ts";
-import { Pipe } from "../common/Pipe.tsx";
 import { External } from "../common/icon/External.tsx";
 import { H5 } from "../common/H5.tsx";
 import { isUrl } from "../../util/isUrl.ts";
@@ -91,9 +90,23 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
       header={
         <div className="flex justify-between items-center border-b border-anrep-blue-100">
           <H5>
-            {name}
-            <Pipe />
-            {annotation.type}
+            {canSelect && (
+              <Checkbox
+                isSelected={isSelected}
+                onToggle={() => {
+                  const update = isSelected
+                    ? selectedAnnotationIds.filter((sa) => sa !== id)
+                    : [...selectedAnnotationIds, id];
+                  setSelectedAnnotationsState({
+                    selectedAnnotationIds: update,
+                  });
+                }}
+                className="hover:text-inherit hover:cursor-pointer text-neutral-600"
+                size={20}
+              />
+            )}
+
+            <span className="ml-4">{name}</span>
           </H5>
           <div className="p-4">
             <img src="/images/icon-annotation.png" className="h-4 w-4" alt="" />
@@ -155,22 +168,6 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
           <ReactJsonView src={annotation.target as object} name={null} />
         </div>
       )}
-      <div>
-        {canSelect && (
-          <Checkbox
-            isSelected={isSelected}
-            onToggle={() => {
-              const update = isSelected
-                ? selectedAnnotationIds.filter((sa) => sa !== id)
-                : [...selectedAnnotationIds, id];
-              setSelectedAnnotationsState({
-                selectedAnnotationIds: update,
-              });
-            }}
-            className="hover:text-inherit hover:cursor-pointer text-sky-800"
-          />
-        )}
-      </div>
     </Card>
   );
 }

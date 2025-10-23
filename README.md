@@ -40,3 +40,4 @@ Start: `npm start`
 - Align column width of custom query labels in cards
 - Style input field errors
 - Discuss implementation of filter box instead of search button
+- Style annotation selection checkboxes + select all checkbox + delete button
