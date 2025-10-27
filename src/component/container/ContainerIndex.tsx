@@ -6,8 +6,11 @@ import { StatusMessage } from "../common/StatusMessage.tsx";
 import { getRolesByName } from "./getRolesByName.ts";
 
 import { NeutralButton } from "../common/NeutralButton.tsx";
+import { useStore } from "../../store/useStore.ts";
+import { isAuthenticated } from "../../model/user/User.ts";
 
 export function ContainerIndex(props: { onClickCreateContainer: () => void }) {
+  const { user } = useStore();
   const { myContainers, details } = useMyContainerDetails();
 
   if (!myContainers.isSuccess || !details.every((d) => d.isSuccess)) {
@@ -28,9 +31,11 @@ export function ContainerIndex(props: { onClickCreateContainer: () => void }) {
     <div>
       <div className="flex justify-between w-full my-8">
         <h1 className="text-2xl">Containers</h1>
-        <NeutralButton onClick={props.onClickCreateContainer}>
-          New container
-        </NeutralButton>
+        {isAuthenticated(user) && (
+          <NeutralButton onClick={props.onClickCreateContainer}>
+            New container
+          </NeutralButton>
+        )}
       </div>
       <div className="gap-8 flex-wrap grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
         {names.map((name, i) => (
