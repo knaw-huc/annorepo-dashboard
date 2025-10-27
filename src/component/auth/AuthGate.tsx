@@ -86,9 +86,11 @@ export function AuthGate(
         });
         return;
       }
-      const isOidcEnabled = about.authentication.oidc?.some(
-        (s) => s.serverUrl === AUTH_HOST.providerUrl,
-      );
+      const isOidcEnabled =
+        AUTH_HOST &&
+        about.authentication.oidc?.some(
+          (s) => s.serverUrl === AUTH_HOST.providerUrl,
+        );
       const isBearerTokenEnabled =
         withAuthentication && about.authentication.internal === "api-keys";
       if (isOidcEnabled) {
@@ -107,6 +109,9 @@ export function AuthGate(
   }, [AUTH_HOST, selectedHost, setClient]);
 
   async function getStatus() {
+    if (!AUTH_HOST) {
+      return;
+    }
     try {
       const response = await fetch(`${AUTH_HOST.proxyUrl}/oidc/status`);
       if (response.ok) {
@@ -137,8 +142,9 @@ export function AuthGate(
     ) {
       return;
     }
+    // Verify
     setAuthState({ isAuthenticating: true });
-    getStatus();
+    getStatus().catch((e) => console.error("Error while fetching status", e));
   }, [selectedAuthMethod, isAuthenticating]);
 
   if (error) {

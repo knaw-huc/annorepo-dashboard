@@ -8,12 +8,12 @@ export function LoginMenu(props: { onClose: () => void }) {
   return (
     <>
       <div className="flex gap-6 *:w-1/3 text-anrep-pink-600 *:cursor-pointer">
-        {authMethods.includes("oidc") && (
+        {authMethods.includes("oidc") && config.AUTH_HOST && (
           <SquareTextHintButton
             title="With OIDC"
             hint="Login with your institutional account."
             onClick={() => {
-              window.location.href = `${config.AUTH_HOST.proxyUrl}/oidc/login`;
+              window.location.href = `${config.AUTH_HOST!.proxyUrl}/oidc/login`;
             }}
           />
         )}

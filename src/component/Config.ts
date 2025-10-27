@@ -15,7 +15,7 @@ export type Config = {
    * Configure hosts
    */
   AR_HOSTS: HostOptions;
-  AUTH_HOST: {
+  AUTH_HOST?: {
     proxyUrl: string;
     providerUrl: string;
   };

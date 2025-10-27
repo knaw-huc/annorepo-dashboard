@@ -6,6 +6,9 @@ export function LogoutButton() {
   const config = useConfig();
 
   function handleLogout() {
+    if (!config.AUTH_HOST) {
+      return;
+    }
     const next = encodeURIComponent(window.location.origin + "/logout");
     window.location.href = `${config.AUTH_HOST.proxyUrl}/oidc/logout?next=${next}`;
   }
