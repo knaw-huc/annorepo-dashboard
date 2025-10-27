@@ -16,6 +16,7 @@ import { usePageLayout } from "../common/PageLayoutContext.tsx";
 import { NeutralButton } from "../common/NeutralButton.tsx";
 import { ContainerUsers } from "./ContainerUsers.tsx";
 import { H2 } from "../common/H2.tsx";
+import { isAdmin } from "../../model/user/isAdmin.ts";
 
 export type ContainerDetailProps = {
   name: string;
@@ -118,7 +119,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
       </div>
 
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
-      <ContainerUsers containerName={name} />
+      {isAdmin(role) && <ContainerUsers containerName={name} />}
       <div className="flex flex-col lg:flex-row justify-between lg:items-center my-4 gap-4">
         <H2>Annotations</H2>
         <div className="flex gap-4 items-center justify-between">
