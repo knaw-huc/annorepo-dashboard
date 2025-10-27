@@ -52,7 +52,6 @@ export function AuthGate(
       return;
     }
     const hostPath = AR_HOSTS[selectedHost];
-    console.log("Selected host:", { selectedHost });
     if (!hostPath) {
       return;
     }

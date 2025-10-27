@@ -2,29 +2,30 @@ import { useConfig } from "../ConfigProvider.tsx";
 import { useStore } from "../../store/useStore.ts";
 import { Modal, SquareTextHintButton } from "../Modal.tsx";
 import { entries } from "lodash";
-import { setParam } from "./util/setParam.ts";
-import { HOST } from "../common/UrlParam.ts";
 
-export function SelectHostModal(props: { onClose: () => void }) {
+export function SelectHostModal(props: {
+  onClose: () => void;
+  onChangeHost: (host: string) => void;
+}) {
   const { AR_HOSTS } = useConfig();
   const { selectedHost } = useStore();
 
   return (
     <Modal title="Select AnnoRepo Host" onClose={props.onClose}>
       <div className="space-y-2">
-        {entries(AR_HOSTS).map(([key, url]) => {
-          const isSelected = key === selectedHost;
-          const cleanUrl = url.replace(/^https?:\/\//, "");
-          const title = isSelected ? `${key} (Current)` : key;
+        {entries(AR_HOSTS).map(([hostName, hostUrl]) => {
+          const isSelected = hostName === selectedHost;
+          const cleanUrl = hostUrl.replace(/^https?:\/\//, "");
+          const title = isSelected ? `${hostName} (Current)` : hostName;
 
           return (
             <SquareTextHintButton
-              key={key}
+              key={hostName}
               title={title}
               hint={cleanUrl}
               onClick={() => {
                 if (!isSelected) {
-                  setParam(HOST, key);
+                  props.onChangeHost(hostName);
                 }
               }}
               className="w-full"
