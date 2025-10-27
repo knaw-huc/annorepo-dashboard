@@ -128,7 +128,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
               className="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
               onClick={props.onCreateAnnotation}
             >
-              Add annotation
+              Add
             </button>
           )}
           <div>

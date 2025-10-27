@@ -1,7 +1,7 @@
 import { ArMyContainers } from "../../model/ArModel.ts";
 import { UserRole } from "../../model/user/UserRole.tsx";
 
-export function getRolesByName(
+export function getRolesByContainerName(
   containersByRole: ArMyContainers,
 ): Record<string, UserRole> {
   return Object.fromEntries(

@@ -3,7 +3,7 @@ import { ContainerCard } from "./ContainerCard.tsx";
 import { toContainerName } from "../../util/toContainerName.ts";
 import isNil from "lodash/isNil";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-import { getRolesByName } from "./getRolesByName.ts";
+import { getRolesByContainerName } from "./getRolesByContainerName.ts";
 
 import { NeutralButton } from "../common/NeutralButton.tsx";
 import { useStore } from "../../store/useStore.ts";
@@ -25,7 +25,7 @@ export function ContainerIndex(props: { onClickCreateContainer: () => void }) {
     .map((c) => c.data && toContainerName(c.data.id))
     .filter((name) => !isNil(name));
 
-  const rolesByContainerName = getRolesByName(myContainers.data);
+  const rolesByContainerName = getRolesByContainerName(myContainers.data);
 
   return (
     <div>
