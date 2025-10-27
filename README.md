@@ -17,7 +17,7 @@ _Note: Work in Progress_
 First time:
 
 ```shell
-cp public/webapp.config.json.example public/webapp.config.json
+cp public/dashboard.config.json.example public/dashboard.config.json
 # change AR_HOST, and possibly AUTH_HOST
 
 npm install
