@@ -15,7 +15,11 @@ export function ChangeHost() {
 
   const handleNavigation = (selectedHost: string) => {
     setHostState({ selectedHost });
-    navigate({ to: "/", search: { [HOST]: selectedHost } });
+    navigate({
+      to: "/",
+      search: { [HOST]: selectedHost },
+      reloadDocument: true,
+    });
   };
 
   if (keys(AR_HOSTS).length === 1) {
