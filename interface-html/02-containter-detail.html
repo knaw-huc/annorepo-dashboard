@@ -61,136 +61,348 @@
 
                                     <div class="text-sm text-neutral-500">AMS_tm</div>
                                 </div>
-                                <div>
+                                <div class="flex gap-4 items-center">
                                     <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800">View source</button>
+                                    <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                        stroke-width="1.5" stroke="currentColor" class="w-5 h-5 stroke-neutral-700">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                            />
+                                        </svg>
+                                    </button>
                                 </div>
                             </div>
-                            <div class="flex flex-col lg:flex-row justify-between lg:items-center mb-4 gap-4">
-                                 <h2 class="text-xl">Annotations</h2>
+                            <!-- tabs -->
+                            <div class="flex mt-4 border-b border-anrep-green-400 *:w-40" data-tabButton="asideTab"
+                            data-tabMarkupDefault="border-anrep-green-50 font-normal" data-tabMarkupActive="border-anrep-green-400 font-bold">
+                                <button class="border-b-4 border-anrep-green-400 font-bold p-2 hover:border-anrep-green-300 text-left"
+                                onclick="tabs(this, 0);">Annotations</button>
+                                <button class="border-b-4 border-anrep-green-50 rounded-t p-2 hover:border-anrep-green-300 text-left"
+                                onclick="tabs(this, 1);">Users</button>
+                            </div>
+                            <!-- Annotations -->
+                            <div class="flex flex-col " data-tabGroup="asideTab">
+                                <!-- Annotations bar -->
+                                <div class="flex gap-4 items-center justify-between my-8">
+                                    <div class="flex gap-4">
+                                        <input type="checkbox" name="" id="" class="">
+                                        <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800">Delete selected</button>
+                                    </div>
+                                    <div class="flex gap-4">
+                                        <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
+                                        onclick="toggleVis(&#x27;annotationNew&#x27;, &#x27;show&#x27;); toggleVis(&#x27;annotationFields&#x27;, &#x27;hide&#x27;);">Add annotation</button>
+                                        <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800">Search</button>
+                                    </div>
+                                </div>
+                                <div class="flex flex-col md:flex-row gap-8">
+                                    <div class="flex flex-col gap-3 w-full md:w-3/4">
+                                        <div class="flex gap-4">
+                                            <div class="py-4">
+                                                <input type="checkbox" name="" id="" class="">
+                                            </div> <a href="02-containter-detail.html" class="bg-anrep-blue-50 w-full text-anrep-blue-800 rounded no-underline">
+                                
+                                    <div class="flex justify-between items-center border-b border-anrep-blue-100">
+                                  
+                                            <h2 class="text-anrep-blue-900 p-4">15124b4a-8252-4c6d-8dc9-bdad36eeb630</h2>
+                                 
+                                        
+                                        <div class="p-4"><img src="images/icon-annotation.png" class="h-4 w-4" alt="" ></div>
+                                    </div>
+                                
+                                
+                                    <div class="flex flex-wrap gap-4 p-4 ">
+                                        <div class="flex gap-2 items-center">
+                                            <div class=""><div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">TextualBody</div></div>
+                                            <div class="">body type</div>
+                                        </div>
+                                        
+                                    </div>
+                                
+                                    <div class="flex justify-between p-4 ">
+                                            <div class="flex gap-4">
+                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    View body</button>
+                                
+                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    View target</button>
+                                
+                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    View source</button>
+                                
+                                            </div>
+                                
+                                        <div class=""><button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 stroke-anrep-blue-800">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </button>
+                                </div>
+                                
+                                    </div>
+                                </a>
 
-                                <div class="flex gap-4 items-center justify-between">
-                                    <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
-                                    onclick="toggleVis(&#x27;annotationNew&#x27;, &#x27;show&#x27;); toggleVis(&#x27;annotationFields&#x27;, &#x27;hide&#x27;);">Add annotation</button>
-                                    <div class="">
-                                        <input type="text" class="border border-neutral-200 p-1 rounded-sm placeholder:italic text-sm max-w-32"
-                                        placeholder="Filter">
+                                        </div>
+                                        <div class="flex gap-4">
+                                            <div class="py-4">
+                                                <input type="checkbox" name="" id="" class="">
+                                            </div> <a href="02-containter-detail.html" class="bg-anrep-blue-50 w-full text-anrep-blue-800 rounded no-underline">
+                                
+                                    <div class="flex justify-between items-center border-b border-anrep-blue-100">
+                                  
+                                            <h2 class="text-anrep-blue-900 p-4">15124b4a-8252-4c6d-8dc9-bdad36eeb630</h2>
+                                 
+                                        
+                                        <div class="p-4"><img src="images/icon-annotation.png" class="h-4 w-4" alt="" ></div>
+                                    </div>
+                                
+                                
+                                    <div class="flex flex-wrap gap-4 p-4 ">
+                                        <div class="flex gap-2 items-center">
+                                            <div class=""><div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">TextualBody</div></div>
+                                            <div class="">body type</div>
+                                        </div>
+                                        
+                                    </div>
+                                
+                                    <div class="flex justify-between p-4 ">
+                                            <div class="flex gap-4">
+                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    View body</button>
+                                
+                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    View target</button>
+                                
+                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    View source</button>
+                                
+                                            </div>
+                                
+                                        <div class=""><button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 stroke-anrep-blue-800">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </button>
+                                </div>
+                                
+                                    </div>
+                                </a>
+
+                                        </div>
+                                        <div class="flex gap-4">
+                                            <div class="py-4">
+                                                <input type="checkbox" name="" id="" class="">
+                                            </div> <a href="02-containter-detail.html" class="bg-anrep-blue-50 w-full text-anrep-blue-800 rounded no-underline">
+                                
+                                    <div class="flex justify-between items-center border-b border-anrep-blue-100">
+                                  
+                                            <h2 class="text-anrep-blue-900 p-4">15124b4a-8252-4c6d-8dc9-bdad36eeb630</h2>
+                                 
+                                        
+                                        <div class="p-4"><img src="images/icon-annotation.png" class="h-4 w-4" alt="" ></div>
+                                    </div>
+                                
+                                
+                                    <div class="flex flex-wrap gap-4 p-4 ">
+                                        <div class="flex gap-2 items-center">
+                                            <div class=""><div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">TextualBody</div></div>
+                                            <div class="">body type</div>
+                                        </div>
+                                        
+                                    </div>
+                                
+                                    <div class="flex justify-between p-4 ">
+                                            <div class="flex gap-4">
+                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    View body</button>
+                                
+                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    View target</button>
+                                
+                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    View source</button>
+                                
+                                            </div>
+                                
+                                        <div class=""><button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 stroke-anrep-blue-800">
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+                                    </svg>
+                                </button>
+                                </div>
+                                
+                                    </div>
+                                </a>
+
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col p-4 bg-stone-50 w-full md:w-1/4">
+                                         <h2 class="mb-4">Annotation fields filter</h2>
+
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.purpose</div>
+                                            </div>
+                                            <div class="text-sm">22</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.type</div>
+                                            </div>
+                                            <div class="text-sm">16</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.value</div>
+                                            </div>
+                                            <div class="text-sm">16</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">id</div>
+                                            </div>
+                                            <div class="text-sm">45</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.exact</div>
+                                            </div>
+                                            <div class="text-sm">23</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.prefix</div>
+                                            </div>
+                                            <div class="text-sm">33</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.suffix</div>
+                                            </div>
+                                            <div class="text-sm">52</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.type</div>
+                                            </div>
+                                            <div class="text-sm">23</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.source.id</div>
+                                            </div>
+                                            <div class="text-sm">20</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.source.name</div>
+                                            </div>
+                                            <div class="text-sm">23</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.source.type</div>
+                                            </div>
+                                            <div class="text-sm">43</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">type</div>
+                                            </div>
+                                            <div class="text-sm">6</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">viav</div>
+                                            </div>
+                                            <div class="text-sm">32</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.id</div>
+                                            </div>
+                                            <div class="text-sm">46</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.label</div>
+                                            </div>
+                                            <div class="text-sm">41</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.type</div>
+                                            </div>
+                                            <div class="text-sm">62</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.latitude</div>
+                                            </div>
+                                            <div class="text-sm">4</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.longitude</div>
+                                            </div>
+                                            <div class="text-sm">15</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.conformsTo</div>
+                                            </div>
+                                            <div class="text-sm">21</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.values</div>
+                                            </div>
+                                            <div class="text-sm">59</div>
+                                        </div>
+                                        <div class="flex justify-between items-center max-w-72">
+                                            <div>
+                                                <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.id1target.type</div>
+                                            </div>
+                                            <div class="text-sm">32</div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="flex flex-col gap-3"> <a href="02-containter-detail.html" class="bg-anrep-blue-50 w-full text-anrep-blue-800 rounded no-underline">
-                                
-                                    <div class="flex justify-between items-center border-b border-anrep-blue-100">
-                                        <h2 class="text-anrep-blue-900 p-4">15124b4a-8252-4c6d-8dc9-bdad36eeb630</h2>
-                                        <div class="p-4"><img src="images/icon-annotation.png" class="h-4 w-4" alt="" ></div>
+                            <!-- Users -->
+                            <div class="hidden  flex-col" data-tabGroup="asideTab">
+                                <!-- users bar -->
+                                <div class="flex gap-4 items-center justify-end my-4">
+                                    <div class="flex gap-4">
+                                        <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800">Add user</button>
                                     </div>
-                                
-                                
-                                    <div class="flex flex-wrap gap-4 p-4 ">
-                                        <div class="flex gap-2 items-center">
-                                            <div class=""><div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">TextualBody</div></div>
-                                            <div class="">body type</div>
-                                        </div>
-                                        
-                                    </div>
-                                
-                                    <div class="flex justify-between p-4 ">
-                                            <div class="flex gap-4">
-                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    View body</button>
-                                
-                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    View target</button>
-                                
-                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    View source</button>
-                                
-                                            </div>
-                                
-                                        <div class=""><button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    Delete</button>
                                 </div>
-                                
-                                    </div>
-                                    
-                                    
-                                    
-                                </a>  <a href="02-containter-detail.html"
-                                class="bg-anrep-blue-50 w-full text-anrep-blue-800 rounded no-underline">
-                                
-                                    <div class="flex justify-between items-center border-b border-anrep-blue-100">
-                                        <h2 class="text-anrep-blue-900 p-4">15124b4a-8252-4c6d-8dc9-bdad36eeb630</h2>
-                                        <div class="p-4"><img src="images/icon-annotation.png" class="h-4 w-4" alt="" ></div>
-                                    </div>
-                                
-                                
-                                    <div class="flex flex-wrap gap-4 p-4 ">
-                                        <div class="flex gap-2 items-center">
-                                            <div class=""><div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">TextualBody</div></div>
-                                            <div class="">body type</div>
+                                <ul class="w-full gap-2 border-t border-neutral-200">
+                                    <li class="w-full flex gap-8 py-2 border-b border-neutral-100">
+                                        <div class="font-bold w-1/4">Jan Janssen</div>
+                                        <div class="text-neutral-600 w-1/4">Admin</div>
+                                        <div class="text-neutral-600 grow text-right">
+                                            <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-5 h-5 stroke-neutral-700">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                                    />
+                                                </svg>
+                                            </button>
                                         </div>
-                                        
-                                    </div>
-                                
-                                    <div class="flex justify-between p-4 ">
-                                            <div class="flex gap-4">
-                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    View body</button>
-                                
-                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    View target</button>
-                                
-                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    View source</button>
-                                
-                                            </div>
-                                
-                                        <div class=""><button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    Delete</button>
-                                </div>
-                                
-                                    </div>
-                                    
-                                    
-                                    
-                                </a>  <a href="02-containter-detail.html"
-                                class="bg-anrep-blue-50 w-full text-anrep-blue-800 rounded no-underline">
-                                
-                                    <div class="flex justify-between items-center border-b border-anrep-blue-100">
-                                        <h2 class="text-anrep-blue-900 p-4">15124b4a-8252-4c6d-8dc9-bdad36eeb630</h2>
-                                        <div class="p-4"><img src="images/icon-annotation.png" class="h-4 w-4" alt="" ></div>
-                                    </div>
-                                
-                                
-                                    <div class="flex flex-wrap gap-4 p-4 ">
-                                        <div class="flex gap-2 items-center">
-                                            <div class=""><div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">TextualBody</div></div>
-                                            <div class="">body type</div>
+                                    </li>
+                                    <li class="w-full flex gap-8 py-2 border-b border-neutral-100">
+                                        <div class="font-bold w-1/4">Piet Pietersen</div>
+                                        <div class="text-neutral-600 w-1/4">Editor</div>
+                                        <div class="text-neutral-600 grow text-right">
+                                            <button class="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                stroke-width="1.5" stroke="currentColor" class="w-5 h-5 stroke-neutral-700">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                                    />
+                                                </svg>
+                                            </button>
                                         </div>
-                                        
-                                    </div>
-                                
-                                    <div class="flex justify-between p-4 ">
-                                            <div class="flex gap-4">
-                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    View body</button>
-                                
-                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    View target</button>
-                                
-                                                <button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    View source</button>
-                                
-                                            </div>
-                                
-                                        <div class=""><button class="bg-anrep-blue-100 rounded-full border border-anrep-blue-200 px-3 py-1 text-sm cursor-pointer hover:bg-anrep-blue-50 hover:border-anrep-blue-400 transition text-anrep-blue-800" >
-                                    Delete</button>
-                                </div>
-                                
-                                    </div>
-                                    
-                                    
-                                    
-                                </a> 
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -231,141 +443,12 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="flex flex-col p-8 bg-stone-50 grow mt-40" id="annotationFields">
-                             <h2 class="text-xl mt-4 mb-4">Annotation fields</h2>
-
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.purpose</div>
-                                </div>
-                                <div class="text-sm">20</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.type</div>
-                                </div>
-                                <div class="text-sm">27</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.value</div>
-                                </div>
-                                <div class="text-sm">43</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">id</div>
-                                </div>
-                                <div class="text-sm">44</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.exact</div>
-                                </div>
-                                <div class="text-sm">52</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.prefix</div>
-                                </div>
-                                <div class="text-sm">61</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.suffix</div>
-                                </div>
-                                <div class="text-sm">69</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.type</div>
-                                </div>
-                                <div class="text-sm">49</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.source.id</div>
-                                </div>
-                                <div class="text-sm">31</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.source.name</div>
-                                </div>
-                                <div class="text-sm">66</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.source.type</div>
-                                </div>
-                                <div class="text-sm">31</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">type</div>
-                                </div>
-                                <div class="text-sm">23</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">viav</div>
-                                </div>
-                                <div class="text-sm">33</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.id</div>
-                                </div>
-                                <div class="text-sm">70</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.label</div>
-                                </div>
-                                <div class="text-sm">1</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.type</div>
-                                </div>
-                                <div class="text-sm">41</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.latitude</div>
-                                </div>
-                                <div class="text-sm">57</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">body.source.longitude</div>
-                                </div>
-                                <div class="text-sm">61</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.conformsTo</div>
-                                </div>
-                                <div class="text-sm">52</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.selector.values</div>
-                                </div>
-                                <div class="text-sm">44</div>
-                            </div>
-                            <div class="flex justify-between items-center max-w-72">
-                                <div>
-                                    <div class="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">target.id1target.type</div>
-                                </div>
-                                <div class="text-sm">2</div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </main>
         </div>
         <script src="js/toggleVis.js"></script>
+        <script src="js/tabs.js"></script>
     </body>
 
 </html>
