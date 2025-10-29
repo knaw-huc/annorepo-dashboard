@@ -1,49 +1,41 @@
 import { useStore } from "../../store/useStore.ts";
-import { Unchecked } from "../common/icon/Unchecked.tsx";
 import { ArAnnotation } from "../../model/ArModel.ts";
-import { SemiChecked } from "../common/icon/SemiChecked.tsx";
-import { Checked } from "../common/icon/Checked.tsx";
+import { useRef } from "react";
 
-export function SelectionStatus(props: { items?: ArAnnotation[] }) {
-  const { items } = props;
+export function SelectionStatus(props: { annotations?: ArAnnotation[] }) {
+  const { annotations } = props;
   const { selectedAnnotationIds, setSelectedAnnotationsState } = useStore();
+  const selectedCount = selectedAnnotationIds.length;
 
-  function handleToggleSelect(items: ArAnnotation[], allSelected: boolean) {
-    const update = allSelected ? [] : items.map((i) => i.id);
-    setSelectedAnnotationsState({
-      selectedAnnotationIds: update,
-    });
+  function handleToggleSelect(annotations: ArAnnotation[]) {
+    const allSelected = selectedCount === annotations.length;
+    const update = allSelected ? [] : annotations.map((i) => i.id);
+    setSelectedAnnotationsState({ selectedAnnotationIds: update });
   }
 
-  if (!items) {
+  const checkboxRef = useRef<HTMLInputElement>(null);
+  let checkboxTitle = "";
+  if (checkboxRef.current && annotations) {
+    const noneSelected = selectedCount === 0;
+    const allSelected = selectedCount === annotations.length;
+    const someSelected = !noneSelected && selectedCount < annotations.length;
+    checkboxRef.current.checked = allSelected;
+    checkboxRef.current.indeterminate = someSelected;
+    checkboxTitle = allSelected ? "Deselect all" : "Select all";
+  }
+
+  if (!annotations) {
     return null;
   }
-  const noneSelected = selectedAnnotationIds.length === 0;
-  const someSelected =
-    !noneSelected && selectedAnnotationIds.length < items.length;
-  const allSelected =
-    !noneSelected && selectedAnnotationIds.length === items.length;
 
   return (
     <span
       className="text-neutral-600 cursor-pointer"
-      onClick={() => handleToggleSelect(items, allSelected)}
+      onClick={() => handleToggleSelect(annotations)}
     >
-      {noneSelected && (
-        <span title="Select all">
-          <Unchecked size={20} />
-        </span>
-      )}
-      {someSelected && (
-        <span title="Select all">
-          <SemiChecked size={20} />
-        </span>
-      )}
-      {allSelected && (
-        <span title="Deselect all">
-          <Checked size={20} />
-        </span>
-      )}
+      <span title={checkboxTitle}>
+        <input type="checkbox" ref={checkboxRef} />
+      </span>
     </span>
   );
 }

@@ -30,7 +30,7 @@ export function AnnotationPage(props: {
       <div className="flex">
         {canEdit && (
           <span className="flex gap-2">
-            <SelectionStatus items={page.items} />
+            <SelectionStatus annotations={page.items} />
             <DeleteSelected />
           </span>
         )}
