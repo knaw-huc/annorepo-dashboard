@@ -1,6 +1,6 @@
 import { useStore } from "../../store/useStore.ts";
 import { ArAnnotation } from "../../model/ArModel.ts";
-import { useRef } from "react";
+import { Checkbox, CheckboxValue } from "../common/Checkbox.tsx";
 
 export function SelectionStatus(props: { annotations?: ArAnnotation[] }) {
   const { annotations } = props;
@@ -13,14 +13,17 @@ export function SelectionStatus(props: { annotations?: ArAnnotation[] }) {
     setSelectedAnnotationsState({ selectedAnnotationIds: update });
   }
 
-  const checkboxRef = useRef<HTMLInputElement>(null);
+  let checkboxValue: CheckboxValue = "unchecked";
   let checkboxTitle = "";
-  if (checkboxRef.current && annotations) {
+  if (annotations) {
     const noneSelected = selectedCount === 0;
     const allSelected = selectedCount === annotations.length;
     const someSelected = !noneSelected && selectedCount < annotations.length;
-    checkboxRef.current.checked = allSelected;
-    checkboxRef.current.indeterminate = someSelected;
+    if (allSelected) {
+      checkboxValue = "checked";
+    } else if (someSelected) {
+      checkboxValue = "indeterminate";
+    }
     checkboxTitle = allSelected ? "Deselect all" : "Select all";
   }
 
@@ -29,13 +32,10 @@ export function SelectionStatus(props: { annotations?: ArAnnotation[] }) {
   }
 
   return (
-    <span
-      className="text-neutral-600 cursor-pointer"
+    <Checkbox
+      value={checkboxValue}
+      title={checkboxTitle}
       onClick={() => handleToggleSelect(annotations)}
-    >
-      <span title={checkboxTitle}>
-        <input type="checkbox" ref={checkboxRef} />
-      </span>
-    </span>
+    />
   );
 }

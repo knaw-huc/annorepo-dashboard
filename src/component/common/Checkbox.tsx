@@ -1,19 +1,31 @@
-import { Checked } from "./icon/Checked.tsx";
-import { Unchecked } from "./icon/Unchecked.tsx";
+import { useRef } from "react";
+
+export type CheckboxValue = "checked" | "unchecked" | "indeterminate";
 
 export function Checkbox(props: {
-  isSelected: boolean;
-  onToggle: () => void;
+  value: CheckboxValue;
+  title?: string;
+  onClick: () => void;
   className?: string;
-  size?: string | number;
 }) {
+  const checkboxRef = useRef<HTMLInputElement>(null);
+  if (checkboxRef.current) {
+    checkboxRef.current.checked = props.value === "checked";
+    checkboxRef.current.indeterminate = props.value === "indeterminate";
+  }
+
+  let className = "cursor-pointer";
+  if (props.className) {
+    className += ` ${props.className}`;
+  }
+
   return (
-    <span className={props.className} onClick={props.onToggle}>
-      {props.isSelected ? (
-        <Checked size={props.size} />
-      ) : (
-        <Unchecked size={props.size} />
-      )}
-    </span>
+    <input
+      type="checkbox"
+      ref={checkboxRef}
+      onClick={props.onClick}
+      className={className}
+      title={props.title}
+    />
   );
 }

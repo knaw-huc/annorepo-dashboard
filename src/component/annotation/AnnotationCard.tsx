@@ -85,89 +85,95 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
   const isSelected = selectedAnnotationIds.includes(id);
 
   return (
-    <Card
-      className="bg-anrep-blue-50 text-anrep-blue-800"
-      header={
-        <div className="flex justify-between items-center border-b border-anrep-blue-100">
-          <H5>
-            {canSelect && (
-              <Checkbox
-                isSelected={isSelected}
-                onToggle={() => {
-                  const update = isSelected
-                    ? selectedAnnotationIds.filter((sa) => sa !== id)
-                    : [...selectedAnnotationIds, id];
-                  setSelectedAnnotationsState({
-                    selectedAnnotationIds: update,
-                  });
-                }}
-                className="hover:text-inherit hover:cursor-pointer text-neutral-600"
-                size={20}
-              />
-            )}
-
-            <span className="ml-4">{name}</span>
-          </H5>
-          <div className="p-4">
-            <img src="/images/icon-annotation.png" className="h-4 w-4" alt="" />
-          </div>
-        </div>
-      }
-      footer={
-        <div className="flex gap-4">
-          <AnnotationButton onClick={() => setBodyOpen((prev) => !prev)}>
-            View body
-          </AnnotationButton>
-          <AnnotationButton
-            onClick={() =>
-              isUrl(annotation.target)
-                ? window.open(annotation.target)
-                : setTargetOpen((prev) => !prev)
-            }
-          >
-            View target <External className="ml-1" />
-          </AnnotationButton>
-          <AnnotationButton
-            onClick={() => window.open(annotation.id, "_blank")}
-          >
-            View source <External className="ml-1" />
-          </AnnotationButton>
-          <AnnotationButton onClick={handleDelete}>Remove</AnnotationButton>
-        </div>
-      }
-    >
-      <div className="flex flex-wrap gap-4">
-        {previewProps
-          .filter((p) => p.value)
-          .map((p, i) => (
-            <Badge
-              key={i}
-              label={p.path.replace(".", " ")}
-              value={isObject(p.value) ? JSON.stringify(p.value) : p.value}
-            />
-          ))}
-        {bodyPreviewProps
-          .filter((p) => p.value)
-          .map((p, i) => (
-            <Badge
-              key={i}
-              label={p.path.replace(".", " ")}
-              value={
-                typeof p.value === "object" ? JSON.stringify(p.value) : p.value
-              }
-            />
-          ))}
+    <div className="flex gap-4">
+      <div className="py-4">
+        {canSelect && (
+          <Checkbox
+            value={isSelected ? "checked" : "unchecked"}
+            onClick={() => {
+              const update = isSelected
+                ? selectedAnnotationIds.filter((sa) => sa !== id)
+                : [...selectedAnnotationIds, id];
+              setSelectedAnnotationsState({
+                selectedAnnotationIds: update,
+              });
+            }}
+            className="hover:text-inherit hover:cursor-pointer text-neutral-600"
+          />
+        )}
       </div>
-      {isBodyOpen && (
-        <div className="mt-4">
-          <ReactJsonView src={annotation.body} name={null} />
+      <Card
+        className="bg-anrep-blue-50 text-anrep-blue-800"
+        header={
+          <div className="flex justify-between items-center border-b border-anrep-blue-100">
+            <H5>{name}</H5>
+            <div className="p-4">
+              <img
+                src="/images/icon-annotation.png"
+                className="h-4 w-4"
+                alt=""
+              />
+            </div>
+          </div>
+        }
+        footer={
+          <div className="flex gap-4">
+            <AnnotationButton onClick={() => setBodyOpen((prev) => !prev)}>
+              View body
+            </AnnotationButton>
+            <AnnotationButton
+              onClick={() =>
+                isUrl(annotation.target)
+                  ? window.open(annotation.target)
+                  : setTargetOpen((prev) => !prev)
+              }
+            >
+              View target <External className="ml-1" />
+            </AnnotationButton>
+            <AnnotationButton
+              onClick={() => window.open(annotation.id, "_blank")}
+            >
+              View source <External className="ml-1" />
+            </AnnotationButton>
+            <AnnotationButton onClick={handleDelete}>Remove</AnnotationButton>
+          </div>
+        }
+      >
+        <div className="flex flex-wrap gap-4">
+          {previewProps
+            .filter((p) => p.value)
+            .map((p, i) => (
+              <Badge
+                key={i}
+                label={p.path.replace(".", " ")}
+                value={isObject(p.value) ? JSON.stringify(p.value) : p.value}
+              />
+            ))}
+          {bodyPreviewProps
+            .filter((p) => p.value)
+            .map((p, i) => (
+              <Badge
+                key={i}
+                label={p.path.replace(".", " ")}
+                value={
+                  typeof p.value === "object"
+                    ? JSON.stringify(p.value)
+                    : p.value
+                }
+              />
+            ))}
         </div>
-      )}
-      {isTargetOpen && annotation.target && !isUrl(annotation.target) && (
-        <div className="mt-4">
-          <ReactJsonView src={annotation.target as object} name={null} />
-        </div>
-      )}
-    </Card>
+        {isBodyOpen && (
+          <div className="mt-4">
+            <ReactJsonView src={annotation.body} name={null} />
+          </div>
+        )}
+        {isTargetOpen && annotation.target && !isUrl(annotation.target) && (
+          <div className="mt-4">
+            <ReactJsonView src={annotation.target as object} name={null} />
+          </div>
+        )}
+      </Card>
+    </div>
   );
 }
