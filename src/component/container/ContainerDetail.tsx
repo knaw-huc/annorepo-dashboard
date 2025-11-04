@@ -1,27 +1,20 @@
-import { Loading } from "../common/Loading.tsx";
 import { useContainer } from "../../client/endpoint/useContainer.tsx";
-import { ContainerAnnotationPage } from "./ContainerAnnotationPage.tsx";
-import { ContainerAnnotationFields } from "./ContainerAnnotationFields.tsx";
 import { useEffect, useState } from "react";
 import { toPageNo } from "../../util/toPageNo.ts";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-import { canEdit } from "../../model/user/canEdit.ts";
 import { useContainerRole } from "./useContainerRole.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { Warning } from "../common/Warning.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { keyEquals } from "../../client/query/useGet.tsx";
 import { ContainerSummary } from "./ContainerSummary.tsx";
-import { usePageLayout } from "../common/PageLayoutContext.tsx";
 import { NeutralButton } from "../common/NeutralButton.tsx";
 import { ContainerUsers } from "./ContainerUsers.tsx";
 import { isAdmin } from "../../model/user/isAdmin.ts";
 import { ContainerDetailTabs } from "./ContainerDetailTabs.tsx";
 import { Bin } from "../common/icon/Bin.tsx";
 import { SelectOption } from "../common/form/SelectOption.tsx";
-import { SelectionStatus } from "../annotation/SelectionStatus.tsx";
-import { DeleteSelected } from "../annotation/DeleteSelected.tsx";
-import { useContainerPage } from "../../client/endpoint/useContainerPage.tsx";
+import { ContainerAnnotations } from "./ContainerAnnotations.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -30,7 +23,7 @@ export type ContainerDetailProps = {
   onSearchAnnotations: () => void;
 };
 
-const NO_PAGE = -1;
+export const NO_PAGE = -1;
 
 const tabs = [
   { value: "annotations", label: "Annotations" },
@@ -49,8 +42,6 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const role = useContainerRole({ idOrName: name });
   const removeContainer = useDelete("/w3c/{containerName}");
   const queryClient = useQueryClient();
-  const { setSecondColumn } = usePageLayout();
-  const page = useContainerPage(name, pageNo);
 
   useEffect(() => {
     if (isInit || !container.data) {
@@ -60,15 +51,6 @@ export function ContainerDetail(props: ContainerDetailProps) {
     const containerPageId = container.data.first.id;
     setPageNo(toPageNo(containerPageId));
   }, [container, setInit]);
-
-  useEffect(() => {
-    setSecondColumn(<ContainerAnnotationFields name={name} />);
-    return () => setSecondColumn(null);
-  }, [name]);
-
-  const handleChangePage = (update: number) => {
-    setPageNo(update);
-  };
 
   const handleRemove = () => {
     if (
@@ -103,10 +85,6 @@ export function ContainerDetail(props: ContainerDetailProps) {
 
   if (!container.isSuccess) {
     return <StatusMessage name="container" requests={[container]} />;
-  }
-
-  if (!page.isSuccess) {
-    return <StatusMessage name="page" requests={[page]} />;
   }
 
   return (
@@ -147,42 +125,14 @@ export function ContainerDetail(props: ContainerDetailProps) {
         <ContainerUsers containerName={name} />
       )}
       {selectedTab.value === "annotations" && (
-        <>
-          <div className="flex gap-4 items-center justify-between my-8">
-            {canEdit(role) && (
-              <div className="flex gap-2">
-                <SelectionStatus annotations={page.data.items} />
-                <DeleteSelected />
-              </div>
-            )}
-            <div className="flex gap-2">
-              {canEdit(role) && (
-                <button
-                  className="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
-                  onClick={props.onCreateAnnotation}
-                >
-                  Add annotation
-                </button>
-              )}
-              <NeutralButton onClick={props.onSearchAnnotations}>
-                Search
-              </NeutralButton>
-            </div>
-          </div>
-
-          <div className="flex flex-col gap-3">
-            {pageNo === NO_PAGE ? (
-              <Loading name="annotations" />
-            ) : (
-              <ContainerAnnotationPage
-                containerName={name}
-                pageNo={pageNo}
-                onChangePageNo={handleChangePage}
-                role={role}
-              />
-            )}
-          </div>
-        </>
+        <ContainerAnnotations
+          name={name}
+          role={role}
+          pageNo={pageNo}
+          onChangePageNo={setPageNo}
+          onCreateAnnotation={props.onCreateAnnotation}
+          onSearchAnnotations={props.onSearchAnnotations}
+        />
       )}
     </>
   );
