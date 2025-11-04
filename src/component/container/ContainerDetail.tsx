@@ -17,6 +17,8 @@ import { NeutralButton } from "../common/NeutralButton.tsx";
 import { ContainerUsers } from "./ContainerUsers.tsx";
 import { H2 } from "../common/H2.tsx";
 import { isAdmin } from "../../model/user/isAdmin.ts";
+import { SelectOption } from "../common/form/SelectOption.tsx";
+import { ContainerDetailTabs } from "./ContainerDetailTabs.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -27,11 +29,17 @@ export type ContainerDetailProps = {
 
 const NO_PAGE = -1;
 
+const tabs: SelectOption[] = [
+  { value: "annotations", label: "Annotations" },
+  { value: "users", label: "Users" },
+];
+
 export function ContainerDetail(props: ContainerDetailProps) {
   const { name } = props;
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
   const [isInit, setInit] = useState(false);
   const [error, setError] = useState("");
+  const [selectedTab, setSelectedTab] = useState(tabs[0]);
 
   const container = useContainer(name);
   const role = useContainerRole({ idOrName: name });
@@ -119,6 +127,13 @@ export function ContainerDetail(props: ContainerDetailProps) {
       </div>
 
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
+
+      <ContainerDetailTabs
+        tabs={tabs}
+        selected={selectedTab}
+        onClick={setSelectedTab}
+      />
+
       {isAdmin(role) && <ContainerUsers containerName={name} />}
       <div className="flex flex-col lg:flex-row justify-between lg:items-center my-4 gap-4">
         <H2>Annotations</H2>
