@@ -86,8 +86,8 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
 
   return (
     <div className="flex gap-4">
-      <div className="py-4">
-        {canSelect && (
+      {canSelect && (
+        <div className="py-4">
           <Checkbox
             value={isSelected ? "checked" : "unchecked"}
             onClick={() => {
@@ -100,8 +100,8 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
             }}
             className="hover:text-inherit hover:cursor-pointer text-neutral-600"
           />
-        )}
-      </div>
+        </div>
+      )}
       <Card
         className="bg-anrep-blue-50 text-anrep-blue-800"
         header={
