@@ -1,8 +1,6 @@
 import { ArAnnotation, ArAnnotationPage } from "../../model/ArModel.ts";
 import { PageNavigation } from "../common/PageNavigation.tsx";
 import { AnnotationCard } from "./AnnotationCard.tsx";
-import { SelectionStatus } from "./SelectionStatus.tsx";
-import { DeleteSelected } from "./DeleteSelected.tsx";
 import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
 import { Warning } from "../common/Warning.tsx";
 
@@ -27,14 +25,6 @@ export function AnnotationPage(props: {
   }
   return (
     <div className={props.className || ""}>
-      <div className="flex">
-        {canEdit && (
-          <span className="flex gap-2">
-            <SelectionStatus annotations={page.items} />
-            <DeleteSelected />
-          </span>
-        )}
-      </div>
       <AnnotationGrid items={page.items} canEdit={canEdit} />
       <div className="flex items-center justify-center mt-10">
         <PageNavigation
@@ -55,7 +45,7 @@ export function AnnotationGrid(props: {
   const { items, canEdit } = props;
 
   return (
-    <div className="flex flex-col gap-3 mt-3">
+    <div className="flex flex-col gap-3">
       {items.map((item) => {
         const id = item.id;
         const parsed = toAnnotationGroups(id);

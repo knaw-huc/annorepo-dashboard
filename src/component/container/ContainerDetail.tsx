@@ -15,10 +15,13 @@ import { ContainerSummary } from "./ContainerSummary.tsx";
 import { usePageLayout } from "../common/PageLayoutContext.tsx";
 import { NeutralButton } from "../common/NeutralButton.tsx";
 import { ContainerUsers } from "./ContainerUsers.tsx";
-import { H2 } from "../common/H2.tsx";
 import { isAdmin } from "../../model/user/isAdmin.ts";
-import { SelectOption } from "../common/form/SelectOption.tsx";
 import { ContainerDetailTabs } from "./ContainerDetailTabs.tsx";
+import { Bin } from "../common/icon/Bin.tsx";
+import { SelectOption } from "../common/form/SelectOption.tsx";
+import { SelectionStatus } from "../annotation/SelectionStatus.tsx";
+import { DeleteSelected } from "../annotation/DeleteSelected.tsx";
+import { useContainerPage } from "../../client/endpoint/useContainerPage.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -29,23 +32,25 @@ export type ContainerDetailProps = {
 
 const NO_PAGE = -1;
 
-const tabs: SelectOption[] = [
+const tabs = [
   { value: "annotations", label: "Annotations" },
   { value: "users", label: "Users" },
-];
+] as const;
+type ContainerDetailTab = SelectOption & (typeof tabs)[number];
 
 export function ContainerDetail(props: ContainerDetailProps) {
   const { name } = props;
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
   const [isInit, setInit] = useState(false);
   const [error, setError] = useState("");
-  const [selectedTab, setSelectedTab] = useState(tabs[0]);
+  const [selectedTab, setSelectedTab] = useState<ContainerDetailTab>(tabs[0]);
 
   const container = useContainer(name);
   const role = useContainerRole({ idOrName: name });
   const removeContainer = useDelete("/w3c/{containerName}");
   const queryClient = useQueryClient();
   const { setSecondColumn } = usePageLayout();
+  const page = useContainerPage(name, pageNo);
 
   useEffect(() => {
     if (isInit || !container.data) {
@@ -100,6 +105,10 @@ export function ContainerDetail(props: ContainerDetailProps) {
     return <StatusMessage name="container" requests={[container]} />;
   }
 
+  if (!page.isSuccess) {
+    return <StatusMessage name="page" requests={[page]} />;
+  }
+
   return (
     <>
       <div className="flex justify-between w-full my-8 mx-auto max-w-5xl">
@@ -114,14 +123,14 @@ export function ContainerDetail(props: ContainerDetailProps) {
           </h1>
           <ContainerSummary name={name} role={role} />
         </div>
-        <div>
+        <div className="flex gap-4 items-center">
           <NeutralButton
             onClick={() => window.open(container.data.id, "_blank")}
           >
             View source
           </NeutralButton>
-          <NeutralButton onClick={handleRemove} className="ml-2">
-            Remove
+          <NeutralButton onClick={handleRemove}>
+            <Bin />
           </NeutralButton>
         </div>
       </div>
@@ -134,38 +143,47 @@ export function ContainerDetail(props: ContainerDetailProps) {
         onClick={setSelectedTab}
       />
 
-      {isAdmin(role) && <ContainerUsers containerName={name} />}
-      <div className="flex flex-col lg:flex-row justify-between lg:items-center my-4 gap-4">
-        <H2>Annotations</H2>
-        <div className="flex gap-4 items-center justify-between">
-          {canEdit(role) && (
-            <button
-              className="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
-              onClick={props.onCreateAnnotation}
-            >
-              Add
-            </button>
-          )}
-          <div>
-            <NeutralButton onClick={props.onSearchAnnotations}>
-              Search
-            </NeutralButton>
+      {selectedTab.value === "users" && isAdmin(role) && (
+        <ContainerUsers containerName={name} />
+      )}
+      {selectedTab.value === "annotations" && (
+        <>
+          <div className="flex gap-4 items-center justify-between my-8">
+            {canEdit(role) && (
+              <div className="flex gap-2">
+                <SelectionStatus annotations={page.data.items} />
+                <DeleteSelected />
+              </div>
+            )}
+            <div className="flex gap-2">
+              {canEdit(role) && (
+                <button
+                  className="bg-neutral-100 rounded-full border border-neutral-200 px-3 py-1 text-sm cursor-pointer hover:bg-neutral-50 hover:border-neutral-400 transition text-neutral-800"
+                  onClick={props.onCreateAnnotation}
+                >
+                  Add annotation
+                </button>
+              )}
+              <NeutralButton onClick={props.onSearchAnnotations}>
+                Search
+              </NeutralButton>
+            </div>
           </div>
-        </div>
-      </div>
 
-      <div className="flex flex-col gap-3">
-        {pageNo === NO_PAGE ? (
-          <Loading name="annotations" />
-        ) : (
-          <ContainerAnnotationPage
-            containerName={name}
-            pageNo={pageNo}
-            onChangePageNo={handleChangePage}
-            role={role}
-          />
-        )}
-      </div>
+          <div className="flex flex-col gap-3">
+            {pageNo === NO_PAGE ? (
+              <Loading name="annotations" />
+            ) : (
+              <ContainerAnnotationPage
+                containerName={name}
+                pageNo={pageNo}
+                onChangePageNo={handleChangePage}
+                role={role}
+              />
+            )}
+          </div>
+        </>
+      )}
     </>
   );
 }

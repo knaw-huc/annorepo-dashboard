@@ -1,10 +1,10 @@
 import { SelectOption } from "../common/form/SelectOption.tsx";
 import { ReactNode } from "react";
 
-export function ContainerDetailTabs(props: {
-  tabs: SelectOption[];
-  selected: SelectOption;
-  onClick: (option: SelectOption) => void;
+export function ContainerDetailTabs<T extends SelectOption>(props: {
+  tabs: readonly T[];
+  selected: T;
+  onClick: (option: T) => void;
 }) {
   return (
     <div className="flex mt-4 border-b border-anrep-green-400 *:w-40">
