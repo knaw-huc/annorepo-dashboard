@@ -45,21 +45,27 @@ export function AnnotationGrid(props: {
   const { items, canEdit } = props;
 
   return (
-    <div className="flex flex-col gap-3">
-      {items.map((item) => {
-        const id = item.id;
-        const parsed = toAnnotationGroups(id);
-        if (!parsed) {
+    <div className="flex flex-col md:flex-row gap-8">
+      <div className="flex flex-col gap-3 w-full md:w-3/4">
+        {items.map((item) => {
+          const id = item.id;
+          const parsed = toAnnotationGroups(id);
+          if (!parsed) {
+            return (
+              <Warning level="info">
+                Failed to display annotation, could not parse id: {id}
+              </Warning>
+            );
+          }
           return (
-            <Warning level="info">
-              Failed to display annotation, could not parse id: {id}
-            </Warning>
+            <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
           );
-        }
-        return (
-          <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
-        );
-      })}
+        })}
+      </div>
+
+      <div className="flex flex-col p-4 bg-stone-50 w-full md:w-1/4">
+        ContainerAnnotationFields name=name
+      </div>
     </div>
   );
 }

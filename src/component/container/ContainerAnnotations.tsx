@@ -8,9 +8,6 @@ import { NeutralButton } from "../common/NeutralButton.tsx";
 import { Loading } from "../common/Loading.tsx";
 import { ContainerAnnotationPage } from "./ContainerAnnotationPage.tsx";
 import { NO_PAGE } from "./ContainerDetail.tsx";
-import { ContainerAnnotationFields } from "./ContainerAnnotationFields.tsx";
-import { useEffect } from "react";
-import { usePageLayout } from "../common/PageLayoutContext.tsx";
 
 export function ContainerAnnotations(props: {
   name: string;
@@ -22,12 +19,6 @@ export function ContainerAnnotations(props: {
 }) {
   const { name, role, pageNo } = props;
   const page = useContainerPage(name, pageNo);
-  const { setSecondColumn } = usePageLayout();
-
-  useEffect(() => {
-    setSecondColumn(<ContainerAnnotationFields name={name} />);
-    return () => setSecondColumn(null);
-  }, [name]);
 
   if (!page.isSuccess) {
     return <StatusMessage name="page" requests={[page]} />;
@@ -57,7 +48,7 @@ export function ContainerAnnotations(props: {
         </div>
       </div>
 
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col">
         {pageNo === NO_PAGE ? (
           <Loading name="annotations" />
         ) : (
