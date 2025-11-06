@@ -90,7 +90,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
 
   return (
     <>
-      <div className="flex justify-between w-full my-8 mx-auto max-w-5xl">
+      <div className="flex justify-between w-full my-8 mx-auto">
         <div>
           <h1 className="text-2xl">
             <img
