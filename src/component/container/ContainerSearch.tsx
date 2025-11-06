@@ -14,9 +14,6 @@ import {
 } from "../../client/endpoint/useContainerSearch.tsx";
 import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { defaultQuery } from "../../model/query/defaultQuery.ts";
-
-import { useContainerRole } from "./useContainerRole.tsx";
-import { canEdit } from "../../model/user/canEdit.ts";
 import { AddSubqueryDropdownMenu } from "../common/search/AddSubqueryDropdownMenu.tsx";
 import { QR } from "../../client/query/QR.tsx";
 
@@ -33,7 +30,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const { initWithQuery, subqueries } = useStore();
   const [isInit, setInit] = useState(false);
   const query = useSearchQuery();
-  const role = useContainerRole({ idOrName: containerName });
   const [submitted, setSubmitted] = useState<ContainerSearchArgs>({
     containerName,
     query,
@@ -100,10 +96,11 @@ export function ContainerSearch(props: ContainerSearchProps) {
       </div>
       {page.isSuccess ? (
         <AnnotationPage
+          className="flex flex-col gap-3 my-8"
           pageNo={pageNo}
           page={page.data}
           onChangePageNo={handleChangePage}
-          canEdit={canEdit(role)}
+          canEdit={false}
         />
       ) : (
         <div className="mt-8">

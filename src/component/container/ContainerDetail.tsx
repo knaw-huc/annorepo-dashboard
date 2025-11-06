@@ -26,9 +26,10 @@ export type ContainerDetailProps = {
 export const NO_PAGE = -1;
 
 const tabs = [
-  { value: "annotations", label: "Annotations" },
-  { value: "users", label: "Users" },
+  { value: "annotations", label: "Annotations", needsAdmin: false },
+  { value: "users", label: "Users", needsAdmin: true },
 ] as const;
+
 type ContainerDetailTab = SelectOption & (typeof tabs)[number];
 
 export function ContainerDetail(props: ContainerDetailProps) {
@@ -116,7 +117,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
 
       <ContainerDetailTabs
-        tabs={tabs}
+        tabs={isAdmin(role) ? tabs : tabs.filter((t) => !t.needsAdmin)}
         selected={selectedTab}
         onClick={setSelectedTab}
       />

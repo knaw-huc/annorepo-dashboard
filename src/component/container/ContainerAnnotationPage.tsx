@@ -4,6 +4,7 @@ import { toPageNo } from "../../util/toPageNo.ts";
 import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 import { UserRole } from "../../model/user/UserRole.tsx";
 import { canEdit } from "../../model/user/canEdit.ts";
+import { ContainerAnnotationFields } from "./ContainerAnnotationFields.tsx";
 
 export function ContainerAnnotationPage(
   props: PropsWithChildren<{
@@ -25,11 +26,19 @@ export function ContainerAnnotationPage(
   }
 
   return (
-    <AnnotationPage
-      pageNo={pageNo}
-      page={page}
-      onChangePageNo={handlePageChange}
-      canEdit={canEdit(role)}
-    />
+    <div className="parent flex flex-col md:flex-row gap-8">
+      <AnnotationPage
+        className="flex flex-col gap-3 w-full md:w-3/4"
+        pageNo={pageNo}
+        page={page}
+        onChangePageNo={handlePageChange}
+        canEdit={canEdit(role)}
+      />
+      {!!page.items.length && (
+        <div className="flex-col p-4 bg-stone-50 w-full md:w-1/4">
+          <ContainerAnnotationFields name={containerName} />
+        </div>
+      )}
+    </div>
   );
 }

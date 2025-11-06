@@ -24,7 +24,7 @@ export function AnnotationPage(props: {
     );
   }
   return (
-    <div className={props.className || ""}>
+    <div className={props.className || "flex flex-col gap-2"}>
       <AnnotationGrid items={page.items} canEdit={canEdit} />
       <div className="flex items-center justify-center mt-10">
         <PageNavigation
@@ -45,27 +45,21 @@ export function AnnotationGrid(props: {
   const { items, canEdit } = props;
 
   return (
-    <div className="flex flex-col md:flex-row gap-8">
-      <div className="flex flex-col gap-3 w-full md:w-3/4">
-        {items.map((item) => {
-          const id = item.id;
-          const parsed = toAnnotationGroups(id);
-          if (!parsed) {
-            return (
-              <Warning level="info">
-                Failed to display annotation, could not parse id: {id}
-              </Warning>
-            );
-          }
+    <>
+      {items.map((item) => {
+        const id = item.id;
+        const parsed = toAnnotationGroups(id);
+        if (!parsed) {
           return (
-            <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
+            <Warning level="info">
+              Failed to display annotation, could not parse id: {id}
+            </Warning>
           );
-        })}
-      </div>
-
-      <div className="flex flex-col p-4 bg-stone-50 w-full md:w-1/4">
-        ContainerAnnotationFields name=name
-      </div>
-    </div>
+        }
+        return (
+          <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
+        );
+      })}
+    </>
   );
 }
