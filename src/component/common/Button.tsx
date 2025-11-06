@@ -17,6 +17,7 @@ export function Button(
 
   return (
     <button
+      type="button"
       onClick={props.onClick}
       className={className}
       disabled={props.disabled}
