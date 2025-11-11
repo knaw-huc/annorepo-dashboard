@@ -3,7 +3,6 @@ import { useContainerPage } from "../../client/endpoint/useContainerPage.tsx";
 import { toPageNo } from "../../util/toPageNo.ts";
 import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 import { UserRole } from "../../model/user/UserRole.tsx";
-import { canEdit } from "../../model/user/canEdit.ts";
 import { ContainerAnnotationFields } from "./ContainerAnnotationFields.tsx";
 
 export function ContainerAnnotationPage(
@@ -32,7 +31,7 @@ export function ContainerAnnotationPage(
         pageNo={pageNo}
         page={page}
         onChangePageNo={handlePageChange}
-        canEdit={canEdit(role)}
+        role={role}
       />
       {!!page.items.length && (
         <div className="flex-col p-4 bg-stone-50 w-full md:w-1/4">

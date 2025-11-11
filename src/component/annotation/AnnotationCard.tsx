@@ -20,14 +20,16 @@ import { Badge } from "./Badge.tsx";
 import { AnnotationButton } from "./AnnotationButton.tsx";
 import { orThrow } from "../../util/orThrow.ts";
 import { useNavigate } from "@tanstack/react-router";
+import { UserRole } from "../../model/user/UserRole.tsx";
+import { canEdit } from "../../model/user/canEdit.ts";
 
 type PathValue = { path: string; value: string };
 
-export function AnnotationCard(props: { id: string; canEdit?: boolean }) {
+export function AnnotationCard(props: { id: string; role?: UserRole }) {
   const queryClient = useQueryClient();
   const annotationPreview = useConfig().annotationPreview;
 
-  const { id, canEdit } = props;
+  const { id, role } = props;
 
   const { selectedAnnotationIds, setSelectedAnnotationsState } = useStore();
 
@@ -94,7 +96,7 @@ export function AnnotationCard(props: { id: string; canEdit?: boolean }) {
 
   return (
     <div className="flex gap-4">
-      {canEdit && (
+      {canEdit(role) && (
         <div className="py-4">
           <Checkbox
             value={isSelected ? "checked" : "unchecked"}
@@ -145,7 +147,7 @@ export function AnnotationCard(props: { id: string; canEdit?: boolean }) {
             >
               View source <External className="ml-1" />
             </AnnotationButton>
-            {canEdit && (
+            {canEdit(role) && (
               <AnnotationButton onClick={handleDelete}>Remove</AnnotationButton>
             )}
           </div>

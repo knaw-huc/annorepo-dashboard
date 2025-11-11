@@ -40,7 +40,11 @@ export const Route = createFileRoute(
             />,
           ]}
         >
-          <AnnotationDetail id={id} onClose={handleClose} />
+          <AnnotationDetail
+            id={id}
+            onClose={handleClose}
+            containerName={containerName}
+          />
         </Page>
       </AuthGate>
     );

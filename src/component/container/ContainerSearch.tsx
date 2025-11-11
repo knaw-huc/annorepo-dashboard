@@ -100,7 +100,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
           pageNo={pageNo}
           page={page.data}
           onChangePageNo={handleChangePage}
-          canEdit={false}
         />
       ) : (
         <div className="mt-8">

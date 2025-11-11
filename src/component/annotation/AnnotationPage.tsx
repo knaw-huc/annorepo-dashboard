@@ -3,6 +3,7 @@ import { PageNavigation } from "../common/PageNavigation.tsx";
 import { AnnotationCard } from "./AnnotationCard.tsx";
 import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
 import { Warning } from "../common/Warning.tsx";
+import { UserRole } from "../../model/user/UserRole.tsx";
 
 export function AnnotationPage(props: {
   pageNo: number;
@@ -10,9 +11,9 @@ export function AnnotationPage(props: {
   onChangePageNo: (page: string) => void;
   className?: string;
   canSelect?: boolean;
-  canEdit?: boolean;
+  role?: UserRole;
 }) {
-  const { page, pageNo, onChangePageNo, canEdit } = props;
+  const { page, pageNo, onChangePageNo, role } = props;
 
   const { prev, next } = page;
 
@@ -25,7 +26,7 @@ export function AnnotationPage(props: {
   }
   return (
     <div className={props.className || "flex flex-col gap-2"}>
-      <AnnotationGrid items={page.items} canEdit={canEdit} />
+      <AnnotationGrid items={page.items} role={role} />
       <div className="flex items-center justify-center mt-10">
         <PageNavigation
           current={pageNo}
@@ -41,8 +42,9 @@ export function AnnotationPage(props: {
 export function AnnotationGrid(props: {
   items: ArAnnotation[];
   canEdit?: boolean;
+  role?: UserRole;
 }) {
-  const { items, canEdit } = props;
+  const { items, role } = props;
 
   return (
     <>
@@ -56,7 +58,7 @@ export function AnnotationGrid(props: {
             </Warning>
           );
         }
-        return <AnnotationCard key={item.id} id={item.id} canEdit={canEdit} />;
+        return <AnnotationCard key={item.id} id={item.id} role={role} />;
       })}
     </>
   );
