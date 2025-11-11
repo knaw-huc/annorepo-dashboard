@@ -3,6 +3,7 @@ import { Page } from "../../../../component";
 import { AuthGate } from "../../../../component/auth/AuthGate.tsx";
 import { AnnotationDetail } from "../../../../component/annotation/AnnotationDetail.tsx";
 import {
+  ToAnnotation,
   ToContainer,
   ToContainers,
   ToHome,
@@ -32,7 +33,11 @@ export const Route = createFileRoute(
           breadcrumbs={[
             <ToHome />,
             <ToContainers />,
-            <ToContainer name={containerName} />,
+            <ToContainer containerName={containerName} />,
+            <ToAnnotation
+              containerName={containerName}
+              annotationName={annotationName}
+            />,
           ]}
         >
           <AnnotationDetail id={id} onClose={handleClose} />

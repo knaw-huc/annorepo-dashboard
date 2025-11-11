@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ContainerDetail, Page } from "../../../component";
 import { AuthGate } from "../../../component/auth/AuthGate.tsx";
 import {
-  Breadcrumb,
+  ToContainer,
   ToContainers,
   ToHome,
 } from "../../../component/common/BreadcrumbNav.tsx";
@@ -41,9 +41,7 @@ function Component() {
         breadcrumbs={[
           <ToHome />,
           <ToContainers />,
-          <Breadcrumb to="/container/$containerName" params={{ containerName }}>
-            {containerName}
-          </Breadcrumb>,
+          <ToContainer containerName={containerName} />,
         ]}
       >
         <ContainerDetail

@@ -38,7 +38,7 @@ function Component() {
         breadcrumbs={[
           <ToHome />,
           <ToContainers />,
-          <ToContainer name={containerName} />,
+          <ToContainer containerName={containerName} />,
         ]}
       >
         <AnnotationEditor
