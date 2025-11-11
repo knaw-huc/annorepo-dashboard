@@ -56,9 +56,7 @@ export function AnnotationGrid(props: {
             </Warning>
           );
         }
-        return (
-          <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
-        );
+        return <AnnotationCard key={item.id} id={item.id} canEdit={canEdit} />;
       })}
     </>
   );

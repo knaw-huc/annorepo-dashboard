@@ -19,14 +19,15 @@ import { Badge } from "./Badge.tsx";
 
 import { AnnotationButton } from "./AnnotationButton.tsx";
 import { orThrow } from "../../util/orThrow.ts";
+import { useNavigate } from "@tanstack/react-router";
 
 type PathValue = { path: string; value: string };
 
-export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
+export function AnnotationCard(props: { id: string; canEdit?: boolean }) {
   const queryClient = useQueryClient();
   const annotationPreview = useConfig().annotationPreview;
 
-  const { id, canSelect } = props;
+  const { id, canEdit } = props;
 
   const { selectedAnnotationIds, setSelectedAnnotationsState } = useStore();
 
@@ -43,7 +44,7 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
   const [isTargetOpen, setTargetOpen] = useState(false);
 
   const deleteAnnotation = useDelete("/w3c/{containerName}/{annotationName}");
-
+  const navigate = useNavigate();
   function handleDelete() {
     if (!window.confirm("Delete annotation?")) {
       return;
@@ -84,9 +85,16 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
 
   const isSelected = selectedAnnotationIds.includes(id);
 
+  function navigateToAnnotation() {
+    return navigate({
+      to: "/container/$containerName/annotation/$annotationName",
+      params: { containerName, annotationName },
+    });
+  }
+
   return (
     <div className="flex gap-4">
-      {canSelect && (
+      {canEdit && (
         <div className="py-4">
           <Checkbox
             value={isSelected ? "checked" : "unchecked"}
@@ -106,7 +114,9 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
         className="bg-anrep-blue-50 text-anrep-blue-800"
         header={
           <div className="flex justify-between items-center border-b border-anrep-blue-100">
-            <H5>{name}</H5>
+            <span className="cursor-pointer" onClick={navigateToAnnotation}>
+              <H5>{name}</H5>
+            </span>
             <div className="p-4">
               <img
                 src="/images/icon-annotation.png"
@@ -135,7 +145,9 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
             >
               View source <External className="ml-1" />
             </AnnotationButton>
-            <AnnotationButton onClick={handleDelete}>Remove</AnnotationButton>
+            {canEdit && (
+              <AnnotationButton onClick={handleDelete}>Remove</AnnotationButton>
+            )}
           </div>
         }
       >
