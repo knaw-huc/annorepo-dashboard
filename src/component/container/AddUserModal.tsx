@@ -11,11 +11,12 @@ export function AddUserModal(props: {
   onAdd: (userName: string, role: UserRole) => void;
 }) {
   const [userName, setUserName] = useState("");
-  const [role, setRole] = useState(UserRole.GUEST);
+  const [role, setRole] = useState(UserRole.EDITOR);
 
-  const roleOptions = [UserRole.GUEST, UserRole.EDITOR, UserRole.ADMIN].map(
-    (r) => ({ value: r, label: r.toLowerCase() }),
-  );
+  const roleOptions = [UserRole.EDITOR, UserRole.ADMIN].map((r) => ({
+    value: r,
+    label: r.toLowerCase(),
+  }));
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black/50">
