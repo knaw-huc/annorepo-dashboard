@@ -1,11 +1,11 @@
 import { H1 } from "../common/H1.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-import { Button } from "../common/Button.tsx";
-import { Add } from "../common/icon/Add.tsx";
 import { useGet } from "../../client/query/useGet.tsx";
 import { ArCustomQueryResult } from "../../model/ArModel.ts";
 import { CustomQueryCard } from "./CustomQueryCard.tsx";
 import { QR } from "../../client/query/QR.tsx";
+
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function CustomQueryIndex(props: {
   onClickCreateCustomQuery: () => void;
@@ -21,12 +21,13 @@ export function CustomQueryIndex(props: {
 
   return (
     <div>
-      <H1>Custom queries</H1>
-      <Button onClick={props.onClickCreateCustomQuery} className="mt-2">
-        Add
-        <Add className="ml-1" />
-      </Button>
-      <div className="grid grid-cols-3 gap-5">
+      <div className="flex justify-between w-full my-8">
+        <H1>Custom queries</H1>
+        <NeutralButton onClick={props.onClickCreateCustomQuery}>
+          New query
+        </NeutralButton>
+      </div>
+      <div className="gap-8 flex flex-col">
         {customQueries.data.map((query, i) => (
           <CustomQueryCard
             key={i}

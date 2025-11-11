@@ -3,8 +3,6 @@ import { orThrow } from "../../../util/orThrow.ts";
 import { SelectOption, toOption } from "../form/SelectOption.tsx";
 import { QueryValueInput } from "./QueryValueInput.tsx";
 import { QueryFieldInput } from "./QueryFieldInput.tsx";
-import { Button } from "../Button.tsx";
-import { Remove } from "../icon/Remove.tsx";
 import { useStore } from "../../../store/useStore.ts";
 import { useValueSuggestions } from "./useValueSuggestions.tsx";
 import { toParamName } from "../../../store/query/util/toParamName.ts";
@@ -13,6 +11,7 @@ import { toOperator } from "../../../model/query/operator/toOperator.ts";
 import { alignFormWithOperator } from "./util/alignFormWithOperator.tsx";
 import { PropertyName } from "lodash";
 import { getComparisonSubquery } from "../../../store/query/util/path/getComparisonSubquery.ts";
+import { Cross } from "../icon/Cross.tsx";
 
 export type ComparisonSubqueryEditorProps = {
   fieldNames: string[];
@@ -83,9 +82,12 @@ export function ComparisonSubqueryEditor(props: ComparisonSubqueryEditorProps) {
   }
 
   return (
-    <form onSubmit={(e) => e.preventDefault()}>
+    <form
+      onSubmit={(e) => e.preventDefault()}
+      className="comparison-subquery-editor"
+    >
       <fieldset disabled={disabled}>
-        <div className="flex mb-3 mt-2">
+        <div className="flex">
           <div className="flex-auto mr-2">
             <QueryFieldInput
               value={subquery.form.field}
@@ -98,6 +100,8 @@ export function ComparisonSubqueryEditor(props: ComparisonSubqueryEditorProps) {
           </div>
           <div className="flex-none mr-2">
             <DropdownSelector
+              label="Operator"
+              selectClassName="rounded bg-white border border-anrep-pink-300 px-2 py-1 h-8 text-sm  min-w-20"
               selectedValue={subquery.form.operator.valueOf()}
               options={operatorOptions}
               onSelect={handleSelectOperator}
@@ -114,15 +118,13 @@ export function ComparisonSubqueryEditor(props: ComparisonSubqueryEditorProps) {
           </div>
 
           {!disabled && (
-            <div className="flex-none">
-              <Button
-                type="button"
-                className="pl-3 h-full"
+            <div className="flex items-end">
+              <span
+                className="p-2 cursor-pointer"
                 onClick={handleRemoveSubQuery}
-                secondary
               >
-                <Remove className="ml-1" />
-              </Button>
+                <Cross />
+              </span>
             </div>
           )}
         </div>

@@ -1,8 +1,8 @@
 import { ArAnnotation, ArAnnotationPage } from "../../model/ArModel.ts";
 import { PageNavigation } from "../common/PageNavigation.tsx";
 import { AnnotationCard } from "./AnnotationCard.tsx";
-import { SelectionStatus } from "./SelectionStatus.tsx";
-import { DeleteSelected } from "./DeleteSelected.tsx";
+import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
+import { Warning } from "../common/Warning.tsx";
 
 export function AnnotationPage(props: {
   pageNo: number;
@@ -24,23 +24,9 @@ export function AnnotationPage(props: {
     );
   }
   return (
-    <div className={props.className || ""}>
-      <div className="flex">
-        <PageNavigation
-          current={pageNo}
-          prev={prev}
-          next={next}
-          onChange={onChangePageNo}
-        />
-        {canEdit && (
-          <span className="ml-5">
-            <SelectionStatus items={page.items} />
-            <DeleteSelected />
-          </span>
-        )}
-      </div>
+    <div className={props.className || "flex flex-col gap-2"}>
       <AnnotationGrid items={page.items} canEdit={canEdit} />
-      <div className="mt-3">
+      <div className="flex items-center justify-center mt-10">
         <PageNavigation
           current={pageNo}
           prev={prev}
@@ -59,10 +45,21 @@ export function AnnotationGrid(props: {
   const { items, canEdit } = props;
 
   return (
-    <div className="grid grid-cols-3 gap-5">
-      {items.map((item) => (
-        <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
-      ))}
-    </div>
+    <>
+      {items.map((item) => {
+        const id = item.id;
+        const parsed = toAnnotationGroups(id);
+        if (!parsed) {
+          return (
+            <Warning level="info">
+              Failed to display annotation, could not parse id: {id}
+            </Warning>
+          );
+        }
+        return (
+          <AnnotationCard key={item.id} id={item.id} canSelect={canEdit} />
+        );
+      })}
+    </>
   );
 }

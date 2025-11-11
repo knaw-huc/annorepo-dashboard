@@ -1,44 +1,46 @@
 import { useStore } from "../../store/useStore.ts";
-import { Button } from "../common/Button.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
+import { SquareTextHintButton } from "../Modal.tsx";
 
 export function LoginMenu(props: { onClose: () => void }) {
   const { authMethods, setAuthState } = useStore();
   const config = useConfig();
   return (
     <>
-      {authMethods.includes("oidc") && (
-        <Button
-          onClick={() => {
-            window.location.href = `${config.AUTH_HOST.proxyUrl}/oidc/login`;
-          }}
-        >
-          Login with OIDC
-        </Button>
-      )}
-      {authMethods.includes("token") && (
-        <Button
+      <div className="flex gap-6 *:w-1/3 text-anrep-pink-600 *:cursor-pointer">
+        {authMethods.includes("oidc") && config.AUTH_HOST && (
+          <SquareTextHintButton
+            title="With OIDC"
+            hint="Login with your institutional account."
+            onClick={() => {
+              window.location.href = `${config.AUTH_HOST!.proxyUrl}/oidc/login`;
+            }}
+          />
+        )}
+        {authMethods.includes("token") && (
+          <SquareTextHintButton
+            title="With a token"
+            hint="Login with your bearer access token."
+            className="ml-5"
+            onClick={() => {
+              setAuthState({
+                isAuthenticating: true,
+                selectedAuthMethod: "token",
+              });
+              props.onClose();
+            }}
+          />
+        )}
+        <SquareTextHintButton
+          title="As a guest"
+          hint="Continue as guest. Some features are not available."
           className="ml-5"
           onClick={() => {
-            setAuthState({
-              isAuthenticating: true,
-              selectedAuthMethod: "token",
-            });
+            setAuthState({ selectedAuthMethod: "anonymous" });
             props.onClose();
           }}
-        >
-          Login with token
-        </Button>
-      )}
-      <Button
-        className="ml-5"
-        onClick={() => {
-          setAuthState({ selectedAuthMethod: "anonymous" });
-          props.onClose();
-        }}
-      >
-        Continue as guest
-      </Button>
+        ></SquareTextHintButton>
+      </div>
     </>
   );
 }

@@ -1,63 +1,67 @@
-import {Down} from "../icon/Down";
-import {ReactNode, useState} from "react";
-import {DropdownItem} from "./DropdownItem.tsx";
-import {SelectOption} from "./SelectOption.tsx";
+import { ChangeEvent, ReactNode, useId } from "react";
+import { SelectOption } from "./SelectOption.tsx";
+import { Label } from "./Label.tsx";
+import { orThrow } from "../../../util/orThrow.ts";
+import { GroupPosition } from "./GroupPosition.tsx";
+import { styleGroup } from "./styleGroup.tsx";
 
-export function DropdownSelector<T>(props: {
-  placeholder?: ReactNode,
-  selectedValue?: string,
-  options: SelectOption<T>[],
-  onSelect: (option: SelectOption<T>) => void
-  className?: string
-  disabled?: boolean
+export function DropdownSelector<T extends string>(props: {
+  options: SelectOption<T>[];
+  onSelect: (option: SelectOption<T>) => void;
+
+  label?: ReactNode;
+  selectedValue?: string;
+  placeholder?: ReactNode;
+  className?: string;
+  disabled?: boolean;
+  selectClassName?: string;
+  groupAt?: GroupPosition;
 }) {
-  const options = props.options.filter(o => o.value !== props.selectedValue)
+  const { options } = props;
+  const selectId = useId();
 
-  const [isOpen, setOpen] = useState(false);
   let className = "relative inline-block text-left";
-  if(props.className) {
-    className += ` ${props.className}`
-  }
-  let optionsClassName = "absolute right-0 z-20 mt-2 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-hidden";
-  if (!isOpen) {
-    optionsClassName += ' hidden'
+  if (props.className) {
+    className += ` ${props.className}`;
   }
 
-  function handleSelect(option: SelectOption<T>) {
-    setOpen(false)
-    props.onSelect(option);
+  function handleSelect(e: ChangeEvent<HTMLSelectElement>) {
+    const selected =
+      options.find((o) => o.value === e.target.value) ??
+      orThrow(`No option found with value: ${e.target.value}`);
+    props.onSelect(selected);
   }
 
-  let buttonClassname = "w-full h-full justify-center rounded-md bg-white px-3 py-2 text-l ring-1 ring-gray-300 ring-inset border-b-2";
-  buttonClassname += isOpen ? ' border-slate-600' : ' border-slate-400'
-  buttonClassname += props.disabled ? ' cursor-not-allowed  text-gray-400' : ' hover:bg-gray-50 text-gray-900'
+  let selectClassname = "flex items-center gap-2 p-2 h-8 py-1 border";
+  if (props.selectClassName) {
+    selectClassname += ` ${props.selectClassName}`;
+  }
+  selectClassname += props.disabled
+    ? " cursor-not-allowed text-gray-400"
+    : " cursor-pointer text-gray-900";
+  selectClassname += ` ${styleGroup(props.groupAt)}`;
 
-  return <div
-    className={className}
-  >
-    <button
-      disabled={props.disabled}
-      onClick={() => setOpen(!isOpen)}
-      type="button"
-      className={buttonClassname}
-      onBlur={() => setTimeout(() => setOpen(false), 200)}
-    >
-      {props.options.find(o => o.value === props.selectedValue)?.label || props.placeholder || 'Select below'}
-      <Down className="text-slate-400 ml-2" />
-    </button>
-    {!!options.length && <ul
-      className={optionsClassName}
-    >
-      <div className="py-1" role="none">
-        {options.map(option =>
-          <DropdownItem
-            key={`${option.value}`}
-            label={option.label}
-            onClick={() => handleSelect(option)}
-          />
-        )}
-      </div>
-    </ul>}
-  </div>
+  const selected = options.find((o) => o.value === props.selectedValue);
+
+  return (
+    <div className={className}>
+      {props.label && <Label text={props.label} htmlFor={selectId} />}
+      <select
+        id={selectId}
+        disabled={props.disabled}
+        className={selectClassname}
+        value={selected?.value ?? ""}
+        onChange={handleSelect}
+      >
+        <option value="" disabled>
+          {props.placeholder ?? "Please select..."}
+        </option>
+        {options.map((option) => (
+          <option key={`${option.value}`} value={option.value}>
+            {option.label}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
 }
-

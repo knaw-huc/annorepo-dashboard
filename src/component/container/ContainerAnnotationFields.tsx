@@ -1,9 +1,5 @@
-import { H2 } from "../common/H2.tsx";
-import { Hint } from "../common/Hint.tsx";
 import { useContainerFields } from "../../client/endpoint/useContainerFields.tsx";
 import { Loading } from "../common/Loading.tsx";
-import { isEmpty } from "lodash";
-import { BadgeWithCount } from "../common/BadgeWithCount.tsx";
 
 export function ContainerAnnotationFields(props: { name: string }) {
   const { name } = props;
@@ -13,22 +9,20 @@ export function ContainerAnnotationFields(props: { name: string }) {
     return <Loading name="container fields" />;
   }
 
-  if (isEmpty(containerFields)) {
-    return null;
-  }
-
   const fieldEntries = Object.entries(containerFields);
 
   return (
-    <div className="mt-5">
-      <H2>
-        Annotation fields <Hint>count</Hint>
-      </H2>
-
+    <div className="flex flex-col p-8 bg-stone-50 grow">
+      <h2 className="text-xl mt-4 mb-4">Annotation fields</h2>
       {fieldEntries.sort(countDesc).map(([field, count], i) => (
-        <BadgeWithCount key={i} count={count}>
-          {field}
-        </BadgeWithCount>
+        <div key={i} className="flex justify-between items-center max-w-72">
+          <div>
+            <div className="rounded bg-anrep-blue-200/50 inline-block p-1 text-xs text-anrep-blue-800 font-mono">
+              {field}
+            </div>
+          </div>
+          <div className="text-sm">{count}</div>
+        </div>
       ))}
     </div>
   );

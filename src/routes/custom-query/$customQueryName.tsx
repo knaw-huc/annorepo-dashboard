@@ -23,7 +23,7 @@ function RouteComponent() {
 
   return (
     <div>
-      <AuthGate>
+      <AuthGate needsAuth={true}>
         <Page breadcrumbs={[<ToHome />, <ToCustomQueryIndex />]}>
           <CustomQueryDetail name={customQueryName} onClose={handleClose} />
         </Page>

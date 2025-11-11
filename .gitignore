@@ -1,4 +1,4 @@
-webapp.config.json
+dashboard.config.json
 .tanstack/
 node_modules/
 dist/

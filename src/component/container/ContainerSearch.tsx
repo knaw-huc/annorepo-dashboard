@@ -12,15 +12,10 @@ import {
   ContainerSearchArgs,
   useContainerSearch,
 } from "../../client/endpoint/useContainerSearch.tsx";
-import { SearchButton } from "../common/search/button/SearchButton.tsx";
 import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
-import { AddComparisonSubqueryButton } from "../common/search/button/AddComparisonSubqueryButton.tsx";
 import { defaultQuery } from "../../model/query/defaultQuery.ts";
-import { LogicalOperator } from "../../model/query/operator/Operator.ts";
-import { AddLogicalSubqueryButton } from "../common/search/button/AddLogicalSubqueryButton.tsx";
-
-import { useContainerRole } from "./useContainerRole.tsx";
-import { canEdit } from "../../model/user/canEdit.ts";
+import { AddSubqueryDropdownMenu } from "../common/search/AddSubqueryDropdownMenu.tsx";
+import { QR } from "../../client/query/QR.tsx";
 
 export type ContainerSearchProps = {
   containerName: string;
@@ -35,7 +30,6 @@ export function ContainerSearch(props: ContainerSearchProps) {
   const { initWithQuery, subqueries } = useStore();
   const [isInit, setInit] = useState(false);
   const query = useSearchQuery();
-  const role = useContainerRole({ idOrName: containerName });
   const [submitted, setSubmitted] = useState<ContainerSearchArgs>({
     containerName,
     query,
@@ -66,6 +60,9 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setPageNo(toPageNo(update));
   };
 
+  const hasSearchErrors = !!search.error || hasErrors(subqueries);
+  const isSearchDisabled = !subqueries.length || hasSearchErrors;
+
   function handleSubmitSearch() {
     if (hasErrors(subqueries)) {
       return;
@@ -73,54 +70,55 @@ export function ContainerSearch(props: ContainerSearchProps) {
     setSubmitted({ containerName, query, pageNo });
   }
 
-  const hasSearchErrors = !!search.error || hasErrors(subqueries);
-  const isSearchDisabled = !subqueries.length || hasSearchErrors;
+  useEffect(() => {
+    if (isSearchDisabled) {
+      return;
+    }
+    handleSubmitSearch();
+  }, [containerName, query, pageNo]);
 
-  if (!container.isSuccess || !page.isSuccess) {
-    return (
-      <StatusMessage name="container and page" requests={[container, page]} />
-    );
-  }
   const newSubqueryPath = [subqueries.length];
   return (
     <>
       <H1>Search annotations</H1>
-      <QueryEditor containerName={containerName} />
-      <div className="mb-2">
-        <AddComparisonSubqueryButton
-          path={newSubqueryPath}
-          isParam={false}
-          disabled={hasSearchErrors}
-        />
-        <AddLogicalSubqueryButton
-          path={newSubqueryPath}
-          disabled={hasSearchErrors}
-          operator={LogicalOperator.and}
-          className="ml-3"
-        />
-        <AddLogicalSubqueryButton
-          path={newSubqueryPath}
-          disabled={hasSearchErrors}
-          operator={LogicalOperator.or}
-          className="ml-3"
-        />
-        <span className="ml-3">
-          <SearchButton
-            onClick={handleSubmitSearch}
-            disabled={isSearchDisabled}
-          />
-        </span>
+      <div className="flex flex-col gap-4 my-8">
+        <QueryEditor containerName={containerName} />
       </div>
-      {page ? (
+      <div className="mt-4 flex">
+        {container.data ? (
+          <AddSubqueryDropdownMenu
+            path={newSubqueryPath}
+            disabled={hasSearchErrors}
+          />
+        ) : (
+          <StatusMessage name="container" requests={[container]} />
+        )}
+      </div>
+      {page.isSuccess ? (
         <AnnotationPage
+          className="flex flex-col gap-3 my-8"
           pageNo={pageNo}
           page={page.data}
           onChangePageNo={handleChangePage}
-          canEdit={canEdit(role)}
+          canEdit={false}
         />
       ) : (
-        <Loading name="annotations" />
+        <div className="mt-8">
+          <SearchStatusMessage request={page} />
+        </div>
       )}
     </>
   );
+}
+
+export function SearchStatusMessage(props: { request: QR }) {
+  const { request } = props;
+  if (request.isError) {
+    // Annorepo returns 500 without details:
+    return "No results: Annorepo could not process query";
+  }
+  if (!request.data) {
+    return <Loading name={"results"} />;
+  }
+  return null;
 }

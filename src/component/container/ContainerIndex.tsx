@@ -1,14 +1,16 @@
-import { H1 } from "../common/H1.tsx";
 import { useMyContainerDetails } from "../../client/endpoint/useMyContainerDetails.tsx";
 import { ContainerCard } from "./ContainerCard.tsx";
 import { toContainerName } from "../../util/toContainerName.ts";
 import isNil from "lodash/isNil";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-import { Button } from "../common/Button.tsx";
-import { Add } from "../common/icon/Add.tsx";
-import { getRolesByName } from "./getRolesByName.ts";
+import { getRolesByContainerName } from "./getRolesByContainerName.ts";
+
+import { NeutralButton } from "../common/NeutralButton.tsx";
+import { useStore } from "../../store/useStore.ts";
+import { isAuthenticated } from "../../model/user/User.ts";
 
 export function ContainerIndex(props: { onClickCreateContainer: () => void }) {
+  const { user } = useStore();
   const { myContainers, details } = useMyContainerDetails();
 
   if (!myContainers.isSuccess || !details.every((d) => d.isSuccess)) {
@@ -23,16 +25,19 @@ export function ContainerIndex(props: { onClickCreateContainer: () => void }) {
     .map((c) => c.data && toContainerName(c.data.id))
     .filter((name) => !isNil(name));
 
-  const rolesByContainerName = getRolesByName(myContainers.data);
+  const rolesByContainerName = getRolesByContainerName(myContainers.data);
 
   return (
     <div>
-      <H1>Containers</H1>
-      <Button onClick={props.onClickCreateContainer} className="mt-2">
-        Add
-        <Add className="ml-1" />
-      </Button>
-      <div className="grid grid-cols-3 gap-5">
+      <div className="flex justify-between w-full my-8">
+        <h1 className="text-2xl">Containers</h1>
+        {isAuthenticated(user) && (
+          <NeutralButton onClick={props.onClickCreateContainer}>
+            New container
+          </NeutralButton>
+        )}
+      </div>
+      <div className="gap-8 flex-wrap grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4">
         {names.map((name, i) => (
           <ContainerCard
             key={i}

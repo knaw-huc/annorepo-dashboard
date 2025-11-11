@@ -4,7 +4,7 @@ import { CloseButton } from "./CloseButton.tsx";
 import { H2 } from "../common/H2.tsx";
 import { InputWithLabel } from "../common/form/InputWithLabel.tsx";
 import { DropdownSelector } from "../common/form/DropdownSelector.tsx";
-import { Button } from "../common/Button.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function AddUserModal(props: {
   onClose: () => void;
@@ -22,7 +22,7 @@ export function AddUserModal(props: {
       <div className="relative bg-white rounded-lg shadow-lg p-5 w-100">
         <CloseButton onClick={props.onClose} />
         <H2>Add user</H2>
-        <div className="flex flex-col p-3">
+        <div className="flex flex-col gap-4">
           <InputWithLabel
             value={userName}
             label="Username"
@@ -32,14 +32,15 @@ export function AddUserModal(props: {
             selectedValue={role}
             options={roleOptions}
             onSelect={(update) => setRole(update.value)}
+            className="w-full"
+            selectClassName="w-full"
           />
-          <Button
+          <NeutralButton
             onClick={() => props.onAdd(userName, role)}
-            className="mt-3"
             disabled={!userName}
           >
             Add to container
-          </Button>
+          </NeutralButton>
         </div>
       </div>
     </div>

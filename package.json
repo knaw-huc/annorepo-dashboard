@@ -1,11 +1,11 @@
 {
   "name": "annorepo-dashboard",
   "private": true,
-  "version": "0.3.1",
+  "version": "0.4.1",
   "type": "module",
   "scripts": {
     "prepare": "husky install",
-    "start": "VITE_CONFIG_URL=/webapp.config.json vite",
+    "start": "VITE_CONFIG_URL=/dashboard.config.json vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",

@@ -1,18 +1,20 @@
-import {DropdownNavigation} from "./DropdownNavigation.tsx";
-import {InputWithLabel} from "./InputWithLabel.tsx";
-import {DropdownList} from "./DropdownList.tsx";
-import {useState} from "react";
-import {SelectOption} from "./SelectOption.tsx";
+import { DropdownNavigation } from "./DropdownNavigation.tsx";
+import { InputWithLabel } from "./InputWithLabel.tsx";
+import { DropdownList } from "./DropdownList.tsx";
+import { useState } from "react";
+import { SelectOption } from "./SelectOption.tsx";
+import { GroupPosition } from "./GroupPosition.tsx";
 
 export function DropdownInput<T = string>(props: {
-  value: string
-  suggestions: SelectOption<T>[]
-  onInputChange: (update: string) => void
-  onSelect: (update: SelectOption<T>) => void
-  label: string
-  errorLabel?: string
-  disabled?: boolean
-  className?: string
+  value: string;
+  suggestions: SelectOption<T>[];
+  onInputChange: (update: string) => void;
+  onSelect: (update: SelectOption<T>) => void;
+  label: string;
+  errorLabel?: string;
+  disabled?: boolean;
+  className?: string;
+  groupAt?: GroupPosition;
 }) {
   const {
     value,
@@ -31,44 +33,47 @@ export function DropdownInput<T = string>(props: {
   }
 
   const handleSelect = (suggestion: SelectOption<T>) => {
-    setOpen(false)
-    onSelect(suggestion)
-  }
+    setOpen(false);
+    onSelect(suggestion);
+  };
 
-  let className = 'relative'
+  let className = "relative";
   if (props.className) {
-    className += ` ${props.className}`
+    className += ` ${props.className}`;
   }
 
-  return <div className={className}>
-    <DropdownNavigation
-      suggestions={props.suggestions.length}
-      focussed={focussed}
-      onFocus={setFocussed}
-      onSelect={(update) => {
-        handleSelect(suggestions[update])
-        setFocussed(undefined)
-        setOpen(false)
-      }}
-    >
-      <InputWithLabel
-        label={label}
-        errorLabel={errorLabel}
-        value={value}
-        onChange={handleInputChange}
-        onFocus={() => setOpen(true)}
-        // Use timeout to prevent suggestions to disappear before being clicked:
-        onBlur={() => setTimeout(() => setOpen(false), 200)}
-        disabled={disabled}
-        autoComplete='off'
-      />
-      <DropdownList
-        isOpen={isOpen}
-        setOpen={setOpen}
-        suggestions={suggestions}
+  return (
+    <div className={className}>
+      <DropdownNavigation
+        suggestions={props.suggestions.length}
         focussed={focussed}
-        onSelect={handleSelect}
-      />
-    </DropdownNavigation>
-  </div>
+        onFocus={setFocussed}
+        onSelect={(update) => {
+          handleSelect(suggestions[update]);
+          setFocussed(undefined);
+          setOpen(false);
+        }}
+      >
+        <InputWithLabel
+          label={label}
+          errorLabel={errorLabel}
+          value={value}
+          onChange={handleInputChange}
+          onFocus={() => setOpen(true)}
+          // Use timeout to prevent suggestions to disappear before being clicked:
+          onBlur={() => setTimeout(() => setOpen(false), 200)}
+          disabled={disabled}
+          autoComplete="off"
+          groupAt={props.groupAt}
+        />
+        <DropdownList
+          isOpen={isOpen}
+          setOpen={setOpen}
+          suggestions={suggestions}
+          focussed={focussed}
+          onSelect={handleSelect}
+        />
+      </DropdownNavigation>
+    </div>
+  );
 }

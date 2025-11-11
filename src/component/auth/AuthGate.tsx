@@ -1,5 +1,8 @@
 import { PropsWithChildren, useContext, useEffect, useState } from "react";
-import { OpenApiClientContext } from "../../client/OpenApiClientProvider.tsx";
+import {
+  useHasOpenApiClient,
+  OpenApiClientContext,
+} from "../../client/OpenApiClientProvider.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
 import { Loading } from "../common/Loading.tsx";
 import { Warning } from "../common/Warning.tsx";
@@ -28,9 +31,9 @@ export function AuthGate(
 ) {
   const { AR_HOSTS, AUTH_HOST } = useConfig();
   const {
-    state: { client },
     actions: { setClient },
   } = useContext(OpenApiClientContext);
+  const hasClient = useHasOpenApiClient();
 
   const {
     user,
@@ -45,17 +48,16 @@ export function AuthGate(
   const [isLoadingAbout, setLoadingAbout] = useState(false);
 
   useEffect(() => {
-    if (client) {
+    if (hasClient) {
       return;
     }
     const hostPath = AR_HOSTS[selectedHost];
-    console.log("Selected host:", { selectedHost });
     if (!hostPath) {
       return;
     }
     console.log("Creating host with path:", hostPath);
     setClient(createOpenApiClient(hostPath));
-  }, [selectedHost, client]);
+  }, [selectedHost, hasClient]);
 
   useEffect(() => {
     if (!selectedHost || isLoadingAbout || isAuthenticated(user)) {
@@ -83,9 +85,11 @@ export function AuthGate(
         });
         return;
       }
-      const isOidcEnabled = about.authentication.oidc?.some(
-        (s) => s.serverUrl === AUTH_HOST.providerUrl,
-      );
+      const isOidcEnabled =
+        AUTH_HOST &&
+        about.authentication.oidc?.some(
+          (s) => s.serverUrl === AUTH_HOST.providerUrl,
+        );
       const isBearerTokenEnabled =
         withAuthentication && about.authentication.internal === "api-keys";
       if (isOidcEnabled) {
@@ -104,6 +108,9 @@ export function AuthGate(
   }, [AUTH_HOST, selectedHost, setClient]);
 
   async function getStatus() {
+    if (!AUTH_HOST) {
+      return;
+    }
     try {
       const response = await fetch(`${AUTH_HOST.proxyUrl}/oidc/status`);
       if (response.ok) {
@@ -134,8 +141,9 @@ export function AuthGate(
     ) {
       return;
     }
+    // Verify
     setAuthState({ isAuthenticating: true });
-    getStatus();
+    getStatus().catch((e) => console.error("Error while fetching status", e));
   }, [selectedAuthMethod, isAuthenticating]);
 
   if (error) {
@@ -150,7 +158,7 @@ export function AuthGate(
         <Loading name="login status" />
       </Page>
     );
-  } else if (!client) {
+  } else if (!hasClient) {
     return (
       <Page>
         <Loading name="client" />

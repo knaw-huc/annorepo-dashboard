@@ -1,9 +1,5 @@
 import { useContainerUsers } from "../../client/endpoint/useContainerUsers.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-import { H2 } from "../common/H2.tsx";
-import { Badge } from "../common/Badge.tsx";
-import { Button } from "../common/Button.tsx";
-import { Add } from "../common/icon/Add.tsx";
 import { useState } from "react";
 import { MR } from "../../client/query/MR.tsx";
 import { ArUser } from "../../model/ArModel.ts";
@@ -13,7 +9,8 @@ import { useQueryClient } from "@tanstack/react-query";
 import { Warning } from "../common/Warning.tsx";
 import { AddUserModal } from "./AddUserModal.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
-import { Close } from "../common/icon/Close.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
+import { Bin } from "../common/icon/Bin.tsx";
 
 export function ContainerUsers(props: { containerName: string }) {
   const { containerName } = props;
@@ -52,7 +49,7 @@ export function ContainerUsers(props: { containerName: string }) {
     setShowAddUserModal(true);
   }
 
-  function handleClickRemoveUser(userName: string) {
+  function handleRemove(userName: string) {
     if (!window.confirm("Remove user from container?")) {
       return;
     }
@@ -80,23 +77,18 @@ export function ContainerUsers(props: { containerName: string }) {
   return (
     <div>
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
-      <H2>Users</H2>
-      <Button onClick={handleAddUser} className="mr-2">
-        Add
-        <Add className="ml-1" />
-      </Button>
+      <div className="flex gap-4 items-center justify-end my-4">
+        <div className="flex gap-4">
+          <NeutralButton onClick={handleAddUser}>Add user</NeutralButton>
+        </div>
+      </div>
 
-      <div>
-        {containerUsers.data.map((u) => (
-          <Badge key={u.userName} className="mr-2 mt-3">
-            {u.userName} ({u.role.toLowerCase()})
-            <span
-              className="cursor-pointer ml-2 vertical-align-middle text-slate-400 hover:text-slate-900"
-              onClick={() => handleClickRemoveUser(u.userName)}
-            >
-              <Close className="align-top" />
-            </span>
-          </Badge>
+      <div className="w-full gap-2 border-t border-neutral-200">
+        {containerUsers.data.map((user) => (
+          <ContainerUser
+            user={user}
+            onRemove={() => handleRemove(user.userName)}
+          />
         ))}
       </div>
       {showAddUserModal && (
@@ -106,5 +98,21 @@ export function ContainerUsers(props: { containerName: string }) {
         />
       )}
     </div>
+  );
+}
+
+export function ContainerUser(props: { user: ArUser; onRemove: () => void }) {
+  return (
+    <li className="w-full flex gap-8 py-2 border-b border-neutral-100">
+      <div className="font-bold w-1/4">{props.user.userName}</div>
+      <div className="text-neutral-600 w-1/4">
+        {props.user.role.toLowerCase()}
+      </div>
+      <div className="text-neutral-600 grow text-right">
+        <NeutralButton onClick={props.onRemove}>
+          <Bin />
+        </NeutralButton>
+      </div>
+    </li>
   );
 }

@@ -131,7 +131,7 @@ export function QueryValueInput(props: {
     .map((type) => ({ value: type, label: type }));
 
   return (
-    <div className="flex gap-2">
+    <div className="flex">
       <DropdownInput
         className="flex-1"
         value={inputValue}
@@ -141,10 +141,14 @@ export function QueryValueInput(props: {
         label="Value"
         errorLabel={subquery.errors.value}
         disabled={disabled}
+        groupAt="right"
       />
       <DropdownSelector
+        groupAt="left"
+        label="Type"
         options={valueTypeOptions}
         selectedValue={subquery.form.valueType}
+        selectClassName="border-anrep-pink-300"
         onSelect={(option) => handleTypeChange(option.value)}
         disabled={disabled || valueTypeOptions.length < 2}
       />

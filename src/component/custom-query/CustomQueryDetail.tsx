@@ -8,23 +8,21 @@ import {
 import { StatusMessage } from "../common/StatusMessage.tsx";
 import { useEffect, useState } from "react";
 import { toCustomQueryParameters } from "./util/toCustomQueryParameters.ts";
-import { Button } from "../common/Button.tsx";
-import { Next } from "../common/icon/Next.tsx";
 import { AnnotationPage } from "../annotation/AnnotationPage.tsx";
 import { toPageNo } from "../../util/toPageNo.ts";
-import { Hint } from "../common/Hint.tsx";
 import { Pipe } from "../common/Pipe.tsx";
-import { hasErrors } from "../../store/query/util/error/hasErrors.ts";
 import { useStore } from "../../store/useStore.ts";
 import { ContainerDropdown } from "./ContainerDropdown.tsx";
 import { A } from "../common/A.tsx";
 import { External } from "../common/icon/External.tsx";
-import { Remove } from "../common/icon/Remove.tsx";
 import { isOidcUser } from "../../model/user/User.ts";
 import { keyEquals } from "../../client/query/useGet.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { Warning } from "../common/Warning.tsx";
+import { isEqual } from "lodash";
+import { useDebouncedCall } from "../../util/useDebouncedCall.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function CustomQueryDetail(props: {
   name: string;
@@ -55,7 +53,7 @@ export function CustomQueryDetail(props: {
     }
   }, [customQuery.data]);
 
-  function handleSearch() {
+  const searchDebounced = useDebouncedCall(() => {
     if (!customQuery.data) {
       return;
     }
@@ -63,13 +61,24 @@ export function CustomQueryDetail(props: {
       return;
     }
     const parameters = toCustomQueryParameters(subqueries);
-    setSubmitted({
+    const toSubmit = {
       queryName: customQueryName,
       containerName,
       parameters,
       pageNo,
-    });
-  }
+    };
+    if (!toSubmit) {
+      return;
+    }
+    if (isEqual(toSubmit, submitted)) {
+      return;
+    }
+    setSubmitted(toSubmit);
+  });
+
+  useEffect(() => {
+    searchDebounced();
+  }, [containerName, containerName, subqueries, pageNo]);
 
   const handleRemove = () => {
     if (!window.confirm("Delete custom query?")) {
@@ -110,17 +119,16 @@ export function CustomQueryDetail(props: {
   const createdBy = customQuery.data.createdBy;
   return (
     <>
-      <H1>
-        {customQueryName} <Hint>Custom query</Hint>
-      </H1>
-      {canDelete && (
-        <Button onClick={handleRemove} className="mr-2">
-          Delete
-          <Remove className="ml-1" />
-        </Button>
-      )}
+      <div className="flex justify-between w-full my-8 mx-auto max-w-7xl">
+        <H1>{customQueryName}</H1>
+        {canDelete && (
+          <NeutralButton onClick={handleRemove} className="mr-2">
+            Delete
+          </NeutralButton>
+        )}
+      </div>
       {error && <Warning onClose={() => setError("")}>{error}</Warning>}
-      <p className="text-sm mt-5 mb-3">
+      <p className="mt-5 mb-3">
         {customQuery.data.public ? "Public" : "Private"}
         <Pipe />
         <span>Label: {customQuery.data.label}</span>
@@ -137,34 +145,34 @@ export function CustomQueryDetail(props: {
         <Pipe />
         <A
           href={`${selectedHost}/global/custom-query/${customQuery.data.name}`}
-          className="font-bold"
+          className="font-bold no-underline"
         >
-          Source&nbsp;
+          View source
           <External className="ml-1" />
         </A>
       </p>
       <p className="mb-5">{customQuery.data.description}</p>
-      <div className="mb-2">
+      <div className="flex justify-between items-center w-full">
         <ContainerDropdown
           selected={containerName}
           onSelect={setContainerName}
         />
-        <Button
-          onClick={handleSearch}
-          className="pl-5"
-          disabled={hasErrors(subqueries) || !containerName}
-        >
-          Search
-          <Next className="ml-2" />
-        </Button>
       </div>
-      {customQueryCall.isError && (
-        <StatusMessage name="custom query call" requests={[customQueryCall]} />
-      )}
-      {containerName && <CustomQueryCallEditor containerName={containerName} />}
+      <div className="mt-4">
+        {customQueryCall.isError && (
+          <StatusMessage
+            name="custom query call"
+            requests={[customQueryCall]}
+          />
+        )}
+        {containerName && (
+          <CustomQueryCallEditor containerName={containerName} />
+        )}
+      </div>
       <div className="max-w-[100vw] whitespace-pre-wrap">
         {customQueryCall.isSuccess && (
           <AnnotationPage
+            className="mt-4"
             pageNo={pageNo}
             page={customQueryCall.data}
             onChangePageNo={handleChangePage}

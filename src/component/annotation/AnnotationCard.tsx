@@ -1,20 +1,12 @@
 import { Card } from "../common/Card.tsx";
 import { toContainerName } from "../../util/toContainerName.ts";
-import { Pipe } from "../common/Pipe.tsx";
-import { A } from "../common/A.tsx";
 import { External } from "../common/icon/External.tsx";
 import { H5 } from "../common/H5.tsx";
 import { isUrl } from "../../util/isUrl.ts";
-import { Hr } from "../common/Hr.tsx";
 import ReactJsonView from "@microlink/react-json-view";
-import { H6 } from "../common/H6.tsx";
 import { useState } from "react";
-import { Down } from "../common/icon/Down.tsx";
-import { Next } from "../common/icon/Next.tsx";
 import { get, isObject } from "lodash";
-import { Badge } from "../common/Badge.tsx";
 import { useConfig } from "../ConfigProvider.tsx";
-import { Remove } from "../common/icon/Remove.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
 import { useContainerAnnotation } from "../../client/endpoint/useContainerAnnotation.tsx";
@@ -23,6 +15,9 @@ import { hashIncludes } from "../../client/query/useGet.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { Checkbox } from "../common/Checkbox.tsx";
 import { useStore } from "../../store/useStore.ts";
+import { Badge } from "./Badge.tsx";
+
+import { AnnotationButton } from "./AnnotationButton.tsx";
 import { orThrow } from "../../util/orThrow.ts";
 
 type PathValue = { path: string; value: string };
@@ -90,98 +85,95 @@ export function AnnotationCard(props: { id: string; canSelect?: boolean }) {
   const isSelected = selectedAnnotationIds.includes(id);
 
   return (
-    <Card
-      header={
-        <div className="flex items-start justify-between">
-          <H5>
-            {name}
-            <Pipe />
-            {annotation.type}
-          </H5>
-          <div className="mt-2 flex items-center gap-x-3">
-            {canSelect && (
-              <Checkbox
-                isSelected={isSelected}
-                onToggle={() => {
-                  const update = isSelected
-                    ? selectedAnnotationIds.filter((sa) => sa !== id)
-                    : [...selectedAnnotationIds, id];
-                  setSelectedAnnotationsState({
-                    selectedAnnotationIds: update,
-                  });
-                }}
-                className="hover:text-inherit hover:cursor-pointer text-sky-800"
-              />
-            )}
-            <span
-              onClick={handleDelete}
-              className="hover:text-inherit hover:cursor-pointer text-sky-800"
-            >
-              <Remove />
-            </span>
-          </div>
+    <div className="flex gap-4">
+      {canSelect && (
+        <div className="py-4">
+          <Checkbox
+            value={isSelected ? "checked" : "unchecked"}
+            onClick={() => {
+              const update = isSelected
+                ? selectedAnnotationIds.filter((sa) => sa !== id)
+                : [...selectedAnnotationIds, id];
+              setSelectedAnnotationsState({
+                selectedAnnotationIds: update,
+              });
+            }}
+            className="hover:text-inherit hover:cursor-pointer text-neutral-600"
+          />
         </div>
-      }
-      footer={
-        <>
-          <A href={annotation.id}>
-            Source <External className="ml-1" />
-          </A>
-          {isUrl(annotation.target) && (
-            <>
-              <Pipe />
-              <A href={annotation.target as string}>
-                <span title={annotation.target as string}>
-                  Target <External className="ml-1" />
-                </span>
-              </A>
-            </>
-          )}
-        </>
-      }
-    >
-      <p className="-ml-1 mt-3">
-        <>
+      )}
+      <Card
+        className="bg-anrep-blue-50 text-anrep-blue-800"
+        header={
+          <div className="flex justify-between items-center border-b border-anrep-blue-100">
+            <H5>{name}</H5>
+            <div className="p-4">
+              <img
+                src="/images/icon-annotation.png"
+                className="h-4 w-4"
+                alt=""
+              />
+            </div>
+          </div>
+        }
+        footer={
+          <div className="flex gap-4">
+            <AnnotationButton onClick={() => setBodyOpen((prev) => !prev)}>
+              View body
+            </AnnotationButton>
+            <AnnotationButton
+              onClick={() =>
+                isUrl(annotation.target)
+                  ? window.open(annotation.target)
+                  : setTargetOpen((prev) => !prev)
+              }
+            >
+              View target <External className="ml-1" />
+            </AnnotationButton>
+            <AnnotationButton
+              onClick={() => window.open(annotation.id, "_blank")}
+            >
+              View source <External className="ml-1" />
+            </AnnotationButton>
+            <AnnotationButton onClick={handleDelete}>Remove</AnnotationButton>
+          </div>
+        }
+      >
+        <div className="flex flex-wrap gap-4">
           {previewProps
             .filter((p) => p.value)
             .map((p, i) => (
-              <Badge className="mr-2" key={i}>
-                {p.path.replace(".", " ")}: &nbsp;
-                <strong>
-                  {isObject(p.value) ? JSON.stringify(p.value) : p.value}
-                </strong>
-              </Badge>
+              <Badge
+                key={i}
+                label={p.path.replace(".", " ")}
+                value={isObject(p.value) ? JSON.stringify(p.value) : p.value}
+              />
             ))}
           {bodyPreviewProps
             .filter((p) => p.value)
             .map((p, i) => (
-              <Badge className="mr-2" key={i}>
-                body {p.path.replace(".", " ")}: &nbsp;
-                <strong>
-                  {isObject(p.value) ? JSON.stringify(p.value) : p.value}
-                </strong>
-              </Badge>
+              <Badge
+                key={i}
+                label={p.path.replace(".", " ")}
+                value={
+                  typeof p.value === "object"
+                    ? JSON.stringify(p.value)
+                    : p.value
+                }
+              />
             ))}
-        </>
-      </p>
-      <Hr size="sm" />
-      <H6
-        className="cursor-pointer select-none"
-        onClick={() => setBodyOpen((prev) => !prev)}
-      >
-        Body {isBodyOpen ? <Down /> : <Next />}
-      </H6>
-      {isBodyOpen && <ReactJsonView src={annotation.body} name={null} />}
-      <Hr size="sm" />
-      <H6
-        className="cursor-pointer select-none"
-        onClick={() => setTargetOpen((prev) => !prev)}
-      >
-        Target {isTargetOpen ? <Down /> : <Next />}
-      </H6>
-      {isTargetOpen && annotation.target && !isUrl(annotation.target) && (
-        <ReactJsonView src={annotation.target as object} name={null} />
-      )}
-    </Card>
+        </div>
+        {isBodyOpen && (
+          <div className="mt-4">
+            <ReactJsonView src={annotation.body} name={null} />
+          </div>
+        )}
+        {isTargetOpen && annotation.target && !isUrl(annotation.target) && (
+          <div className="mt-4">
+            <ReactJsonView src={annotation.target as object} name={null} />
+          </div>
+        )}
+      </Card>
+    </div>
   );
 }

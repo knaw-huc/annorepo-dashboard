@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { ContainerDetail, Page } from "../../../component";
 import { AuthGate } from "../../../component/auth/AuthGate.tsx";
 import {
+  Breadcrumb,
   ToContainers,
   ToHome,
 } from "../../../component/common/BreadcrumbNav.tsx";
@@ -36,8 +37,17 @@ function Component() {
 
   return (
     <AuthGate>
-      <Page breadcrumbs={[<ToHome />, <ToContainers />]}>
+      <Page
+        breadcrumbs={[
+          <ToHome />,
+          <ToContainers />,
+          <Breadcrumb to="/container/$containerName" params={{ containerName }}>
+            {containerName}
+          </Breadcrumb>,
+        ]}
+      >
         <ContainerDetail
+          key="column1"
           name={containerName}
           onClose={handleClose}
           onCreateAnnotation={handleClickAnnotationEditor}

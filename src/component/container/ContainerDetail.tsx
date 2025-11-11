@@ -1,27 +1,20 @@
-import { H1 } from "../common/H1.tsx";
-import { Hint } from "../common/Hint.tsx";
-import { Loading } from "../common/Loading.tsx";
 import { useContainer } from "../../client/endpoint/useContainer.tsx";
-import { ContainerAnnotationPage } from "./ContainerAnnotationPage.tsx";
-import { ContainerAnnotationFields } from "./ContainerAnnotationFields.tsx";
-import { Button } from "../common/Button.tsx";
 import { useEffect, useState } from "react";
 import { toPageNo } from "../../util/toPageNo.ts";
-import { H2 } from "../common/H2.tsx";
-import { Add } from "../common/icon/Add.tsx";
-import { Search } from "../common/icon/Search.tsx";
 import { StatusMessage } from "../common/StatusMessage.tsx";
-
-import { ContainerSummary } from "./ContainerSummary.tsx";
-import { canEdit } from "../../model/user/canEdit.ts";
 import { useContainerRole } from "./useContainerRole.tsx";
-import { ContainerUsers } from "./ContainerUsers.tsx";
-import { isAdmin } from "../../model/user/isAdmin.ts";
-import { Remove } from "../common/icon/Remove.tsx";
 import { useDelete } from "../../client/query/useDelete.tsx";
 import { Warning } from "../common/Warning.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { keyEquals } from "../../client/query/useGet.tsx";
+import { ContainerSummary } from "./ContainerSummary.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
+import { ContainerUsers } from "./ContainerUsers.tsx";
+import { isAdmin } from "../../model/user/isAdmin.ts";
+import { ContainerDetailTabs } from "./ContainerDetailTabs.tsx";
+import { Bin } from "../common/icon/Bin.tsx";
+import { SelectOption } from "../common/form/SelectOption.tsx";
+import { ContainerAnnotations } from "./ContainerAnnotations.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -30,18 +23,27 @@ export type ContainerDetailProps = {
   onSearchAnnotations: () => void;
 };
 
-const NO_PAGE = -1;
+export const NO_PAGE = -1;
+
+const tabs = [
+  { value: "annotations", label: "Annotations", needsAdmin: false },
+  { value: "users", label: "Users", needsAdmin: true },
+] as const;
+
+type ContainerDetailTab = SelectOption & (typeof tabs)[number];
 
 export function ContainerDetail(props: ContainerDetailProps) {
   const { name } = props;
   const [pageNo, setPageNo] = useState<number>(NO_PAGE);
   const [isInit, setInit] = useState(false);
   const [error, setError] = useState("");
+  const [selectedTab, setSelectedTab] = useState<ContainerDetailTab>(tabs[0]);
 
   const container = useContainer(name);
   const role = useContainerRole({ idOrName: name });
   const removeContainer = useDelete("/w3c/{containerName}");
   const queryClient = useQueryClient();
+
   useEffect(() => {
     if (isInit || !container.data) {
       return;
@@ -50,10 +52,6 @@ export function ContainerDetail(props: ContainerDetailProps) {
     const containerPageId = container.data.first.id;
     setPageNo(toPageNo(containerPageId));
   }, [container, setInit]);
-
-  const handleChangePage = (update: number) => {
-    setPageNo(update);
-  };
 
   const handleRemove = () => {
     if (
@@ -91,43 +89,52 @@ export function ContainerDetail(props: ContainerDetailProps) {
   }
 
   return (
-    <div>
-      <H1>
-        {container.data.label} <Hint>container</Hint>
-      </H1>
-      {error && <Warning onClose={() => setError("")}>{error}</Warning>}
-      {isAdmin(role) && (
-        <Button onClick={handleRemove} className="mr-2">
-          Delete
-          <Remove className="ml-1" />
-        </Button>
-      )}
-      <ContainerSummary name={name} role={role} className="mt-5" />
-      {isAdmin(role) && <ContainerUsers containerName={name} />}
-      <ContainerAnnotationFields name={props.name} />
-      <H2>Annotations</H2>
-      <div className="mb-3">
-        {canEdit(role) && (
-          <Button onClick={props.onCreateAnnotation} className="mr-2">
-            Add
-            <Add className="ml-1" />
-          </Button>
-        )}
-        <Button onClick={props.onSearchAnnotations}>
-          Search
-          <Search className="ml-1" />
-        </Button>
+    <>
+      <div className="flex justify-between w-full my-8 mx-auto">
+        <div>
+          <h1 className="text-2xl">
+            <img
+              src="/images/icon-container.png"
+              className="h-5 w-5 -translate-y-4"
+              alt=""
+            />{" "}
+            {container.data.label}
+          </h1>
+          <ContainerSummary name={name} role={role} />
+        </div>
+        <div className="flex gap-4 items-center">
+          <NeutralButton
+            onClick={() => window.open(container.data.id, "_blank")}
+          >
+            View source
+          </NeutralButton>
+          <NeutralButton onClick={handleRemove}>
+            <Bin />
+          </NeutralButton>
+        </div>
       </div>
-      {pageNo === NO_PAGE ? (
-        <Loading name="annotations" />
-      ) : (
-        <ContainerAnnotationPage
-          containerName={name}
-          pageNo={pageNo}
-          onChangePageNo={handleChangePage}
+
+      {error && <Warning onClose={() => setError("")}>{error}</Warning>}
+
+      <ContainerDetailTabs
+        tabs={isAdmin(role) ? tabs : tabs.filter((t) => !t.needsAdmin)}
+        selected={selectedTab}
+        onClick={setSelectedTab}
+      />
+
+      {selectedTab.value === "users" && isAdmin(role) && (
+        <ContainerUsers containerName={name} />
+      )}
+      {selectedTab.value === "annotations" && (
+        <ContainerAnnotations
+          name={name}
           role={role}
+          pageNo={pageNo}
+          onChangePageNo={setPageNo}
+          onCreateAnnotation={props.onCreateAnnotation}
+          onSearchAnnotations={props.onSearchAnnotations}
         />
       )}
-    </div>
+    </>
   );
 }

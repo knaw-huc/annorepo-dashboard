@@ -1,4 +1,3 @@
-import { Button } from "../common/Button.tsx";
 import { useQueryClient } from "@tanstack/react-query";
 import { useStore } from "../../store/useStore.ts";
 import { useDeleteMultiple } from "../../client/query/useDeleteMultiple.tsx";
@@ -6,6 +5,7 @@ import { useContainerAnnotations } from "../../client/endpoint/useContainerAnnot
 import { useState } from "react";
 import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
 import { getContainerQuery } from "../../client/endpoint/useContainer.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function DeleteSelected() {
   const queryClient = useQueryClient();
@@ -73,8 +73,7 @@ export function DeleteSelected() {
   }
 
   return (
-    <Button
-      secondary
+    <NeutralButton
       className="ml-2"
       disabled={!selectedAnnotations.length}
       onClick={handleDeleteAll}
@@ -85,7 +84,7 @@ export function DeleteSelected() {
       ) : (
         ""
       )}
-    </Button>
+    </NeutralButton>
   );
 }
 

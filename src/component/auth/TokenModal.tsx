@@ -6,6 +6,7 @@ export function TokenModal() {
   const { setAuthState } = useStore();
   return (
     <Modal
+      title="Token"
       onClose={() => {
         setAuthState({ isAuthenticating: false, selectedAuthMethod: null });
       }}

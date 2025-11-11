@@ -1,40 +1,41 @@
-import {useStore} from "../../store/useStore.ts";
-import {Button} from "../common/Button.tsx";
-import {Unchecked} from "../common/icon/Unchecked.tsx";
-import {ArAnnotation} from "../../model/ArModel.ts";
-import {SemiChecked} from "../common/icon/SemiChecked.tsx";
-import {Checked} from "../common/icon/Checked.tsx";
+import { useStore } from "../../store/useStore.ts";
+import { ArAnnotation } from "../../model/ArModel.ts";
+import { Checkbox, CheckboxValue } from "../common/Checkbox.tsx";
 
-export function SelectionStatus(props: {
-  items?: ArAnnotation[]
-}) {
-  const {items} = props;
-  const {selectedAnnotationIds, setSelectedAnnotationsState} = useStore()
+export function SelectionStatus(props: { annotations?: ArAnnotation[] }) {
+  const { annotations } = props;
+  const { selectedAnnotationIds, setSelectedAnnotationsState } = useStore();
+  const selectedCount = selectedAnnotationIds.length;
 
-  function handleToggleSelect(
-    items: ArAnnotation[],
-    allSelected: boolean
-  ) {
-    const update = allSelected ? [] : items.map(i => i.id);
-    setSelectedAnnotationsState({
-      selectedAnnotationIds: update
-    })
+  function handleToggleSelect(annotations: ArAnnotation[]) {
+    const allSelected = selectedCount === annotations.length;
+    const update = allSelected ? [] : annotations.map((i) => i.id);
+    setSelectedAnnotationsState({ selectedAnnotationIds: update });
   }
 
-  if (!items) {
-    return null
+  let checkboxValue: CheckboxValue = "unchecked";
+  let checkboxTitle = "";
+  if (annotations) {
+    const noneSelected = selectedCount === 0;
+    const allSelected = selectedCount === annotations.length;
+    const someSelected = !noneSelected && selectedCount < annotations.length;
+    if (allSelected) {
+      checkboxValue = "checked";
+    } else if (someSelected) {
+      checkboxValue = "indeterminate";
+    }
+    checkboxTitle = allSelected ? "Deselect all" : "Select all";
   }
-  const noneSelected = selectedAnnotationIds.length === 0;
-  const someSelected = !noneSelected && selectedAnnotationIds.length < items.length;
-  const allSelected = !noneSelected && selectedAnnotationIds.length === items.length;
 
-  return <Button
-    secondary
-    className="ml-2"
-    onClick={() => handleToggleSelect(items, allSelected)}
-  >
-    {noneSelected && <Unchecked/>}
-    {someSelected && <SemiChecked/>}
-    {allSelected && <Checked/>}
-  </Button>
+  if (!annotations) {
+    return null;
+  }
+
+  return (
+    <Checkbox
+      value={checkboxValue}
+      title={checkboxTitle}
+      onClick={() => handleToggleSelect(annotations)}
+    />
+  );
 }

@@ -2,7 +2,6 @@ import { InputWithLabel } from "../common/form/InputWithLabel.tsx";
 import noop from "lodash/noop";
 import { usePost } from "../../client/query/usePost.tsx";
 import { H1 } from "../common/H1.tsx";
-import { Button } from "../common/Button.tsx";
 import { ArAnnotation } from "../../model/ArModel.ts";
 import { toContainerName } from "../../util/toContainerName.ts";
 import { useState } from "react";
@@ -27,6 +26,7 @@ import { toOption } from "../common/form/SelectOption.tsx";
 import { findMapperByValue } from "../../model/query/value/util/findMapperByValue.ts";
 import { Any } from "../../model/Any.ts";
 import { getContainerQuery } from "../../client/endpoint/useContainer.tsx";
+import { NeutralButton } from "../common/NeutralButton.tsx";
 
 export function AnnotationEditor(props: {
   containerName: string;
@@ -107,7 +107,20 @@ export function AnnotationEditor(props: {
     <>
       <form onSubmit={handleSubmit}>
         <div>
-          <H1>Create annotation</H1>
+          <div className="flex justify-between">
+            <H1>Create annotation</H1>
+            <div className="">
+              <NeutralButton
+                disabled={!!bodyError}
+                onClick={handleSubmit}
+                className="mr-5"
+              >
+                Create
+              </NeutralButton>
+
+              <NeutralButton onClick={props.onClose}>Close</NeutralButton>
+            </div>
+          </div>
           <div className="grid grid-cols-2 gap-5">
             <div>
               <InputWithLabel
@@ -193,21 +206,9 @@ export function AnnotationEditor(props: {
                   />
                 );
               })}
-
-              <div className="mt-5">
-                <Button
-                  disabled={!!bodyError}
-                  onClick={handleSubmit}
-                  className="mr-5"
-                >
-                  Create
-                </Button>
-
-                <Button onClick={props.onClose}>Close</Button>
-              </div>
             </div>
 
-            <div className="pb-5">
+            <div className="mt-5">
               {bodyError && <Warning>{bodyError}</Warning>}
               <Textarea
                 label="Body"
@@ -224,7 +225,6 @@ export function AnnotationEditor(props: {
                   }
                   setForm((prev) => ({ ...prev, body: parsed }));
                 }}
-                className="mt-5"
               />
             </div>
           </div>

@@ -17,12 +17,7 @@ export function HostParam(props: PropsWithChildren<object>) {
     const hostKeyFromUrl = getParam(HOST);
     const hosts = keys(AR_HOSTS);
     const selectedHostKey = hostKeyFromUrl ?? hosts[0] ?? orThrow("No hosts");
-    console.log("useEffect", {
-      AR_HOSTS,
-      hostKeyFromUrl,
-      hosts,
-      selectedHostKey,
-    });
+    console.log("Initialize host:", selectedHostKey);
     setHostState({ selectedHost: selectedHostKey });
   }, [AR_HOSTS]);
 

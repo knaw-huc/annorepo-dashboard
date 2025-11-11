@@ -1,17 +1,17 @@
-import {createContext, PropsWithChildren, useContext, useState} from 'react';
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 
-import {AnnoRepoOpenApiClient} from "./OpenApiClient.tsx";
+import { AnnoRepoOpenApiClient } from "./OpenApiClient.tsx";
 
 type AnnoRepoClientOpenApiSetter = (client: AnnoRepoOpenApiClient) => void;
 
 export type OpenApiClientState = {
   state: {
-    client?: AnnoRepoOpenApiClient
-  },
+    client?: AnnoRepoOpenApiClient;
+  };
   actions: {
-    setClient: AnnoRepoClientOpenApiSetter,
-  }
-}
+    setClient: AnnoRepoClientOpenApiSetter;
+  };
+};
 
 export const OpenApiClientContext = createContext<OpenApiClientState>({
   state: {
@@ -19,34 +19,36 @@ export const OpenApiClientContext = createContext<OpenApiClientState>({
   },
   actions: {
     setClient: () => {
-      throw new Error('client setter not provided')
+      throw new Error("client setter not provided");
     },
-  }
+  },
 });
 
-export const OpenApiClientProvider = (props: PropsWithChildren<{}>) => {
-  const [client, setClient] = useState<AnnoRepoOpenApiClient>()
+export const OpenApiClientProvider = (props: PropsWithChildren<object>) => {
+  const [client, setClient] = useState<AnnoRepoOpenApiClient>();
 
   const value: OpenApiClientState = {
     state: {
-      client
+      client,
     },
     actions: {
-      setClient
+      setClient,
     },
   };
   return (
     <OpenApiClientContext.Provider value={value}>
       {props.children}
     </OpenApiClientContext.Provider>
-  )
-}
+  );
+};
 
 export function useOpenApiClient(): AnnoRepoOpenApiClient {
   const client = useContext(OpenApiClientContext).state.client;
-  if(!client) {
-    throw new Error('OpenApi client not set: not logged in?');
+  if (!client) {
+    throw new Error("OpenApi client not set: not logged in?");
   }
   return client;
 }
-
+export function useHasOpenApiClient(): boolean {
+  return !!useContext(OpenApiClientContext).state.client;
+}

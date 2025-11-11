@@ -18,7 +18,7 @@ export const Route = createFileRoute("/custom-query/editor")({
     };
 
     return (
-      <AuthGate>
+      <AuthGate needsAuth={true}>
         <Page breadcrumbs={[<ToHome />, <ToCustomQueryIndex />]}>
           <NewCustomQueryEditor onClose={handleClose} />
         </Page>
