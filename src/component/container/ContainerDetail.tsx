@@ -15,6 +15,8 @@ import { ContainerDetailTabs } from "./ContainerDetailTabs.tsx";
 import { Bin } from "../common/icon/Bin.tsx";
 import { SelectOption } from "../common/form/SelectOption.tsx";
 import { ContainerAnnotations } from "./ContainerAnnotations.tsx";
+import { UserRole } from "../../model/user/UserRole.tsx";
+import { useContainerFields } from "../../client/endpoint/useContainerFields.tsx";
 
 export type ContainerDetailProps = {
   name: string;
@@ -40,6 +42,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
   const [selectedTab, setSelectedTab] = useState<ContainerDetailTab>(tabs[0]);
 
   const container = useContainer(name);
+  const containerFields = useContainerFields(name);
   const role = useContainerRole({ idOrName: name });
   const removeContainer = useDelete("/w3c/{containerName}");
   const queryClient = useQueryClient();
@@ -83,10 +86,15 @@ export function ContainerDetail(props: ContainerDetailProps) {
       },
     );
   };
-
   if (!container.isSuccess) {
     return <StatusMessage name="container" requests={[container]} />;
   }
+
+  const shouldShowAnnotations =
+    role !== UserRole.UNKNOWN &&
+    containerFields.data &&
+    container.data &&
+    selectedTab.value === "annotations";
 
   return (
     <>
@@ -125,7 +133,7 @@ export function ContainerDetail(props: ContainerDetailProps) {
       {selectedTab.value === "users" && isAdmin(role) && (
         <ContainerUsers containerName={name} />
       )}
-      {selectedTab.value === "annotations" && (
+      {shouldShowAnnotations && (
         <ContainerAnnotations
           name={name}
           role={role}
