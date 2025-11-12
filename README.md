@@ -24,21 +24,3 @@ npm install
 ```
 
 Start: `npm start`
-
-## TODO Integrating interface-html
-
-- Keep left bottom about info in screen when page is higher than screen
-- Style Login-, Token- and SelectHostModal
-- Fix columns: move login to 2nd, move annotation fields to 3rd
-- Add warning style to container remove button
-- Move z-index of container icon below modal
-- Style container role
-- Select multiple annotations, delete all
-- Pagination
-- Style select-annorepo-host modal, reposition select-annorepo-host button
-- Style tooltips
-- Align column width of custom query labels in cards
-- Style input field errors
-- Discuss implementation of filter box instead of search button
-- Style annotation selection checkboxes + select all checkbox + delete button
-- What to do with many buttons on container detail page?
