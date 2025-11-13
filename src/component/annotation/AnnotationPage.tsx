@@ -4,6 +4,7 @@ import { AnnotationCard } from "./AnnotationCard.tsx";
 import { toAnnotationGroups } from "../../util/toAnnotationGroups.ts";
 import { Warning } from "../common/Warning.tsx";
 import { UserRole } from "../../model/user/UserRole.tsx";
+import { useState, useEffect } from "react";
 
 export function AnnotationPage(props: {
   pageNo: number;
@@ -45,21 +46,53 @@ export function AnnotationGrid(props: {
   role?: UserRole;
 }) {
   const { items, role } = props;
+  const [loadedCount, setLoadedCount] = useState(10);
+
+  const batchSize = 10;
+  useEffect(() => {
+    if (loadedCount >= items.length) {
+      return;
+    }
+    const timer = setTimeout(() => {
+      setLoadedCount((prev) => {
+        const nextBatch = prev + batchSize;
+        return nextBatch < items.length ? nextBatch : items.length;
+      });
+    }, 100);
+    return () => clearTimeout(timer);
+  }, [loadedCount, items.length]);
+
+  useEffect(() => {
+    setLoadedCount(10);
+  }, [items]);
 
   return (
     <>
-      {items.map((item) => {
+      {items.map((item, index) => {
         const id = item.id;
         const parsed = toAnnotationGroups(id);
         if (!parsed) {
           return (
-            <Warning level="info">
+            <Warning key={id} level="info">
               Failed to display annotation, could not parse id: {id}
             </Warning>
           );
         }
-        return <AnnotationCard key={item.id} id={item.id} role={role} />;
+        const enabled = index < loadedCount;
+        return (
+          <AnnotationCard
+            key={item.id}
+            id={item.id}
+            role={role}
+            enabled={enabled}
+          />
+        );
       })}
+      {loadedCount < items.length && (
+        <div className="text-center py-4 text-gray-500">
+          Loading {items.length - loadedCount} more annotations...
+        </div>
+      )}
     </>
   );
 }

@@ -25,11 +25,15 @@ import { canEdit } from "../../model/user/canEdit.ts";
 
 type PathValue = { path: string; value: string };
 
-export function AnnotationCard(props: { id: string; role?: UserRole }) {
+export function AnnotationCard(props: {
+  id: string;
+  role?: UserRole;
+  enabled?: boolean;
+}) {
   const queryClient = useQueryClient();
   const annotationPreview = useConfig().annotationPreview;
 
-  const { id, role } = props;
+  const { id, role, enabled = true } = props;
 
   const { selectedAnnotationIds, setSelectedAnnotationsState } = useStore();
 
@@ -39,6 +43,7 @@ export function AnnotationCard(props: { id: string; role?: UserRole }) {
   const annotationRequest = useContainerAnnotation(
     containerName,
     annotationName,
+    enabled,
   );
   const annotation = annotationRequest.data?.annotation;
   const ETag = annotationRequest.data?.ETag;
