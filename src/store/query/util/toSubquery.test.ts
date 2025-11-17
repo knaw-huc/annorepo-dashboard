@@ -37,6 +37,7 @@ describe(toSubquery.name, async () => {
           queryError: "",
           errors: noComparisonErrors,
           param: false,
+          isPristine: true,
         },
       ],
       operator: or,

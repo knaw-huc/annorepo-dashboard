@@ -16,6 +16,7 @@ import { toParamTag } from "./toParamTag.ts";
 import { ComparisonOperator } from "../../../model/query/operator/Operator.ts";
 import { isRangeQueryOperator } from "../../../model/query/operator/RangeQueryOperator.ts";
 import { Any } from "../../../model/Any.ts";
+import { isPristine } from "./isPristine.ts";
 
 /**
  * From internal to AR query
@@ -65,7 +66,9 @@ function toArLogical(
 ): ArLogicalRecord {
   const { operator, forms } = subquery;
   return {
-    [operator]: forms.map((f) => toArSubquery(f, asTemplate)),
+    [operator]: forms
+      .filter((f) => !isPristine(f))
+      .map((f) => toArSubquery(f, asTemplate)),
   };
 }
 

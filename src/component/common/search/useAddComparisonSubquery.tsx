@@ -9,13 +9,15 @@ export function useAddComparisonSubquery() {
 
   return (path: PropertyName[], isParam: boolean) => {
     const newQueryEntry = Object.entries(defaultQuery)[0];
+    const type = "comparison";
     const form = toComparisonForm(newQueryEntry);
     const queryError = "";
     const errors = mapValues(form, () => "");
     const param = isParam ? toParamName(form, path) : false;
+    const isPristine = true;
     addSubquery({
       path,
-      subquery: { type: "comparison", form, errors, param, queryError },
+      subquery: { type, form, errors, param, queryError, isPristine },
     });
   };
 }

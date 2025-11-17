@@ -55,5 +55,6 @@ function toComparisonSubquery(
     JSON.stringify(entry).includes(paramName),
   );
   const param = foundParamName ? foundParamName : false;
-  return { type: "comparison", form, errors, param, queryError };
+  const isPristine = true;
+  return { type: "comparison", form, errors, param, queryError, isPristine };
 }

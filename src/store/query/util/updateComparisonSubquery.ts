@@ -13,6 +13,8 @@ export function updateComparisonSubquery(
 
   const prevSubquery = getComparisonSubquery(prev.subqueries, path);
   const subqueryUpdate = { ...prevSubquery };
+
+  subqueryUpdate.isPristine = false;
   subqueryUpdate.form = form ?? prevSubquery.form;
   subqueryUpdate.errors = errors ?? prevSubquery.errors;
   subqueryUpdate.param = param ?? prevSubquery.param;

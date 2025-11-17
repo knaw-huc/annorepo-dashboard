@@ -1,3 +1,5 @@
+// QueryModel.ts - Updated types with isPristine
+
 import { QueryValue } from "./value/QueryValue.ts";
 import { ComparisonOperator, LogicalOperator } from "./operator/Operator.ts";
 import { QueryValueType } from "./value/QueryValueType.ts";
@@ -26,6 +28,13 @@ export type ComparisonSubquery = BaseSubquery & {
   param: ParamValue;
 
   errors: ErrorRecord<ComparisonForm>;
+
+  /**
+   * Mark subquery that is clean and has not been modified:
+   * - it is not validated, so it does not trigger errors in UI
+   * - it is not included in AR-query, so it does not create errors
+   */
+  isPristine: boolean;
 };
 
 export function isComparisonSubquery(

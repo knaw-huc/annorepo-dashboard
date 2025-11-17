@@ -24,5 +24,6 @@ export function createComparison(
       valueType: "",
     },
     param: param !== undefined ? param : false,
+    isPristine: false,
   };
 }
