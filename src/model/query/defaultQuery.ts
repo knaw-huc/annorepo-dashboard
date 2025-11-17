@@ -4,7 +4,7 @@ import { toQuery } from "../../store/query/util/toQuery.ts";
 import { ArExtendedSubquery } from "../ArModel.ts";
 
 export const defaultQuery: ArExtendedSubquery = {
-  ["field"]: { [ComparisonOperator.equal]: "value" },
+  [""]: { [ComparisonOperator.equal]: "" },
 };
 
 const subqueries = toQuery(defaultQuery);

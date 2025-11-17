@@ -12,11 +12,11 @@ import {
 describe(toComparisonForm.name, async () => {
   it("converts default query entry", async () => {
     const entry = Object.entries(defaultQuery)[0];
-    const result: ComparisonForm = toComparisonForm(entry);
+    const result = toComparisonForm(entry);
     expect(result).toEqual({
-      field: "field",
+      field: "",
       operator: ":=",
-      value: "value",
+      value: "",
       valueType: "string",
     });
   });

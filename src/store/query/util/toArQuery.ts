@@ -26,7 +26,11 @@ export function toArQuery(
   subqueries: Subquery[],
   asTemplate: boolean,
 ): ArQuery {
-  return mergeArEntries(subqueries.map((sq) => toArSubquery(sq, asTemplate)));
+  return mergeArEntries(
+    subqueries
+      .filter((f) => !isPristine(f))
+      .map((sq) => toArSubquery(sq, asTemplate)),
+  );
 }
 
 function mergeArEntries(subqueries: ArSubqueryRecord[]): ArQuery {
@@ -66,9 +70,7 @@ function toArLogical(
 ): ArLogicalRecord {
   const { operator, forms } = subquery;
   return {
-    [operator]: forms
-      .filter((f) => !isPristine(f))
-      .map((f) => toArSubquery(f, asTemplate)),
+    [operator]: forms.map((f) => toArSubquery(f, asTemplate)),
   };
 }
 
