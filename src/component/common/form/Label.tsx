@@ -13,9 +13,7 @@ export function Label(
   } else {
     labelClassname += " text-anrep-pink-600";
   }
-  const label = props.error
-    ? `${props.text} error: ${props.error}`
-    : props.text;
+  const label = props.error ? `${props.text}: ${props.error}` : props.text;
 
   return (
     <label htmlFor={props.htmlFor} className={labelClassname}>
