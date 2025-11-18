@@ -9,7 +9,11 @@ export function AboutStatus() {
   return (
     <div className="hidden xl:flex flex-col gap-4 text-xs text-stone-500 border-t border-stone-200 pt-8">
       <div>
-        AnnoRepo Version: <strong>{about.data.version}</strong>
+        Version
+        <br />
+        Server: <strong>{about.data.version}</strong>
+        <br />
+        Dashboard: <strong>{APP_VERSION}</strong>
       </div>
       <div>
         Running since
