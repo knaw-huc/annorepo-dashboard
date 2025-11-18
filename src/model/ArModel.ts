@@ -118,12 +118,38 @@ export const NO_FIELD = "n.a.";
 export type ArRangeQueryValue = { source: string; start: number; end: number };
 
 export function isArRangeQueryValue(toTest: Any): toTest is ArRangeQueryValue {
-  return !!(
-    toTest &&
-    (toTest as ArRangeQueryValue).source &&
-    (toTest as ArRangeQueryValue).start !== undefined &&
-    (toTest as ArRangeQueryValue).end !== undefined
-  );
+  if (!toTest) {
+    return false;
+  }
+  if (!toTest.source) {
+    return false;
+  }
+  if (toTest.start === undefined) {
+    return false;
+  }
+  if (toTest.end === undefined) {
+    return false;
+  }
+  return true;
+}
+
+export type ArOptionQueryValue = (string | number)[];
+
+export function isArOptionQueryValue(
+  toTest: Any,
+): toTest is ArOptionQueryValue {
+  if (!toTest) {
+    return false;
+  }
+  if (!Array.isArray(toTest)) {
+    return false;
+  }
+  if (!toTest.length) {
+    return true;
+  }
+  const elemType = typeof toTest[0];
+  const validTypes = ["string", "number"];
+  return validTypes.includes(elemType);
 }
 
 export type ArLogicalEntry = [LogicalOperator, ArSubqueryRecord[]];

@@ -18,7 +18,7 @@ import { getComparisonSubquery } from "../../../store/query/util/path/getCompari
 export function QueryValueInput(props: {
   path: PropertyName[];
   /**
-   * Creating a query to call? Versus creating a new custom query
+   * @see createInputValue
    */
   isCall: boolean;
   isCustom: boolean;

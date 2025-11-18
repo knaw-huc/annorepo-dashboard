@@ -1,10 +1,11 @@
-import { describe, expect, it } from "vitest";
+import { assert, describe, expect, it } from "vitest";
 import { validateQuery } from "./validateQuery.ts";
 import {
   ComparisonOperator,
   LogicalOperator,
 } from "../../../../model/query/operator/Operator.ts";
 import { createComparison } from "../test/createComparison.ts";
+import { SubqueryError } from "./SubqueryError.ts";
 
 describe(validateQuery.name, () => {
   it("validates empty query", () => {
@@ -21,6 +22,7 @@ describe(validateQuery.name, () => {
       { type: "logical", forms: [dummy], operator: or, queryError: "" },
       { type: "logical", forms: [dummy], operator: or, queryError: "" },
     ]);
-    expect(result).toBe("':or' already exists.");
+    assert(result instanceof SubqueryError);
+    expect(result.message).toBe("':or' already exists.");
   });
 });

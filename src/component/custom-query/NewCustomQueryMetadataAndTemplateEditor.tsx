@@ -4,7 +4,7 @@ import { CustomQueryMetadataEditor } from "./CustomQueryMetadataEditor.tsx";
 import { useEffect, useState } from "react";
 import { isEmpty, PropertyName, values } from "lodash";
 import { toErrorRecord } from "../../store/query/util/error/toErrorRecord.ts";
-import { hasError } from "../../store/query/util/error/hasError.ts";
+import { hasFormErrors } from "../../store/query/util/error/hasFormErrors.ts";
 import { useStore } from "../../store/useStore.ts";
 import { toParamName } from "../../store/query/util/toParamName.ts";
 import { CustomQueryMetadataForm } from "./model/CustomQueryMetadataForm.ts";
@@ -37,7 +37,7 @@ export function NewCustomQueryMetadataAndTemplateEditor(props: {
   }
 
   useEffect(() => {
-    setMetadataError(hasError(metadataErrors));
+    setMetadataError(hasFormErrors(metadataErrors));
   }, [metadataErrors]);
 
   const handleChangeMetadata = (update: CustomQueryMetadataForm) => {

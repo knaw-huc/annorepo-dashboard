@@ -1,17 +1,19 @@
-import { hasError } from "./hasError.ts";
+import { hasFormErrors } from "./hasFormErrors.ts";
 import {
+  isComparisonSubquery,
   isLogicalSubquery,
   Subquery,
 } from "../../../../model/query/QueryModel.ts";
 
 export function hasErrors(subqueries: Subquery[]): boolean {
   return subqueries.some((subquery) => {
-    if (isLogicalSubquery(subquery)) {
-      if (subquery.queryError) {
-        return true;
-      }
+    if (subquery.queryError) {
+      return true;
+    }
+    if (isComparisonSubquery(subquery)) {
+      return hasFormErrors(subquery.errors);
+    } else if (isLogicalSubquery(subquery)) {
       return hasErrors(subquery.forms);
     }
-    return subquery.queryError || hasError(subquery.errors);
   });
 }

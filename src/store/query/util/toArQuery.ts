@@ -3,6 +3,7 @@ import {
   ArLogicalRecord,
   ArQuery,
   ArSubqueryRecord,
+  isArOptionQueryValue,
   isArRangeQueryValue,
 } from "../../../model/ArModel.ts";
 import { objectEntries } from "../../../util/objectEntries.ts";
@@ -17,6 +18,9 @@ import { ComparisonOperator } from "../../../model/query/operator/Operator.ts";
 import { isRangeQueryOperator } from "../../../model/query/operator/RangeQueryOperator.ts";
 import { Any } from "../../../model/Any.ts";
 import { isPristine } from "./isPristine.ts";
+import { isOptionQueryOperator } from "../../../model/query/operator/OptionQueryOperator.ts";
+import { ValueError } from "./error/ValueError.ts";
+import { SubqueryError } from "./error/SubqueryError.ts";
 
 /**
  * From internal to AR query
@@ -38,14 +42,14 @@ function mergeArEntries(subqueries: ArSubqueryRecord[]): ArQuery {
   for (const subquery of subqueries) {
     const fields = Object.keys(subquery);
     if (fields.length > 1) {
-      throw new Error("Expect one field per subquery");
+      throw new SubqueryError("Expect one field per subquery");
     }
     for (const [key, value] of objectEntries(subquery)) {
       if (!key) {
         throw new Error(`Subquery field cannot be empty`);
       }
       if (key in merged) {
-        throw new Error(`'${key}' already exists.`);
+        throw new SubqueryError(`'${key}' already exists.`);
       }
       merged[key] = value;
     }
@@ -84,9 +88,17 @@ function toArComparison(
     return { [form.field]: `${value}` };
   } else if (isRangeQueryOperator(form.operator)) {
     if (!isArRangeQueryValue(value)) {
-      throw new Error("Expected range but got: " + JSON.stringify(value));
+      throw new ValueError(
+        'Invalid format, example: {"source":  "url", "start": 0, "end": 1}',
+      );
     } else {
       return { [form.operator]: value };
+    }
+  } else if (isOptionQueryOperator(form.operator)) {
+    if (!isArOptionQueryValue(value)) {
+      throw new ValueError('Invalid format, example: ["a","b"]');
+    } else {
+      return { [form.field]: { [form.operator]: value } };
     }
   } else {
     return { [form.field]: { [form.operator]: value } };

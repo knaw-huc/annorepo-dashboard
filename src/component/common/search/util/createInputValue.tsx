@@ -11,6 +11,9 @@ export function createInputValue(
   error: string,
   param: ParamValue,
   path: PropertyName[],
+  /**
+   * Creating a query to call? Versus creating a new custom query
+   */
   isCall: boolean,
 ): string {
   const value = form.value;
