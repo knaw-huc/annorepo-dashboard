@@ -17,13 +17,13 @@ describe(pruneQuery.name, async () => {
   it("prunes by value", async () => {
     const result = pruneQuery(
       [createComparison("f", eq, "v"), createComparison("f2", eq, "v2")],
-      (sq) => isComparisonSubquery(sq) && sq.form.value === "v2",
+      (sq) => isComparisonSubquery(sq) && sq.form.inputValue === "v2",
     );
 
     expect(result.length).toBe(1);
     const s1 = result[0];
     assert(isComparisonSubquery(s1));
-    expect(s1.form.value).toBe("v");
+    expect(s1.form.inputValue).toBe("v");
   });
 
   it("prunes nested value", async () => {
@@ -34,12 +34,12 @@ describe(pruneQuery.name, async () => {
           createComparison("f2", eq, "v2"),
         ]),
       ],
-      (sq) => isComparisonSubquery(sq) && sq.form.value === "v2",
+      (sq) => isComparisonSubquery(sq) && sq.form.inputValue === "v2",
     );
 
     assert(isLogicalSubquery(result[0]));
     const s1 = result[0].forms[0];
     assert(isComparisonSubquery(s1));
-    expect(s1.form.value).toBe("v");
+    expect(s1.form.inputValue).toBe("v");
   });
 });

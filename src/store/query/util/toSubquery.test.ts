@@ -19,7 +19,7 @@ describe(toSubquery.name, async () => {
   const noComparisonErrors = {
     field: "",
     operator: "",
-    value: "",
+    inputValue: "",
     valueType: "",
   };
 
@@ -33,7 +33,12 @@ describe(toSubquery.name, async () => {
       forms: [
         {
           type: "comparison",
-          form: { field: "f", operator: eq, value: "v", valueType: "string" },
+          form: {
+            field: "f",
+            operator: eq,
+            inputValue: "v",
+            valueType: "string",
+          },
           queryError: "",
           errors: noComparisonErrors,
           param: false,

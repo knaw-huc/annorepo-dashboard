@@ -21,6 +21,7 @@ import { isPristine } from "./isPristine.ts";
 import { isOptionQueryOperator } from "../../../model/query/operator/OptionQueryOperator.ts";
 import { ValueError } from "./error/ValueError.ts";
 import { SubqueryError } from "./error/SubqueryError.ts";
+import { findMapperByValueType } from "../../../model/query/value/util/findMapperByValueType.ts";
 
 /**
  * From internal to AR query
@@ -83,7 +84,11 @@ function toArComparison(
   asTemplate: boolean,
 ): ArComparisonRecord {
   const { param, form } = subquery;
-  const value = asTemplate && param !== false ? toParamTag(param) : form.value;
+  const mapper = findMapperByValueType(form.valueType);
+  const value =
+    asTemplate && param !== false
+      ? toParamTag(param)
+      : mapper.toValue(form.inputValue);
   if (subquery.form.operator === ComparisonOperator.simpleQuery) {
     return { [form.field]: `${value}` };
   } else if (isRangeQueryOperator(form.operator)) {

@@ -22,14 +22,14 @@ export function alignFormWithOperator(
     valueType: nextType,
   };
   if (currentMapping.type === nextType) {
-    next.value = prev.value;
+    next.inputValue = prev.inputValue;
   } else {
-    const nextMapping =
+    const nextMapper =
       queryValueMappers.find((m) => m.type === nextType) ??
       orThrow(`No default found for ${nextType}`);
-    next.value = nextMapping.defaultValue;
+    next.inputValue = nextMapper.toInputValue(nextMapper.defaultValue);
   }
-  if (prev.value && isRangeQueryOperator(nextOperator)) {
+  if (prev.inputValue && isRangeQueryOperator(nextOperator)) {
     next.field = NO_FIELD;
   }
   return next;

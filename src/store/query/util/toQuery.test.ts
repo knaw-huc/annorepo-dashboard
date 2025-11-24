@@ -20,9 +20,10 @@ describe(toQuery.name, async () => {
     assert(isLogicalSubquery(result[0]));
     expect(result[0].forms.length).toBe(2);
     assert(isComparisonSubquery(result[0].forms[0]));
-    expect(result[0].forms[0].form.value).toBe("foo");
+    expect(result[0].forms[0].form.inputValue).toBe("foo");
     assert(isComparisonSubquery(result[0].forms[1]));
-    expect(result[0].forms[1].form.value).toBe(1);
+    expect(result[0].forms[1].form.inputValue).toBe("1");
+    expect(result[0].forms[1].form.valueType).toBe("number");
   });
 
   it("converts template", async () => {
@@ -40,10 +41,10 @@ describe(toQuery.name, async () => {
     assert(isLogicalSubquery(result[0]));
     expect(result[0].forms.length).toBe(2);
     assert(isComparisonSubquery(result[0].forms[0]));
-    expect(result[0].forms[0].form.value).toBe("value");
+    expect(result[0].forms[0].form.inputValue).toBe("value");
     expect(result[0].forms[0].param).toBe("0-forms-0-body-foo");
     assert(isComparisonSubquery(result[0].forms[1]));
-    expect(result[0].forms[1].form.value).toBe("value");
+    expect(result[0].forms[1].form.inputValue).toBe("value");
     expect(result[0].forms[1].param).toBe("0-forms-1-body-purpose");
   });
 });

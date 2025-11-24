@@ -10,7 +10,6 @@ export type QueryValue =
   | ArRangeQueryValue
   /**
    * Is a form field empty or absent?
-   * TODO: filter out absent values when searching
    */
   | AbsentValue;
 

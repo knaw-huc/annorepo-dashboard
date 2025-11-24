@@ -21,7 +21,7 @@ export function toCustomQueryParameters(
       continue;
     }
     const mapper = findMapperByValueType(subquery.form.valueType);
-    result[parameter] = mapper.toParamValue(subquery.form.value);
+    result[parameter] = mapper.toParamValue(subquery.form.inputValue);
   }
   return result;
 }

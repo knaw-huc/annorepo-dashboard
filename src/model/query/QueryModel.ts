@@ -1,9 +1,8 @@
 // QueryModel.ts - Updated types with isPristine
 
-import { QueryValue } from "./value/QueryValue.ts";
 import { ComparisonOperator, LogicalOperator } from "./operator/Operator.ts";
 import { QueryValueType } from "./value/QueryValueType.ts";
-import { ErroneousValue, ErrorRecord } from "./ErrorRecord.ts";
+import { ErrorRecord } from "./ErrorRecord.ts";
 import { ParamValue } from "./ParamValue.ts";
 import { Any } from "../Any.ts";
 
@@ -73,6 +72,6 @@ export type LogicalForm = {
 export type ComparisonForm = {
   field: string;
   operator: ComparisonOperator;
-  value: QueryValue | ErroneousValue;
+  inputValue: string;
   valueType: QueryValueType;
 };

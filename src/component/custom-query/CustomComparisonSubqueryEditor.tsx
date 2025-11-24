@@ -24,7 +24,7 @@ export function CustomComparisonSubqueryEditor(
   const valueSuggestions = useValueSuggestions({
     containerName: containerName,
     field: subquery.form.field,
-    value: subquery.form.value,
+    value: subquery.form.inputValue,
   });
 
   return (

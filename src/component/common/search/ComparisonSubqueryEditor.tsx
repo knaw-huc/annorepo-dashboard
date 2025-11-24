@@ -37,7 +37,7 @@ export function ComparisonSubqueryEditor(props: ComparisonSubqueryEditorProps) {
 
   const isExistingField = fieldNames.includes(subquery.form.field);
 
-  const value = subquery.form.value;
+  const value = subquery.form.inputValue;
   const field = isExistingField ? subquery.form.field : "";
   const valueSuggestions = useValueSuggestions({ containerName, field, value });
 

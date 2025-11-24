@@ -13,12 +13,13 @@ describe(toComparisonForm.name, async () => {
   it("converts default query entry", async () => {
     const entry = Object.entries(defaultQuery)[0];
     const result = toComparisonForm(entry);
-    expect(result).toEqual({
+    const expected: ComparisonForm = {
       field: "",
-      operator: ":=",
-      value: "",
+      operator: ComparisonOperator.equal,
+      inputValue: "",
       valueType: "string",
-    });
+    };
+    expect(result).toEqual(expected);
   });
 
   it("converts range query entry", async () => {
@@ -27,28 +28,30 @@ describe(toComparisonForm.name, async () => {
       { source: "http://example.com", start: 1, end: 2 },
     ];
     const result: ComparisonForm = toComparisonForm(entry);
-    expect(result).toEqual({
+    const expected: ComparisonForm = {
       field: "n.a.",
-      operator: ":overlapsWithTextAnchorRange",
-      value: {
-        end: 2,
+      operator: ComparisonOperator.overlapsWithTextAnchorRange,
+      inputValue: JSON.stringify({
         source: "http://example.com",
         start: 1,
-      },
+        end: 2,
+      }),
       valueType: "range",
-    });
+    };
+    expect(result).toEqual(expected);
   });
 
   it("converts simple query entry", async () => {
     const entry: ArSimpleEntry = ["field", "value"];
     const result: ComparisonForm = toComparisonForm(entry);
 
-    expect(result).toEqual({
+    const expected: ComparisonForm = {
       field: "field",
-      operator: "simpleQuery",
-      value: "value",
+      operator: ComparisonOperator.simpleQuery,
+      inputValue: "value",
       valueType: "string",
-    });
+    };
+    expect(result).toEqual(expected);
   });
 
   it("converts extended query entry", async () => {
@@ -58,11 +61,12 @@ describe(toComparisonForm.name, async () => {
     ];
     const result: ComparisonForm = toComparisonForm(entry);
 
-    expect(result).toEqual({
+    const expected: ComparisonForm = {
       field: "field",
-      operator: ":=",
-      value: "value",
+      operator: ComparisonOperator.equal,
+      inputValue: "value",
       valueType: "string",
-    });
+    };
+    expect(result).toEqual(expected);
   });
 });

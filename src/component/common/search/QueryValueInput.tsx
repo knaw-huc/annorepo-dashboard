@@ -7,7 +7,6 @@ import {
   queryValueTypes,
 } from "../../../model/query/value/QueryValueType.ts";
 import { comparisonOperatorValueType } from "../../../model/query/value/comparisonOperatorValueType.ts";
-import { findMapperByValueType } from "../../../model/query/value/util/findMapperByValueType.ts";
 import { SelectOption } from "../form/SelectOption.tsx";
 import { QueryValue } from "../../../model/query/value/QueryValue.ts";
 import { findMapperByValue } from "../../../model/query/value/util/findMapperByValue.ts";
@@ -32,37 +31,23 @@ export function QueryValueInput(props: {
   const param = subquery.param;
 
   function handleValueChange(inputValueUpdate: string) {
-    try {
-      const mapper = findMapperByValueType(subquery.form.valueType);
-      const queryValueUpdate = mapper.toValue(inputValueUpdate);
-      updateComparisonSubquery({
-        path,
-        form: { ...subquery.form, value: queryValueUpdate },
-        errors: { ...subquery.errors, value: "" },
-      });
-    } catch (e) {
-      const errorMessage = e instanceof Error ? e.message : "Invalid value";
-      updateComparisonSubquery({
-        path,
-        // Use inout value when query value conversion failed:
-        form: { ...subquery.form, value: inputValueUpdate },
-        errors: { ...subquery.errors, value: errorMessage },
-      });
-    }
+    updateComparisonSubquery({
+      path,
+      form: { ...subquery.form, inputValue: inputValueUpdate },
+      errors: { ...subquery.errors, inputValue: "" },
+    });
   }
 
   function handleTypeChange(typeUpdate: QueryValueType) {
     try {
-      const newMapper = findMapperByValueType(typeUpdate);
-      const queryValueUpdate = newMapper.toValue(inputValue);
       updateComparisonSubquery({
         path,
         form: {
           ...subquery.form,
-          value: queryValueUpdate,
+          inputValue,
           valueType: typeUpdate,
         },
-        errors: { ...subquery.errors, value: "" },
+        errors: { ...subquery.errors, inputValue: "" },
       });
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
@@ -71,10 +56,10 @@ export function QueryValueInput(props: {
         // Use inout value when query value conversion failed:
         form: {
           ...subquery.form,
-          value: inputValue,
+          inputValue: inputValue,
           valueType: typeUpdate,
         },
-        errors: { ...subquery.errors, value: errorMessage },
+        errors: { ...subquery.errors, inputValue: errorMessage },
       });
     }
   }
@@ -85,12 +70,12 @@ export function QueryValueInput(props: {
 
       const valueTypeUpdate = updateMapper.type;
       const allowedTypes = comparisonOperatorValueType[subquery.form.operator];
-      let valueUpdate;
+      let valueUpdate: string;
       if (allowedTypes.includes(valueTypeUpdate)) {
-        valueUpdate = update.value;
+        valueUpdate = updateMapper.toInputValue(update.value);
       } else {
         const currentMapper = findMapperByOperator(subquery.form.operator);
-        valueUpdate = currentMapper.toValue(
+        valueUpdate = currentMapper.toInputValue(
           updateMapper.toInputValue(update.value),
         );
       }
@@ -99,30 +84,29 @@ export function QueryValueInput(props: {
         path,
         form: {
           ...subquery.form,
-          value: valueUpdate,
+          inputValue: valueUpdate,
           valueType: valueTypeUpdate,
         },
-        errors: { ...subquery.errors, value: "" },
+        errors: { ...subquery.errors, inputValue: "" },
       });
     } catch (e) {
       const errorMessage = e instanceof Error ? e.message : "Invalid value";
       updateComparisonSubquery({
         path,
         // Use inout value when query value conversion failed:
-        form: { ...subquery.form, value: update.value },
-        errors: { ...subquery.errors, value: errorMessage },
+        form: { ...subquery.form, inputValue: JSON.stringify(update.value) },
+        errors: { ...subquery.errors, inputValue: errorMessage },
       });
     }
   }
 
   const inputValue = createInputValue(
     subquery.form,
-    subquery.errors.value,
+    subquery.errors.inputValue,
     param,
     path,
     isCall,
   );
-
   const disabled = !isCall || (isCustom && param === false);
 
   const allowedTypes = comparisonOperatorValueType[subquery.form.operator];
@@ -139,7 +123,7 @@ export function QueryValueInput(props: {
         onInputChange={handleValueChange}
         onSelect={handleSelect}
         label="Value"
-        errorLabel={subquery.errors.value}
+        errorLabel={subquery.errors.inputValue}
         disabled={disabled}
         groupAt="right"
       />

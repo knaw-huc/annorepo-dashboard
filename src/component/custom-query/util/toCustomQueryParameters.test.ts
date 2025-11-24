@@ -23,9 +23,8 @@ describe(toCustomQueryParameters.name, async () => {
   it("converts number", async () => {
     const { and } = LogicalOperator;
     const { equal } = ComparisonOperator;
-    const subqueries: Subquery[] = [
-      createLogical(and, [createComparison("f", equal, 1, "0-forms-0-v")]),
-    ];
+    const comparison = createComparison("f", equal, 1, "0-forms-0-v");
+    const subqueries: Subquery[] = [createLogical(and, [comparison])];
     const result = toCustomQueryParameters(subqueries);
     // Number as a string:
     expect(result["0-forms-0-v"]).toEqual("1");

@@ -30,7 +30,7 @@ export function validateSubquery(path: PropertyName[], query: Subquery[]) {
     subquery.queryError = validated.message;
   } else if (validated instanceof ValueError) {
     if (isComparisonSubquery(subquery)) {
-      subquery.errors.value = validated.message;
+      subquery.errors.inputValue = validated.message;
     } else {
       throw new Error(`Value error in operator query`, validated);
     }
